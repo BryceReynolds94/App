@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             mc:Ignorable="d"
+             x:Class="AlarmManagerT.Views.HomeStatusPage"
+             Title="{Binding Title}"
+             x:Name="BrowseItemsPage">
+
+    <ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>
+
+    <StackLayout>
+        <Label x:Name="ErrorActionText" Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="#F44336" TextColor="White" Padding="10">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ErrorAction}" />
+            </Label.GestureRecognizers>
+        </Label>
+        <Label x:Name="WarningActionText" Text="{Binding WarningText}" IsVisible="{Binding WarningActive}" BackgroundColor="#F4511E" TextColor="White" Padding="10">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding WarningAction}"/>
+            </Label.GestureRecognizers>
+        </Label>
+        
+        <StackLayout Orientation="Horizontal" HeightRequest="50" Margin="0,5,0,0">
+            <ffimageloadingsvg:SvgCachedImage Source="{Binding ToggleAllActiveIcon}" HorizontalOptions="FillAndExpand">
+                <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ToggleAllActive}"/>
+                </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                </ffimageloadingsvg:SvgCachedImage>
+            <ffimageloadingsvg:SvgCachedImage Source="{Binding ToggleAllSnoozeIcon}" IsEnabled="{Binding ToggleSnoozeEnabled}" HorizontalOptions="FillAndExpand">
+                <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ToggleAllSnooze}"/>
+                </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                </ffimageloadingsvg:SvgCachedImage>
+            <ffimageloadingsvg:SvgCachedImage  Source="resource://AlarmManagerT.Images.icon_add.svg" IsEnabled="{Binding AddEnabled}" HorizontalOptions="FillAndExpand">
+                <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddConfig}"/>
+                </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+            </ffimageloadingsvg:SvgCachedImage>
+
+        </StackLayout>
+
+
+        <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
+        <d:CollectionView.ItemsSource>
+            <x:Array Type="{x:Type x:String}">
+                <x:String>1</x:String>
+                <x:String>2</x:String>
+            </x:Array>
+        </d:CollectionView.ItemsSource>
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                    <StackLayout Padding="10,10,10,0">
+                        <Frame x:Name="Backdrop" BackgroundColor="#EEEEEE"  CornerRadius="10" Padding="10">
+                            <Frame.Triggers>
+                                <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference SwitchIsActive}, Path=IsToggled}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="#BBDEFB" />
+                                </DataTrigger>
+
+                            </Frame.Triggers>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Switch x:Name="SwitchIsActive" IsToggled="{Binding IsActive}" Grid.Column="3" Grid.ColumnSpan="2" OnColor="#64B5F6" ThumbColor="#2196F3" />
+                                <Frame Padding="0" CornerRadius="15" IsClippedToBounds="True">
+                                    <Grid>
+                                        <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Images.group_default.svg" />
+                                        <Image Source="{Binding GroupPicPath, TargetNullValue={x:Null}}" IsVisible="{Binding HasPic}" />
+                                    </Grid>
+                                </Frame>
+                                <Label Text="{Binding GroupName}" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="2"/>
+
+                                <ffimageloadingsvg:SvgCachedImage Grid.Row="1" Source="resource://AlarmManagerT.Images.icon_trigger.svg" />
+                                <Label Text="{Binding KeywordText}" Grid.Row="1" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="4"/>
+
+                                <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Source="{Binding StatusFieldPic}" />
+                                <Label Text="{Binding StatusFieldText}" Grid.Row="2" Grid.Column="1" VerticalOptions="Center"/>
+
+                                <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Grid.Column="2" WidthRequest="30" IsEnabled="{Binding SnoozeEnabled}" Source="{Binding SnoozePic}">
+                                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SnoozeAlert}" />
+                                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                                </ffimageloadingsvg:SvgCachedImage>
+                                <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Grid.Column="3" WidthRequest="30" Source="resource://AlarmManagerT.Images.icon_settings.svg">
+                                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding EditAlert}" />
+                                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                                </ffimageloadingsvg:SvgCachedImage>
+                                <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Grid.Column="4" WidthRequest="30" Source="resource://AlarmManagerT.Images.icon_delete.svg">
+                                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding DeleteAlert}" />
+                                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                                </ffimageloadingsvg:SvgCachedImage>
+                            </Grid>
+                        </Frame>
+                    </StackLayout>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+    </StackLayout>
+</ContentPage>

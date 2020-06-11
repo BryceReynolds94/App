@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Title="{Binding Title}"
+             x:Class="AlarmManagerT.Views.LoginPhonePage">
+    <ContentPage.Content>
+        <StackLayout Padding="10" IsVisible="True">
+            <StackLayout VerticalOptions="CenterAndExpand">
+                <Label Text="Enter your phone number to log into your Telegram account:"
+                    HorizontalOptions="Center" HorizontalTextAlignment="Center"  Margin="30,0"/>
+                <Entry Text="{Binding PhoneNumber}" Placeholder="+49" Keyboard="Telephone"  Margin="30,0" />
+                <Label Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="#F44336" TextColor="White" Padding="10" Margin="30,0"/>
+            </StackLayout>
+            <Button Text="Login" HorizontalOptions="End" VerticalOptions="End" Command="{Binding Next}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

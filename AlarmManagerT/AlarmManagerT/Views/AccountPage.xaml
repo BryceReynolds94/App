@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             Title="{Binding Title}"
+             mc:Ignorable="d"
+             x:Class="AlarmManagerT.Views.AccountPage">
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <StackLayout VerticalOptions="CenterAndExpand">
+               
+                <Frame Padding="0" CornerRadius="120" IsClippedToBounds="True" HeightRequest="240" HorizontalOptions="Center">
+                    <Grid >
+                        <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}"  Source="resource://AlarmManagerT.Images.user_default.svg" />
+                        <Image IsVisible="{Binding ShowProfilePic}" Source="{Binding ProfilePicSource}"/>
+                    </Grid>
+                </Frame>
+                <Label Text="{Binding ProfileName}" HorizontalOptions="Center" FontSize="Large" />
+                <Label Text="{Binding ProfilePhone}" HorizontalOptions="Center" FontSize="Large"/>
+            </StackLayout>
+            <Button Text="logout" HorizontalOptions="Center" VerticalOptions="End" Command="{Binding LogoutUser}"/>
+            <Label Text="All configured alerts are removed on logout." HorizontalOptions="Center"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
