@@ -3,6 +3,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using AlarmManagerT.Services;
 using AlarmManagerT.Views;
+using Plugin.FirebasePushNotification;
+using System.Collections;
 
 namespace AlarmManagerT
 {
@@ -11,12 +13,14 @@ namespace AlarmManagerT
 
         public App()
         {
+            //TODO: Keep an eye on the experimental flags
             Device.SetFlags(new string[] { "RadioButton_Experimental" });
 
             InitializeComponent();
 
             //DependencyService.Register<MockDataStore>();
             MainPage = new MainPage();
+
         }
 
         protected override void OnStart()

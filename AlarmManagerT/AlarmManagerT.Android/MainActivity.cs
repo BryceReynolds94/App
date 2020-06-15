@@ -8,6 +8,7 @@ using Android.Widget;
 using Android.OS;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
+using Plugin.FirebasePushNotification;
 
 namespace AlarmManagerT.Droid
 {
@@ -28,7 +29,10 @@ namespace AlarmManagerT.Droid
             var ignore = typeof(SvgCachedImage); //Added to enable SVG FFImageLoading
 
             LoadApplication(new App());
+
+            FirebasePushNotificationManager.ProcessIntent(this, Intent); //Added to enable FirebasePushNotificationPlugin
         }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);

@@ -1,4 +1,6 @@
 ﻿using AlarmManagerT.Models;
+using Newtonsoft.Json.Linq;
+using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +10,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using TeleSharp.TL;
+using TeleSharp.TL.Account;
 using TeleSharp.TL.Messages;
 using TeleSharp.TL.Upload;
 using TeleSharp.TL.Users;
@@ -35,7 +38,15 @@ namespace AlarmManagerT.Services
         public MyClient()
         {
             //TODO: Implement reconnection
-            connectClient(); 
+            connectClient();
+
+            //subscribe to token changes
+            CrossFirebasePushNotification.Current.OnTokenRefresh += (s, args) =>
+            {
+                //TODO: Replace logging
+                System.Diagnostics.Debug.WriteLine($"TOKEN : {args.Token}");
+                subscribePushNotifications(args.Token);
+            };
         }
 
         public STATUS getClientStatus()
@@ -72,6 +83,7 @@ namespace AlarmManagerT.Services
             if (client.IsUserAuthorized())
             {
                 changeStatus(STATUS.AUTHORISED);
+                await subscribePushNotifications(CrossFirebasePushNotification.Current.Token); //TODO: Only do this on login?
                 saveUserData(await getUser());
             }
             else
@@ -79,6 +91,32 @@ namespace AlarmManagerT.Services
                 changeStatus(STATUS.WAIT_PHONE);
             }
             return true;
+        }
+
+        public async Task subscribePushNotifications(string token)
+        {
+            if(clientStatus != STATUS.AUTHORISED)
+            {
+                //TODO: hanlde this
+                return;
+            }
+
+            TLRequestRegisterDevice request = new TLRequestRegisterDevice()
+            {
+                TokenType = 2, //2 = FCM, use  for APNs
+                Token = token //TODO: See wether we have to check this is valid
+            };
+
+            try
+            {
+                bool result = await client.SendRequestAsync<bool>(request);
+            }catch(Exception e)
+            {
+                return;
+            }
+
+
+            return;
         }
 
         public async Task<TStatus> requestCode(string phoneNumber)
@@ -163,6 +201,7 @@ namespace AlarmManagerT.Services
                 return TStatus.UNKNOWN;
             }
             saveUserData(user);
+            subscribePushNotifications(CrossFirebasePushNotification.Current.Token);
             changeStatus(STATUS.AUTHORISED);
             return TStatus.OK;
         }

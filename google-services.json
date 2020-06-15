@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "316546388119",
+    "firebase_url": "https://alarmmanager-c37b4.firebaseio.com",
+    "project_id": "alarmmanager-c37b4",
+    "storage_bucket": "alarmmanager-c37b4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316546388119:android:18f2039a2b898e0ddf19d2",
+        "android_client_info": {
+          "package_name": "de.bartunik.alarmmanagert"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316546388119-vd9fdgspq9q4a4k54vg5r8efi057qnho.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlUC98Cy7MvaQcZdZQEOftLCcUxXm5xgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316546388119-vd9fdgspq9q4a4k54vg5r8efi057qnho.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
