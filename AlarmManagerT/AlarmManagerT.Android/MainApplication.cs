@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Firebase.Messaging;
 using Plugin.FirebasePushNotification;
 
 //class added to enable FirebasePushNotificationPlugin
@@ -51,12 +52,27 @@ namespace AlarmManagerT.Droid
             {
                 //TODO: unclear if this works
                 Xamarin.Forms.MessagingCenter.Send(this, "FirebaseNotificationReceived", p);
+                AndroidNotifications notifications = new AndroidNotifications();
+                notifications.showNotification("Notification from Dead");
 
                 return;
 
             };
 
 
+        }
+    }
+
+
+    [Service]
+    [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
+    class MyReceiveService : FirebaseMessagingService
+    {
+        public override void OnMessageReceived(RemoteMessage msg)
+        {
+            base.OnMessageReceived(msg);
+            AndroidNotifications notifications = new AndroidNotifications();
+            notifications.showNotification("in receiver from dead");
         }
     }
 }

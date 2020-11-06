@@ -101,8 +101,6 @@ namespace AlarmManagerT.Views
 
         private async void addConfig(object sender, EventArgs eventArgs)
         {
-            client.subscribePushNotifications(CrossFirebasePushNotification.Current.Token);
-
             AlertConfig alertConfig = new AlertConfig();
             await Navigation.PushAsync(new ConfigureGroupPage(client, alertConfig));
         }

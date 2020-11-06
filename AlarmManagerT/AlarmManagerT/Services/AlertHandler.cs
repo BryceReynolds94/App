@@ -1,4 +1,6 @@
-﻿using Plugin.FirebasePushNotification;
+﻿using AlarmManagerT.Models;
+using Plugin.FirebasePushNotification;
+using Plugin.LocalNotification;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,7 +63,19 @@ namespace AlarmManagerT.Services
         private void onNotification(object sender, FirebasePushNotificationDataEventArgs args)
         {
             //TODO: Handle Notifications
+            showUserNotification("We are here");
             return;
+        }
+
+        public void showUserNotification(string text)
+        {
+            try
+            {
+                INotifications notificationInterface = DependencyService.Get<INotifications>();
+                notificationInterface.showNotification(text);
+            }catch(Exception e) {
+                return;
+            }
         }
 
     }

@@ -10,10 +10,12 @@ namespace AlarmManagerT.ViewModels
     class MenuPageViewModel : BaseViewModel
     {
         public Command ViewAccount { get; set; }
+        public Command Test { get; set; } //TODO: RBF
 
         public MenuPageViewModel()
         {
             ViewAccount = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.AccountPage));
+            Test = new Command(() => MessagingCenter.Send(this, "TEST")); //TODO: RBF
 
             MessagingCenter.Subscribe<MyClient>(this, "UserDataChanged", (obj) => userDataChanged());
         }

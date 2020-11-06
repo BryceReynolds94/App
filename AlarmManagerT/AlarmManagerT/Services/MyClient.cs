@@ -101,6 +101,12 @@ namespace AlarmManagerT.Services
                 return;
             }
 
+            if(token.Length < 1)
+            {
+                //Token invalid
+                return;
+            }
+
             TLRequestRegisterDevice request = new TLRequestRegisterDevice()
             {
                 TokenType = 2, //2 = FCM, use  for APNs
@@ -109,7 +115,7 @@ namespace AlarmManagerT.Services
 
             try
             {
-                bool result = await client.SendRequestAsync<bool>(request);
+                await client.SendRequestAsync<bool>(request);
             }catch(Exception e)
             {
                 return;
