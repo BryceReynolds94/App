@@ -22,7 +22,7 @@ namespace AlarmManagerT.Droid
             base.OnMessageReceived(msg);
             RemoteMessage.Notification notif = msg.GetNotification(); // null for Telegram FCM -> init check Telegram
             AndroidNotifications notifications = new AndroidNotifications();
-            notifications.showAlertNotification("in receiver from dead", "Urgent stuff");
+            notifications.showAlertNotification("Notification Alive", "Urgent stuff");
         }
     }
 }

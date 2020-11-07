@@ -121,13 +121,11 @@ namespace AlarmManagerT.Services
 
             try
             {
-                bool _ = await client.SendRequestAsync<bool>(request); //unclear why but variable alloc seems essential
+                await client.SendRequestAsync<bool>(request);
             }catch(Exception e)
             {
                 return;
             }
-
-            CrossFirebasePushNotification.Current.RegisterForPushNotifications();
 
 
             return;

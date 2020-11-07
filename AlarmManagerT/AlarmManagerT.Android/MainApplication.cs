@@ -41,11 +41,11 @@ namespace AlarmManagerT.Droid
 
 
             //If debug you should reset the token each time.
-            #if DEBUG
-                FirebasePushNotificationManager.Initialize(this, true);
-            #else
-                FirebasePushNotificationManager.Initialize(this,false);
-            #endif
+            //#if DEBUG
+            FirebasePushNotificationManager.Initialize(this, false, false);
+            //#else
+            //    FirebasePushNotificationManager.Initialize(this,false);
+            //#endif
 
             //Handle notification when app is closed here
             CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
