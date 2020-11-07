@@ -23,14 +23,16 @@ namespace AlarmManagerT
             //DependencyService.Register<MockDataStore>();
             MainPage = new MainPage();
 
-            MessagingCenter.Subscribe<MenuPageViewModel>(this, "TEST", (_) => testPoint()); //TODO: RBF
+            MessagingCenter.Subscribe<MenuPageViewModel>(this, "TEST", (_) => testPoint(((MainPage) Current.MainPage).client)); //TODO: RBF
 
         }
 
-        private void testPoint() //TODO: RBF
+        private void testPoint(MyClient client) //TODO: RBF
         {
             AlertHandler handler = new AlertHandler();
             handler.showUserNotification("Manual Test");
+
+            client.subscribePushNotifications(CrossFirebasePushNotification.Current.Token); //TODO: RBF
         }
 
         protected override void OnStart()

@@ -36,7 +36,7 @@ namespace AlarmManagerT.Droid
                 FirebasePushNotificationManager.DefaultNotificationChannelId = "FirebasePushNotificationChannel";
 
                 //Change for your default notification channel name here
-                FirebasePushNotificationManager.DefaultNotificationChannelName = "General";
+                FirebasePushNotificationManager.DefaultNotificationChannelName = "General"; //TODO: RBF
             }
 
 
@@ -53,7 +53,7 @@ namespace AlarmManagerT.Droid
                 //TODO: unclear if this works
                 Xamarin.Forms.MessagingCenter.Send(this, "FirebaseNotificationReceived", p);
                 AndroidNotifications notifications = new AndroidNotifications();
-                notifications.showNotification("Notification from Dead");
+                notifications.showAlertNotification("Notification from Dead", "urgent stuff");
 
                 return;
 
@@ -63,16 +63,5 @@ namespace AlarmManagerT.Droid
         }
     }
 
-
-    [Service]
-    [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
-    class MyReceiveService : FirebaseMessagingService
-    {
-        public override void OnMessageReceived(RemoteMessage msg)
-        {
-            base.OnMessageReceived(msg);
-            AndroidNotifications notifications = new AndroidNotifications();
-            notifications.showNotification("in receiver from dead");
-        }
-    }
 }
+ 

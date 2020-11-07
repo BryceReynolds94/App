@@ -1,6 +1,5 @@
 ﻿using AlarmManagerT.Models;
 using Plugin.FirebasePushNotification;
-using Plugin.LocalNotification;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -72,7 +71,7 @@ namespace AlarmManagerT.Services
             try
             {
                 INotifications notificationInterface = DependencyService.Get<INotifications>();
-                notificationInterface.showNotification(text);
+                notificationInterface.showAlertNotification(text, "Some Content");
             }catch(Exception e) {
                 return;
             }

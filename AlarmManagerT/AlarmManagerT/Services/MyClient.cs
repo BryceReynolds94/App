@@ -75,16 +75,22 @@ namespace AlarmManagerT.Services
                 changeStatus(STATUS.OFFLINE);
                 return false;
             }
-            changeStatus(STATUS.NEW);
+            changeStatus(STATUS.OFFLINE);
 
             //TODO: Implement connection status control
             await client.ConnectAsync();
 
+            changeStatus(STATUS.NEW);
+
             if (client.IsUserAuthorized())
             {
                 changeStatus(STATUS.AUTHORISED);
-                await subscribePushNotifications(CrossFirebasePushNotification.Current.Token); //TODO: Only do this on login?
                 saveUserData(await getUser());
+
+                //TODO: Require some wait or retry here?
+
+                string token = await CrossFirebasePushNotification.Current.GetTokenAsync();
+                await subscribePushNotifications(token); //TODO: Only do this on login?
             }
             else
             {
@@ -97,7 +103,7 @@ namespace AlarmManagerT.Services
         {
             if(clientStatus != STATUS.AUTHORISED)
             {
-                //TODO: hanlde this
+                //TODO: handle this
                 return;
             }
 
@@ -115,11 +121,13 @@ namespace AlarmManagerT.Services
 
             try
             {
-                await client.SendRequestAsync<bool>(request);
+                bool _ = await client.SendRequestAsync<bool>(request); //unclear why but variable alloc seems essential
             }catch(Exception e)
             {
                 return;
             }
+
+            CrossFirebasePushNotification.Current.RegisterForPushNotifications();
 
 
             return;
@@ -207,8 +215,8 @@ namespace AlarmManagerT.Services
                 return TStatus.UNKNOWN;
             }
             saveUserData(user);
-            subscribePushNotifications(CrossFirebasePushNotification.Current.Token);
             changeStatus(STATUS.AUTHORISED);
+            subscribePushNotifications(CrossFirebasePushNotification.Current.Token);
             return TStatus.OK;
         }
 

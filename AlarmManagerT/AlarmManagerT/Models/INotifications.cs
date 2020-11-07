@@ -6,7 +6,9 @@ namespace AlarmManagerT.Models
 {
     public interface INotifications
     {
-        void showNotification(string title);
+        void showAlertNotification(string title, string text);
+
+        void showStandardNotification(string title, string text);
 
     }
 }
