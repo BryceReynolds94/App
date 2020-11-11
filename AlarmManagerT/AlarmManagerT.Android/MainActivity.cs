@@ -12,6 +12,7 @@ using Plugin.FirebasePushNotification;
 using Firebase.Messaging;
 using System.Drawing;
 using Android.Content;
+using System.Collections.Generic;
 
 namespace AlarmManagerT.Droid
 {
@@ -20,6 +21,14 @@ namespace AlarmManagerT.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Bundle extras = Intent.Extras;
+            if (extras != null)
+            {
+                string sample = extras.ToString();
+                ICollection<string> set = extras.KeySet();
+            }
+
+
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -34,7 +43,7 @@ namespace AlarmManagerT.Droid
             FirebasePushNotificationManager.ProcessIntent(this, Intent); //Added to enable FirebasePushNotificationPlugin
             new AndroidNotifications().SetupNotificationChannels(); //TODO: Possibly RBF
 
-            LoadApplication(new App());
+            LoadApplication(new App(Intent.HasExtra("alert")));
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

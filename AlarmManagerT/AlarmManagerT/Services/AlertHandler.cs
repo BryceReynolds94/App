@@ -52,7 +52,7 @@ namespace AlarmManagerT.Services
                 Data.setConfigValue(Data.DATA_KEYS.REFRESH_LOCK_TIME, currentTime.AddMilliseconds(lockDuration).Ticks);
                 Data.setConfigValue(Data.DATA_KEYS.LAST_REFRESH_TIME, currentTime.AddMilliseconds(lockDuration).Ticks);
 
-                Task.Delay(lockDuration);
+                Task.Delay(lockDuration).Wait(); //TODO: Unsure about this
                 return false;
             }
             //continue as planned

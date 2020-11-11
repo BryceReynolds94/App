@@ -26,12 +26,23 @@ namespace AlarmManagerT.Droid
         public void showAlertNotification(string title, string text){ //TODO: Include Logo for message
             prepareAlert();
 
+            Intent intent = new Intent(Application.Context, typeof(MainActivity))
+                .SetFlags(ActivityFlags.NewTask | ActivityFlags.MultipleTask | ActivityFlags.ExcludeFromRecents)
+                .PutExtra("alert", "true") //TODO: boolean extras are not received - find out why
+                .PutExtra("title", title) //TODO: Replace with constants (Data?)
+                .PutExtra("text", text)
+                .PutExtra("id", "mockid"); //TODO: RBF
+
+            PendingIntent fullScreenIntent = PendingIntent.GetActivity(Application.Context, 0, intent, 0);
+
+
             NotificationCompat.Builder builder = new NotificationCompat.Builder(Application.Context, ALERT_CHANNEL_ID)
                 .SetContentTitle(title)
                 .SetSmallIcon(Resource.Drawable.xamarin_logo) //TODO: Adjust Logo
                 .SetContentText(text)
                 .SetPriority(NotificationCompat.PriorityHigh)
-                .SetCategory(NotificationCompat.CategoryMessage);
+                .SetCategory(NotificationCompat.CategoryMessage)
+                .SetFullScreenIntent(fullScreenIntent, true);
 
             //TODO: Add full-screen intent https://developer.android.com/training/notify-user/time-sensitive
 
