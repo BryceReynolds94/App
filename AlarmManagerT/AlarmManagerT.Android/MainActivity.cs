@@ -31,11 +31,10 @@ namespace AlarmManagerT.Droid
             CachedImageRenderer.Init(true); //Addded to enable FFImageLoading
             var ignore = typeof(SvgCachedImage); //Added to enable SVG FFImageLoading
 
-            LoadApplication(new App());
-
             FirebasePushNotificationManager.ProcessIntent(this, Intent); //Added to enable FirebasePushNotificationPlugin
-
             new AndroidNotifications().SetupNotificationChannels(); //TODO: Possibly RBF
+
+            LoadApplication(new App());
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

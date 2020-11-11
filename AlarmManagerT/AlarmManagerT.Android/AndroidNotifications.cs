@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AlarmManagerT.Models;
+using AlarmManagerT.Interfaces;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -31,7 +31,7 @@ namespace AlarmManagerT.Droid
                 .SetSmallIcon(Resource.Drawable.xamarin_logo) //TODO: Adjust Logo
                 .SetContentText(text)
                 .SetPriority(NotificationCompat.PriorityHigh)
-                .SetCategory(NotificationCompat.CategoryCall); //TODO: Decide if categoryCall or Alarm 
+                .SetCategory(NotificationCompat.CategoryMessage);
 
             //TODO: Add full-screen intent https://developer.android.com/training/notify-user/time-sensitive
 
@@ -102,7 +102,6 @@ namespace AlarmManagerT.Droid
             alertChannel.EnableVibration(true);
             //TODO: alertChannel.setSound()
 
-            //TODO: Possibly set vibration pattern
 
 
             //TODO: Implement BypassDND and check canBypassDND()

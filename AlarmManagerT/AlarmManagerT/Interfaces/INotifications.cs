@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AlarmManagerT.Models
+namespace AlarmManagerT.Interfaces
 {
     public interface INotifications
     {

@@ -36,7 +36,7 @@ namespace AlarmManagerT.Views
 
         private void requestNotificationSettings(object sender, EventArgs _)
         {
-            Models.INavigation navigationInterface = DependencyService.Get<Models.INavigation>();
+            Interfaces.INavigation navigationInterface = DependencyService.Get<Interfaces.INavigation>();
             navigationInterface.navigateNotificationPolicyAccess();
         }
     }

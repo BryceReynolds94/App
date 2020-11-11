@@ -32,8 +32,12 @@ namespace AlarmManagerT
         private void testPoint(MyClient client) //TODO: RBF
         {
             //client.subscribePushNotifications(CrossFirebasePushNotification.Current.Token); //TODO: RBF
-            AlertHandler handler = new AlertHandler();
-            handler.checkForNewMessages(client);
+
+            NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+            NLog.Config.LoggingConfiguration config = NLog.LogManager.Configuration;
+
+            Logger.Warn("Test");
         }
 
         protected override void OnStart()
