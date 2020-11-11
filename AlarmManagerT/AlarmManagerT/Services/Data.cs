@@ -22,7 +22,9 @@ namespace AlarmManagerT.Services
             USER_NAME,
             USER_PHONE,
             USER_HAS_PHOTO,
-            USER_PHOTO
+            USER_PHOTO,
+            REFRESH_LOCK_TIME,
+            LAST_REFRESH_TIME
         }; //Changes will break Updates!
 
 

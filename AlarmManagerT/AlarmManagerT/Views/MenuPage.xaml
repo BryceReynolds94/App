@@ -40,6 +40,13 @@
                 <TapGestureRecognizer Command="{Binding Test}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
+        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
+            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Images.icon_alert.svg"/>
+            <Label Text="Notification Settings" FontSize="Large" VerticalOptions="Center"/>
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding NotificationSettings}"/>
+            </StackLayout.GestureRecognizers>
+        </StackLayout>
 
     </StackLayout>
 

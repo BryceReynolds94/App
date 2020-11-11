@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using TeleSharp.TL;
 using TeleSharp.TL.Account;
 using TeleSharp.TL.Messages;
+using TeleSharp.TL.Updates;
 using TeleSharp.TL.Upload;
 using TeleSharp.TL.Users;
 using TLSharp.Core;
@@ -33,20 +34,13 @@ namespace AlarmManagerT.Services
         private string clientRequestCodeHash = null;
         private string clientPhoneNumber = null;
 
-        public enum STATUS {NEW, OFFLINE, WAIT_PHONE, WAIT_CODE, AUTHORISED};
+        public enum STATUS { NEW, OFFLINE, WAIT_PHONE, WAIT_CODE, AUTHORISED };
 
         public MyClient()
         {
             //TODO: Implement reconnection
             connectClient();
 
-            //subscribe to token changes
-            CrossFirebasePushNotification.Current.OnTokenRefresh += (s, args) =>
-            {
-                //TODO: Replace logging
-                System.Diagnostics.Debug.WriteLine($"TOKEN : {args.Token}");
-                subscribePushNotifications(args.Token);
-            };
         }
 
         public STATUS getClientStatus()
@@ -90,7 +84,7 @@ namespace AlarmManagerT.Services
                 //TODO: Require some wait or retry here?
 
                 string token = await CrossFirebasePushNotification.Current.GetTokenAsync();
-                await subscribePushNotifications(token); //TODO: Only do this on login?
+                //await subscribePushNotifications(token); //TODO: Only do this on login?
             }
             else
             {
@@ -101,13 +95,13 @@ namespace AlarmManagerT.Services
 
         public async Task subscribePushNotifications(string token)
         {
-            if(clientStatus != STATUS.AUTHORISED)
+            if (clientStatus != STATUS.AUTHORISED)
             {
                 //TODO: handle this
                 return;
             }
 
-            if(token.Length < 1)
+            if (token.Length < 1)
             {
                 //Token invalid
                 return;
@@ -122,7 +116,8 @@ namespace AlarmManagerT.Services
             try
             {
                 await client.SendRequestAsync<bool>(request);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return;
             }
@@ -133,7 +128,7 @@ namespace AlarmManagerT.Services
 
         public async Task<TStatus> requestCode(string phoneNumber)
         {
-            if(clientStatus != STATUS.WAIT_PHONE)
+            if (clientStatus != STATUS.WAIT_PHONE)
             {
                 //TODO: Handle Error - wrong status
                 Console.WriteLine("Wrong status");
@@ -156,7 +151,8 @@ namespace AlarmManagerT.Services
             try
             {
                 code = await client.SendRequestAsync<TeleSharp.TL.Auth.TLSentCode>(requestCode);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
 
                 TException exception = getTException(e.Message);
@@ -175,7 +171,7 @@ namespace AlarmManagerT.Services
                     case TException.PHONE_NUMBER_INVALID:
                     case TException.PHONE_PASSWORD_FLOOD:
                         return TStatus.INVALID_PHONE_NUMBER;
-                        //TODO: Inform user that phone number is invalid/blocked
+                    //TODO: Inform user that phone number is invalid/blocked
                     case TException.PHONE_PASSWORD_PROTECTED:
                         //TODO: Implement 2FA for password protected accounts
                         break;
@@ -198,7 +194,7 @@ namespace AlarmManagerT.Services
 
         public async Task<TStatus> confirmCode(string code)
         {
-            if(clientStatus != STATUS.WAIT_CODE)
+            if (clientStatus != STATUS.WAIT_CODE)
             {
                 //TODO: Handle error - wrong status
                 return TStatus.WRONG_CLIENT_STATUS;
@@ -207,14 +203,15 @@ namespace AlarmManagerT.Services
             try
             {
                 user = await client.MakeAuthAsync(clientPhoneNumber, clientRequestCodeHash, code);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 //TODO: Handle exceptions
                 return TStatus.UNKNOWN;
             }
             saveUserData(user);
             changeStatus(STATUS.AUTHORISED);
-            subscribePushNotifications(CrossFirebasePushNotification.Current.Token);
+            //subscribePushNotifications(CrossFirebasePushNotification.Current.Token);
             return TStatus.OK;
         }
 
@@ -237,7 +234,7 @@ namespace AlarmManagerT.Services
             {
                 userName = user.Username;
             }
-            string userPhone = "+" +user.Phone;
+            string userPhone = "+" + user.Phone;
 
             Data.setConfigValue(Data.DATA_KEYS.USER_NAME, userName);
             Data.setConfigValue(Data.DATA_KEYS.USER_PHONE, userPhone);
@@ -247,17 +244,18 @@ namespace AlarmManagerT.Services
 
         public async Task<TLVector<TLAbsChat>> getChatList()
         {
-            if(clientStatus != STATUS.AUTHORISED)
+            if (clientStatus != STATUS.AUTHORISED)
             {
                 //TODO: Handle error
             }
 
-            TLMethod requestDialogList = new TeleSharp.TL.Messages.TLRequestGetDialogs() {
+            TLMethod requestDialogList = new TeleSharp.TL.Messages.TLRequestGetDialogs()
+            {
                 OffsetDate = 0,
                 OffsetId = 0,
                 OffsetPeer = new TLInputPeerSelf(),
                 Limit = 100
-            
+
             };
 
             if (!client.IsUserAuthorized())
@@ -270,7 +268,8 @@ namespace AlarmManagerT.Services
             try
             {
                 dialogs = await client.SendRequestAsync<TLDialogs>(requestDialogList);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return null;
             }
@@ -287,7 +286,7 @@ namespace AlarmManagerT.Services
                 VolumeId = location.VolumeId
             };
 
-            TLFile file = await client.GetFile(loc, 1024*256);
+            TLFile file = await client.GetFile(loc, 1024 * 256);
             return file;
         }
 
@@ -321,12 +320,47 @@ namespace AlarmManagerT.Services
             {
                 outUser = await client.SendRequestAsync<TLVector<TLAbsUser>>(request);
                 user = outUser.First() as TLUser;
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return null;
             }
 
             return user;
+        }
+
+        public async Task<TLAbsMessages> getMessages(int chatID, int lastMessageID)
+        {
+            if (clientStatus != STATUS.AUTHORISED)
+            {
+                //TODO: Log this
+                return null;
+            }
+
+            TLInputPeerChat chat = new TLInputPeerChat()
+            {
+                ChatId = chatID
+            };
+
+            TLRequestGetHistory request = new TLRequestGetHistory()
+            {
+                Peer = chat,
+                Limit = 100,
+                MinId = lastMessageID + 1
+            };
+
+            TLAbsMessages messages;
+            try
+            {
+                messages = await client.SendRequestAsync<TLAbsMessages>(request);
+            }catch(Exception e)
+            {
+                //something went wrong
+                //TODO: Log
+                return null;
+            }
+
+            return messages;
         }
 
         public class MySessionStore : ISessionStore
@@ -357,7 +391,7 @@ namespace AlarmManagerT.Services
                     return (Session)null;
 
                 var buffer = File.ReadAllBytes(path);
-                Session session =  Session.FromBytes(buffer, this, sessionUserId);
+                Session session = Session.FromBytes(buffer, this, sessionUserId);
                 client.user = session.TLUser;
                 return session;
             }

@@ -3,9 +3,9 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using AlarmManagerT.Services;
 using AlarmManagerT.Views;
-using Plugin.FirebasePushNotification;
 using System.Collections;
 using AlarmManagerT.ViewModels;
+using Plugin.FirebasePushNotification;
 
 namespace AlarmManagerT
 {
@@ -23,16 +23,17 @@ namespace AlarmManagerT
             //DependencyService.Register<MockDataStore>();
             MainPage = new MainPage();
 
+            new FirebaseMessagingHandler().SetupListeners(((MainPage) Current.MainPage).client);
+
             MessagingCenter.Subscribe<MenuPageViewModel>(this, "TEST", (_) => testPoint(((MainPage) Current.MainPage).client)); //TODO: RBF
 
         }
 
         private void testPoint(MyClient client) //TODO: RBF
         {
+            //client.subscribePushNotifications(CrossFirebasePushNotification.Current.Token); //TODO: RBF
             AlertHandler handler = new AlertHandler();
-            handler.showUserNotification("Manual Test");
-
-            client.subscribePushNotifications(CrossFirebasePushNotification.Current.Token); //TODO: RBF
+            handler.checkForNewMessages(client);
         }
 
         protected override void OnStart()

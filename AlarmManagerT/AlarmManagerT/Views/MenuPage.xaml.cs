@@ -25,12 +25,19 @@ namespace AlarmManagerT.Views
 
             BindingContext = viewModel = new MenuPageViewModel();
             viewModel.RequestNavigation += requestNavigation;
+            viewModel.RequestNotificationSettings += requestNotificationSettings;
 
         }
 
         private async void requestNavigation(object sender, MENU_PAGE destination)
         {
             await RootPage.NavigateFromMenu(destination);
+        }
+
+        private void requestNotificationSettings(object sender, EventArgs _)
+        {
+            Models.INavigation navigationInterface = DependencyService.Get<Models.INavigation>();
+            navigationInterface.navigateNotificationPolicyAccess();
         }
     }
 }

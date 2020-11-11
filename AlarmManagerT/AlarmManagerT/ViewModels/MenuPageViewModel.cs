@@ -11,17 +11,22 @@ namespace AlarmManagerT.ViewModels
     {
         public Command ViewAccount { get; set; }
         public Command Test { get; set; } //TODO: RBF
+        public Command NotificationSettings { get; set; }
 
         public MenuPageViewModel()
         {
             ViewAccount = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.AccountPage));
             Test = new Command(() => MessagingCenter.Send(this, "TEST")); //TODO: RBF
 
+            NotificationSettings = new Command(() => RequestNotificationSettings.Invoke(this, null));
+
             MessagingCenter.Subscribe<MyClient>(this, "UserDataChanged", (obj) => userDataChanged());
         }
 
         public NavigationEventHandler RequestNavigation;
         public delegate void NavigationEventHandler(object sender, MenuPage.MENU_PAGE destination);
+
+        public EventHandler RequestNotificationSettings;
 
         private void userDataChanged()
         {

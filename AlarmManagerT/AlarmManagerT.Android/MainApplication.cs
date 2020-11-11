@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using AlarmManagerT.Services;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Firebase.Messaging;
 using Plugin.FirebasePushNotification;
 
-//class added to enable FirebasePushNotificationPlugin
+
 //https://github.com/CrossGeeks/FirebasePushNotificationPlugin/blob/master/docs/GettingStarted.md
 
 //TODO: Do FCM setup in iOS
@@ -29,36 +28,18 @@ namespace AlarmManagerT.Droid
         {
             base.OnCreate();
 
-            //Set the default notification channel for your app when running Android Oreo
-            if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
-            {
-                //Change for your default notification channel id here
-                FirebasePushNotificationManager.DefaultNotificationChannelId = "FirebasePushNotificationChannel";
-
-                //Change for your default notification channel name here
-                FirebasePushNotificationManager.DefaultNotificationChannelName = "General"; //TODO: RBF
-            }
-
-
-            //If debug you should reset the token each time.
-            //#if DEBUG
             FirebasePushNotificationManager.Initialize(this, false, false);
-            //#else
-            //    FirebasePushNotificationManager.Initialize(this,false);
-            //#endif
 
             //Handle notification when app is closed here
             CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
             {
-                //TODO: unclear if this works
-                Xamarin.Forms.MessagingCenter.Send(this, "FirebaseNotificationReceived", p);
-                AndroidNotifications notifications = new AndroidNotifications();
-                notifications.showAlertNotification("Notification from Dead", "urgent stuff");
-
-                return;
+                if (!Xamarin.Forms.Forms.IsInitialized) //If Forms is initalised we do not have to handle notification here
+                {
+                    Xamarin.Forms.Forms.Init(Application.Context, null); //We need to make sure Xamarin.Forms is initialised when notifications are received in killed state
+                    FirebaseMessagingHandler.BackgroundFirebaseMessage(this, p);
+                }
 
             };
-
 
         }
     }

@@ -30,6 +30,8 @@ namespace AlarmManagerT.Models
 
         public DateTime lastTriggered = DateTime.MinValue;
 
+        public int lastMessageID = 0;
+
         public void saveChanges()
         {
             Data.saveAlertConfig(this);
@@ -51,6 +53,39 @@ namespace AlarmManagerT.Models
             saveChanges();
         }
 
+        public Boolean isAlert(string message, DateTime time)
+        {
+            if (!isActive || snoozeActive) 
+            {
+                return false;
+            }
+            if(timeRestriction && !activeTimeConfig.isActiveTime(time))
+            {
+                return false;
+            }
+
+            switch (triggerType)
+            {
+                case TRIGGER_TYPE.ANY:
+                    return true;
+                case TRIGGER_TYPE.KEYWORD:
+                case TRIGGER_TYPE.REGEX:
+                    //TODO: Implement difference or get rid of simple KEYWORD option
+                    if (triggerKeyword == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return Regex.IsMatch(message, triggerKeyword);
+                    }
+                case TRIGGER_TYPE.SERVER:
+                    //TODO: Invent this
+                    break;
+            }
+            return false;
+            
+        }
         
 
     }
