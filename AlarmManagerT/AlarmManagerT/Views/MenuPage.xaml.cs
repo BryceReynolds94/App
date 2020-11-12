@@ -39,7 +39,7 @@ namespace AlarmManagerT.Views
         private void requestNotificationSettings(object sender, EventArgs _)
         {
             Interfaces.INavigation navigationInterface = DependencyService.Get<Interfaces.INavigation>();
-            navigationInterface.navigateNotificationPolicyAccess();
+            navigationInterface.navigateNotificationSettings();
         }
 
         private void requestAbout(object sender, EventArgs _)
@@ -49,7 +49,8 @@ namespace AlarmManagerT.Views
 
         private void requestShare(object sender, EventArgs _)
         {
-            //TODO: Implement Share Intent
+            Interfaces.INavigation navigationInterface = DependencyService.Get<Interfaces.INavigation>();
+            navigationInterface.navigateShare("SAMPLE MESSAGE"); //TODO: Write Message to share
         }
     }
 }

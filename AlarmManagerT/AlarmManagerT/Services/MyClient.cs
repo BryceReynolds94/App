@@ -224,10 +224,10 @@ namespace AlarmManagerT.Services
                 TLFile file = await getProfilePic(photo.PhotoBig as TLFileLocation);
                 MemoryStream memoryStream = new MemoryStream(file.Bytes);
 
-                Data.saveProfilePic(Data.DATA_KEYS.USER_PHOTO.ToString(), memoryStream);
+                DataService.saveProfilePic(DataService.DATA_KEYS.USER_PHOTO.ToString(), memoryStream);
                 hasPhoto = true;
             }
-            Data.setConfigValue(Data.DATA_KEYS.USER_HAS_PHOTO, hasPhoto);
+            DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, hasPhoto);
 
             string userName = user.FirstName + " " + user.LastName;
             if (userName.Length < 3)
@@ -236,8 +236,8 @@ namespace AlarmManagerT.Services
             }
             string userPhone = "+" + user.Phone;
 
-            Data.setConfigValue(Data.DATA_KEYS.USER_NAME, userName);
-            Data.setConfigValue(Data.DATA_KEYS.USER_PHONE, userPhone);
+            DataService.setConfigValue(DataService.DATA_KEYS.USER_NAME, userName);
+            DataService.setConfigValue(DataService.DATA_KEYS.USER_PHONE, userPhone);
 
             MessagingCenter.Send(this, "UserDataChanged");
         }

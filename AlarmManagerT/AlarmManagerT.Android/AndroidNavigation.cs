@@ -18,6 +18,8 @@ namespace AlarmManagerT.Droid
 {
     class AndroidNavigation : INavigation
     {
+        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         public void navigateNotificationSettings()
         {
             Intent intent = new Intent(Settings.ActionChannelNotificationSettings);
@@ -33,6 +35,17 @@ namespace AlarmManagerT.Droid
             Platform.CurrentActivity.StartActivity(intent);
         }
 
+        public void navigateShare(string message)
+        {
+            Intent intent = new Intent()
+                .SetAction(Intent.ActionSend)
+                .PutExtra(Intent.ExtraText, message)
+                .SetType("text/plain");
+
+            Intent shareIntent = Intent.CreateChooser(intent, (string) null);
+            Platform.CurrentActivity.StartActivity(shareIntent);
+        }
+
         public void navigateTelegramChat(int chatID)
         {
             Intent intent = new Intent(Intent.ActionView)
@@ -40,11 +53,11 @@ namespace AlarmManagerT.Droid
 
             try
             {
-                Platform.CurrentActivity.PackageManager.GetPackageInfo("org.telegram.messenger", Android.Content.PM.PackageInfoFlags.Activities);
+                Platform.CurrentActivity.PackageManager.GetPackageInfo("org.telegram.messenger", PackageInfoFlags.Activities);
                 intent.SetPackage("org.telegram.messenger");
             }catch(PackageManager.NameNotFoundException e)
             {
-                //TODO: Log this
+                Logger.Warn(e, "Could not go to Telegram as package was not found.");
                 return;
             }
             Platform.CurrentActivity.StartActivity(intent);

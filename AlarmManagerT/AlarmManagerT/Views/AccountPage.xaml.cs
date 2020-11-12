@@ -23,8 +23,8 @@ namespace AlarmManagerT.Views
         {
             InitializeComponent();
 
-            string userName = Data.getConfigValue(Data.DATA_KEYS.USER_NAME, AppResources.AccountPage_UserName_Default);
-            string userPhone = Data.getConfigValue(Data.DATA_KEYS.USER_PHONE, AppResources.AccountPage_UserPhone_Default);
+            string userName = DataService.getConfigValue(DataService.DATA_KEYS.USER_NAME, AppResources.AccountPage_UserName_Default);
+            string userPhone = DataService.getConfigValue(DataService.DATA_KEYS.USER_PHONE, AppResources.AccountPage_UserPhone_Default);
 
             BindingContext = viewModel = new AccountPageViewModel(userName, userPhone);
             viewModel.RequestLogout += logoutUser;
@@ -50,16 +50,16 @@ namespace AlarmManagerT.Views
 
         private void updateUserView()
         {
-            bool hasPhoto = Data.getConfigValue(Data.DATA_KEYS.USER_HAS_PHOTO, false);
+            bool hasPhoto = DataService.getConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, false);
             string photoLocation = null;
             if (hasPhoto)
             {
-                photoLocation = Data.profilePicSavePath(Data.DATA_KEYS.USER_PHOTO.ToString());
+                photoLocation = DataService.profilePicSavePath(DataService.DATA_KEYS.USER_PHOTO.ToString());
             }
             viewModel.updatePhoto(hasPhoto, photoLocation);
 
-            string userName = Data.getConfigValue(Data.DATA_KEYS.USER_NAME, AppResources.AccountPage_UserName_Default);
-            string userPhone = Data.getConfigValue(Data.DATA_KEYS.USER_PHONE, AppResources.AccountPage_UserPhone_Default);
+            string userName = DataService.getConfigValue(DataService.DATA_KEYS.USER_NAME, AppResources.AccountPage_UserName_Default);
+            string userPhone = DataService.getConfigValue(DataService.DATA_KEYS.USER_PHONE, AppResources.AccountPage_UserPhone_Default);
 
             viewModel.updateInfo(userName, userPhone);
         }

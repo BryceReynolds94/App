@@ -190,7 +190,7 @@ namespace AlarmManagerT.ViewModels
                 switch (warningState)
                 {
                     case WARNING_ACTION.SNOOZE_SET:
-                        DateTime snoozeTime = new DateTime(Data.getConfigValue(Data.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.Now.Ticks));
+                        DateTime snoozeTime = new DateTime(DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.Now.Ticks));
                         return string.Format(AppResources.HomeStatusPage_Warning_Snooze, snoozeTime); //TODO: Check if format string works
                     case WARNING_ACTION.DEACTIVATED:
                         return AppResources.HomeStatusPage_Warning_Deactivated;

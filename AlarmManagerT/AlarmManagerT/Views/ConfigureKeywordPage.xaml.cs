@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+//TODO: RadioButtons are currently broken, solution expected in XF 5.0 very soon (alt. revert to 4.7)
+//TODO: Update to XF 5.0
+
 namespace AlarmManagerT.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -34,7 +37,7 @@ namespace AlarmManagerT.Views
         {
             if (alertConfig.triggerGroup.hasImage)
             {
-                Data.saveProfilePic(alertConfig.id, alertConfig.triggerGroup.image);
+                DataService.saveProfilePic(alertConfig.id, alertConfig.triggerGroup.image);
             }
             alertConfig.triggerGroup.image = null; //clear because the image cannot be serialised on save
             alertConfig.saveChanges();

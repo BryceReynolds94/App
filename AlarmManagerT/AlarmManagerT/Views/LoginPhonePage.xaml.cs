@@ -15,6 +15,8 @@ namespace AlarmManagerT.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPhonePage : ContentPage
     {
+        //TODO: Implement next on keyboard confirm button
+
         MyClient client;
         LoginPhonePageViewModel viewModel;
 

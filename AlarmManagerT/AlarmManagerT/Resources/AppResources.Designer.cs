@@ -295,6 +295,33 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Take me there.
+        /// </summary>
+        internal static string HomeStatusPage_DND_PermissionPrompt_Confirm {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_DND_PermissionPrompt_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To ensure notifications when the phone is set to silent or Do Not Disturb please grant AlarmManagerT access in your permissions settings..
+        /// </summary>
+        internal static string HomeStatusPage_DNDPermissionPrompt_Message {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_DNDPermissionPrompt_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grant Do Not Disturb access.
+        /// </summary>
+        internal static string HomeStatusPage_DNDPermissionPrompt_Title {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_DNDPermissionPrompt_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Internet Connection.
         /// </summary>
         internal static string HomeStatusPage_Error_NoInternet {

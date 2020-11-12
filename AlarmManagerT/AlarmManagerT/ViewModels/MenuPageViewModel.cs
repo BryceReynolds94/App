@@ -44,16 +44,16 @@ namespace AlarmManagerT.ViewModels
             OnPropertyChanged(nameof(UserPic));
         }
 
-        public string UserName => Data.getConfigValue(Data.DATA_KEYS.USER_NAME, AppResources.MenuPage_UserName_Default);
-        public string UserPhone => Data.getConfigValue(Data.DATA_KEYS.USER_PHONE, AppResources.MenuPage_UserPhone_Default);
-        public bool UserHasPic => Data.getConfigValue(Data.DATA_KEYS.USER_HAS_PHOTO, false);
+        public string UserName => DataService.getConfigValue(DataService.DATA_KEYS.USER_NAME, AppResources.MenuPage_UserName_Default);
+        public string UserPhone => DataService.getConfigValue(DataService.DATA_KEYS.USER_PHONE, AppResources.MenuPage_UserPhone_Default);
+        public bool UserHasPic => DataService.getConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, false);
 
         public bool ShowDefaultPic => !UserHasPic;
         public string UserPic {
             get {
                 if (UserHasPic)
                 {
-                    return Data.profilePicSavePath(Data.DATA_KEYS.USER_PHOTO.ToString());
+                    return DataService.profilePicSavePath(DataService.DATA_KEYS.USER_PHOTO.ToString());
                 }
                 else
                 {

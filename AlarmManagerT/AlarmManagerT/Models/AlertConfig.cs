@@ -29,7 +29,7 @@ namespace AlarmManagerT.Models
 
         public void saveChanges()
         {
-            Data.saveAlertConfig(this);
+            DataService.saveAlertConfig(this);
         }
 
         public void setActiveState(bool active)

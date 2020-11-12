@@ -32,9 +32,6 @@ namespace AlarmManagerT
 
             InitializeComponent();
 
-            new AlertHandler();
-            //DependencyService.Register<MockDataStore>();
-
             MessagingCenter.Subscribe<MenuPageViewModel>(this, "TEST", (_) => testPoint(((MainPage)Current.MainPage).client)); //TODO: RBF
 
             if (isAlert)
@@ -44,7 +41,7 @@ namespace AlarmManagerT
             }
 
             MainPage = new MainPage();
-            new FirebaseMessagingHandler().SetupListeners(((MainPage)Current.MainPage).client);
+            new MessagingService().SetupListeners(((MainPage)Current.MainPage).client);
         }
 
         private void testPoint(MyClient client) //TODO: RBF

@@ -11,6 +11,7 @@ using AlarmManagerT.Models;
 using AlarmManagerT.Views;
 using AlarmManagerT.ViewModels;
 using AlarmManagerT.Services;
+using AlarmManagerT.Interfaces;
 using FFImageLoading.Svg.Forms;
 using System.Xml;
 using System.Collections.ObjectModel;
@@ -18,9 +19,8 @@ using Plugin.FirebasePushNotification;
 using AlarmManagerT.Resources;
 
 namespace AlarmManagerT.Views
-{
-    // Learn more about making custom code visible in the Xamarin.Forms previewer
-    // by visiting https://aka.ms/xamarinforms-previewer
+{ 
+
     [DesignTimeVisible(false)]
     public partial class HomeStatusPage : ContentPage
     {
@@ -62,8 +62,8 @@ namespace AlarmManagerT.Views
 
             updateClientErrorStatus(this, null);
 
-            bool allOff = Data.getConfigValue(Data.DATA_KEYS.CONFIG_DEACTIVATE_ALL, false);
-            bool allSnoozed = Data.getConfigValue(Data.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue.Ticks) > DateTime.Now.Ticks;
+            bool allOff = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_DEACTIVATE_ALL, false);
+            bool allSnoozed = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue.Ticks) > DateTime.Now.Ticks;
             viewModel.setWarningState(allOff, allSnoozed);
 
             if (viewModel.alertList.Count == 0)
@@ -77,7 +77,7 @@ namespace AlarmManagerT.Views
 
         private void deleteAlertConfig(AlertConfig alertConfig)
         {
-            Data.deleteAlertConfig(alertConfig);
+            DataService.deleteAlertConfig(alertConfig);
             alertList.Remove(alertConfig);
             viewModel.fillAlertList(alertList);
 
@@ -108,7 +108,7 @@ namespace AlarmManagerT.Views
 
         private void saveDeactivatedState(object sender, bool state)
         {
-            Data.setConfigValue(Data.DATA_KEYS.CONFIG_DEACTIVATE_ALL, state);
+            DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_DEACTIVATE_ALL, state);
             if (state)
             {
                 saveSnoozeState(this, DateTime.MinValue); //clear snooze when all is deactivated
@@ -117,7 +117,7 @@ namespace AlarmManagerT.Views
 
         private void saveSnoozeState(object sender, DateTime state)
         {
-            Data.setConfigValue(Data.DATA_KEYS.CONFIG_SNOOZE_ALL, state.Ticks);
+            DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, state.Ticks);
         }
 
         private void alertConfigSaved(AlertConfig alertConfig)
@@ -131,15 +131,29 @@ namespace AlarmManagerT.Views
                 alertList = getAlertConfigs();
             }
             viewModel.fillAlertList(alertList);
+
+            if(Device.RuntimePlatform == Device.Android && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, false))
+            {
+                showDNDPermissionPrompt();
+                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
+            }
+        }
+
+        private async void showDNDPermissionPrompt()
+        {
+            await DisplayAlert(AppResources.HomeStatusPage_DNDPermissionPrompt_Title, AppResources.HomeStatusPage_DNDPermissionPrompt_Message, AppResources.HomeStatusPage_DND_PermissionPrompt_Confirm);
+
+            Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
+            navigation.navigateNotificationPolicyAccess();
         }
 
         private Collection<AlertConfig> getAlertConfigs()
         {
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
-            Collection<string> configIDs = Data.getConfigList();
+            Collection<string> configIDs = DataService.getConfigList();
             foreach(string id in configIDs)
             {
-                configList.Add(Data.getAlertConfig(id));
+                configList.Add(DataService.getAlertConfig(id));
             }
             return configList;
         }

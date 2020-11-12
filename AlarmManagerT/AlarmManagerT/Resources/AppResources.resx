@@ -195,6 +195,15 @@
   <data name="ConfigureKeywordPage_Trigger_Title" xml:space="preserve">
     <value>Trigger</value>
   </data>
+  <data name="HomeStatusPage_DNDPermissionPrompt_Message" xml:space="preserve">
+    <value>To ensure notifications when the phone is set to silent or Do Not Disturb please grant AlarmManagerT access in your permissions settings.</value>
+  </data>
+  <data name="HomeStatusPage_DNDPermissionPrompt_Title" xml:space="preserve">
+    <value>Grant Do Not Disturb access</value>
+  </data>
+  <data name="HomeStatusPage_DND_PermissionPrompt_Confirm" xml:space="preserve">
+    <value>Take me there</value>
+  </data>
   <data name="HomeStatusPage_Error_NoInternet" xml:space="preserve">
     <value>No Internet Connection</value>
   </data>

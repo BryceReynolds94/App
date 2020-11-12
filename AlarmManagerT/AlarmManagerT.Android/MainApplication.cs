@@ -13,7 +13,6 @@ using Plugin.FirebasePushNotification;
 
 
 //https://github.com/CrossGeeks/FirebasePushNotificationPlugin/blob/master/docs/GettingStarted.md
-
 //TODO: Do FCM setup in iOS
 namespace AlarmManagerT.Droid
 {
@@ -23,11 +22,9 @@ namespace AlarmManagerT.Droid
         public MainApplication(IntPtr handle, JniHandleOwnership transer) : base(handle, transer)
         {
         }
-
         public override void OnCreate()
         {
             base.OnCreate();
-
             FirebasePushNotificationManager.Initialize(this, false, false);
 
             //Handle notification when app is closed here
@@ -36,7 +33,7 @@ namespace AlarmManagerT.Droid
                 if (!Xamarin.Forms.Forms.IsInitialized) //If Forms is initalised we do not have to handle notification here
                 {
                     Xamarin.Forms.Forms.Init(Application.Context, null); //We need to make sure Xamarin.Forms is initialised when notifications are received in killed state
-                    FirebaseMessagingHandler.BackgroundFirebaseMessage(this, p);
+                    MessagingService.BackgroundFirebaseMessage(this, p);
                 }
 
             };

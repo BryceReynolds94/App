@@ -36,11 +36,12 @@ namespace AlarmManagerT.Droid
             var ignore = typeof(SvgCachedImage); //Added to enable SVG FFImageLoading
 
             FirebasePushNotificationManager.ProcessIntent(this, Intent); //Added to enable FirebasePushNotificationPlugin
-            new AndroidNotifications().SetupNotificationChannels(); //TODO: Possibly RBF
+            new AndroidNotifications().SetupNotificationChannels();
 
             LoadApplication(new App(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()), GetAlertFromIntent(Intent)));
         }
 
+        //TODO: Check if this is ever called and remove if unnecessary
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -51,7 +52,7 @@ namespace AlarmManagerT.Droid
         private Alert GetAlertFromIntent(Intent intent)
         {
             if (intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString())){
-                return Data.deserialiseObject<Alert>(intent.GetStringExtra(Alert.EXTRAS.ALERT_FLAG.ToString()));
+                return DataService.deserialiseObject<Alert>(intent.GetStringExtra(Alert.EXTRAS.ALERT_FLAG.ToString()));
             }
             return null;
         }

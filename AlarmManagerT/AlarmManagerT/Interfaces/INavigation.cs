@@ -9,6 +9,7 @@ namespace AlarmManagerT.Interfaces
         void navigateNotificationSettings();
         void navigateNotificationPolicyAccess();
         void navigateTelegramChat(int chatID);
+        void navigateShare(string message);
         void quitApplication();
     }
 }

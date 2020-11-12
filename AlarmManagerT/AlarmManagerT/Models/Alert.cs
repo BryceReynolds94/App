@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -23,6 +24,7 @@ namespace AlarmManagerT.Models
             hasPic = config.triggerGroup.hasImage;
         }
 
+        [JsonConstructor]
         public Alert(string title, string text, string configID, int chatID, bool hasPic)
         {
             this.title = title;

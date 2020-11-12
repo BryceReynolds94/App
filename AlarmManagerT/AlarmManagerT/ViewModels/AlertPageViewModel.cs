@@ -20,7 +20,7 @@ namespace AlarmManagerT.ViewModels
             }
 
             Cancel = new Command(() => RequestCancel.Invoke(this, null));
-            Confirm = new Command(() => RequestConfirm.Invoke(this, null)); //TODO: Possibly add groupID in EventArgs
+            Confirm = new Command(() => RequestConfirm.Invoke(this, null));
         }
 
         public EventHandler RequestCancel;
@@ -37,7 +37,7 @@ namespace AlarmManagerT.ViewModels
 
         private void setAlertGroupPic(string alertID)
         {
-            GroupPic = Data.profilePicSavePath(alertID);
+            GroupPic = DataService.profilePicSavePath(alertID);
             ShowCustomPic = true;
             OnPropertyChanged(nameof(ShowDefaultPic));
             OnPropertyChanged(nameof(ShowCustomPic));

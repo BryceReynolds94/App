@@ -136,7 +136,7 @@ namespace AlarmManagerT.ViewModels
             get {
                 if (alertConfig.triggerGroup.hasImage)
                 {
-                    return Data.profilePicSavePath(alertConfig.id);
+                    return DataService.profilePicSavePath(alertConfig.id);
                 }
                 else
                 {
