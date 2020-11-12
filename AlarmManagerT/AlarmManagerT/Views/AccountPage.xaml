@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:AlarmManagerT.Resources"
              Title="{Binding Title}"
              mc:Ignorable="d"
              x:Class="AlarmManagerT.Views.AccountPage">
@@ -20,8 +21,8 @@
                 <Label Text="{Binding ProfileName}" HorizontalOptions="Center" FontSize="Large" />
                 <Label Text="{Binding ProfilePhone}" HorizontalOptions="Center" FontSize="Large"/>
             </StackLayout>
-            <Button Text="logout" HorizontalOptions="Center" VerticalOptions="End" Command="{Binding LogoutUser}"/>
-            <Label Text="All configured alerts are removed on logout." HorizontalOptions="Center"/>
+            <Button Text="{x:Static resources:AppResources.AccountPage_LogoutBtn}" HorizontalOptions="Center" VerticalOptions="End" Command="{Binding LogoutUser}"/>
+            <Label Text="{x:Static resources:AppResources.AccountPage_Logout_Warning}" HorizontalOptions="Center"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

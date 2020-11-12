@@ -13,6 +13,8 @@ using Firebase.Messaging;
 using System.Drawing;
 using Android.Content;
 using System.Collections.Generic;
+using AlarmManagerT.Models;
+using AlarmManagerT.Services;
 
 namespace AlarmManagerT.Droid
 {
@@ -21,13 +23,6 @@ namespace AlarmManagerT.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            Bundle extras = Intent.Extras;
-            if (extras != null)
-            {
-                string sample = extras.ToString();
-                ICollection<string> set = extras.KeySet();
-            }
-
 
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
@@ -43,7 +38,7 @@ namespace AlarmManagerT.Droid
             FirebasePushNotificationManager.ProcessIntent(this, Intent); //Added to enable FirebasePushNotificationPlugin
             new AndroidNotifications().SetupNotificationChannels(); //TODO: Possibly RBF
 
-            LoadApplication(new App(Intent.HasExtra("alert")));
+            LoadApplication(new App(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()), GetAlertFromIntent(Intent)));
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -51,6 +46,14 @@ namespace AlarmManagerT.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        private Alert GetAlertFromIntent(Intent intent)
+        {
+            if (intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString())){
+                return Data.deserialiseObject<Alert>(intent.GetStringExtra(Alert.EXTRAS.ALERT_FLAG.ToString()));
+            }
+            return null;
         }
 
 

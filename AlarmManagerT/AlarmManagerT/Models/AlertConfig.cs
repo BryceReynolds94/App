@@ -23,11 +23,6 @@ namespace AlarmManagerT.Models
         public ActiveTimeConfig activeTimeConfig = new ActiveTimeConfig();
         public bool timeRestriction = false;
 
-        public bool actionSound = true;
-        public string actionRingtone;
-        public bool actionVibrate = true;
-        public bool actionLight = true;
-
         public DateTime lastTriggered = DateTime.MinValue;
 
         public int lastMessageID = 0;

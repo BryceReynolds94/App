@@ -1,4 +1,5 @@
 ﻿using AlarmManagerT.Models;
+using AlarmManagerT.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +16,7 @@ namespace AlarmManagerT.ViewModels
         public ConfigureKeywordPageViewModel(AlertConfig alertConfig)
         {
             this.alertConfig = alertConfig;
-            Title = "Alert Configuration";
+            Title = AppResources.ConfigureKeywordPage_Title;
             NextClickedCommand = new Command(() => Next.Invoke(this, null));
 
         }

@@ -1,4 +1,5 @@
-﻿using AlarmManagerT.Services;
+﻿using AlarmManagerT.Resources;
+using AlarmManagerT.Services;
 using AlarmManagerT.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -22,8 +23,8 @@ namespace AlarmManagerT.Views
         {
             InitializeComponent();
 
-            string userName = Data.getConfigValue(Data.DATA_KEYS.USER_NAME, "Username");
-            string userPhone = Data.getConfigValue(Data.DATA_KEYS.USER_PHONE, "Phone Number");
+            string userName = Data.getConfigValue(Data.DATA_KEYS.USER_NAME, AppResources.AccountPage_UserName_Default);
+            string userPhone = Data.getConfigValue(Data.DATA_KEYS.USER_PHONE, AppResources.AccountPage_UserPhone_Default);
 
             BindingContext = viewModel = new AccountPageViewModel(userName, userPhone);
             viewModel.RequestLogout += logoutUser;
@@ -57,8 +58,8 @@ namespace AlarmManagerT.Views
             }
             viewModel.updatePhoto(hasPhoto, photoLocation);
 
-            string userName = Data.getConfigValue(Data.DATA_KEYS.USER_NAME, "Username");
-            string userPhone = Data.getConfigValue(Data.DATA_KEYS.USER_PHONE, "Phone Number");
+            string userName = Data.getConfigValue(Data.DATA_KEYS.USER_NAME, AppResources.AccountPage_UserName_Default);
+            string userPhone = Data.getConfigValue(Data.DATA_KEYS.USER_PHONE, AppResources.AccountPage_UserPhone_Default);
 
             viewModel.updateInfo(userName, userPhone);
         }

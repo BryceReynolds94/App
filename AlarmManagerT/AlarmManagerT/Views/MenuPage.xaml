@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:AlarmManagerT.Resources"
              mc:Ignorable="d"
              x:Class="AlarmManagerT.Views.MenuPage"
              Title="Menu">
@@ -27,11 +28,17 @@
         <BoxView HeightRequest="1" BackgroundColor="Blue"/>
         <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
             <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Images.icon_share.svg"/>
-            <Label Text="Share" FontSize="Large" VerticalOptions="Center"/>
+            <Label Text="{x:Static resources:AppResources.MenuPage_Action_Share}" FontSize="Large" VerticalOptions="Center"/>
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding Share}"/>
+            </StackLayout.GestureRecognizers>
         </StackLayout>
         <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
             <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Images.icon_about.svg"/>
-            <Label Text="About" FontSize="Large" VerticalOptions="Center"/>
+            <Label Text="{x:Static resources:AppResources.MenuPage_Action_About}" FontSize="Large" VerticalOptions="Center"/>
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding About}"/>
+            </StackLayout.GestureRecognizers>
         </StackLayout>
         <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
             <ffimageloadingsvg:SvgCachedImage Margin="5"/>
@@ -42,7 +49,7 @@
         </StackLayout>
         <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
             <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Images.icon_alert.svg"/>
-            <Label Text="Notification Settings" FontSize="Large" VerticalOptions="Center"/>
+            <Label Text="{x:Static resources:AppResources.MenuPage_Action_NotificationSettings}" FontSize="Large" VerticalOptions="Center"/>
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding NotificationSettings}"/>
             </StackLayout.GestureRecognizers>

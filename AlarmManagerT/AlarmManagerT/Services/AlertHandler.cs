@@ -1,4 +1,5 @@
-﻿using AlarmManagerT.Models;
+﻿using AlarmManagerT.Interfaces;
+using AlarmManagerT.Models;
 using Plugin.FirebasePushNotification;
 using System;
 using System.Collections;
@@ -144,9 +145,10 @@ namespace AlarmManagerT.Services
 
         private void alertMessage(AlertConfig config, TLMessage message)
         {
-            //TODO: This
-            int i = 1 + 1;
-            return;
+            INotifications notifications = DependencyService.Get<INotifications>();
+            notifications.showAlertNotification(new Alert(message.Message, config));
+
+            return; //TODO: RBF
         }
 
     }

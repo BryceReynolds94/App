@@ -1,4 +1,5 @@
 ﻿using AlarmManagerT.Models;
+using AlarmManagerT.Services;
 using AlarmManagerT.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,16 @@ namespace AlarmManagerT.Views
 
         public async void keywordConfigureCompleted(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ConfigureActionPage(alertConfig));
+            if (alertConfig.triggerGroup.hasImage)
+            {
+                Data.saveProfilePic(alertConfig.id, alertConfig.triggerGroup.image);
+            }
+            alertConfig.triggerGroup.image = null; //clear because the image cannot be serialised on save
+            alertConfig.saveChanges();
+
+            MessagingCenter.Send(this, "AlertConfigSaved", alertConfig);
+
+            await Navigation.PopToRootAsync();
         }
 
 

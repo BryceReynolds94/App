@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlarmManagerT.Resources;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
@@ -14,7 +15,7 @@ namespace AlarmManagerT.ViewModels
 
         public LoginPhonePageViewModel()
         {
-            Title = "Login";
+            Title = AppResources.LoginPhonePage_Title;
             Next = new Command(() => RequestClientLogin.Invoke(this, PhoneNumber));
         }
 
@@ -38,9 +39,9 @@ namespace AlarmManagerT.ViewModels
                 switch (errorStatus)
                 {
                     case TStatus.INVALID_PHONE_NUMBER:
-                        return "The phone number is not associated to a telegram account or too many login attempts have been made. Check the phone number you entered.";
+                        return AppResources.LoginPhonePage_Error_InvalidPhoneNumber;
                     default:
-                        return "An unknown error occured. Try again later...";
+                        return AppResources.LoginPhonePage_Error_Default;
                 }
 
             }

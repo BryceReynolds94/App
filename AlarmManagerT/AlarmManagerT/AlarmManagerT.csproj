@@ -19,11 +19,14 @@
     <None Remove="Images\icon_alert_snooze.svg" />
     <None Remove="Images\icon_alert_snooze_inactive.svg" />
     <None Remove="Images\icon_alert_snooze_off.svg" />
+    <None Remove="Images\icon_clear.svg" />
+    <None Remove="Images\icon_confirm.svg" />
     <None Remove="Images\icon_delete.svg" />
     <None Remove="Images\icon_history.svg" />
     <None Remove="Images\icon_settings.svg" />
     <None Remove="Images\icon_share.svg" />
     <None Remove="Images\icon_trigger.svg" />
+    <None Remove="Images\launcher_icon.svg" />
     <None Remove="Images\user_default.svg" />
   </ItemGroup>
 
@@ -36,11 +39,14 @@
     <EmbeddedResource Include="Images\icon_alert_snooze.svg" />
     <EmbeddedResource Include="Images\icon_alert_snooze_inactive.svg" />
     <EmbeddedResource Include="Images\icon_alert_snooze_off.svg" />
+    <EmbeddedResource Include="Images\icon_clear.svg" />
+    <EmbeddedResource Include="Images\icon_confirm.svg" />
     <EmbeddedResource Include="Images\icon_delete.svg" />
     <EmbeddedResource Include="Images\icon_history.svg" />
     <EmbeddedResource Include="Images\icon_settings.svg" />
     <EmbeddedResource Include="Images\icon_share.svg" />
     <EmbeddedResource Include="Images\icon_trigger.svg" />
+    <EmbeddedResource Include="Images\launcher_icon.svg" />
     <EmbeddedResource Include="Images\user_default.svg" />
   </ItemGroup>
 
@@ -55,10 +61,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Views\AlertPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    <EmbeddedResource Update="Resources\AppResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\ConfigureActionPage.xaml">
+    <EmbeddedResource Update="Views\AlertPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ConfigureGroupPage.xaml">
@@ -79,6 +86,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Resources\AppResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Views\HomeStatusPage.xaml.cs">
       <DependentUpon>HomeStatusPage.xaml</DependentUpon>
     </Compile>

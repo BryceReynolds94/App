@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlarmManagerT.Resources;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace AlarmManagerT.ViewModels
 
         public LoginCodePageViewModel()
         {
-            Title = "Login";
+            Title = AppResources.LoginCodePage_Title;
             Next = new Command(() => RequestAuthenticate.Invoke(this, CodeText));
         }
 
@@ -38,7 +39,7 @@ namespace AlarmManagerT.ViewModels
                 switch (errorStatus)
                 {
                     default:
-                        return "An unknown error occured. Try again later...";
+                        return AppResources.LoginCodePage_Error_Default;
                 }
 
             }

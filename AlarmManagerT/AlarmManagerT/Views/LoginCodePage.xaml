@@ -3,18 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:resources="clr-namespace:AlarmManagerT.Resources"
              mc:Ignorable="d"
              Title="{Binding Title}"
              x:Class="AlarmManagerT.Views.LoginCodePage">
     <ContentPage.Content>
         <StackLayout Padding="10">
             <StackLayout VerticalOptions="CenterAndExpand">
-                <Label Text="Authenticate using the confirmation code sent to your phone number"
+                <Label Text="{x:Static resources:AppResources.LoginCodePage_Prompt}"
                 HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="30,0"/>
-                <Entry Placeholder="code" Text="{Binding CodeText}" Keyboard="Numeric" WidthRequest="100" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                <Entry Placeholder="{x:Static resources:AppResources.LoginCodePage_Code_Placeholder}" Text="{Binding CodeText}" Keyboard="Numeric" WidthRequest="100" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
                 <Label Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="#F44336" TextColor="White" Padding="10" Margin="30,0"/>
             </StackLayout>
-            <Button Text="Confirm" HorizontalOptions="End" Command="{Binding Next}"/>
+            <Button Text="{x:Static resources:AppResources.LoginCodePage_NextBtn}" HorizontalOptions="End" Command="{Binding Next}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

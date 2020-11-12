@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountPage_LogoutBtn" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="AccountPage_Logout_Warning" xml:space="preserve">
+    <value>All configured alerts are removed on logout.</value>
+  </data>
+  <data name="AccountPage_Title" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="AccountPage_UserName_Default" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="AccountPage_UserPhone_Default" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="AlertStatus_Status_Deactivated" xml:space="preserve">
+    <value>Deactivated untill {0:dd.MM.yy HH:mm}</value>
+  </data>
+  <data name="AlertStatus_Status_Default" xml:space="preserve">
+    <value>Event was not triggered yet</value>
+  </data>
+  <data name="ConfigureGroupPage_Title" xml:space="preserve">
+    <value>Select Chat</value>
+  </data>
+  <data name="ConfigureKeywordPage_Keyword_Placeholder" xml:space="preserve">
+    <value>Keyword</value>
+  </data>
+  <data name="ConfigureKeywordPage_NextBtn" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_Any" xml:space="preserve">
+    <value>Allways</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_Day_Friday" xml:space="preserve">
+    <value>Fr</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_Day_Monday" xml:space="preserve">
+    <value>Mo</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_Day_Saturday" xml:space="preserve">
+    <value>Sa</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_Day_Sunday" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_Day_Thursday" xml:space="preserve">
+    <value>Th</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_Day_Tuesday" xml:space="preserve">
+    <value>Tu</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_Day_Wednesday" xml:space="preserve">
+    <value>We</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_Set" xml:space="preserve">
+    <value>Configure</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_Title" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="ConfigureKeywordPage_Title" xml:space="preserve">
+    <value>Alert Configuration</value>
+  </data>
+  <data name="ConfigureKeywordPage_Trigger_Any" xml:space="preserve">
+    <value>Any message</value>
+  </data>
+  <data name="ConfigureKeywordPage_Trigger_Keyword" xml:space="preserve">
+    <value>Messages with a keyword</value>
+  </data>
+  <data name="ConfigureKeywordPage_Trigger_RegEx" xml:space="preserve">
+    <value>Use Regular Expression</value>
+  </data>
+  <data name="ConfigureKeywordPage_Trigger_Server" xml:space="preserve">
+    <value>Messages from AlarmManagerT-Server</value>
+  </data>
+  <data name="ConfigureKeywordPage_Trigger_Title" xml:space="preserve">
+    <value>Trigger</value>
+  </data>
+  <data name="HomeStatusPage_Error_NoInternet" xml:space="preserve">
+    <value>No Internet Connection</value>
+  </data>
+  <data name="HomeStatusPage_Error_NoTelegram" xml:space="preserve">
+    <value>Not Connected to Telegram</value>
+  </data>
+  <data name="HomeStatusPage_IndividualSnooze_Prompt" xml:space="preserve">
+    <value>Deactivate for</value>
+  </data>
+  <data name="HomeStatusPage_Snooze_Cancel" xml:space="preserve">
+    <value>cancel</value>
+  </data>
+  <data name="HomeStatusPage_Snooze_Day" xml:space="preserve">
+    <value>1 Day</value>
+  </data>
+  <data name="HomeStatusPage_Snooze_Days" xml:space="preserve">
+    <value>{0} Days</value>
+  </data>
+  <data name="HomeStatusPage_Snooze_Hours" xml:space="preserve">
+    <value>{0} Hours</value>
+  </data>
+  <data name="HomeStatusPage_Snooze_Month" xml:space="preserve">
+    <value>1 Month</value>
+  </data>
+  <data name="HomeStatusPage_Snooze_Prompt" xml:space="preserve">
+    <value>Deactivate all alerts for</value>
+  </data>
+  <data name="HomeStatusPage_Snooze_Week" xml:space="preserve">
+    <value>1 Week</value>
+  </data>
+  <data name="HomeStatusPage_Snooze_Weeks" xml:space="preserve">
+    <value>{0} Weeks</value>
+  </data>
+  <data name="HomeStatusPage_Title" xml:space="preserve">
+    <value>AlarmManagerT</value>
+  </data>
+  <data name="HomeStatusPage_Warning_Deactivated" xml:space="preserve">
+    <value>All alerts deactivated</value>
+  </data>
+  <data name="HomeStatusPage_Warning_Snooze" xml:space="preserve">
+    <value>All alerts deactivated untill {0:dd.MM.yy HH:mm}</value>
+  </data>
+  <data name="LoginCodePage_Code_Placeholder" xml:space="preserve">
+    <value>code</value>
+  </data>
+  <data name="LoginCodePage_Error_Default" xml:space="preserve">
+    <value>An unknown error occured. Try again later...</value>
+  </data>
+  <data name="LoginCodePage_NextBtn" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="LoginCodePage_Prompt" xml:space="preserve">
+    <value>Authenticate using the confirmation code sent to your phone number</value>
+  </data>
+  <data name="LoginCodePage_Title" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="LoginPhonePage_Error_Default" xml:space="preserve">
+    <value>An unknown error occured. Try again later...</value>
+  </data>
+  <data name="LoginPhonePage_Error_InvalidPhoneNumber" xml:space="preserve">
+    <value>The phone number is not associated to a telegram account or too many login attempts have been made. Check the phone number you entered.</value>
+  </data>
+  <data name="LoginPhonePage_NextBtn" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="LoginPhonePage_PhoneNumber_Placeholder" xml:space="preserve">
+    <value>+49</value>
+  </data>
+  <data name="LoginPhonePage_Prompt" xml:space="preserve">
+    <value>Enter your phone number to log into your Telegram account:</value>
+  </data>
+  <data name="LoginPhonePage_Title" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="MenuPage_Action_About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="MenuPage_Action_NotificationSettings" xml:space="preserve">
+    <value>Notification Settings</value>
+  </data>
+  <data name="MenuPage_Action_Share" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="MenuPage_UserName_Default" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="MenuPage_UserPhone_Default" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+</root>

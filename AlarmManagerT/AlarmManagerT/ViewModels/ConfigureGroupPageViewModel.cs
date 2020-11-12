@@ -11,6 +11,7 @@ using AlarmManagerT.Services;
 using TeleSharp.TL;
 using TeleSharp.TL.Upload;
 using System.IO;
+using AlarmManagerT.Resources;
 
 namespace AlarmManagerT.ViewModels
 {
@@ -25,7 +26,7 @@ namespace AlarmManagerT.ViewModels
         public ConfigureGroupPageViewModel()
         {
 
-            Title = "Select Chat";
+            Title = AppResources.ConfigureGroupPage_Title;
             groupList = new ObservableCollection<GroupViewModel>();
             
             LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());

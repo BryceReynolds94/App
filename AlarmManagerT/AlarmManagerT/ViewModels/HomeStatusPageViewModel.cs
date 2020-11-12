@@ -11,6 +11,7 @@ using AlarmManagerT.Services;
 using TeleSharp.TL.Upload;
 using System.Collections.Generic;
 using System.Data;
+using AlarmManagerT.Resources;
 
 namespace AlarmManagerT.ViewModels
 {
@@ -42,7 +43,7 @@ namespace AlarmManagerT.ViewModels
         public delegate void UpdateSnoozeEventHandler(object sender, DateTime snoozeTime);
 
         public HomeStatusPageViewModel(Collection<AlertConfig> rawAlertList){
-            Title = "AlarmManagerT";
+            Title = AppResources.HomeStatusPage_Title;
             fillAlertList(rawAlertList);
 
             ToggleAllActive = new Command(() => updateAllActiveState());
@@ -131,7 +132,7 @@ namespace AlarmManagerT.ViewModels
             }
             else
             {
-                DateTime snoozeTime = await RequestSnoozeTime.Invoke(this, "Deactivate all alerts for");
+                DateTime snoozeTime = await RequestSnoozeTime.Invoke(this, AppResources.HomeStatusPage_Snooze_Prompt);
                 if (snoozeTime > DateTime.Now)
                 {
                     warningState = WARNING_ACTION.SNOOZE_SET;
@@ -174,9 +175,9 @@ namespace AlarmManagerT.ViewModels
                 switch (errorState)
                 {
                     case ERROR_ACTION.NO_INTERNET:
-                        return "No Internet Connection";
+                        return AppResources.HomeStatusPage_Error_NoInternet;
                     case ERROR_ACTION.NO_TELEGRAM:
-                        return "Not Connected to Telegram";
+                        return AppResources.HomeStatusPage_Error_NoTelegram;
                     default:
                         return "";
 
@@ -190,9 +191,9 @@ namespace AlarmManagerT.ViewModels
                 {
                     case WARNING_ACTION.SNOOZE_SET:
                         DateTime snoozeTime = new DateTime(Data.getConfigValue(Data.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.Now.Ticks));
-                        return "All alerts deactivated untill " + snoozeTime.ToString("dd.MM.yy HH:mm");
+                        return string.Format(AppResources.HomeStatusPage_Warning_Snooze, snoozeTime); //TODO: Check if format string works
                     case WARNING_ACTION.DEACTIVATED:
-                        return "All alerts deactivated";
+                        return AppResources.HomeStatusPage_Warning_Deactivated;
                     default:
                         return "";
 

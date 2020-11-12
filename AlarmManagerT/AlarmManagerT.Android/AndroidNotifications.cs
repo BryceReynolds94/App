@@ -13,6 +13,8 @@ using Android.Widget;
 using Android.Support.V4.App; //needed for compat notifications https://docs.microsoft.com/en-us/xamarin/android/app-fundamentals/notifications/local-notifications-walkthrough
 using Android.Media;
 using System.Drawing;
+using AlarmManagerT.Models;
+using AlarmManagerT.Services;
 
 [assembly: Xamarin.Forms.Dependency(typeof(AlarmManagerT.Droid.AndroidNotifications))] //register for dependency service as platform-specific code
 namespace AlarmManagerT.Droid
@@ -23,23 +25,20 @@ namespace AlarmManagerT.Droid
         public static readonly string STANDARD_CHANNEL_ID = "Standard Notifications";
 
 
-        public void showAlertNotification(string title, string text){ //TODO: Include Logo for message
+        public void showAlertNotification(Alert alert){ //TODO: Include Logo for message
             prepareAlert();
 
             Intent intent = new Intent(Application.Context, typeof(MainActivity))
                 .SetFlags(ActivityFlags.NewTask | ActivityFlags.MultipleTask | ActivityFlags.ExcludeFromRecents)
-                .PutExtra("alert", "true") //TODO: boolean extras are not received - find out why
-                .PutExtra("title", title) //TODO: Replace with constants (Data?)
-                .PutExtra("text", text)
-                .PutExtra("id", "mockid"); //TODO: RBF
+                .PutExtra(Alert.EXTRAS.ALERT_FLAG.ToString(), Data.serialiseObject(alert)); //TODO: Check this
 
             PendingIntent fullScreenIntent = PendingIntent.GetActivity(Application.Context, 0, intent, 0);
 
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(Application.Context, ALERT_CHANNEL_ID)
-                .SetContentTitle(title)
+                .SetContentTitle(alert.title)
                 .SetSmallIcon(Resource.Drawable.xamarin_logo) //TODO: Adjust Logo
-                .SetContentText(text)
+                .SetContentText(alert.text)
                 .SetPriority(NotificationCompat.PriorityHigh)
                 .SetCategory(NotificationCompat.CategoryMessage)
                 .SetFullScreenIntent(fullScreenIntent, true);

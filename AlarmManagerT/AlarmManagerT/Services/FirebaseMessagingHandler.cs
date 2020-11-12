@@ -1,4 +1,5 @@
 ﻿using AlarmManagerT.Interfaces;
+using AlarmManagerT.Models;
 using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace AlarmManagerT.Services
                     handler.checkForNewMessages(client);
 
                     INotifications notifications = DependencyService.Get<INotifications>();
-                    notifications.showAlertNotification("TESTPOINT Notification", "154684625"); //TODO: RBF
+                    notifications.showAlertNotification(Alert.getTestSample("154684625")); //TODO: RBF
                 };
 
 
@@ -44,7 +45,7 @@ namespace AlarmManagerT.Services
             handler.checkForNewMessages();
 
             INotifications notifications = DependencyService.Get<INotifications>();
-            notifications.showAlertNotification("TESTPOINT Notification", "23456448456432"); //TODO: RBF
+            notifications.showAlertNotification(Alert.getTestSample("23456448456432")); //TODO: RBF
         }
 
     }

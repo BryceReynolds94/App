@@ -10,7 +10,7 @@ using Xamarin.Forms;
 
 namespace AlarmManagerT.Services
 {
-    class Data
+    public class Data
     {
 
         private static string saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -119,12 +119,12 @@ namespace AlarmManagerT.Services
             Application.Current.Properties[key.ToString()] = value;
         }
 
-        private static string serialiseObject(object obj)
+        public static string serialiseObject(object obj)
         {
             return JsonConvert.SerializeObject(obj);
         }
 
-        private static T deserialiseObject<T>(string str)
+        public static T deserialiseObject<T>(string str)
         {
             return JsonConvert.DeserializeObject<T>(str);
         }

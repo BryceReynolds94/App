@@ -1,4 +1,5 @@
 ﻿using AlarmManagerT.Models;
+using AlarmManagerT.Resources;
 using AlarmManagerT.Services;
 using System;
 using System.Collections.Generic;
@@ -83,7 +84,7 @@ namespace AlarmManagerT.ViewModels
             get {
                 if (alertConfig.snoozeActive)
                 {
-                    return "Deactivated untill " + alertConfig.snoozeTime.ToString("dd.MM.yy HH:mm");
+                    return string.Format(AppResources.AlertStatus_Status_Deactivated, alertConfig.snoozeTime); //TODO: Check if format string works
                 }
                 else if (alertConfig.lastTriggered > DateTime.MinValue)
                 {
@@ -91,7 +92,7 @@ namespace AlarmManagerT.ViewModels
                 }
                 else
                 {
-                    return "Event was not triggered yet";
+                    return AppResources.AlertStatus_Status_Default;
                 }
             }
         }

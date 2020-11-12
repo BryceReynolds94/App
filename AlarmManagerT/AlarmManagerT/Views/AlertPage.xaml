@@ -3,16 +3,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              mc:Ignorable="d"
              x:Class="AlarmManagerT.Views.AlertPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            <Label Text="Alert Message"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout BackgroundColor="#ff1d4999" Padding="20">
+            <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Images.launcher_icon.svg"/>
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Frame Padding="0" CornerRadius="20" IsClippedToBounds="True">
+                    <Grid>
+                        <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Images.group_default.svg"/>
+                        <Image IsVisible="{Binding ShowCustomPic}" Source="{Binding GroupPic}"/>
+                    </Grid>
+                </Frame>
+
+                <Label Text="{Binding AlertTitle}"  Grid.Column="1" TextColor="White" FontSize="Title" Margin="10,0,0,0"/>
+                <Label Text="{Binding AlertText}" TextColor="White" Grid.Column="1" Grid.Row="1" Margin="10,0,0,0"/>
+            </Grid>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
+                <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Images.icon_clear.svg" HeightRequest="50" Margin="50,0">
+                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Cancel}"/>
+                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                </ffimageloadingsvg:SvgCachedImage>
+                <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Images.icon_confirm.svg" HeightRequest="50" Margin="50,0">
+                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Confirm}"/>
+                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                </ffimageloadingsvg:SvgCachedImage>
+            </StackLayout>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

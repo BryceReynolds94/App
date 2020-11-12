@@ -26,6 +26,8 @@ namespace AlarmManagerT.Views
             BindingContext = viewModel = new MenuPageViewModel();
             viewModel.RequestNavigation += requestNavigation;
             viewModel.RequestNotificationSettings += requestNotificationSettings;
+            viewModel.RequestAbout += requestAbout;
+            viewModel.RequestShare += requestShare;
 
         }
 
@@ -38,6 +40,16 @@ namespace AlarmManagerT.Views
         {
             Interfaces.INavigation navigationInterface = DependencyService.Get<Interfaces.INavigation>();
             navigationInterface.navigateNotificationPolicyAccess();
+        }
+
+        private void requestAbout(object sender, EventArgs _)
+        {
+            //TODO: Implement About Page
+        }
+
+        private void requestShare(object sender, EventArgs _)
+        {
+            //TODO: Implement Share Intent
         }
     }
 }

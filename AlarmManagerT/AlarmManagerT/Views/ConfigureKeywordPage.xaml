@@ -3,16 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:resources="clr-namespace:AlarmManagerT.Resources"
              mc:Ignorable="d"
              Title="{Binding Title}"
              x:Class="AlarmManagerT.Views.ConfigureKeywordPage">
     <ContentPage.Content>
         <StackLayout Padding="10">
-            <Label Text="Trigger" VerticalOptions="Center"  />
+            <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Title}" VerticalOptions="Center"  />
 
-            <RadioButton Text="Any message" IsChecked="{Binding TriggerTypeAny}" GroupName="Trigger" />
-            <RadioButton Text="Messages from AlarmManagerT-Server" IsChecked="{Binding TriggerTypeServer}" GroupName="Trigger"/>
-            <RadioButton x:Name="BtnKeyword" Text="Messages with a keyword" IsChecked="{Binding TriggerTypeKeyword}" GroupName="Trigger"/>
+            <RadioButton Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Any}" IsChecked="{Binding TriggerTypeAny}" GroupName="Trigger" />
+            <RadioButton Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Server}" IsChecked="{Binding TriggerTypeServer}" GroupName="Trigger"/>
+            <RadioButton x:Name="BtnKeyword" Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Keyword}" IsChecked="{Binding TriggerTypeKeyword}" GroupName="Trigger"/>
 
             <Grid IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}" VerticalOptions="Start" Padding="20,0">
                 <Grid.RowDefinitions>
@@ -24,15 +25,15 @@
 					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
 
-                <Label Text="Use Regular Expression" Grid.Row="1" HorizontalOptions="End" VerticalOptions="Center"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_RegEx}" Grid.Row="1" HorizontalOptions="End" VerticalOptions="Center"/>
                 <Switch IsToggled="{Binding IsRegex}" Grid.Column="1" Grid.Row="1"/>
-                <Entry Text="{Binding KeywordText}"  Placeholder="Keyword"  Grid.ColumnSpan="2"/>
+                <Entry Text="{Binding KeywordText}"  Placeholder="{x:Static resources:AppResources.ConfigureKeywordPage_Keyword_Placeholder}"  Grid.ColumnSpan="2"/>
                 
             </Grid>
 
-            <Label Text="Time" VerticalOptions="Center"/>
-            <RadioButton Text="Allways" IsChecked="{Binding TimeTypeAny}" GroupName="Time"/>
-            <RadioButton x:Name="BtnTimeSet" Text="Configure" IsChecked="{Binding TimeTypeSet}" GroupName="Time"/>
+            <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Title}" VerticalOptions="Center"/>
+            <RadioButton Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Any}" IsChecked="{Binding TimeTypeAny}" GroupName="Time"/>
+            <RadioButton x:Name="BtnTimeSet" Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Set}" IsChecked="{Binding TimeTypeSet}" GroupName="Time"/>
 
             <Grid Padding="20,0" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}">
                 <Grid.RowDefinitions>
@@ -50,19 +51,19 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Text="Mo" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Monday}" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
                 <CheckBox Grid.Row="1" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding MondayActive}"/>
-                <Label Text="Tu" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Tuesday}" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
                 <CheckBox Grid.Row="1" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding TuesdayActive}"/>
-                <Label Text="We" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Wednesday}" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
                 <CheckBox Grid.Row="1" Grid.Column="2" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding WednesdayActive}"/>
-                <Label Text="Th" Grid.Column="3" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Thursday}" Grid.Column="3" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
                 <CheckBox Grid.Row="1" Grid.Column="3" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding ThursdayActive}"/>
-                <Label Text="Fr" Grid.Column="4" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Friday}" Grid.Column="4" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
                 <CheckBox Grid.Row="1" Grid.Column="4" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding FridayActive}"/>
-                <Label Text="Sa" Grid.Column="5" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Saturday}" Grid.Column="5" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
                 <CheckBox Grid.Row="1" Grid.Column="5" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding SaturdayActive}"/>
-                <Label Text="Su" Grid.Column="6" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Sunday}" Grid.Column="6" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
                 <CheckBox Grid.Row="1" Grid.Column="6" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding SundayActive}"/>
 
                 <TimePicker Grid.Row="2" Grid.ColumnSpan="2" HorizontalOptions="Start" />
@@ -70,7 +71,7 @@
             </Grid>
 
 
-            <Button Text="Next" HorizontalOptions="End" Command="{Binding NextClickedCommand}"/>
+            <Button Text="{x:Static resources:AppResources.ConfigureKeywordPage_NextBtn}" HorizontalOptions="End" Command="{Binding NextClickedCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlarmManagerT.Resources;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using TeleSharp.TL;
@@ -12,7 +13,7 @@ namespace AlarmManagerT.ViewModels
 
         public AccountPageViewModel(string userName, string userPhone)
         {
-            Title = "Account";
+            Title = AppResources.AccountPage_Title;
             updateInfo(userName, userPhone);
 
             LogoutUser = new Command(() => RequestLogout.Invoke(this, null));

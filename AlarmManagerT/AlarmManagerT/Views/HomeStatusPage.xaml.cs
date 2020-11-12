@@ -15,6 +15,7 @@ using FFImageLoading.Svg.Forms;
 using System.Xml;
 using System.Collections.ObjectModel;
 using Plugin.FirebasePushNotification;
+using AlarmManagerT.Resources;
 
 namespace AlarmManagerT.Views
 {
@@ -48,7 +49,7 @@ namespace AlarmManagerT.Views
             viewModel.RequestRefresh += refreshClient;
                 
 
-            MessagingCenter.Subscribe<ConfigureActionPage, AlertConfig>(this, "AlertConfigSaved", (obj, alertConfig) => alertConfigSaved(alertConfig));
+            MessagingCenter.Subscribe<ConfigureKeywordPage, AlertConfig>(this, "AlertConfigSaved", (obj, alertConfig) => alertConfigSaved(alertConfig));
             
             MessagingCenter.Subscribe<AlertStatusViewModel, AlertConfig>(this, "EditAlertConfig", (obj, alertConfig) => editAlertConfig(alertConfig));
             MessagingCenter.Subscribe<AlertStatusViewModel, AlertConfig>(this, "DeleteAlertConfig", (obj, alertConfig) => deleteAlertConfig(alertConfig));
@@ -145,22 +146,22 @@ namespace AlarmManagerT.Views
 
         private async void snoozeTimeRequest(object sender, Action<DateTime> callback)
         {
-            DateTime result = await getSnoozeTime(sender, "Deactivate for");
+            DateTime result = await getSnoozeTime(sender, AppResources.HomeStatusPage_IndividualSnooze_Prompt);
             callback(result);
         }
 
         private async Task<DateTime> getSnoozeTime(object sender, string title)
         {
-            string cancelText = "cancel";
+            string cancelText = AppResources.HomeStatusPage_Snooze_Cancel;
             Dictionary<string, TimeSpan> timeDict = new Dictionary<string, TimeSpan>();
-            timeDict.Add("3 Hours", new TimeSpan(3, 0, 0));
-            timeDict.Add("12 Hours", new TimeSpan(12, 0, 0));
-            timeDict.Add("1 Day", new TimeSpan(1, 0, 0, 0));
-            timeDict.Add("2 Days", new TimeSpan(2, 0, 0, 0));
-            timeDict.Add("3 Days", new TimeSpan(3, 0, 0, 0));
-            timeDict.Add("1 Week", new TimeSpan(7, 0, 0, 0));
-            timeDict.Add("2 Weeks", new TimeSpan(14, 0, 0, 0));
-            timeDict.Add("1 Month", new TimeSpan(30, 0, 0, 0));
+            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Hours, 3), new TimeSpan(3, 0, 0)); //TODO: Check format strings work
+            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Hours, 12), new TimeSpan(12, 0, 0));
+            timeDict.Add(AppResources.HomeStatusPage_Snooze_Day, new TimeSpan(1, 0, 0, 0));
+            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Days, 2), new TimeSpan(2, 0, 0, 0));
+            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Days, 3), new TimeSpan(3, 0, 0, 0));
+            timeDict.Add(AppResources.HomeStatusPage_Snooze_Week, new TimeSpan(7, 0, 0, 0));
+            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Weeks, 2), new TimeSpan(14, 0, 0, 0));
+            timeDict.Add(AppResources.HomeStatusPage_Snooze_Month, new TimeSpan(30, 0, 0, 0));
 
             string result = await DisplayActionSheet(title, cancelText, null, timeDict.Keys.ToArray());
 
