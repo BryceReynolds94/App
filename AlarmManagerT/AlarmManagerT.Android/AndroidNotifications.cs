@@ -35,7 +35,7 @@ namespace AlarmManagerT.Droid {
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(Application.Context, ALERT_CHANNEL_ID)
                 .SetContentTitle(alert.title)
-                .SetSmallIcon(Resource.Drawable.xamarin_logo) //TODO: Adjust Logo
+                .SetSmallIcon(Resource.Drawable.ic_launcher_foreground) //TODO: Adjust Logo
                 .SetContentText(alert.text)
                 .SetPriority(NotificationCompat.PriorityHigh)
                 .SetCategory(NotificationCompat.CategoryMessage)
@@ -71,7 +71,7 @@ namespace AlarmManagerT.Droid {
         public void showStandardNotification(string title, string text) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(Application.Context, STANDARD_CHANNEL_ID)
                 .SetContentTitle(title)
-                .SetSmallIcon(Resource.Drawable.xamarin_logo) //TODO: Adjust Logo
+                .SetSmallIcon(Resource.Drawable.ic_launcher_foreground) //TODO: Adjust Logo
                 .SetContentText(text)
                 .SetPriority(NotificationCompat.PriorityDefault);
 
