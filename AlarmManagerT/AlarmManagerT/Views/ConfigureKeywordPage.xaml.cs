@@ -1,4 +1,5 @@
-﻿using AlarmManagerT.Models;
+﻿using AlarmManagerT.Interfaces;
+using AlarmManagerT.Models;
 using AlarmManagerT.Services;
 using AlarmManagerT.ViewModels;
 using System;
@@ -23,6 +24,8 @@ namespace AlarmManagerT.Views
 
         private ConfigureKeywordPageViewModel viewModel;
 
+        public enum MESSAGING_KEYS { ALERT_CONFIG_SAVED};
+
         public ConfigureKeywordPage(AlertConfig alertConfig)
         {
             InitializeComponent();
@@ -42,7 +45,7 @@ namespace AlarmManagerT.Views
             alertConfig.triggerGroup.image = null; //clear because the image cannot be serialised on save
             alertConfig.saveChanges();
 
-            MessagingCenter.Send(this, "AlertConfigSaved", alertConfig);
+            MessagingCenter.Send(this, MESSAGING_KEYS.ALERT_CONFIG_SAVED.ToString(), alertConfig);
 
             await Navigation.PopToRootAsync();
         }

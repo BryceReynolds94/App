@@ -11,5 +11,8 @@ namespace AlarmManagerT.Interfaces
 
         void showStandardNotification(string title, string text);
 
+        void addNotificationChannel(AlertConfig config);
+        void removeNotificationChannel(AlertConfig config);
+
     }
 }

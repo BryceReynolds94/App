@@ -14,13 +14,15 @@ namespace AlarmManagerT.ViewModels
         public Command SnoozeAlert { get; set; }
         public Command EditAlert { get; set; }
         public Command DeleteAlert { get; set; }
+
+        public enum MESSAGING_KEYS { EDIT_ALERT_CONFIG, DELETE_ALERT_CONFIG, REQUEST_SNOOZE_TIME};
         
         public AlertStatusViewModel(AlertConfig alertConfig)
         {
             this.alertConfig = alertConfig;
 
-            EditAlert = new Command(() => MessagingCenter.Send(this, "EditAlertConfig", alertConfig));
-            DeleteAlert = new Command(() => MessagingCenter.Send(this, "DeleteAlertConfig", alertConfig));
+            EditAlert = new Command(() => MessagingCenter.Send(this, MESSAGING_KEYS.EDIT_ALERT_CONFIG.ToString(), alertConfig));
+            DeleteAlert = new Command(() => MessagingCenter.Send(this, MESSAGING_KEYS.DELETE_ALERT_CONFIG.ToString(), alertConfig));
             SnoozeAlert = new Command(() => setSnooze());
         }
 
@@ -42,7 +44,7 @@ namespace AlarmManagerT.ViewModels
                     }
                 });
 
-                MessagingCenter.Send(this, "RequestSnoozeTime", action);
+                MessagingCenter.Send(this, MESSAGING_KEYS.REQUEST_SNOOZE_TIME.ToString(), action);
             }
         }
 

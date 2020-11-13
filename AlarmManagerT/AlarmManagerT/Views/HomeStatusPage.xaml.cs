@@ -26,13 +26,13 @@ namespace AlarmManagerT.Views
     {
         HomeStatusPageViewModel viewModel;
 
-        private MyClient client;
+        private CommunicationService client;
 
         private Collection<AlertConfig> alertList;
 
         public delegate Task<DateTime> SnoozeTimeHandler(object sender, string title);
 
-        public HomeStatusPage(MyClient client)
+        public HomeStatusPage(CommunicationService client)
         {
             InitializeComponent();
             this.client = client;
@@ -49,11 +49,11 @@ namespace AlarmManagerT.Views
             viewModel.RequestRefresh += refreshClient;
                 
 
-            MessagingCenter.Subscribe<ConfigureKeywordPage, AlertConfig>(this, "AlertConfigSaved", (obj, alertConfig) => alertConfigSaved(alertConfig));
+            MessagingCenter.Subscribe<ConfigureKeywordPage, AlertConfig>(this, ConfigureKeywordPage.MESSAGING_KEYS.ALERT_CONFIG_SAVED.ToString(), (obj, alertConfig) => alertConfigSaved(alertConfig));
             
-            MessagingCenter.Subscribe<AlertStatusViewModel, AlertConfig>(this, "EditAlertConfig", (obj, alertConfig) => editAlertConfig(alertConfig));
-            MessagingCenter.Subscribe<AlertStatusViewModel, AlertConfig>(this, "DeleteAlertConfig", (obj, alertConfig) => deleteAlertConfig(alertConfig));
-            MessagingCenter.Subscribe<AlertStatusViewModel, Action<DateTime>>(this, "RequestSnoozeTime", (obj, callback) => snoozeTimeRequest(obj, callback));
+            MessagingCenter.Subscribe<AlertStatusViewModel, AlertConfig>(this, AlertStatusViewModel.MESSAGING_KEYS.EDIT_ALERT_CONFIG.ToString(), (obj, alertConfig) => editAlertConfig(alertConfig));
+            MessagingCenter.Subscribe<AlertStatusViewModel, AlertConfig>(this, AlertStatusViewModel.MESSAGING_KEYS.DELETE_ALERT_CONFIG.ToString(), (obj, alertConfig) => deleteAlertConfig(alertConfig));
+            MessagingCenter.Subscribe<AlertStatusViewModel, Action<DateTime>>(this, AlertStatusViewModel.MESSAGING_KEYS.REQUEST_SNOOZE_TIME.ToString(), (obj, callback) => snoozeTimeRequest(obj, callback));
         }
 
         protected override void OnAppearing()
@@ -79,14 +79,19 @@ namespace AlarmManagerT.Views
         {
             DataService.deleteAlertConfig(alertConfig);
             alertList.Remove(alertConfig);
+            
+            INotifications notifications = DependencyService.Get<INotifications>();
+            notifications.removeNotificationChannel(alertConfig);
+
+
             viewModel.fillAlertList(alertList);
 
         }
 
         private void updateClientErrorStatus(object sender, EventArgs eventArgs)
         {
-            MyClient.STATUS clientStatus = client.getClientStatus();
-            viewModel.setErrorState(clientStatus != MyClient.STATUS.OFFLINE, clientStatus == MyClient.STATUS.AUTHORISED);
+            CommunicationService.STATUS clientStatus = client.clientStatus;
+            viewModel.setErrorState(clientStatus != CommunicationService.STATUS.OFFLINE, clientStatus == CommunicationService.STATUS.AUTHORISED);
         }
 
         private async void login(object sender, EventArgs eventArgs)
@@ -96,8 +101,7 @@ namespace AlarmManagerT.Views
 
         private async void refreshClient(object sender, EventArgs eventArgs)
         {
-            //Retry connection
-            await client.connectClient();
+            await client.reloadConnection();
         }
 
         private async void addConfig(object sender, EventArgs eventArgs)
@@ -122,6 +126,9 @@ namespace AlarmManagerT.Views
 
         private void alertConfigSaved(AlertConfig alertConfig)
         {
+            INotifications notifications = DependencyService.Get<INotifications>(); //TODO: Check - does this work with updates
+            notifications.addNotificationChannel(alertConfig);
+
             if (!alertList.Contains(alertConfig))
             {
                 alertList.Add(alertConfig);

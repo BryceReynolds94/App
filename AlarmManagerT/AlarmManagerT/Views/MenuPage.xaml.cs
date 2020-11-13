@@ -28,6 +28,7 @@ namespace AlarmManagerT.Views
             viewModel.RequestNotificationSettings += requestNotificationSettings;
             viewModel.RequestAbout += requestAbout;
             viewModel.RequestShare += requestShare;
+            viewModel.RequestLogout += requestLogout;
 
         }
 
@@ -45,6 +46,10 @@ namespace AlarmManagerT.Views
         private void requestAbout(object sender, EventArgs _)
         {
             //TODO: Implement About Page
+        }
+
+        private void requestLogout(object sender, EventArgs _) {
+            //TODO: Implement Logout
         }
 
         private void requestShare(object sender, EventArgs _)

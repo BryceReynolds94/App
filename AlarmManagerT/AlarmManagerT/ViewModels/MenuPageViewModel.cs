@@ -15,6 +15,7 @@ namespace AlarmManagerT.ViewModels
         public Command About { get; set; }
         public Command Share { get; set; }
         public Command NotificationSettings { get; set; }
+        public Command Logout { get; set; }
 
         public MenuPageViewModel()
         {
@@ -24,8 +25,9 @@ namespace AlarmManagerT.ViewModels
             NotificationSettings = new Command(() => RequestNotificationSettings.Invoke(this, null));
             About = new Command(() => RequestAbout.Invoke(this, null));
             Share = new Command(() => RequestShare.Invoke(this, null));
+            Logout = new Command(() => RequestLogout.Invoke(this, null));
 
-            MessagingCenter.Subscribe<MyClient>(this, "UserDataChanged", (obj) => userDataChanged());
+            MessagingCenter.Subscribe<CommunicationService>(this, CommunicationService.MESSAGING_KEYS.USER_DATA_CHANGED.ToString(), (obj) => userDataChanged());
         }
 
         public NavigationEventHandler RequestNavigation;
@@ -34,6 +36,7 @@ namespace AlarmManagerT.ViewModels
         public EventHandler RequestNotificationSettings;
         public EventHandler RequestAbout;
         public EventHandler RequestShare;
+        public EventHandler RequestLogout;
 
         private void userDataChanged()
         {

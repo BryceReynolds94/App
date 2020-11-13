@@ -17,10 +17,10 @@ namespace AlarmManagerT.Views
     {
         //TODO: Implement next on keyboard confirm button
 
-        MyClient client;
+        CommunicationService client;
         LoginPhonePageViewModel viewModel;
 
-        public LoginPhonePage(MyClient client)
+        public LoginPhonePage(CommunicationService client)
         {
             InitializeComponent();
             this.client = client;

@@ -15,13 +15,13 @@ namespace AlarmManagerT.Views
     [DesignTimeVisible(false)]
     public partial class MainPage : MasterDetailPage
     {
-        public MyClient client;
+        public CommunicationService client;
         public MainPage()
         {
             InitializeComponent();
 
             MasterBehavior = MasterBehavior.Popover;
-            client = new MyClient();
+            client = new CommunicationService();
 
             Detail = new NavigationPage(new HomeStatusPage(client));
         }
@@ -40,13 +40,13 @@ namespace AlarmManagerT.Views
 
         private async Task requestAccountPageNavigation()
         {
-            MyClient.STATUS status = client.getClientStatus();
-            if (status == MyClient.STATUS.OFFLINE)
+            CommunicationService.STATUS status = client.clientStatus;
+            if (status == CommunicationService.STATUS.OFFLINE)
             {
                 //do nothing
                 return;
             }
-            else if (status == MyClient.STATUS.AUTHORISED)
+            else if (status == CommunicationService.STATUS.AUTHORISED)
             {
                 await Detail.Navigation.PushAsync(new AccountPage(client));
                 IsPresented = false;

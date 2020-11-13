@@ -44,7 +44,7 @@ namespace AlarmManagerT
             new MessagingService().SetupListeners(((MainPage)Current.MainPage).client);
         }
 
-        private void testPoint(MyClient client) //TODO: RBF
+        private void testPoint(CommunicationService client) //TODO: RBF
         {
             //client.subscribePushNotifications(CrossFirebasePushNotification.Current.Token); //TODO: RBF
 

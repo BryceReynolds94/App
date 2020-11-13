@@ -13,19 +13,16 @@ using TeleSharp.TL.Upload;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace AlarmManagerT.Views
-{
+namespace AlarmManagerT.Views {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ConfigureGroupPage : ContentPage
-    {
+    public partial class ConfigureGroupPage : ContentPage {
         ConfigureGroupPageViewModel viewModel;
 
         private AlertConfig alertConfig;
 
-        private MyClient client;
+        private CommunicationService client;
 
-        public ConfigureGroupPage(MyClient client, AlertConfig alertConfig)
-        {
+        public ConfigureGroupPage(CommunicationService client, AlertConfig alertConfig) {
             InitializeComponent();
 
             this.alertConfig = alertConfig;
@@ -37,54 +34,40 @@ namespace AlarmManagerT.Views
 
         }
 
-        private async void groupSelected(object sender, Group selectedGroup)
-        {
+        private async void groupSelected(object sender, Group selectedGroup) {
             alertConfig.triggerGroup = selectedGroup;
             await Navigation.PushAsync(new ConfigureKeywordPage(alertConfig));
         }
 
-        private async void refreshGroupList(object sender, Action completedCallback)
-        {
+        private async void refreshGroupList(object sender, Action completedCallback) {
             viewModel.clearGroupList();
 
-            try
-            {
+            TLVector<TLAbsChat> chatList = await client.getChatList();
 
-                TLVector<TLAbsChat> chatList = await client.getChatList();
+            foreach (TLChat chat in chatList) {
+                int id = chat.Id;
+                string name = chat.Title;
 
-                foreach (TLChat chat in chatList)
-                {
-                    int id = chat.Id;
-                    string name = chat.Title;
+                TLChatPhoto photo = chat.Photo as TLChatPhoto;
 
-                    TLChatPhoto photo = chat.Photo as TLChatPhoto;
+                MemoryStream inputStream = null;
+                if (photo != null) {
+                    TLFile file = await client.getProfilePic(photo.PhotoSmall as TLFileLocation);
+                    inputStream = new MemoryStream(file.Bytes);
 
-                    MemoryStream inputStream = null;
-                    if (photo != null)
-                    {
-                        TLFile file = await client.getProfilePic(photo.PhotoSmall as TLFileLocation);
-                        inputStream = new MemoryStream(file.Bytes);
-
-                    }
-                    Group addGroup = new Group(name, id);
-                    addGroup.image = inputStream;
-                    addGroup.hasImage = inputStream != null;
-
-                    viewModel.addGroupToList(addGroup);
                 }
+                Group addGroup = new Group(name, id);
+                addGroup.image = inputStream;
+                addGroup.hasImage = inputStream != null;
 
+                viewModel.addGroupToList(addGroup);
             }
-            catch (Exception ex)
-            {
-                //TODO: Handle exception
-                return;
-            }
+
             completedCallback();
         }
 
 
-        protected override void OnAppearing()
-        {
+        protected override void OnAppearing() {
             base.OnAppearing();
 
             if (viewModel.groupList.Count == 0)

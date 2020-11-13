@@ -15,7 +15,7 @@ namespace AlarmManagerT.Services {
     public class AlertService {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public AlertService(MyClient client) {
+        public AlertService(CommunicationService client) {
             checkNewMessages(client);
         }
 
@@ -24,9 +24,9 @@ namespace AlarmManagerT.Services {
                 return;
             }
 
-            MyClient client = new MyClient();
+            CommunicationService client = new CommunicationService();
             client.StatusChanged += (sender, args) => {
-                if (client.getClientStatus() == MyClient.STATUS.AUTHORISED) {
+                if (client.clientStatus == CommunicationService.STATUS.AUTHORISED) {
                     checkNewMessages(client);
                 }
             };
@@ -58,7 +58,7 @@ namespace AlarmManagerT.Services {
         }
 
 
-        private async void checkNewMessages(MyClient client) {
+        private async void checkNewMessages(CommunicationService client) {
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
             Collection<string> configIDs = DataService.getConfigList();
             foreach (string id in configIDs) {

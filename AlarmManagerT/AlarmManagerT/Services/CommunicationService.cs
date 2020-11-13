@@ -19,13 +19,24 @@ using TLSharp.Core;
 using Xamarin.Forms;
 using static AlarmManagerT.Services.ClientExceptions;
 
-namespace AlarmManagerT.Services
-{
-    public class MyClient
-    {
+namespace AlarmManagerT.Services {
+    public class CommunicationService {
+        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         private TelegramClient client;
         private TLUser user;
-        private STATUS clientStatus;
+
+        private STATUS status;
+        public STATUS clientStatus {
+            get {
+                return status;
+            }
+            private set {
+                status = value;
+                StatusChanged?.Invoke(this, null);
+                Logger.Info("Status of CommunicationService changed to " + value.ToString());
+            }
+        }
 
         private static readonly int API_ID = ***REMOVED***;
         private static readonly string API_HASH = "***REMOVED***";
@@ -36,102 +47,69 @@ namespace AlarmManagerT.Services
 
         public enum STATUS { NEW, OFFLINE, WAIT_PHONE, WAIT_CODE, AUTHORISED };
 
-        public MyClient()
-        {
-            //TODO: Implement reconnection
+        public enum MESSAGING_KEYS { USER_DATA_CHANGED};
+
+        public CommunicationService() {
             connectClient();
-
         }
 
-        public STATUS getClientStatus()
-        {
-            return clientStatus;
-        }
-
-        private void changeStatus(STATUS newStatus)
-        {
-            clientStatus = newStatus;
-
-            StatusChanged?.Invoke(this, null);
-        }
-
-        public event EventHandler StatusChanged;
-
-        public async Task<bool> connectClient()
-        {
-            try
-            {
-                client = new TelegramClient(API_ID, API_HASH, new MySessionStore(this));
-            }
-            catch
-            {
-                //TODO: Log that we have no internet
-                changeStatus(STATUS.OFFLINE);
-                return false;
-            }
-            changeStatus(STATUS.OFFLINE);
-
-            //TODO: Implement connection status control
-            await client.ConnectAsync();
-
-            changeStatus(STATUS.NEW);
-
-            if (client.IsUserAuthorized())
-            {
-                changeStatus(STATUS.AUTHORISED);
-                saveUserData(await getUser());
-
-                //TODO: Require some wait or retry here?
-
-                string token = await CrossFirebasePushNotification.Current.GetTokenAsync();
-                //await subscribePushNotifications(token); //TODO: Only do this on login?
-            }
-            else
-            {
-                changeStatus(STATUS.WAIT_PHONE);
+        public async Task<bool> reloadConnection() {
+            if(clientStatus == STATUS.OFFLINE || clientStatus == STATUS.NEW) {
+                return await connectClient();
             }
             return true;
         }
 
-        public async Task subscribePushNotifications(string token)
-        {
-            if (clientStatus != STATUS.AUTHORISED)
-            {
-                //TODO: handle this
-                return;
+        public event EventHandler StatusChanged;
+
+        private async Task<bool> connectClient() {
+            clientStatus = STATUS.OFFLINE;
+            try {
+                client = new TelegramClient(API_ID, API_HASH, new MySessionStore(this));
+            } catch (Exception e) {
+                Logger.Error(e, "Initialisation of TelegramClient failed");
+                return false;
             }
 
-            if (token.Length < 1)
-            {
-                //Token invalid
-                return;
+            await client.ConnectAsync();
+            clientStatus = STATUS.NEW;
+
+            if (client.IsUserAuthorized()) {
+                Logger.Debug("User is authorised allready.");
+                clientStatus = STATUS.AUTHORISED;
+                saveUserData(await getUser());
+
+                string token = await CrossFirebasePushNotification.Current.GetTokenAsync();
+                //await subscribePushNotifications(token); //TODO: Only do this on login?
+            } else {
+                Logger.Debug("User is not authorised. Awaiting login data.");
+                clientStatus = STATUS.WAIT_PHONE;
             }
-
-            TLRequestRegisterDevice request = new TLRequestRegisterDevice()
-            {
-                TokenType = 2, //2 = FCM, use  for APNs
-                Token = token //TODO: See wether we have to check this is valid
-            };
-
-            try
-            {
-                await client.SendRequestAsync<bool>(request);
-            }
-            catch (Exception e)
-            {
-                return;
-            }
-
-
-            return;
+            return true;
         }
 
-        public async Task<TStatus> requestCode(string phoneNumber)
-        {
-            if (clientStatus != STATUS.WAIT_PHONE)
-            {
-                //TODO: Handle Error - wrong status
-                Console.WriteLine("Wrong status");
+        public async Task subscribePushNotifications(string token) {
+            if (clientStatus != STATUS.AUTHORISED) {
+                Logger.Warn("Attempted to subscribe to FCM Messages without authorisation.");
+                return;
+            }
+
+            TLRequestRegisterDevice request = new TLRequestRegisterDevice() {
+                TokenType = 2, //2 = FCM, use  for APNs
+                Token = token
+            };
+
+            try {
+                await client.SendRequestAsync<bool>(request);
+            } catch (Exception e) {
+                Logger.Error(e, "Subscribing to push notifications failed");
+            }
+
+        }
+
+        public async Task<TStatus> requestCode(string phoneNumber) {
+            if (clientStatus != STATUS.WAIT_PHONE) {
+                Logger.Warn("Attempted to register phone number without appropriate client status. Current status: " + clientStatus.ToString());
                 return TStatus.WRONG_CLIENT_STATUS;
             }
 
@@ -140,28 +118,23 @@ namespace AlarmManagerT.Services
             //TODO: check if user is registered first
             //await client.IsPhoneRegisteredAsync(phoneNumber);
 
-            TLMethod requestCode = new TeleSharp.TL.Auth.TLRequestSendCode()
-            {
+            TLMethod requestCode = new TeleSharp.TL.Auth.TLRequestSendCode() {
                 PhoneNumber = clientPhoneNumber,
                 ApiId = API_ID,
                 ApiHash = API_HASH
             };
 
             TeleSharp.TL.Auth.TLSentCode code;
-            try
-            {
+            try {
                 code = await client.SendRequestAsync<TeleSharp.TL.Auth.TLSentCode>(requestCode);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
 
                 TException exception = getTException(e.Message);
-                switch (exception)
-                {
+                switch (exception) {
                     case TException.API_ID_INVALID:
                     case TException.API_ID_PUBLISHED_FLOOD:
-                        //TODO: Handle this fatal stuff
-                        break;
+                        Logger.Error(e, "Fatal exception while trying to authenticate user.");
+                        return TStatus.UNKNOWN;
                     case TException.NETWORK_MIGRATE_X:
                     case TException.PHONE_MIGRATE_X:
                         //TODO: Handle this. Should not really ever occur - test in debugging
@@ -170,6 +143,7 @@ namespace AlarmManagerT.Services
                     case TException.PHONE_NUMBER_FLOOD:
                     case TException.PHONE_NUMBER_INVALID:
                     case TException.PHONE_PASSWORD_FLOOD:
+                        Logger.Warn(e, "Authenticating user failed.");
                         return TStatus.INVALID_PHONE_NUMBER;
                     //TODO: Inform user that phone number is invalid/blocked
                     case TException.PHONE_PASSWORD_PROTECTED:
@@ -180,47 +154,39 @@ namespace AlarmManagerT.Services
                         //TODO: Handle relogin scenario
                         break;
                     default:
-                        //Some other fatal problem - warn and quit
-                        //TODO: Handle this
-                        break;
+                        Logger.Error(e, "Unknown exception while trying to authenticate user.");
+                        return TStatus.UNKNOWN;
                 }
-
                 return TStatus.UNKNOWN;
             }
             clientRequestCodeHash = code.PhoneCodeHash;
-            changeStatus(STATUS.WAIT_CODE);
+            clientStatus = STATUS.WAIT_CODE;
+
             return TStatus.OK;
         }
 
-        public async Task<TStatus> confirmCode(string code)
-        {
-            if (clientStatus != STATUS.WAIT_CODE)
-            {
-                //TODO: Handle error - wrong status
+        public async Task<TStatus> confirmCode(string code) {
+            if (clientStatus != STATUS.WAIT_CODE) {
+                Logger.Warn("Attempted to confirm code without appropriate client status. Current status: " + clientStatus.ToString());
                 return TStatus.WRONG_CLIENT_STATUS;
             }
 
-            try
-            {
+            try {
                 user = await client.MakeAuthAsync(clientPhoneNumber, clientRequestCodeHash, code);
-            }
-            catch (Exception e)
-            {
-                //TODO: Handle exceptions
+            } catch (Exception e) {
+                Logger.Error(e, "Authenticating user code failed.");
                 return TStatus.UNKNOWN;
             }
             saveUserData(user);
-            changeStatus(STATUS.AUTHORISED);
-            //subscribePushNotifications(CrossFirebasePushNotification.Current.Token);
+            clientStatus = STATUS.AUTHORISED;
+            //TODO: Implement subscribePushNotifications(CrossFirebasePushNotification.Current.Token);
             return TStatus.OK;
         }
 
-        public async void saveUserData(TLUser user)
-        {
+        public async void saveUserData(TLUser user) {
             TLUserProfilePhoto photo = (user.Photo as TLUserProfilePhoto);
             bool hasPhoto = false;
-            if (photo != null)
-            {
+            if (photo != null) {
                 TLFile file = await getProfilePic(photo.PhotoBig as TLFileLocation);
                 MemoryStream memoryStream = new MemoryStream(file.Bytes);
 
@@ -230,8 +196,7 @@ namespace AlarmManagerT.Services
             DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, hasPhoto);
 
             string userName = user.FirstName + " " + user.LastName;
-            if (userName.Length < 3)
-            {
+            if (userName.Length < 3) {
                 userName = user.Username;
             }
             string userPhone = "+" + user.Phone;
@@ -239,152 +204,123 @@ namespace AlarmManagerT.Services
             DataService.setConfigValue(DataService.DATA_KEYS.USER_NAME, userName);
             DataService.setConfigValue(DataService.DATA_KEYS.USER_PHONE, userPhone);
 
-            MessagingCenter.Send(this, "UserDataChanged");
+            MessagingCenter.Send(this, MESSAGING_KEYS.USER_DATA_CHANGED.ToString());
         }
 
-        public async Task<TLVector<TLAbsChat>> getChatList()
-        {
-            if (clientStatus != STATUS.AUTHORISED)
-            {
-                //TODO: Handle error
+        public async Task<TLVector<TLAbsChat>> getChatList() {
+            if (clientStatus != STATUS.AUTHORISED) {
+                Logger.Warn("Attempted to load chat list without appropriate client status. Current status: " + clientStatus.ToString());
+                return new TLVector<TLAbsChat>();
             }
 
-            TLMethod requestDialogList = new TeleSharp.TL.Messages.TLRequestGetDialogs()
-            {
-                OffsetDate = 0,
-                OffsetId = 0,
+            TLMethod requestDialogList = new TLRequestGetDialogs() {
                 OffsetPeer = new TLInputPeerSelf(),
                 Limit = 100
-
             };
 
-            if (!client.IsUserAuthorized())
-            {
-                //we have a Problem
-                return null;
-            }
-
             TLDialogs dialogs;
-            try
-            {
+            try {
                 dialogs = await client.SendRequestAsync<TLDialogs>(requestDialogList);
-            }
-            catch (Exception e)
-            {
-                return null;
+            } catch (Exception e) {
+                Logger.Error(e, "Exception while trying to fetch chat list.");
+                return new TLVector<TLAbsChat>();
             }
 
             return dialogs.Chats;
         }
 
-        public async Task<TLFile> getProfilePic(TLFileLocation location)
-        {
-            TLInputFileLocation loc = new TLInputFileLocation()
-            {
+        public async Task<TLFile> getProfilePic(TLFileLocation location) {
+            TLInputFileLocation loc = new TLInputFileLocation() {
                 LocalId = location.LocalId,
                 Secret = location.Secret,
                 VolumeId = location.VolumeId
             };
 
-            TLFile file = await client.GetFile(loc, 1024 * 256);
+            TLFile file;
+            try {
+                file = await client.GetFile(loc, 1024 * 256);
+            }catch(Exception exception) {
+                Logger.Error(exception, "Exception while trying to fetch profile pic.");
+                return new TLFile();
+            }
             return file;
         }
 
-        public async Task<TLFile> getProfilePic(int chatID)
-        {
-            TLRequestGetChats request = new TLRequestGetChats()
-            {
+        public async Task<TLFile> getProfilePic(int chatID) {
+            TLRequestGetChats request = new TLRequestGetChats() {
                 Id = new TLVector<int>() { chatID }
             };
 
-            TLVector<TLChat> foundChats = await client.SendRequestAsync<TLVector<TLChat>>(request);
+            TLVector<TLChat> foundChats;
+            try {
+                foundChats = await client.SendRequestAsync<TLVector<TLChat>>(request);
+            }catch(Exception exception) {
+                Logger.Error(exception, "Exception while retrieving chat from chatID.");
+                return new TLFile();
+            }
 
             TLFileLocation loc = (foundChats.First().Photo as TLChatPhoto).PhotoSmall as TLFileLocation;
-
             TLFile file = await getProfilePic(loc);
-
             return file;
         }
 
-        public async Task<TLUser> getUser()
-        {
+        public async Task<TLUser> getUser() {
 
-            TLRequestGetUsers request = new TLRequestGetUsers()
-            {
+            TLRequestGetUsers request = new TLRequestGetUsers() {
                 Id = new TLVector<TLAbsInputUser> { new TLInputUser() { UserId = user.Id, AccessHash = (long)user.AccessHash } }
             };
 
-
             TLVector<TLAbsUser> outUser;
-            try
-            {
+            try {
                 outUser = await client.SendRequestAsync<TLVector<TLAbsUser>>(request);
                 user = outUser.First() as TLUser;
-            }
-            catch (Exception e)
-            {
-                return null;
+            } catch (Exception e) {
+                Logger.Error(e, "Exception while fetching user data.");
+                return new TLUser();
             }
 
             return user;
         }
 
-        public async Task<TLAbsMessages> getMessages(int chatID, int lastMessageID)
-        {
-            if (clientStatus != STATUS.AUTHORISED)
-            {
-                //TODO: Log this
-                return null;
+        public async Task<TLAbsMessages> getMessages(int chatID, int lastMessageID) {
+            if (clientStatus != STATUS.AUTHORISED) {
+                Logger.Warn("Attempting to get messages without user authorisation. Current status: " + clientStatus.ToString());
+                return new TLMessages();
             }
 
-            TLInputPeerChat chat = new TLInputPeerChat()
-            {
-                ChatId = chatID
-            };
-
-            TLRequestGetHistory request = new TLRequestGetHistory()
-            {
-                Peer = chat,
+            TLRequestGetHistory request = new TLRequestGetHistory() {
+                Peer = new TLInputPeerChat() {ChatId = chatID},
                 Limit = 100,
                 MinId = lastMessageID + 1
             };
 
             TLAbsMessages messages;
-            try
-            {
+            try {
                 messages = await client.SendRequestAsync<TLAbsMessages>(request);
-            }catch(Exception e)
-            {
-                //something went wrong
-                //TODO: Log
-                return null;
+            } catch (Exception e) {
+                Logger.Error(e, "Exception while trying to retrieve messages.");
+                return new TLMessages();
             }
-
             return messages;
         }
 
-        public class MySessionStore : ISessionStore
-        {
+        public class MySessionStore : ISessionStore {
 
-            private MyClient client;
-            public MySessionStore(MyClient client)
-            {
+            private CommunicationService client;
+            public MySessionStore(CommunicationService client) {
                 this.client = client;
             }
 
             public static string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "session");
-            public void Save(Session session)
-            {
+            public void Save(Session session) {
 
-                using (FileStream fileStream = new FileStream(string.Format(file, (object)session.SessionUserId), FileMode.OpenOrCreate))
-                {
+                using (FileStream fileStream = new FileStream(string.Format(file, (object)session.SessionUserId), FileMode.OpenOrCreate)) {
                     byte[] bytes = session.ToBytes();
                     fileStream.Write(bytes, 0, bytes.Length);
                 }
             }
 
-            public Session Load(string sessionUserId)
-            {
+            public Session Load(string sessionUserId) {
 
                 string path = string.Format(file, (object)sessionUserId);
                 if (!File.Exists(path))

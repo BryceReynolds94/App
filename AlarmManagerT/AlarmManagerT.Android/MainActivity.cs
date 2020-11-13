@@ -36,9 +36,9 @@ namespace AlarmManagerT.Droid
             var ignore = typeof(SvgCachedImage); //Added to enable SVG FFImageLoading
 
             FirebasePushNotificationManager.ProcessIntent(this, Intent); //Added to enable FirebasePushNotificationPlugin
-            new AndroidNotifications().SetupNotificationChannels();
 
             LoadApplication(new App(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()), GetAlertFromIntent(Intent)));
+            new AndroidNotifications().SetupNotificationChannels(); //Application has to be loaded first
         }
 
         //TODO: Check if this is ever called and remove if unnecessary

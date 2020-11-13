@@ -22,7 +22,7 @@ namespace AlarmManagerT.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class AppResources {
+    public class AppResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace AlarmManagerT.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AlarmManagerT.Resources.AppResources", typeof(AppResources).Assembly);
@@ -51,7 +51,7 @@ namespace AlarmManagerT.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to All configured alerts are removed on logout..
         /// </summary>
-        internal static string AccountPage_Logout_Warning {
+        public static string AccountPage_Logout_Warning {
             get {
                 return ResourceManager.GetString("AccountPage_Logout_Warning", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Logout.
         /// </summary>
-        internal static string AccountPage_LogoutBtn {
+        public static string AccountPage_LogoutBtn {
             get {
                 return ResourceManager.GetString("AccountPage_LogoutBtn", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Account.
         /// </summary>
-        internal static string AccountPage_Title {
+        public static string AccountPage_Title {
             get {
                 return ResourceManager.GetString("AccountPage_Title", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
-        internal static string AccountPage_UserName_Default {
+        public static string AccountPage_UserName_Default {
             get {
                 return ResourceManager.GetString("AccountPage_UserName_Default", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Phone Number.
         /// </summary>
-        internal static string AccountPage_UserPhone_Default {
+        public static string AccountPage_UserPhone_Default {
             get {
                 return ResourceManager.GetString("AccountPage_UserPhone_Default", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Deactivated untill {0:dd.MM.yy HH:mm}.
         /// </summary>
-        internal static string AlertStatus_Status_Deactivated {
+        public static string AlertStatus_Status_Deactivated {
             get {
                 return ResourceManager.GetString("AlertStatus_Status_Deactivated", resourceCulture);
             }
@@ -117,16 +117,34 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Event was not triggered yet.
         /// </summary>
-        internal static string AlertStatus_Status_Default {
+        public static string AlertStatus_Status_Default {
             get {
                 return ResourceManager.GetString("AlertStatus_Status_Default", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configured alert notifications..
+        /// </summary>
+        public static string Android_AndroidNotifications_AlertChannel_Description {
+            get {
+                return ResourceManager.GetString("Android_AndroidNotifications_AlertChannel_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alert Notifications.
+        /// </summary>
+        public static string Android_AndroidNotifications_AlertChannel_Title {
+            get {
+                return ResourceManager.GetString("Android_AndroidNotifications_AlertChannel_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Chat.
         /// </summary>
-        internal static string ConfigureGroupPage_Title {
+        public static string ConfigureGroupPage_Title {
             get {
                 return ResourceManager.GetString("ConfigureGroupPage_Title", resourceCulture);
             }
@@ -135,7 +153,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Keyword.
         /// </summary>
-        internal static string ConfigureKeywordPage_Keyword_Placeholder {
+        public static string ConfigureKeywordPage_Keyword_Placeholder {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Keyword_Placeholder", resourceCulture);
             }
@@ -144,7 +162,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
-        internal static string ConfigureKeywordPage_NextBtn {
+        public static string ConfigureKeywordPage_NextBtn {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_NextBtn", resourceCulture);
             }
@@ -153,7 +171,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Allways.
         /// </summary>
-        internal static string ConfigureKeywordPage_Time_Any {
+        public static string ConfigureKeywordPage_Time_Any {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Time_Any", resourceCulture);
             }
@@ -162,7 +180,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Fr.
         /// </summary>
-        internal static string ConfigureKeywordPage_Time_Day_Friday {
+        public static string ConfigureKeywordPage_Time_Day_Friday {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Friday", resourceCulture);
             }
@@ -171,7 +189,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Mo.
         /// </summary>
-        internal static string ConfigureKeywordPage_Time_Day_Monday {
+        public static string ConfigureKeywordPage_Time_Day_Monday {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Monday", resourceCulture);
             }
@@ -180,7 +198,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Sa.
         /// </summary>
-        internal static string ConfigureKeywordPage_Time_Day_Saturday {
+        public static string ConfigureKeywordPage_Time_Day_Saturday {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Saturday", resourceCulture);
             }
@@ -189,7 +207,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Su.
         /// </summary>
-        internal static string ConfigureKeywordPage_Time_Day_Sunday {
+        public static string ConfigureKeywordPage_Time_Day_Sunday {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Sunday", resourceCulture);
             }
@@ -198,7 +216,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Th.
         /// </summary>
-        internal static string ConfigureKeywordPage_Time_Day_Thursday {
+        public static string ConfigureKeywordPage_Time_Day_Thursday {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Thursday", resourceCulture);
             }
@@ -207,7 +225,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Tu.
         /// </summary>
-        internal static string ConfigureKeywordPage_Time_Day_Tuesday {
+        public static string ConfigureKeywordPage_Time_Day_Tuesday {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Tuesday", resourceCulture);
             }
@@ -216,7 +234,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to We.
         /// </summary>
-        internal static string ConfigureKeywordPage_Time_Day_Wednesday {
+        public static string ConfigureKeywordPage_Time_Day_Wednesday {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Wednesday", resourceCulture);
             }
@@ -225,7 +243,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Configure.
         /// </summary>
-        internal static string ConfigureKeywordPage_Time_Set {
+        public static string ConfigureKeywordPage_Time_Set {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Time_Set", resourceCulture);
             }
@@ -234,7 +252,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Time.
         /// </summary>
-        internal static string ConfigureKeywordPage_Time_Title {
+        public static string ConfigureKeywordPage_Time_Title {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Time_Title", resourceCulture);
             }
@@ -243,7 +261,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Alert Configuration.
         /// </summary>
-        internal static string ConfigureKeywordPage_Title {
+        public static string ConfigureKeywordPage_Title {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Title", resourceCulture);
             }
@@ -252,7 +270,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Any message.
         /// </summary>
-        internal static string ConfigureKeywordPage_Trigger_Any {
+        public static string ConfigureKeywordPage_Trigger_Any {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Trigger_Any", resourceCulture);
             }
@@ -261,7 +279,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Messages with a keyword.
         /// </summary>
-        internal static string ConfigureKeywordPage_Trigger_Keyword {
+        public static string ConfigureKeywordPage_Trigger_Keyword {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Trigger_Keyword", resourceCulture);
             }
@@ -270,7 +288,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Use Regular Expression.
         /// </summary>
-        internal static string ConfigureKeywordPage_Trigger_RegEx {
+        public static string ConfigureKeywordPage_Trigger_RegEx {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Trigger_RegEx", resourceCulture);
             }
@@ -279,7 +297,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Messages from AlarmManagerT-Server.
         /// </summary>
-        internal static string ConfigureKeywordPage_Trigger_Server {
+        public static string ConfigureKeywordPage_Trigger_Server {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Trigger_Server", resourceCulture);
             }
@@ -288,7 +306,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Trigger.
         /// </summary>
-        internal static string ConfigureKeywordPage_Trigger_Title {
+        public static string ConfigureKeywordPage_Trigger_Title {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Trigger_Title", resourceCulture);
             }
@@ -297,7 +315,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Take me there.
         /// </summary>
-        internal static string HomeStatusPage_DND_PermissionPrompt_Confirm {
+        public static string HomeStatusPage_DND_PermissionPrompt_Confirm {
             get {
                 return ResourceManager.GetString("HomeStatusPage_DND_PermissionPrompt_Confirm", resourceCulture);
             }
@@ -306,7 +324,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to To ensure notifications when the phone is set to silent or Do Not Disturb please grant AlarmManagerT access in your permissions settings..
         /// </summary>
-        internal static string HomeStatusPage_DNDPermissionPrompt_Message {
+        public static string HomeStatusPage_DNDPermissionPrompt_Message {
             get {
                 return ResourceManager.GetString("HomeStatusPage_DNDPermissionPrompt_Message", resourceCulture);
             }
@@ -315,7 +333,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Grant Do Not Disturb access.
         /// </summary>
-        internal static string HomeStatusPage_DNDPermissionPrompt_Title {
+        public static string HomeStatusPage_DNDPermissionPrompt_Title {
             get {
                 return ResourceManager.GetString("HomeStatusPage_DNDPermissionPrompt_Title", resourceCulture);
             }
@@ -324,7 +342,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to No Internet Connection.
         /// </summary>
-        internal static string HomeStatusPage_Error_NoInternet {
+        public static string HomeStatusPage_Error_NoInternet {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Error_NoInternet", resourceCulture);
             }
@@ -333,7 +351,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Not Connected to Telegram.
         /// </summary>
-        internal static string HomeStatusPage_Error_NoTelegram {
+        public static string HomeStatusPage_Error_NoTelegram {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Error_NoTelegram", resourceCulture);
             }
@@ -342,7 +360,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Deactivate for.
         /// </summary>
-        internal static string HomeStatusPage_IndividualSnooze_Prompt {
+        public static string HomeStatusPage_IndividualSnooze_Prompt {
             get {
                 return ResourceManager.GetString("HomeStatusPage_IndividualSnooze_Prompt", resourceCulture);
             }
@@ -351,7 +369,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to cancel.
         /// </summary>
-        internal static string HomeStatusPage_Snooze_Cancel {
+        public static string HomeStatusPage_Snooze_Cancel {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Snooze_Cancel", resourceCulture);
             }
@@ -360,7 +378,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 1 Day.
         /// </summary>
-        internal static string HomeStatusPage_Snooze_Day {
+        public static string HomeStatusPage_Snooze_Day {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Snooze_Day", resourceCulture);
             }
@@ -369,7 +387,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to {0} Days.
         /// </summary>
-        internal static string HomeStatusPage_Snooze_Days {
+        public static string HomeStatusPage_Snooze_Days {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Snooze_Days", resourceCulture);
             }
@@ -378,7 +396,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to {0} Hours.
         /// </summary>
-        internal static string HomeStatusPage_Snooze_Hours {
+        public static string HomeStatusPage_Snooze_Hours {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Snooze_Hours", resourceCulture);
             }
@@ -387,7 +405,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 1 Month.
         /// </summary>
-        internal static string HomeStatusPage_Snooze_Month {
+        public static string HomeStatusPage_Snooze_Month {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Snooze_Month", resourceCulture);
             }
@@ -396,7 +414,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Deactivate all alerts for.
         /// </summary>
-        internal static string HomeStatusPage_Snooze_Prompt {
+        public static string HomeStatusPage_Snooze_Prompt {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Snooze_Prompt", resourceCulture);
             }
@@ -405,7 +423,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 1 Week.
         /// </summary>
-        internal static string HomeStatusPage_Snooze_Week {
+        public static string HomeStatusPage_Snooze_Week {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Snooze_Week", resourceCulture);
             }
@@ -414,7 +432,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to {0} Weeks.
         /// </summary>
-        internal static string HomeStatusPage_Snooze_Weeks {
+        public static string HomeStatusPage_Snooze_Weeks {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Snooze_Weeks", resourceCulture);
             }
@@ -423,7 +441,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to AlarmManagerT.
         /// </summary>
-        internal static string HomeStatusPage_Title {
+        public static string HomeStatusPage_Title {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Title", resourceCulture);
             }
@@ -432,7 +450,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to All alerts deactivated.
         /// </summary>
-        internal static string HomeStatusPage_Warning_Deactivated {
+        public static string HomeStatusPage_Warning_Deactivated {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Warning_Deactivated", resourceCulture);
             }
@@ -441,7 +459,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to All alerts deactivated untill {0:dd.MM.yy HH:mm}.
         /// </summary>
-        internal static string HomeStatusPage_Warning_Snooze {
+        public static string HomeStatusPage_Warning_Snooze {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Warning_Snooze", resourceCulture);
             }
@@ -450,7 +468,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to code.
         /// </summary>
-        internal static string LoginCodePage_Code_Placeholder {
+        public static string LoginCodePage_Code_Placeholder {
             get {
                 return ResourceManager.GetString("LoginCodePage_Code_Placeholder", resourceCulture);
             }
@@ -459,7 +477,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to An unknown error occured. Try again later....
         /// </summary>
-        internal static string LoginCodePage_Error_Default {
+        public static string LoginCodePage_Error_Default {
             get {
                 return ResourceManager.GetString("LoginCodePage_Error_Default", resourceCulture);
             }
@@ -468,7 +486,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
-        internal static string LoginCodePage_NextBtn {
+        public static string LoginCodePage_NextBtn {
             get {
                 return ResourceManager.GetString("LoginCodePage_NextBtn", resourceCulture);
             }
@@ -477,7 +495,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Authenticate using the confirmation code sent to your phone number.
         /// </summary>
-        internal static string LoginCodePage_Prompt {
+        public static string LoginCodePage_Prompt {
             get {
                 return ResourceManager.GetString("LoginCodePage_Prompt", resourceCulture);
             }
@@ -486,7 +504,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
-        internal static string LoginCodePage_Title {
+        public static string LoginCodePage_Title {
             get {
                 return ResourceManager.GetString("LoginCodePage_Title", resourceCulture);
             }
@@ -495,7 +513,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to An unknown error occured. Try again later....
         /// </summary>
-        internal static string LoginPhonePage_Error_Default {
+        public static string LoginPhonePage_Error_Default {
             get {
                 return ResourceManager.GetString("LoginPhonePage_Error_Default", resourceCulture);
             }
@@ -504,7 +522,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The phone number is not associated to a telegram account or too many login attempts have been made. Check the phone number you entered..
         /// </summary>
-        internal static string LoginPhonePage_Error_InvalidPhoneNumber {
+        public static string LoginPhonePage_Error_InvalidPhoneNumber {
             get {
                 return ResourceManager.GetString("LoginPhonePage_Error_InvalidPhoneNumber", resourceCulture);
             }
@@ -513,7 +531,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
-        internal static string LoginPhonePage_NextBtn {
+        public static string LoginPhonePage_NextBtn {
             get {
                 return ResourceManager.GetString("LoginPhonePage_NextBtn", resourceCulture);
             }
@@ -522,7 +540,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to +49.
         /// </summary>
-        internal static string LoginPhonePage_PhoneNumber_Placeholder {
+        public static string LoginPhonePage_PhoneNumber_Placeholder {
             get {
                 return ResourceManager.GetString("LoginPhonePage_PhoneNumber_Placeholder", resourceCulture);
             }
@@ -531,7 +549,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enter your phone number to log into your Telegram account:.
         /// </summary>
-        internal static string LoginPhonePage_Prompt {
+        public static string LoginPhonePage_Prompt {
             get {
                 return ResourceManager.GetString("LoginPhonePage_Prompt", resourceCulture);
             }
@@ -540,7 +558,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
-        internal static string LoginPhonePage_Title {
+        public static string LoginPhonePage_Title {
             get {
                 return ResourceManager.GetString("LoginPhonePage_Title", resourceCulture);
             }
@@ -549,16 +567,25 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
-        internal static string MenuPage_Action_About {
+        public static string MenuPage_Action_About {
             get {
                 return ResourceManager.GetString("MenuPage_Action_About", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        public static string MenuPage_Action_Logout {
+            get {
+                return ResourceManager.GetString("MenuPage_Action_Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification Settings.
         /// </summary>
-        internal static string MenuPage_Action_NotificationSettings {
+        public static string MenuPage_Action_NotificationSettings {
             get {
                 return ResourceManager.GetString("MenuPage_Action_NotificationSettings", resourceCulture);
             }
@@ -567,7 +594,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Share.
         /// </summary>
-        internal static string MenuPage_Action_Share {
+        public static string MenuPage_Action_Share {
             get {
                 return ResourceManager.GetString("MenuPage_Action_Share", resourceCulture);
             }
@@ -576,7 +603,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
-        internal static string MenuPage_UserName_Default {
+        public static string MenuPage_UserName_Default {
             get {
                 return ResourceManager.GetString("MenuPage_UserName_Default", resourceCulture);
             }
@@ -585,7 +612,7 @@ namespace AlarmManagerT.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Phone Number.
         /// </summary>
-        internal static string MenuPage_UserPhone_Default {
+        public static string MenuPage_UserPhone_Default {
             get {
                 return ResourceManager.GetString("MenuPage_UserPhone_Default", resourceCulture);
             }

@@ -12,7 +12,7 @@ namespace AlarmManagerT.Services
     {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public void SetupListeners(MyClient client)
+        public void SetupListeners(CommunicationService client)
         {
             //subscribe to token changes
             CrossFirebasePushNotification.Current.OnTokenRefresh += async (s, args) =>

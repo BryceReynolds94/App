@@ -10,7 +10,7 @@
              Title="Menu">
 
     <StackLayout VerticalOptions="FillAndExpand">
-        <StackLayout Orientation="Horizontal" Padding="10">
+        <StackLayout Orientation="Horizontal" Padding="10,20" BackgroundColor="#1d4999">
             <Frame Padding="0" WidthRequest="60" HeightRequest="60" CornerRadius="30" IsClippedToBounds="True" VerticalOptions="Center" >
                 <Grid>
                     <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Images.user_default.svg" IsVisible="{Binding ShowDefaultPic}"/>
@@ -18,14 +18,20 @@
                 </Grid>
             </Frame>
             <StackLayout Margin="10,0" VerticalOptions="Center">
-                <Label Text="{Binding UserName}" FontSize="Large"/>
-                <Label Text="{Binding UserPhone}"/>
+                <Label Text="{Binding UserName}" FontSize="Large" TextColor="White"/>
+                <Label Text="{Binding UserPhone}" TextColor="White"/>
             </StackLayout>
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding ViewAccount}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
-        <BoxView HeightRequest="1" BackgroundColor="Blue"/>
+        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
+            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Images.icon_alert.svg"/>
+            <Label Text="{x:Static resources:AppResources.MenuPage_Action_NotificationSettings}" FontSize="Large" VerticalOptions="Center"/>
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding NotificationSettings}"/>
+            </StackLayout.GestureRecognizers>
+        </StackLayout>
         <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
             <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Images.icon_share.svg"/>
             <Label Text="{x:Static resources:AppResources.MenuPage_Action_Share}" FontSize="Large" VerticalOptions="Center"/>
@@ -40,20 +46,21 @@
                 <TapGestureRecognizer Command="{Binding About}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
-        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
+        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0" VerticalOptions="StartAndExpand">
             <ffimageloadingsvg:SvgCachedImage Margin="5"/>
             <Label Text="Test" FontSize="Large" VerticalOptions="Center"/>
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding Test}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
-        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
-            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Images.icon_alert.svg"/>
-            <Label Text="{x:Static resources:AppResources.MenuPage_Action_NotificationSettings}" FontSize="Large" VerticalOptions="Center"/>
+        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,20" VerticalOptions="End">
+            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Images.icon_logout.svg"/>
+            <Label Text="{x:Static resources:AppResources.MenuPage_Action_Logout}" FontSize="Large" VerticalOptions="Center"/>
             <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NotificationSettings}"/>
+                <TapGestureRecognizer Command="{Binding Logout}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
+
 
     </StackLayout>
 

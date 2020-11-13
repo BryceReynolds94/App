@@ -22,10 +22,9 @@ namespace AlarmManagerT.Droid
 
         public void navigateNotificationSettings()
         {
-            Intent intent = new Intent(Settings.ActionChannelNotificationSettings);
-            intent.PutExtra(Settings.ExtraAppPackage, Application.Context.PackageName);
-            intent.PutExtra(Settings.ExtraChannelId, AndroidNotifications.ALERT_CHANNEL_ID); //TODO: Possibly change this to group notifications
-            Platform.CurrentActivity.StartActivity(intent);
+            Intent intent = new Intent(Settings.ActionAppNotificationSettings);
+            intent.PutExtra(Settings.ExtraAppPackage, Application.Context.PackageName); 
+            Platform.CurrentActivity.StartActivity(intent); //TODO: This crashes since change to notification groups
         }
 
         public void navigateNotificationPolicyAccess()
@@ -48,19 +47,27 @@ namespace AlarmManagerT.Droid
 
         public void navigateTelegramChat(int chatID)
         {
-            Intent intent = new Intent(Intent.ActionView)
-                .SetData(Android.Net.Uri.Parse("http://telegram.me/" + chatID)); //TODO: Check this
-
-            try
-            {
-                Platform.CurrentActivity.PackageManager.GetPackageInfo("org.telegram.messenger", PackageInfoFlags.Activities);
-                intent.SetPackage("org.telegram.messenger");
-            }catch(PackageManager.NameNotFoundException e)
-            {
-                Logger.Warn(e, "Could not go to Telegram as package was not found.");
+            if (!isTelegramInstalled()) {
                 return;
             }
-            Platform.CurrentActivity.StartActivity(intent);
+            Platform.CurrentActivity.StartActivity(getTelegramIntent(chatID));
+        }
+
+        public static Intent getTelegramIntent(int chatID) {
+            Intent intent = new Intent(Intent.ActionView)
+                .SetData(Android.Net.Uri.Parse("http://telegram.me/" + chatID)) //TODO: Check this
+                .SetPackage("org.telegram.messenger");
+            return intent;
+        }
+
+        public static bool isTelegramInstalled() {
+            try {
+                Platform.CurrentActivity.PackageManager.GetPackageInfo("org.telegram.messenger", PackageInfoFlags.Activities);
+            } catch (PackageManager.NameNotFoundException e) {
+                Logger.Warn(e, "Telegram package is not installed.");
+                return false;
+            }
+            return true;
         }
 
         public void quitApplication()

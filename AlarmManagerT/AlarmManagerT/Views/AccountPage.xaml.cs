@@ -19,7 +19,7 @@ namespace AlarmManagerT.Views
     {
 
         private AccountPageViewModel viewModel;
-        public AccountPage(MyClient client)
+        public AccountPage(CommunicationService client)
         {
             InitializeComponent();
 
@@ -29,7 +29,7 @@ namespace AlarmManagerT.Views
             BindingContext = viewModel = new AccountPageViewModel(userName, userPhone);
             viewModel.RequestLogout += logoutUser;
 
-            MessagingCenter.Subscribe<MyClient>(this, "UserDataChanged", (obj) => updateUserView());
+            MessagingCenter.Subscribe<CommunicationService>(this, CommunicationService.MESSAGING_KEYS.USER_DATA_CHANGED.ToString(), (obj) => updateUserView());
 
             updateUser(client);
         }
@@ -42,7 +42,7 @@ namespace AlarmManagerT.Views
             return;
         }
 
-        private async void updateUser(MyClient client)
+        private async void updateUser(CommunicationService client)
         {
             TLUser user = await client.getUser();
             client.saveUserData(user);

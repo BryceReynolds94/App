@@ -23,6 +23,7 @@
     <None Remove="Images\icon_confirm.svg" />
     <None Remove="Images\icon_delete.svg" />
     <None Remove="Images\icon_history.svg" />
+    <None Remove="Images\icon_logout.svg" />
     <None Remove="Images\icon_settings.svg" />
     <None Remove="Images\icon_share.svg" />
     <None Remove="Images\icon_trigger.svg" />
@@ -43,6 +44,7 @@
     <EmbeddedResource Include="Images\icon_confirm.svg" />
     <EmbeddedResource Include="Images\icon_delete.svg" />
     <EmbeddedResource Include="Images\icon_history.svg" />
+    <EmbeddedResource Include="Images\icon_logout.svg" />
     <EmbeddedResource Include="Images\icon_settings.svg" />
     <EmbeddedResource Include="Images\icon_share.svg" />
     <EmbeddedResource Include="Images\icon_trigger.svg" />
@@ -62,7 +64,7 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\AppResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\AlertPage.xaml">

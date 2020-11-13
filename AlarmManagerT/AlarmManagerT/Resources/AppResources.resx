@@ -138,6 +138,12 @@
   <data name="AlertStatus_Status_Default" xml:space="preserve">
     <value>Event was not triggered yet</value>
   </data>
+  <data name="Android_AndroidNotifications_AlertChannel_Description" xml:space="preserve">
+    <value>Configured alert notifications.</value>
+  </data>
+  <data name="Android_AndroidNotifications_AlertChannel_Title" xml:space="preserve">
+    <value>Alert Notifications</value>
+  </data>
   <data name="ConfigureGroupPage_Title" xml:space="preserve">
     <value>Select Chat</value>
   </data>
@@ -281,6 +287,9 @@
   </data>
   <data name="MenuPage_Action_About" xml:space="preserve">
     <value>About</value>
+  </data>
+  <data name="MenuPage_Action_Logout" xml:space="preserve">
+    <value>Logout</value>
   </data>
   <data name="MenuPage_Action_NotificationSettings" xml:space="preserve">
     <value>Notification Settings</value>
