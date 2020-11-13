@@ -43,39 +43,17 @@ namespace AlarmManagerT.ViewModels
             }
         }
         public bool TriggerTypeKeyword {
-            get => alertConfig.triggerType == AlertConfig.TRIGGER_TYPE.KEYWORD || alertConfig.triggerType == AlertConfig.TRIGGER_TYPE.REGEX;
+            get => alertConfig.triggerType == AlertConfig.TRIGGER_TYPE.KEYWORD;
             set {
                 if (value)
                 {
-                    if (IsRegex)
-                    {
-                        alertConfig.triggerType = AlertConfig.TRIGGER_TYPE.REGEX;
-                    }
-                    else
-                    {
                         alertConfig.triggerType = AlertConfig.TRIGGER_TYPE.KEYWORD;
-                    }
-                    
                 }
             }
         }
         public string KeywordText {
             get => alertConfig.triggerKeyword;
             set => alertConfig.triggerKeyword = value;
-        }
-
-        public bool IsRegex {
-            get => alertConfig.triggerType == AlertConfig.TRIGGER_TYPE.REGEX;
-            set {
-                if (value)
-                {
-                    alertConfig.triggerType = AlertConfig.TRIGGER_TYPE.REGEX;
-                }
-                else
-                {
-                    alertConfig.triggerType = AlertConfig.TRIGGER_TYPE.KEYWORD;
-                }
-            }
         }
 
         public bool TimeTypeAny {

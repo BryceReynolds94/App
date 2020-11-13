@@ -17,6 +17,8 @@ namespace AlarmManagerT.ViewModels
 {
     public class ConfigureGroupPageViewModel : BaseViewModel
     {
+        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         public ObservableCollection<GroupViewModel> groupList { get; set; }
         public Command LoadItemsCommand { get; set; }
 
@@ -31,8 +33,6 @@ namespace AlarmManagerT.ViewModels
             
             LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
             GroupSelectionChangedCommand = new Command(() => GroupSelected());
-
-
         }
 
         public GroupSelectionHandler GroupSelectionMade;
@@ -42,7 +42,7 @@ namespace AlarmManagerT.ViewModels
         {
             if(SelectedGroup == null)
             {
-                //TODO: Something went wrong - handle
+                Logger.Warn("User tapped but no group was selected. Ignoring input.");
                 return;
             }
             GroupSelectionMade.Invoke(this, SelectedGroup.group);

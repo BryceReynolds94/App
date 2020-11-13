@@ -10,7 +10,7 @@
              Title="Menu">
 
     <StackLayout VerticalOptions="FillAndExpand">
-        <StackLayout Orientation="Horizontal" Padding="10,20" BackgroundColor="#1d4999">
+        <StackLayout Orientation="Horizontal" Padding="10,20" BackgroundColor="{StaticResource PrimaryColor}">
             <Frame Padding="0" WidthRequest="60" HeightRequest="60" CornerRadius="30" IsClippedToBounds="True" VerticalOptions="Center" >
                 <Grid>
                     <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Images.user_default.svg" IsVisible="{Binding ShowDefaultPic}"/>
@@ -18,12 +18,9 @@
                 </Grid>
             </Frame>
             <StackLayout Margin="10,0" VerticalOptions="Center">
-                <Label Text="{Binding UserName}" FontSize="Large" TextColor="White"/>
-                <Label Text="{Binding UserPhone}" TextColor="White"/>
+                <Label Text="{Binding UserName}" FontSize="Large" TextColor="{StaticResource PrimaryTextColor}"/>
+                <Label Text="{Binding UserPhone}" TextColor="{StaticResource PrimaryTextColor}"/>
             </StackLayout>
-            <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding ViewAccount}"/>
-            </StackLayout.GestureRecognizers>
         </StackLayout>
         <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
             <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Images.icon_alert.svg"/>

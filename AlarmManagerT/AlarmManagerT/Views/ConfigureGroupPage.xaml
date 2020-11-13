@@ -11,10 +11,25 @@
     <StackLayout>
         <RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
 
-            <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding groupList}" SelectionChangedCommand="{Binding GroupSelectionChangedCommand}" SelectionMode="Single" SelectedItem="{Binding SelectedGroup}">
+            <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding groupList}" SelectionChangedCommand="{Binding GroupSelectionChangedCommand}" SelectionMode="Single" SelectedItem="{Binding SelectedGroup}" >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="10,10,10,0" >
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="Transparent"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColorLight}"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="40" />
                                 <ColumnDefinition Width="*" />
@@ -30,11 +45,9 @@
                                 </Grid>
                             </Frame>
                             <Label Text="{Binding Name}" Grid.Column="1" VerticalOptions="Center"/>
-                            <BoxView BackgroundColor="#1d4999ff" HeightRequest="1" Grid.Row="1" Grid.ColumnSpan="2"/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-
             </CollectionView>
         </RefreshView>
     </StackLayout>

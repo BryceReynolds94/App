@@ -7,8 +7,8 @@
              mc:Ignorable="d"
              x:Class="AlarmManagerT.Views.AlertPage">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#ff1d4999" Padding="20">
-            <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Images.launcher_icon.svg"/>
+        <StackLayout BackgroundColor="{StaticResource PrimaryColor}" Padding="20">
+            <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Images.launcher_icon.svg" x:Name="Icon"/>
             
             <Grid>
                 <Grid.RowDefinitions>
@@ -27,8 +27,8 @@
                     </Grid>
                 </Frame>
 
-                <Label Text="{Binding AlertTitle}"  Grid.Column="1" TextColor="White" FontSize="Title" Margin="10,0,0,0"/>
-                <Label Text="{Binding AlertText}" TextColor="White" Grid.Column="1" Grid.Row="1" Margin="10,0,0,0"/>
+                <Label Text="{Binding AlertTitle}"  Grid.Column="1" TextColor="{StaticResource PrimaryTextColor}" FontSize="Title" Margin="10,0,0,0"/>
+                <Label Text="{Binding AlertText}" TextColor="{StaticResource PrimaryTextColor}" Grid.Column="1" Grid.Row="1" Margin="10,0,0,0"/>
             </Grid>
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">

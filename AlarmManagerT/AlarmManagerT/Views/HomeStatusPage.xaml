@@ -13,12 +13,12 @@
     </ContentPage.ToolbarItems>
 
     <StackLayout>
-        <Label x:Name="ErrorActionText" Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="#F44336" TextColor="White" Padding="10">
+        <Label x:Name="ErrorActionText" Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="{StaticResource ErrorColor}" TextColor="White" Padding="10">
             <Label.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding ErrorAction}" />
             </Label.GestureRecognizers>
         </Label>
-        <Label x:Name="WarningActionText" Text="{Binding WarningText}" IsVisible="{Binding WarningActive}" BackgroundColor="#F4511E" TextColor="White" Padding="10">
+        <Label x:Name="WarningActionText" Text="{Binding WarningText}" IsVisible="{Binding WarningActive}" BackgroundColor="{StaticResource WarningColor}" TextColor="White" Padding="10">
             <Label.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding WarningAction}"/>
             </Label.GestureRecognizers>
@@ -54,10 +54,10 @@
         <CollectionView.ItemTemplate>
             <DataTemplate>
                     <StackLayout Padding="10,10,10,0">
-                        <Frame x:Name="Backdrop" BackgroundColor="#EEEEEE"  CornerRadius="10" Padding="10">
+                        <Frame x:Name="Backdrop" BackgroundColor="{StaticResource SecondaryColorGrey}"  CornerRadius="10" Padding="10">
                             <Frame.Triggers>
                                 <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference SwitchIsActive}, Path=IsToggled}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="#BBDEFB" />
+                                    <Setter Property="BackgroundColor" Value="{StaticResource SecondaryColor}" />
                                 </DataTrigger>
 
                             </Frame.Triggers>
@@ -74,7 +74,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Switch x:Name="SwitchIsActive" IsToggled="{Binding IsActive}" Grid.Column="3" Grid.ColumnSpan="2" OnColor="#64B5F6" ThumbColor="#2196F3" />
+                                <Switch x:Name="SwitchIsActive" IsToggled="{Binding IsActive}" Grid.Column="3" Grid.ColumnSpan="2" />
                                 <Frame Padding="0" CornerRadius="15" IsClippedToBounds="True">
                                     <Grid>
                                         <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Images.group_default.svg" />

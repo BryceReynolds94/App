@@ -9,11 +9,24 @@
     <Application.Resources>
         <ResourceDictionary>
             <!--Global Styles-->
-            <Color x:Key="NavigationPrimary">#2196F3</Color>
+            <!-- schema: https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=1d4999&secondary.color=c0d3ff -->
+            <Color x:Key="PrimaryColor">#1d4999</Color>
+            <Color x:Key="PrimaryColorLight">#5874ca</Color>
+            <Color x:Key="PrimaryColorDark">#00236a</Color>
+
+            <Color x:Key="PrimaryTextColor">#ffffff</Color>
+
+            <Color x:Key="SecondaryColor">#c0d3ff</Color>
+            <Color x:Key="SecondaryColorGrey">#eeeeee</Color>
+
+            <Color x:Key="ErrorColor">#F44336</Color>
+            <Color x:Key="WarningColor">#F4511E</Color>
+
             <Style TargetType="NavigationPage">
-                <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
-                <Setter Property="BarTextColor" Value="White" />
+                <Setter Property="BarBackgroundColor" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="BarTextColor" Value="{StaticResource PrimaryTextColor}" />
             </Style>
+
         </ResourceDictionary>
     </Application.Resources>
     

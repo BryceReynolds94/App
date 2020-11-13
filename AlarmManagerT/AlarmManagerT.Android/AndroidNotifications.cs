@@ -43,7 +43,7 @@ namespace AlarmManagerT.Droid {
                 largePic = Android.Graphics.BitmapFactory.DecodeResource(Application.Context.Resources, Resource.Drawable.group_default);
             }
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(Application.Context, ALERT_CHANNEL_ID)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(Application.Context, alert.configID)
                 .SetContentTitle(alert.title)
                 .SetContentText(alert.text)
                 .SetSmallIcon(Resource.Mipmap.ic_launcher) //TODO: Testing

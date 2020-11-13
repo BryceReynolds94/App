@@ -11,7 +11,7 @@ namespace AlarmManagerT.Models
 {
     public class AlertConfig 
     {
-        public enum TRIGGER_TYPE { ANY, SERVER, KEYWORD, REGEX};
+        public enum TRIGGER_TYPE { ANY, SERVER, KEYWORD};
 
         public bool isActive = true;
         public bool snoozeActive => snoozeTime > DateTime.Now;
@@ -66,8 +66,6 @@ namespace AlarmManagerT.Models
                 case TRIGGER_TYPE.ANY:
                     return true;
                 case TRIGGER_TYPE.KEYWORD:
-                case TRIGGER_TYPE.REGEX:
-                    //TODO: Implement difference or get rid of simple KEYWORD option
                     if (triggerKeyword == null)
                     {
                         return false;

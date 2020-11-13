@@ -117,21 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountPage_LogoutBtn" xml:space="preserve">
-    <value>Logout</value>
-  </data>
-  <data name="AccountPage_Logout_Warning" xml:space="preserve">
-    <value>All configured alerts are removed on logout.</value>
-  </data>
-  <data name="AccountPage_Title" xml:space="preserve">
-    <value>Account</value>
-  </data>
-  <data name="AccountPage_UserName_Default" xml:space="preserve">
-    <value>Username</value>
-  </data>
-  <data name="AccountPage_UserPhone_Default" xml:space="preserve">
-    <value>Phone Number</value>
-  </data>
   <data name="AlertStatus_Status_Deactivated" xml:space="preserve">
     <value>Deactivated untill {0:dd.MM.yy HH:mm}</value>
   </data>
@@ -146,6 +131,9 @@
   </data>
   <data name="ConfigureGroupPage_Title" xml:space="preserve">
     <value>Select Chat</value>
+  </data>
+  <data name="ConfigureKeywordPage_Keyword_Hint" xml:space="preserve">
+    <value>You can use regular expressions</value>
   </data>
   <data name="ConfigureKeywordPage_Keyword_Placeholder" xml:space="preserve">
     <value>Keyword</value>
@@ -191,9 +179,6 @@
   </data>
   <data name="ConfigureKeywordPage_Trigger_Keyword" xml:space="preserve">
     <value>Messages with a keyword</value>
-  </data>
-  <data name="ConfigureKeywordPage_Trigger_RegEx" xml:space="preserve">
-    <value>Use Regular Expression</value>
   </data>
   <data name="ConfigureKeywordPage_Trigger_Server" xml:space="preserve">
     <value>Messages from AlarmManagerT-Server</value>
@@ -296,6 +281,18 @@
   </data>
   <data name="MenuPage_Action_Share" xml:space="preserve">
     <value>Share</value>
+  </data>
+  <data name="MenuPage_LogoutPrompt_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="MenuPage_LogoutPrompt_Confirm" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="MenuPage_LogoutPrompt_Text" xml:space="preserve">
+    <value>Are you sure? All configurations will be deleted.</value>
+  </data>
+  <data name="MenuPage_LogoutPrompt_Title" xml:space="preserve">
+    <value>Logout</value>
   </data>
   <data name="MenuPage_UserName_Default" xml:space="preserve">
     <value>Username</value>

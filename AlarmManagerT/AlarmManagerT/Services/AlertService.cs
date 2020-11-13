@@ -32,7 +32,7 @@ namespace AlarmManagerT.Services {
             };
         }
 
-        private Boolean checkLockTime(DateTime currentTime) {
+        private bool checkLockTime(DateTime currentTime) {
             DateTime lockTime = new DateTime(DataService.getConfigValue<long>(DataService.DATA_KEYS.REFRESH_LOCK_TIME, DateTime.MinValue.Ticks));
             DateTime lastRefreshTime = new DateTime(DataService.getConfigValue<long>(DataService.DATA_KEYS.LAST_REFRESH_TIME, DateTime.MinValue.Ticks));
 

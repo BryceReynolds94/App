@@ -25,8 +25,7 @@
 					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
 
-                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_RegEx}" Grid.Row="1" HorizontalOptions="End" VerticalOptions="Center"/>
-                <Switch IsToggled="{Binding IsRegex}" Grid.Column="1" Grid.Row="1"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Keyword_Hint}" Grid.Row="1" HorizontalOptions="End" VerticalOptions="Center"/>
                 <Entry Text="{Binding KeywordText}"  Placeholder="{x:Static resources:AppResources.ConfigureKeywordPage_Keyword_Placeholder}"  Grid.ColumnSpan="2"/>
                 
             </Grid>
@@ -52,7 +51,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Monday}" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
-                <CheckBox Grid.Row="1" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding MondayActive}"/>
+                <CheckBox Grid.Row="1" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding MondayActive}" />
                 <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Tuesday}" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
                 <CheckBox Grid.Row="1" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding TuesdayActive}"/>
                 <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Wednesday}" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>

@@ -22,6 +22,8 @@ namespace AlarmManagerT.Views {
 
         private CommunicationService client;
 
+        private bool reloadListOnAppearing = false;
+
         public ConfigureGroupPage(CommunicationService client, AlertConfig alertConfig) {
             InitializeComponent();
 
@@ -31,7 +33,6 @@ namespace AlarmManagerT.Views {
             BindingContext = viewModel = new ConfigureGroupPageViewModel();
             viewModel.GroupSelectionMade += groupSelected;
             viewModel.ReloadGroupList += refreshGroupList;
-
         }
 
         private async void groupSelected(object sender, Group selectedGroup) {
@@ -70,8 +71,15 @@ namespace AlarmManagerT.Views {
         protected override void OnAppearing() {
             base.OnAppearing();
 
-            if (viewModel.groupList.Count == 0)
+            if (reloadListOnAppearing) {
+                ItemsCollectionView.SelectedItem = null;
+            } else { 
+                reloadListOnAppearing = true; 
+            }
+
+            if (viewModel.groupList.Count == 0) {
                 viewModel.IsBusy = true;
+            }
         }
 
     }

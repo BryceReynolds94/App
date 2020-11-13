@@ -61,51 +61,6 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All configured alerts are removed on logout..
-        /// </summary>
-        public static string AccountPage_Logout_Warning {
-            get {
-                return ResourceManager.GetString("AccountPage_Logout_Warning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Logout.
-        /// </summary>
-        public static string AccountPage_LogoutBtn {
-            get {
-                return ResourceManager.GetString("AccountPage_LogoutBtn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account.
-        /// </summary>
-        public static string AccountPage_Title {
-            get {
-                return ResourceManager.GetString("AccountPage_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Username.
-        /// </summary>
-        public static string AccountPage_UserName_Default {
-            get {
-                return ResourceManager.GetString("AccountPage_UserName_Default", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Phone Number.
-        /// </summary>
-        public static string AccountPage_UserPhone_Default {
-            get {
-                return ResourceManager.GetString("AccountPage_UserPhone_Default", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Deactivated untill {0:dd.MM.yy HH:mm}.
         /// </summary>
         public static string AlertStatus_Status_Deactivated {
@@ -147,6 +102,15 @@ namespace AlarmManagerT.Resources {
         public static string ConfigureGroupPage_Title {
             get {
                 return ResourceManager.GetString("ConfigureGroupPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can use regular expressions.
+        /// </summary>
+        public static string ConfigureKeywordPage_Keyword_Hint {
+            get {
+                return ResourceManager.GetString("ConfigureKeywordPage_Keyword_Hint", resourceCulture);
             }
         }
         
@@ -282,15 +246,6 @@ namespace AlarmManagerT.Resources {
         public static string ConfigureKeywordPage_Trigger_Keyword {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Trigger_Keyword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use Regular Expression.
-        /// </summary>
-        public static string ConfigureKeywordPage_Trigger_RegEx {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Trigger_RegEx", resourceCulture);
             }
         }
         
@@ -597,6 +552,42 @@ namespace AlarmManagerT.Resources {
         public static string MenuPage_Action_Share {
             get {
                 return ResourceManager.GetString("MenuPage_Action_Share", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string MenuPage_LogoutPrompt_Cancel {
+            get {
+                return ResourceManager.GetString("MenuPage_LogoutPrompt_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string MenuPage_LogoutPrompt_Confirm {
+            get {
+                return ResourceManager.GetString("MenuPage_LogoutPrompt_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure? All configurations will be deleted..
+        /// </summary>
+        public static string MenuPage_LogoutPrompt_Text {
+            get {
+                return ResourceManager.GetString("MenuPage_LogoutPrompt_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        public static string MenuPage_LogoutPrompt_Title {
+            get {
+                return ResourceManager.GetString("MenuPage_LogoutPrompt_Title", resourceCulture);
             }
         }
         

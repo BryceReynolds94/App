@@ -28,6 +28,8 @@ namespace AlarmManagerT.Views
             BindingContext = viewModel = new AlertPageViewModel(alert.title, alert.text, alert.configID, alert.hasPic);
             viewModel.RequestCancel += cancel;
             viewModel.RequestConfirm += confirm;
+
+            //TODO: Feature - Implement icon animation
         }
 
         private void cancel(object sender, EventArgs args)
