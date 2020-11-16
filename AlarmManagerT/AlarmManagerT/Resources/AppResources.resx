@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AboutPage_Title" xml:space="preserve">
+    <value>About</value>
+  </data>
   <data name="AlertStatus_Status_Deactivated" xml:space="preserve">
     <value>Deactivated untill {0:dd.MM.yy HH:mm}</value>
   </data>
@@ -165,11 +168,17 @@
   <data name="ConfigureKeywordPage_Time_Day_Wednesday" xml:space="preserve">
     <value>We</value>
   </data>
+  <data name="ConfigureKeywordPage_Time_From" xml:space="preserve">
+    <value>from</value>
+  </data>
   <data name="ConfigureKeywordPage_Time_Set" xml:space="preserve">
     <value>Configure</value>
   </data>
   <data name="ConfigureKeywordPage_Time_Title" xml:space="preserve">
     <value>Time</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_To" xml:space="preserve">
+    <value>to</value>
   </data>
   <data name="ConfigureKeywordPage_Title" xml:space="preserve">
     <value>Alert Configuration</value>
@@ -243,6 +252,12 @@
   <data name="LoginCodePage_Error_Default" xml:space="preserve">
     <value>An unknown error occured. Try again later...</value>
   </data>
+  <data name="LoginCodePage_Error_InvalidCode" xml:space="preserve">
+    <value>The entered code was not correct!</value>
+  </data>
+  <data name="LoginCodePage_Error_NoCode" xml:space="preserve">
+    <value>The entered code is not valid. Telegram authentication codes consist of five numbers.</value>
+  </data>
   <data name="LoginCodePage_NextBtn" xml:space="preserve">
     <value>Confirm</value>
   </data>
@@ -250,7 +265,25 @@
     <value>Authenticate using the confirmation code sent to your phone number</value>
   </data>
   <data name="LoginCodePage_Title" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="LoginPasswordPage_Error_Default" xml:space="preserve">
+    <value>An unknown error occured. Try again later...</value>
+  </data>
+  <data name="LoginPasswordPage_Error_InvalidPassword" xml:space="preserve">
+    <value>Wrong password!</value>
+  </data>
+  <data name="LoginPasswordPage_NextBtn" xml:space="preserve">
     <value>Login</value>
+  </data>
+  <data name="LoginPasswordPage_Password_Placeholder" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="LoginPasswordPage_Prompt" xml:space="preserve">
+    <value>Enter the password for your Telegram account:</value>
+  </data>
+  <data name="LoginPasswordPage_Title" xml:space="preserve">
+    <value>Enter Password</value>
   </data>
   <data name="LoginPhonePage_Error_Default" xml:space="preserve">
     <value>An unknown error occured. Try again later...</value>
@@ -258,11 +291,11 @@
   <data name="LoginPhonePage_Error_InvalidPhoneNumber" xml:space="preserve">
     <value>The phone number is not associated to a telegram account or too many login attempts have been made. Check the phone number you entered.</value>
   </data>
+  <data name="LoginPhonePage_Error_NoPhoneNumber" xml:space="preserve">
+    <value>The entered number is not a valid phone number. Check your input and use a country code.</value>
+  </data>
   <data name="LoginPhonePage_NextBtn" xml:space="preserve">
     <value>Login</value>
-  </data>
-  <data name="LoginPhonePage_PhoneNumber_Placeholder" xml:space="preserve">
-    <value>+49</value>
   </data>
   <data name="LoginPhonePage_Prompt" xml:space="preserve">
     <value>Enter your phone number to log into your Telegram account:</value>

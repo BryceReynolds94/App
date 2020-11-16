@@ -15,8 +15,6 @@ namespace AlarmManagerT.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginCodePage : ContentPage
     {
-        //TODO: Implement next on keyboard confirm button. Use complted event: (https://stackoverflow.com/questions/46292614/xamarin-forms-how-to-detect-enter-press-in-entry-inside-a-view-model)
-
         private CommunicationService client;
 
         private LoginCodePageViewModel viewModel;
@@ -33,8 +31,12 @@ namespace AlarmManagerT.Views
         {
             //TODO: Check valid code before commit
             TStatus result = await client.confirmCode(code);
-            if(result != TStatus.OK)
-            {
+            if(result == TStatus.PASSWORD_REQUIRED) {
+                Navigation.InsertPageBefore(new LoginPasswordPage(client), this);
+                await Navigation.PopAsync();
+                return;
+
+            }else if(result != TStatus.OK){
                 viewModel.updateErrorState(result);
                 return;
             } 

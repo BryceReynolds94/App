@@ -60,6 +60,7 @@ namespace AlarmManagerT.Views {
                 Group addGroup = new Group(name, id);
                 addGroup.image = inputStream;
                 addGroup.hasImage = inputStream != null;
+                addGroup.lastMessageID = await client.getCurrentMessageID(id);
 
                 viewModel.addGroupToList(addGroup);
             }

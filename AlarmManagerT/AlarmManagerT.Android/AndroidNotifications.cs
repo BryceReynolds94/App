@@ -128,7 +128,7 @@ namespace AlarmManagerT.Droid {
             NotificationChannel standardChannel = new NotificationChannel(AndroidNotifications.STANDARD_CHANNEL_ID, standardName, NotificationImportance.Default) {
                 Description = standardDescription
 
-            }; //TODO: Possibly add further attributes to standard notifications
+            };
 
             NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);
             notificationManager.CreateNotificationChannel(standardChannel);

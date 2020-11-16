@@ -8,7 +8,7 @@
              x:Class="AlarmManagerT.Views.AlertPage">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource PrimaryColor}" Padding="20">
-            <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Images.launcher_icon.svg" x:Name="Icon"/>
+            <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Images.launcher_light.svg" x:Name="MainIcon" HeightRequest="200" Margin="0,50" VerticalOptions="StartAndExpand"/>
             
             <Grid>
                 <Grid.RowDefinitions>

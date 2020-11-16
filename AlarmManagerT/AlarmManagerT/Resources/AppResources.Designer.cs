@@ -61,6 +61,15 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string AboutPage_Title {
+            get {
+                return ResourceManager.GetString("AboutPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deactivated untill {0:dd.MM.yy HH:mm}.
         /// </summary>
         public static string AlertStatus_Status_Deactivated {
@@ -205,6 +214,15 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to from.
+        /// </summary>
+        public static string ConfigureKeywordPage_Time_From {
+            get {
+                return ResourceManager.GetString("ConfigureKeywordPage_Time_From", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configure.
         /// </summary>
         public static string ConfigureKeywordPage_Time_Set {
@@ -219,6 +237,15 @@ namespace AlarmManagerT.Resources {
         public static string ConfigureKeywordPage_Time_Title {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Time_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to.
+        /// </summary>
+        public static string ConfigureKeywordPage_Time_To {
+            get {
+                return ResourceManager.GetString("ConfigureKeywordPage_Time_To", resourceCulture);
             }
         }
         
@@ -439,6 +466,24 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The entered code was not correct!.
+        /// </summary>
+        public static string LoginCodePage_Error_InvalidCode {
+            get {
+                return ResourceManager.GetString("LoginCodePage_Error_InvalidCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The entered code is not valid. Telegram authentication codes consist of five numbers..
+        /// </summary>
+        public static string LoginCodePage_Error_NoCode {
+            get {
+                return ResourceManager.GetString("LoginCodePage_Error_NoCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string LoginCodePage_NextBtn {
@@ -457,11 +502,65 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Login.
+        ///   Looks up a localized string similar to Send.
         /// </summary>
         public static string LoginCodePage_Title {
             get {
                 return ResourceManager.GetString("LoginCodePage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unknown error occured. Try again later....
+        /// </summary>
+        public static string LoginPasswordPage_Error_Default {
+            get {
+                return ResourceManager.GetString("LoginPasswordPage_Error_Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong password!.
+        /// </summary>
+        public static string LoginPasswordPage_Error_InvalidPassword {
+            get {
+                return ResourceManager.GetString("LoginPasswordPage_Error_InvalidPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string LoginPasswordPage_NextBtn {
+            get {
+                return ResourceManager.GetString("LoginPasswordPage_NextBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string LoginPasswordPage_Password_Placeholder {
+            get {
+                return ResourceManager.GetString("LoginPasswordPage_Password_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the password for your Telegram account:.
+        /// </summary>
+        public static string LoginPasswordPage_Prompt {
+            get {
+                return ResourceManager.GetString("LoginPasswordPage_Prompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Password.
+        /// </summary>
+        public static string LoginPasswordPage_Title {
+            get {
+                return ResourceManager.GetString("LoginPasswordPage_Title", resourceCulture);
             }
         }
         
@@ -484,20 +583,20 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The entered number is not a valid phone number. Check your input and use a country code..
+        /// </summary>
+        public static string LoginPhonePage_Error_NoPhoneNumber {
+            get {
+                return ResourceManager.GetString("LoginPhonePage_Error_NoPhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string LoginPhonePage_NextBtn {
             get {
                 return ResourceManager.GetString("LoginPhonePage_NextBtn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to +49.
-        /// </summary>
-        public static string LoginPhonePage_PhoneNumber_Placeholder {
-            get {
-                return ResourceManager.GetString("LoginPhonePage_PhoneNumber_Placeholder", resourceCulture);
             }
         }
         

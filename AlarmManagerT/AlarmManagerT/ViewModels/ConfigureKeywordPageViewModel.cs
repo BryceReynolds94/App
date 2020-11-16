@@ -23,6 +23,17 @@ namespace AlarmManagerT.ViewModels
 
         public EventHandler Next;
 
+
+        public TimeSpan FromTime {
+            get => alertConfig.activeTimeConfig.activeStartTime;
+            set => alertConfig.activeTimeConfig.activeStartTime = value;
+        }
+
+        public TimeSpan ToTime {
+            get =>  alertConfig.activeTimeConfig.activeStopTime;
+            set => alertConfig.activeTimeConfig.activeStopTime = value;
+        }
+
         public bool TriggerTypeAny {
             get => alertConfig.triggerType == AlertConfig.TRIGGER_TYPE.ANY;
             set {
@@ -55,6 +66,7 @@ namespace AlarmManagerT.ViewModels
             get => alertConfig.triggerKeyword;
             set => alertConfig.triggerKeyword = value;
         }
+
 
         public bool TimeTypeAny {
             get => !alertConfig.timeRestriction;

@@ -15,25 +15,24 @@ namespace AlarmManagerT.ViewModels
         public Command Share { get; set; }
         public Command NotificationSettings { get; set; }
         public Command Logout { get; set; }
+        public Command Profile { get; set; }
 
         public MenuPageViewModel()
         {
             Test = new Command(() => MessagingCenter.Send(this, "TEST")); //TODO: RBF
 
-            NotificationSettings = new Command(() => RequestNotificationSettings.Invoke(this, null));
+            NotificationSettings = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.NotificationSettings));
             About = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.AboutPage));
-            Share = new Command(() => RequestShare.Invoke(this, null));
-            Logout = new Command(() => RequestLogout.Invoke(this, null));
+            Share = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.Share));
+            Logout = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.LogoutUser));
+            Profile = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.Login));
 
-            MessagingCenter.Subscribe<CommunicationService>(this, CommunicationService.MESSAGING_KEYS.USER_DATA_CHANGED.ToString(), (obj) => userDataChanged());
+            MessagingCenter.Subscribe<CommunicationService>(this, CommunicationService.MESSAGING_KEYS.USER_DATA_CHANGED.ToString(), (_) => userDataChanged());
+            MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => userDataChanged());
         }
 
         public NavigationEventHandler RequestNavigation;
         public delegate void NavigationEventHandler(object sender, MenuPage.MENU_PAGE destination);
-
-        public EventHandler RequestNotificationSettings;
-        public EventHandler RequestShare;
-        public EventHandler RequestLogout;
 
         private void userDataChanged()
         {

@@ -21,6 +21,9 @@
                 <Label Text="{Binding UserName}" FontSize="Large" TextColor="{StaticResource PrimaryTextColor}"/>
                 <Label Text="{Binding UserPhone}" TextColor="{StaticResource PrimaryTextColor}"/>
             </StackLayout>
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding Profile}" />
+            </StackLayout.GestureRecognizers>
         </StackLayout>
         <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
             <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Images.icon_alert.svg"/>

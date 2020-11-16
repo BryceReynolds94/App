@@ -48,12 +48,12 @@ namespace AlarmManagerT
         {
             //client.subscribePushNotifications(CrossFirebasePushNotification.Current.Token); //TODO: RBF
 
-            Task.Delay(2000).ContinueWith(t =>
+            /*Task.Delay(2000).ContinueWith(t =>
             {
                 INotifications notifications = DependencyService.Get<INotifications>();
                 notifications.showAlertNotification(Alert.getTestSample("56561564544")); //TODO: RBF
-            });
-            //MainPage = new AlertPage("Sample Title", "We have an urgent alert somewhere", "12345");
+            });*/
+            MainPage = new AlertPage(Alert.getTestSample("32156464864"));
             return;
         }
 

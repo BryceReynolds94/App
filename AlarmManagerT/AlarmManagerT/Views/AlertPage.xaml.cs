@@ -29,7 +29,14 @@ namespace AlarmManagerT.Views
             viewModel.RequestCancel += cancel;
             viewModel.RequestConfirm += confirm;
 
-            //TODO: Feature - Implement icon animation
+            startAnimation();
+        }
+
+        private async void startAnimation() {
+            await MainIcon.ScaleTo(1.3, 1000);
+            await MainIcon.ScaleTo(1, 1000);
+            await Task.Delay(500);
+            startAnimation();
         }
 
         private void cancel(object sender, EventArgs args)

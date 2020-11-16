@@ -15,9 +15,6 @@ namespace AlarmManagerT.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPhonePage : ContentPage
     {
-        //TODO: Implement next on keyboard confirm button. Use complted event: (https://stackoverflow.com/questions/46292614/xamarin-forms-how-to-detect-enter-press-in-entry-inside-a-view-model)
-
-
         CommunicationService client;
         LoginPhonePageViewModel viewModel;
 

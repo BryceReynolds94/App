@@ -8,9 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TeleSharp.TL;
 using TeleSharp.TL.Account;
+using TeleSharp.TL.Auth;
 using TeleSharp.TL.Messages;
 using TeleSharp.TL.Updates;
 using TeleSharp.TL.Upload;
@@ -45,47 +47,87 @@ namespace AlarmManagerT.Services {
         private string clientRequestCodeHash = null;
         private string clientPhoneNumber = null;
 
-        public enum STATUS { NEW, OFFLINE, WAIT_PHONE, WAIT_CODE, AUTHORISED };
+        public enum STATUS { NEW, OFFLINE, WAIT_PHONE, WAIT_CODE, WAIT_PASSWORD, AUTHORISED };
 
         public enum MESSAGING_KEYS { USER_DATA_CHANGED};
 
         public CommunicationService() {
-            connectClient();
+            _ = connectClient();
         }
 
-        public async Task<bool> reloadConnection() {
+        public async Task reloadConnection() {
             if(clientStatus == STATUS.OFFLINE || clientStatus == STATUS.NEW) {
-                return await connectClient();
+                await connectClient();
             }
-            return true;
         }
 
         public event EventHandler StatusChanged;
 
-        private async Task<bool> connectClient() {
+        private async Task connectClient() {
             clientStatus = STATUS.OFFLINE;
             try {
                 client = new TelegramClient(API_ID, API_HASH, new MySessionStore(this));
             } catch (Exception e) {
                 Logger.Error(e, "Initialisation of TelegramClient failed");
-                return false;
+                return;
             }
 
-            await client.ConnectAsync();
+            try {
+                await client.ConnectAsync();
+            }catch (Exception e) {
+                Logger.Error(e, "Exception during connection attempt");
+                Logger.Error("Fatal Problem with client. Clearing session store and starting again.");
+
+                new MySessionStore(this).Clear();
+                _ = connectClient();
+                return;
+            }
             clientStatus = STATUS.NEW;
+
 
             if (client.IsUserAuthorized()) {
                 Logger.Debug("User is authorised allready.");
                 clientStatus = STATUS.AUTHORISED;
                 saveUserData(await getUser());
 
-                string token = await CrossFirebasePushNotification.Current.GetTokenAsync();
-                //await subscribePushNotifications(token); //TODO: Only do this on login?
+
             } else {
                 Logger.Debug("User is not authorised. Awaiting login data.");
                 clientStatus = STATUS.WAIT_PHONE;
             }
-            return true;
+        }
+
+        public async Task logoutUser() {
+            if(clientStatus != STATUS.AUTHORISED) {
+                Logger.Warn("Attempted to logout user without authorisation. Current state: " + clientStatus.ToString());
+                return;
+            }
+            Logger.Debug("Loggin out user.");
+
+            string token = await CrossFirebasePushNotification.Current.GetTokenAsync(); //TODO: Check this
+
+            TLRequestUnregisterDevice unregisterRequest = new TLRequestUnregisterDevice() {
+                TokenType = 2,
+                Token = token
+            };
+
+            try {
+                await client.SendRequestAsync<TLAbsBool>(unregisterRequest); //https://core.telegram.org/method/account.unregisterDevice
+            } catch(Exception e) {
+                Logger.Error(e, "Exception while trying to unregister device.");
+            }
+
+            try {
+                await client.SendRequestAsync<TLAbsBool>(new TLRequestLogOut()); //https://core.telegram.org/method/auth.logOut
+            } catch(Exception e) {
+                Logger.Error(e, "Exception while trying to logout user.");
+            }
+
+            clientStatus = STATUS.NEW;
+
+            new MySessionStore(this).Clear();
+            
+            await reloadConnection();
         }
 
         public async Task subscribePushNotifications(string token) {
@@ -94,7 +136,7 @@ namespace AlarmManagerT.Services {
                 return;
             }
 
-            TLRequestRegisterDevice request = new TLRequestRegisterDevice() {
+            TLRequestRegisterDevice request = new TLRequestRegisterDevice() { //https://core.telegram.org/method/account.registerDevice
                 TokenType = 2, //2 = FCM, use  for APNs
                 Token = token
             };
@@ -107,26 +149,51 @@ namespace AlarmManagerT.Services {
 
         }
 
+        public async Task<TStatus> loginWithPassword(string password) {
+            if(clientStatus != STATUS.WAIT_PASSWORD) {
+                Logger.Warn("Attempted to perform 2FA without appropriate client status. Current status: " + clientStatus.ToString());
+                return TStatus.WRONG_CLIENT_STATUS;
+            }
+
+            TLPassword passwordConfig;
+            try {
+                passwordConfig = await client.GetPasswordSetting();
+            }catch(Exception e) {
+                Logger.Error(e, "Exception occured while trying to receive password configuration");
+                return TStatus.UNKNOWN;
+            }
+
+            TLUser user;
+            try {
+                user = await client.MakeAuthWithPasswordAsync(passwordConfig, password);
+            }catch(Exception e) {
+                
+                TException exception = getTException(e.Message);
+                switch (exception) {
+                    case TException.PASSWORD_HASH_INVALID:
+                        Logger.Info(e, "Invalid password entered.");
+                        return TStatus.INVALID_PASSWORD;
+                    default:
+                        Logger.Error(e, "Unknown exception occured while trying to perform authentication with password");
+                        return TStatus.UNKNOWN;
+                }
+            }
+
+            loginCompleted(user);
+            return TStatus.OK;
+        }
+
         public async Task<TStatus> requestCode(string phoneNumber) {
-            if (clientStatus != STATUS.WAIT_PHONE) {
+            if (clientStatus != STATUS.WAIT_PHONE && clientStatus != STATUS.WAIT_CODE && clientStatus != STATUS.WAIT_PASSWORD) {
                 Logger.Warn("Attempted to register phone number without appropriate client status. Current status: " + clientStatus.ToString());
                 return TStatus.WRONG_CLIENT_STATUS;
             }
 
             clientPhoneNumber = phoneNumber;
 
-            //TODO: check if user is registered first
-            //await client.IsPhoneRegisteredAsync(phoneNumber);
-
-            TLMethod requestCode = new TeleSharp.TL.Auth.TLRequestSendCode() {
-                PhoneNumber = clientPhoneNumber,
-                ApiId = API_ID,
-                ApiHash = API_HASH
-            };
-
-            TeleSharp.TL.Auth.TLSentCode code;
+            string hash;
             try {
-                code = await client.SendRequestAsync<TeleSharp.TL.Auth.TLSentCode>(requestCode);
+                hash = await client.SendCodeRequestAsync(phoneNumber);
             } catch (Exception e) {
 
                 TException exception = getTException(e.Message);
@@ -137,29 +204,24 @@ namespace AlarmManagerT.Services {
                         return TStatus.UNKNOWN;
                     case TException.NETWORK_MIGRATE_X:
                     case TException.PHONE_MIGRATE_X:
-                        //TODO: Handle this. Should not really ever occur - test in debugging
-                        break;
+                        Logger.Error(e, "Unexpected migration error while trying to authenticate user.");
+                        return TStatus.UNKNOWN;
                     case TException.PHONE_NUMBER_BANNED:
                     case TException.PHONE_NUMBER_FLOOD:
                     case TException.PHONE_NUMBER_INVALID:
                     case TException.PHONE_PASSWORD_FLOOD:
                         Logger.Warn(e, "Authenticating user failed.");
                         return TStatus.INVALID_PHONE_NUMBER;
-                    //TODO: Inform user that phone number is invalid/blocked
-                    case TException.PHONE_PASSWORD_PROTECTED:
-                        //TODO: Implement 2FA for password protected accounts
-                        break;
 
                     case TException.AUTH_RESTART:
-                        //TODO: Handle relogin scenario
-                        break;
+                        Logger.Warn(e, "Authentication was restarted.");
+                        return await requestCode(phoneNumber);
                     default:
                         Logger.Error(e, "Unknown exception while trying to authenticate user.");
                         return TStatus.UNKNOWN;
                 }
-                return TStatus.UNKNOWN;
             }
-            clientRequestCodeHash = code.PhoneCodeHash;
+            clientRequestCodeHash = hash;
             clientStatus = STATUS.WAIT_CODE;
 
             return TStatus.OK;
@@ -173,17 +235,40 @@ namespace AlarmManagerT.Services {
 
             try {
                 user = await client.MakeAuthAsync(clientPhoneNumber, clientRequestCodeHash, code);
+            } catch (CloudPasswordNeededException e) {
+                Logger.Info(e, "Two factor authentication needed.");
+                clientStatus = STATUS.WAIT_PASSWORD;
+                return TStatus.PASSWORD_REQUIRED;
+            }catch (InvalidPhoneCodeException e) {
+                Logger.Info(e, "Incorrect code entered.");
+                return TStatus.INVALID_CODE;                
             } catch (Exception e) {
                 Logger.Error(e, "Authenticating user code failed.");
                 return TStatus.UNKNOWN;
             }
-            saveUserData(user);
-            clientStatus = STATUS.AUTHORISED;
-            //TODO: Implement subscribePushNotifications(CrossFirebasePushNotification.Current.Token);
+
+            loginCompleted(user);
             return TStatus.OK;
         }
 
+        private void loginCompleted(TLUser user) {
+            saveUserData(user);
+            clientStatus = STATUS.AUTHORISED;
+
+            string token = CrossFirebasePushNotification.Current.Token;
+            if (token.Length > 1) {
+                _ = Task.Delay(500).ContinueWith((r) => subscribePushNotifications(token));
+            } else {
+                Logger.Warn("Could not subscribe to FCM Messages as no token available");
+            }
+        }
+
         public async void saveUserData(TLUser user) {
+            if(user == null) {
+                Logger.Error("Attempting to save null user.");
+                return;
+            }
+
             TLUserProfilePhoto photo = (user.Photo as TLUserProfilePhoto);
             bool hasPhoto = false;
             if (photo != null) {
@@ -213,7 +298,7 @@ namespace AlarmManagerT.Services {
                 return new TLVector<TLAbsChat>();
             }
 
-            TLMethod requestDialogList = new TLRequestGetDialogs() {
+            TLMethod requestDialogList = new TLRequestGetDialogs() { //https://core.telegram.org/method/messages.getDialogs
                 OffsetPeer = new TLInputPeerSelf(),
                 Limit = 100
             };
@@ -247,7 +332,7 @@ namespace AlarmManagerT.Services {
         }
 
         public async Task<TLFile> getProfilePic(int chatID) {
-            TLRequestGetChats request = new TLRequestGetChats() {
+            TLRequestGetChats request = new TLRequestGetChats() { //https://core.telegram.org/method/messages.getChats
                 Id = new TLVector<int>() { chatID }
             };
 
@@ -266,7 +351,7 @@ namespace AlarmManagerT.Services {
 
         public async Task<TLUser> getUser() {
 
-            TLRequestGetUsers request = new TLRequestGetUsers() {
+            TLRequestGetUsers request = new TLRequestGetUsers() { //https://core.telegram.org/method/users.getUsers
                 Id = new TLVector<TLAbsInputUser> { new TLInputUser() { UserId = user.Id, AccessHash = (long)user.AccessHash } }
             };
 
@@ -282,13 +367,47 @@ namespace AlarmManagerT.Services {
             return user;
         }
 
+        public async Task<int> getCurrentMessageID(int chatID) {
+            if (clientStatus != STATUS.AUTHORISED) {
+                Logger.Warn("Attempting to get message ID without user authorisation. Current status: " + clientStatus.ToString());
+                return 0;
+            }
+
+            TLRequestGetHistory request = new TLRequestGetHistory() { //https://core.telegram.org/method/messages.getHistory
+                Peer = new TLInputPeerChat() { ChatId = chatID },
+                Limit = 1
+            };
+
+            TLAbsMessages messages;
+            try {
+                messages = await client.SendRequestAsync<TLAbsMessages>(request);
+            } catch (Exception e) {
+                Logger.Error(e, "Exception while trying to retrieve messages.");
+                return 0;
+            }
+
+            TLAbsMessage msg;
+            if(messages is TLMessages) {
+                msg = (messages as TLMessages).Messages[0];
+            }else if(messages is TLMessagesSlice) {
+                msg = (messages as TLMessagesSlice).Messages[0];
+            } else {
+                return 0;
+            }
+
+            if(msg is TLMessage) {
+                return (msg as TLMessage).Id;
+            }
+            return 0;
+        }
+
         public async Task<TLAbsMessages> getMessages(int chatID, int lastMessageID) {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempting to get messages without user authorisation. Current status: " + clientStatus.ToString());
                 return new TLMessages();
             }
 
-            TLRequestGetHistory request = new TLRequestGetHistory() {
+            TLRequestGetHistory request = new TLRequestGetHistory() { //https://core.telegram.org/method/messages.getHistory
                 Peer = new TLInputPeerChat() {ChatId = chatID},
                 Limit = 100,
                 MinId = lastMessageID + 1
@@ -311,25 +430,31 @@ namespace AlarmManagerT.Services {
                 this.client = client;
             }
 
-            public static string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "session");
+            public static string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "CommunicationServiceSession");
             public void Save(Session session) {
 
-                using (FileStream fileStream = new FileStream(string.Format(file, (object)session.SessionUserId), FileMode.OpenOrCreate)) {
+                using (FileStream fileStream = new FileStream(file, FileMode.OpenOrCreate)) {
                     byte[] bytes = session.ToBytes();
                     fileStream.Write(bytes, 0, bytes.Length);
                 }
             }
 
             public Session Load(string sessionUserId) {
-
-                string path = string.Format(file, (object)sessionUserId);
-                if (!File.Exists(path))
+;
+                if (!File.Exists(file)) {
                     return (Session)null;
+                }
 
-                var buffer = File.ReadAllBytes(path);
+                var buffer = File.ReadAllBytes(file);
                 Session session = Session.FromBytes(buffer, this, sessionUserId);
                 client.user = session.TLUser;
                 return session;
+            }
+
+            public void Clear() {
+                if (File.Exists(file)) {
+                    File.Delete(file);
+                }
             }
         }
 

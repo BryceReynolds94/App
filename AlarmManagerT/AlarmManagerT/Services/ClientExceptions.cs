@@ -24,6 +24,7 @@ namespace AlarmManagerT.Services
             PHONE_PASSWORD_FLOOD,
             PHONE_PASSWORD_PROTECTED,
             SMS_CODE_CREATE_FAILED,
+            PASSWORD_HASH_INVALID,
 
             UNKNOWN,
         }
@@ -31,7 +32,12 @@ namespace AlarmManagerT.Services
         public enum TStatus
         {
             WRONG_CLIENT_STATUS,
+            PASSWORD_REQUIRED,
             INVALID_PHONE_NUMBER,
+            NO_PHONE_NUMBER,
+            INVALID_CODE,
+            NO_CODE,
+            INVALID_PASSWORD,
             UNKNOWN,
             OK
 

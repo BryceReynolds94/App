@@ -8,14 +8,18 @@
              Title="{Binding Title}"
              x:Class="AlarmManagerT.Views.LoginPhonePage">
     <ContentPage.Content>
-        <StackLayout Padding="10" IsVisible="True">
-            <StackLayout VerticalOptions="CenterAndExpand">
-                <Label Text="{x:Static resources:AppResources.LoginPhonePage_Prompt}"
-                    HorizontalOptions="Center" HorizontalTextAlignment="Center"  Margin="30,0"/>
-                <Entry Text="{Binding PhoneNumber}" Placeholder="{x:Static resources:AppResources.LoginPhonePage_PhoneNumber_Placeholder}" Keyboard="Telephone"  Margin="30,0"  />
+        <StackLayout Padding="10" IsVisible="True" VerticalOptions="CenterAndExpand">
+            <StackLayout VerticalOptions="Center">
+                <Label Text="{x:Static resources:AppResources.LoginPhonePage_Prompt}" HorizontalOptions="Center" HorizontalTextAlignment="Center"  Margin="30,0"/>
+                <Entry Text="{Binding PhoneNumber}" 
+                       Placeholder="{Binding PhoneNumberHint}" 
+                       Keyboard="Telephone"  
+                       Margin="30,0" 
+                       ReturnCommand="{Binding Return}"
+                       ClearButtonVisibility="WhileEditing" />
                 <Label Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="{StaticResource WarningColor}" TextColor="White" Padding="10" Margin="30,0"/>
             </StackLayout>
-            <Button Text="{x:Static resources:AppResources.LoginPhonePage_NextBtn}" HorizontalOptions="End" VerticalOptions="End" Command="{Binding Next}"/>
+            <Button Text="{x:Static resources:AppResources.LoginPhonePage_NextBtn}" HorizontalOptions="Center" Command="{Binding Next}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

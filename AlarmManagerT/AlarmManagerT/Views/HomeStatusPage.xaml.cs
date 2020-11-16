@@ -54,6 +54,8 @@ namespace AlarmManagerT.Views
             MessagingCenter.Subscribe<AlertStatusViewModel, AlertConfig>(this, AlertStatusViewModel.MESSAGING_KEYS.EDIT_ALERT_CONFIG.ToString(), (obj, alertConfig) => editAlertConfig(alertConfig));
             MessagingCenter.Subscribe<AlertStatusViewModel, AlertConfig>(this, AlertStatusViewModel.MESSAGING_KEYS.DELETE_ALERT_CONFIG.ToString(), (obj, alertConfig) => deleteAlertConfig(alertConfig));
             MessagingCenter.Subscribe<AlertStatusViewModel, Action<DateTime>>(this, AlertStatusViewModel.MESSAGING_KEYS.REQUEST_SNOOZE_TIME.ToString(), (obj, callback) => snoozeTimeRequest(obj, callback));
+
+            MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => deleteAllAlertConfigs());
         }
 
         protected override void OnAppearing()
@@ -66,13 +68,21 @@ namespace AlarmManagerT.Views
             bool allSnoozed = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue.Ticks) > DateTime.Now.Ticks;
             viewModel.setWarningState(allOff, allSnoozed);
 
-            if (viewModel.alertList.Count == 0)
+            if (viewModel.alertList.Count == 0) {
                 viewModel.IsBusy = true;
+            }
         }
 
         private async void editAlertConfig(AlertConfig alertConfig)
         {
             await Navigation.PushAsync(new ConfigureGroupPage(client, alertConfig));
+        }
+
+        private void deleteAllAlertConfigs() {
+            Collection<AlertConfig> configs = getAlertConfigs();
+            foreach(AlertConfig config in configs) {
+                deleteAlertConfig(config);
+            }
         }
 
         private void deleteAlertConfig(AlertConfig alertConfig)
@@ -107,6 +117,7 @@ namespace AlarmManagerT.Views
         private async void addConfig(object sender, EventArgs eventArgs)
         {
             AlertConfig alertConfig = new AlertConfig();
+            alertConfig.activeTimeConfig.initDays();
             await Navigation.PushAsync(new ConfigureGroupPage(client, alertConfig));
         }
 
@@ -124,9 +135,9 @@ namespace AlarmManagerT.Views
             DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, state.Ticks);
         }
 
-        private void alertConfigSaved(AlertConfig alertConfig)
+        private async void alertConfigSaved(AlertConfig alertConfig)
         {
-            INotifications notifications = DependencyService.Get<INotifications>(); //TODO: Check - does this work with updates
+            INotifications notifications = DependencyService.Get<INotifications>();
             notifications.addNotificationChannel(alertConfig);
 
             if (!alertList.Contains(alertConfig))
@@ -141,12 +152,12 @@ namespace AlarmManagerT.Views
 
             if(Device.RuntimePlatform == Device.Android && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, false))
             {
-                showDNDPermissionPrompt();
+                await showDNDPermissionPrompt();
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
             }
         }
 
-        private async void showDNDPermissionPrompt()
+        private async Task showDNDPermissionPrompt()
         {
             await DisplayAlert(AppResources.HomeStatusPage_DNDPermissionPrompt_Title, AppResources.HomeStatusPage_DNDPermissionPrompt_Message, AppResources.HomeStatusPage_DND_PermissionPrompt_Confirm);
 
@@ -175,7 +186,7 @@ namespace AlarmManagerT.Views
         {
             string cancelText = AppResources.HomeStatusPage_Snooze_Cancel;
             Dictionary<string, TimeSpan> timeDict = new Dictionary<string, TimeSpan>();
-            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Hours, 3), new TimeSpan(3, 0, 0)); //TODO: Check format strings work
+            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Hours, 3), new TimeSpan(3, 0, 0)); 
             timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Hours, 12), new TimeSpan(12, 0, 0));
             timeDict.Add(AppResources.HomeStatusPage_Snooze_Day, new TimeSpan(1, 0, 0, 0));
             timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Days, 2), new TimeSpan(2, 0, 0, 0));

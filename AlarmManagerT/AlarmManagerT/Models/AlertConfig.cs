@@ -27,8 +27,6 @@ namespace AlarmManagerT.Models
 
         public DateTime lastTriggered = DateTime.MinValue;
 
-        public int lastMessageID = 0;
-
         public void saveChanges()
         {
             DataService.saveAlertConfig(this);

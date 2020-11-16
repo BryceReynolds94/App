@@ -41,14 +41,6 @@ namespace AlarmManagerT.Droid
             new AndroidNotifications().SetupNotificationChannels(); //Application has to be loaded first
         }
 
-        //TODO: Check if this is ever called and remove if unnecessary
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
-        {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-
         private Alert GetAlertFromIntent(Intent intent)
         {
             if (intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString())){

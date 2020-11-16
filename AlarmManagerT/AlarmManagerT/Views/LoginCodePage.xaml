@@ -8,14 +8,21 @@
              Title="{Binding Title}"
              x:Class="AlarmManagerT.Views.LoginCodePage">
     <ContentPage.Content>
-        <StackLayout Padding="10">
-            <StackLayout VerticalOptions="CenterAndExpand">
-                <Label Text="{x:Static resources:AppResources.LoginCodePage_Prompt}"
-                HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="30,0"/>
-                <Entry Placeholder="{x:Static resources:AppResources.LoginCodePage_Code_Placeholder}" Text="{Binding CodeText}" Keyboard="Numeric" WidthRequest="100" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
-                <Label Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="#F44336" TextColor="White" Padding="10" Margin="30,0"/>
+        <StackLayout Padding="10" VerticalOptions="CenterAndExpand">
+            <StackLayout VerticalOptions="Center">
+                <Label Text="{x:Static resources:AppResources.LoginCodePage_Prompt}" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="30,0"/>
+                <Entry Placeholder="{x:Static resources:AppResources.LoginCodePage_Code_Placeholder}" 
+                       Text="{Binding CodeText}"
+                       MaxLength="5"
+                       Keyboard="Numeric" 
+                       WidthRequest="150" 
+                       HorizontalOptions="Center" 
+                       HorizontalTextAlignment="Center" 
+                       ReturnCommand="{Binding Return}"
+                       ClearButtonVisibility="WhileEditing"/>
+                <Label Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="{StaticResource WarningColor}" TextColor="White" Padding="10" Margin="30,0"/>
             </StackLayout>
-            <Button Text="{x:Static resources:AppResources.LoginCodePage_NextBtn}" HorizontalOptions="End" Command="{Binding Next}"/>
+            <Button Text="{x:Static resources:AppResources.LoginCodePage_NextBtn}" HorizontalOptions="Center" Command="{Binding Next}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

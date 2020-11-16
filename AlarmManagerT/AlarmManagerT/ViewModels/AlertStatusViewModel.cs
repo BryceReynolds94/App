@@ -86,7 +86,7 @@ namespace AlarmManagerT.ViewModels
             get {
                 if (alertConfig.snoozeActive)
                 {
-                    return string.Format(AppResources.AlertStatus_Status_Deactivated, alertConfig.snoozeTime); //TODO: Check if format string works
+                    return string.Format(AppResources.AlertStatus_Status_Deactivated, alertConfig.snoozeTime);
                 }
                 else if (alertConfig.lastTriggered > DateTime.MinValue)
                 {

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using static AlarmManagerT.Services.ClientExceptions;
@@ -13,15 +14,27 @@ namespace AlarmManagerT.ViewModels
         private TStatus errorStatus = TStatus.OK;
 
         public Command Next { get; set; }
+        public Command Return { get; set; }
 
         public LoginCodePageViewModel()
         {
             Title = AppResources.LoginCodePage_Title;
-            Next = new Command(() => RequestAuthenticate.Invoke(this, CodeText));
+            Next = new Command(() => commitCode());
+            Return = new Command(() => commitCode());
         }
 
         public StringEventHandler RequestAuthenticate;
         public delegate void StringEventHandler(object sender, string load);
+
+        private void commitCode() {
+            string code = CodeText;
+            
+            if(code.Length != 5 || !Regex.IsMatch(code, "[0-9]{5}")) {
+                updateErrorState(TStatus.NO_CODE);
+                return;
+            }
+            RequestAuthenticate.Invoke(this, code);
+        }
 
         public void updateErrorState(TStatus newStatus)
         {
@@ -38,6 +51,10 @@ namespace AlarmManagerT.ViewModels
             get {
                 switch (errorStatus)
                 {
+                    case TStatus.NO_CODE:
+                        return AppResources.LoginCodePage_Error_NoCode;
+                    case TStatus.INVALID_CODE:
+                        return AppResources.LoginCodePage_Error_InvalidCode;
                     default:
                         return AppResources.LoginCodePage_Error_Default;
                 }

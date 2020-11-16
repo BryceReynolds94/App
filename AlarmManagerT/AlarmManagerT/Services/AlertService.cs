@@ -66,7 +66,7 @@ namespace AlarmManagerT.Services {
             }
 
             foreach (AlertConfig config in configList) {
-                TLAbsMessages result = await client.getMessages(config.triggerGroup.id, config.lastMessageID);
+                TLAbsMessages result = await client.getMessages(config.triggerGroup.id, config.triggerGroup.lastMessageID);
                 TLVector<TLAbsMessage> messageList;
 
                 if (result is TLMessages) {
@@ -84,7 +84,7 @@ namespace AlarmManagerT.Services {
                 } else {
                     foreach (TLAbsMessage rawMessage in messageList) {
                         if (rawMessage is TLMessage) {
-                            config.lastMessageID = (rawMessage as TLMessage).Id; //TODO: Implement messageID initialisation when creating alertConfig
+                            config.triggerGroup.lastMessageID = (rawMessage as TLMessage).Id;
                             break;
                         } else {
                             messageList.Remove(rawMessage);

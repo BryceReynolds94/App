@@ -27,7 +27,9 @@
     <None Remove="Images\icon_settings.svg" />
     <None Remove="Images\icon_share.svg" />
     <None Remove="Images\icon_trigger.svg" />
+    <None Remove="Images\launcher_dark.svg" />
     <None Remove="Images\launcher_icon.svg" />
+    <None Remove="Images\launcher_light.svg" />
     <None Remove="Images\user_default.svg" />
   </ItemGroup>
 
@@ -48,11 +50,14 @@
     <EmbeddedResource Include="Images\icon_settings.svg" />
     <EmbeddedResource Include="Images\icon_share.svg" />
     <EmbeddedResource Include="Images\icon_trigger.svg" />
+    <EmbeddedResource Include="Images\launcher_dark.svg" />
     <EmbeddedResource Include="Images\launcher_icon.svg" />
+    <EmbeddedResource Include="Images\launcher_light.svg" />
     <EmbeddedResource Include="Images\user_default.svg" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="libphonenumber-csharp" Version="8.12.11" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.7.5" />
     <PackageReference Include="Plugin.FirebasePushNotification" Version="3.3.10" />
@@ -66,6 +71,12 @@
     <EmbeddedResource Update="Resources\AppResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\LoginPasswordPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\AboutPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\AlertPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>

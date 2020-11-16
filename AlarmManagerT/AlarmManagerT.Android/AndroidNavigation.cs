@@ -24,7 +24,7 @@ namespace AlarmManagerT.Droid
         {
             Intent intent = new Intent(Settings.ActionAppNotificationSettings);
             intent.PutExtra(Settings.ExtraAppPackage, Application.Context.PackageName); 
-            Platform.CurrentActivity.StartActivity(intent); //TODO: This crashes since change to notification groups
+            Platform.CurrentActivity.StartActivity(intent);
         }
 
         public void navigateNotificationPolicyAccess()
@@ -72,7 +72,10 @@ namespace AlarmManagerT.Droid
 
         public void quitApplication()
         {
-            //TODO: Implement this
+            Intent intent = new Intent(Intent.ActionMain) //TODO: Testing
+                .AddCategory(Intent.CategoryHome)
+                .AddFlags(ActivityFlags.NewTask);
+            Platform.CurrentActivity.StartActivity(intent);
         }
 
     }

@@ -18,7 +18,10 @@ namespace AlarmManagerT.Services
             CrossFirebasePushNotification.Current.OnTokenRefresh += async (s, args) =>
                 {
                     Logger.Info("Firebase token was updated, TOKEN: {0}", args.Token);
-                    await client.subscribePushNotifications(args.Token); //TODO: Check token updates and initialisation
+
+                    if (client.clientStatus == CommunicationService.STATUS.AUTHORISED) {
+                        await client.subscribePushNotifications(args.Token);
+                    }
                 };
 
             //foreground notification listener

@@ -15,7 +15,7 @@
             <RadioButton Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Server}" IsChecked="{Binding TriggerTypeServer}" GroupName="Trigger"/>
             <RadioButton x:Name="BtnKeyword" Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Keyword}" IsChecked="{Binding TriggerTypeKeyword}" GroupName="Trigger"/>
 
-            <Grid IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}" VerticalOptions="Start" Padding="20,0">
+            <Grid x:Name="GridKeyword" IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}" VerticalOptions="Start" Padding="20,0">
                 <Grid.RowDefinitions>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="Auto"/>
@@ -25,8 +25,8 @@
 					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
 
-                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Keyword_Hint}" Grid.Row="1" HorizontalOptions="End" VerticalOptions="Center"/>
-                <Entry Text="{Binding KeywordText}"  Placeholder="{x:Static resources:AppResources.ConfigureKeywordPage_Keyword_Placeholder}"  Grid.ColumnSpan="2"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Keyword_Hint}" Grid.Row="1" HorizontalOptions="End" VerticalOptions="Center" IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}"/>
+                <Entry Text="{Binding KeywordText}"  Placeholder="{x:Static resources:AppResources.ConfigureKeywordPage_Keyword_Placeholder}"  Grid.ColumnSpan="2" IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}" />
                 
             </Grid>
 
@@ -50,24 +50,27 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Monday}" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Monday}" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
                 <CheckBox Grid.Row="1" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding MondayActive}" />
-                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Tuesday}" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
-                <CheckBox Grid.Row="1" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding TuesdayActive}"/>
-                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Wednesday}" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
-                <CheckBox Grid.Row="1" Grid.Column="2" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding WednesdayActive}"/>
-                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Thursday}" Grid.Column="3" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
-                <CheckBox Grid.Row="1" Grid.Column="3" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding ThursdayActive}"/>
-                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Friday}" Grid.Column="4" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
-                <CheckBox Grid.Row="1" Grid.Column="4" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding FridayActive}"/>
-                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Saturday}" Grid.Column="5" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
-                <CheckBox Grid.Row="1" Grid.Column="5" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding SaturdayActive}"/>
-                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Sunday}" Grid.Column="6" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
-                <CheckBox Grid.Row="1" Grid.Column="6" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding SundayActive}"/>
-
-                <TimePicker Grid.Row="2" Grid.ColumnSpan="2" HorizontalOptions="Start" />
-                <TimePicker Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" HorizontalOptions="Start" />
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Tuesday}" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding TuesdayActive}" />
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Wednesday}" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="2" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding WednesdayActive}" />
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Thursday}" Grid.Column="3" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="3" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding ThursdayActive}" />
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Friday}" Grid.Column="4" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="4" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding FridayActive}" />
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Saturday}" Grid.Column="5" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="5" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding SaturdayActive}" />
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Sunday}" Grid.Column="6" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="6" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding SundayActive}" />
             </Grid>
+            <StackLayout Padding="20,0" Orientation="Horizontal" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" HorizontalOptions="Center">
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_From}" VerticalOptions="Center" />
+                <TimePicker HorizontalOptions="Start" Time="{Binding FromTime}" Format="t" />
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_To}" VerticalOptions="Center" />
+                <TimePicker  HorizontalOptions="Start" Time="{Binding ToTime}" Format="t" />
+            </StackLayout>
 
 
             <Button Text="{x:Static resources:AppResources.ConfigureKeywordPage_NextBtn}" HorizontalOptions="End" Command="{Binding NextClickedCommand}"/>
