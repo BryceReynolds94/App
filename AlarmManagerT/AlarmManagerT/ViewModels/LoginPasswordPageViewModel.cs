@@ -19,8 +19,6 @@ namespace AlarmManagerT.ViewModels {
             Return = new Command(() => RequestAuthenticate.Invoke(this, Password));
             Next = new Command(() => RequestAuthenticate.Invoke(this, Password));
 
-            //TODO: Finish Password page layout
-
         }
 
         public StringEventHandler RequestAuthenticate;

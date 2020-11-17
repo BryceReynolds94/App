@@ -64,7 +64,7 @@
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"/>
-                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="30"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
@@ -83,7 +83,7 @@
                                 </Frame>
                                 <Label Text="{Binding GroupName}" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="2"/>
 
-                                <ffimageloadingsvg:SvgCachedImage Grid.Row="1" Source="resource://AlarmManagerT.Images.icon_trigger.svg" />
+                                <ffimageloadingsvg:SvgCachedImage Grid.Row="1" Source="resource://AlarmManagerT.Images.icon_trigger.svg" HeightRequest="30"/>
                                 <Label Text="{Binding KeywordText}" Grid.Row="1" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="4"/>
 
                                 <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Source="{Binding StatusFieldPic}" />

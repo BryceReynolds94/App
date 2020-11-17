@@ -117,6 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AboutPage_App_Name" xml:space="preserve">
+    <value>PagerBuddy</value>
+  </data>
+  <data name="AboutPage_App_VersionInfo" xml:space="preserve">
+    <value>version {0} ({1})</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_HideDeveloperModeBtn" xml:space="preserve">
+    <value>Hide Developer Mode</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_RestartClientBtn" xml:space="preserve">
+    <value>Restart Client</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_ShareLogBtn" xml:space="preserve">
+    <value>Share Log</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_ShowAlertPageBtn" xml:space="preserve">
+    <value>Show Alert Page</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_TestFCMMessageBtn" xml:space="preserve">
+    <value>Test FCM Message</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_TestNotificationBtn" xml:space="preserve">
+    <value>Test Notification</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_TestNotification_Message" xml:space="preserve">
+    <value>TEST NOTIFICATION</value>
+  </data>
   <data name="AboutPage_Title" xml:space="preserve">
     <value>About</value>
   </data>
@@ -131,6 +158,12 @@
   </data>
   <data name="Android_AndroidNotifications_AlertChannel_Title" xml:space="preserve">
     <value>Alert Notifications</value>
+  </data>
+  <data name="App_DeveloperMode_AlertPage_Message" xml:space="preserve">
+    <value>TEST NOTIFICATION</value>
+  </data>
+  <data name="App_DeveloperMode_AlertPage_Title" xml:space="preserve">
+    <value>Test Alert Group Title</value>
   </data>
   <data name="ConfigureGroupPage_Title" xml:space="preserve">
     <value>Select Chat</value>

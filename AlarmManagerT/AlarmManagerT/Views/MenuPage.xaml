@@ -39,18 +39,11 @@
                 <TapGestureRecognizer Command="{Binding Share}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
-        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
+        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0" VerticalOptions="StartAndExpand">
             <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Images.icon_about.svg"/>
             <Label Text="{x:Static resources:AppResources.MenuPage_Action_About}" FontSize="Large" VerticalOptions="Center"/>
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding About}"/>
-            </StackLayout.GestureRecognizers>
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0" VerticalOptions="StartAndExpand">
-            <ffimageloadingsvg:SvgCachedImage Margin="5"/>
-            <Label Text="Test" FontSize="Large" VerticalOptions="Center"/>
-            <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding Test}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
         <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,20" VerticalOptions="End">

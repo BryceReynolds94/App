@@ -28,6 +28,8 @@ namespace AlarmManagerT.Views {
             client = new CommunicationService();
 
             Detail = new NavigationPage(new HomeStatusPage(client));
+
+            MessagingCenter.Subscribe<AboutPage>(this, AboutPage.MESSAGING_KEYS.RESTART_CLIENT.ToString(), async (sender) => await client.forceReloadConnection());
         }
 
         public async Task NavigateFromMenu(MenuPage.MENU_PAGE destination) {

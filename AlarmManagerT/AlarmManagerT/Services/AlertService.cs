@@ -93,7 +93,7 @@ namespace AlarmManagerT.Services {
                 }
 
                 foreach (TLAbsMessage rawMessage in messageList) {
-                    //TODO: Test this
+                    //TODO: Testing
                     if (!(rawMessage is TLMessage)) {
                         break;
                     }

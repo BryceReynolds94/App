@@ -34,10 +34,5 @@ namespace AlarmManagerT.Models
             this.hasPic = hasPic;
         }
 
-        public static Alert getTestSample(string testPoint) //TODO: RBF
-        {
-            return new Alert("TEST ALERT", testPoint, "NO GUID AS TEST", 1234, false);
-        }
-
     }
 }

@@ -61,6 +61,87 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PagerBuddy.
+        /// </summary>
+        public static string AboutPage_App_Name {
+            get {
+                return ResourceManager.GetString("AboutPage_App_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to version {0} ({1}).
+        /// </summary>
+        public static string AboutPage_App_VersionInfo {
+            get {
+                return ResourceManager.GetString("AboutPage_App_VersionInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide Developer Mode.
+        /// </summary>
+        public static string AboutPage_DeveloperMode_HideDeveloperModeBtn {
+            get {
+                return ResourceManager.GetString("AboutPage_DeveloperMode_HideDeveloperModeBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart Client.
+        /// </summary>
+        public static string AboutPage_DeveloperMode_RestartClientBtn {
+            get {
+                return ResourceManager.GetString("AboutPage_DeveloperMode_RestartClientBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share Log.
+        /// </summary>
+        public static string AboutPage_DeveloperMode_ShareLogBtn {
+            get {
+                return ResourceManager.GetString("AboutPage_DeveloperMode_ShareLogBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Alert Page.
+        /// </summary>
+        public static string AboutPage_DeveloperMode_ShowAlertPageBtn {
+            get {
+                return ResourceManager.GetString("AboutPage_DeveloperMode_ShowAlertPageBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test FCM Message.
+        /// </summary>
+        public static string AboutPage_DeveloperMode_TestFCMMessageBtn {
+            get {
+                return ResourceManager.GetString("AboutPage_DeveloperMode_TestFCMMessageBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TEST NOTIFICATION.
+        /// </summary>
+        public static string AboutPage_DeveloperMode_TestNotification_Message {
+            get {
+                return ResourceManager.GetString("AboutPage_DeveloperMode_TestNotification_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Notification.
+        /// </summary>
+        public static string AboutPage_DeveloperMode_TestNotificationBtn {
+            get {
+                return ResourceManager.GetString("AboutPage_DeveloperMode_TestNotificationBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string AboutPage_Title {
@@ -102,6 +183,24 @@ namespace AlarmManagerT.Resources {
         public static string Android_AndroidNotifications_AlertChannel_Title {
             get {
                 return ResourceManager.GetString("Android_AndroidNotifications_AlertChannel_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TEST NOTIFICATION.
+        /// </summary>
+        public static string App_DeveloperMode_AlertPage_Message {
+            get {
+                return ResourceManager.GetString("App_DeveloperMode_AlertPage_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Alert Group Title.
+        /// </summary>
+        public static string App_DeveloperMode_AlertPage_Title {
+            get {
+                return ResourceManager.GetString("App_DeveloperMode_AlertPage_Title", resourceCulture);
             }
         }
         

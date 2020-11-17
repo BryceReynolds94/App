@@ -9,12 +9,16 @@ using Plugin.FirebasePushNotification;
 using AlarmManagerT.Interfaces;
 using System.Threading.Tasks;
 using AlarmManagerT.Models;
+using Xamarin.Essentials;
+using System.Collections.ObjectModel;
+using AlarmManagerT.Resources;
 
 namespace AlarmManagerT
 {
     //TODO: Refactoring: Move Images folder into Resources folder -- all XML usage has to be refactored
     public partial class App : Application
     {
+        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public App(bool isAlert, Alert alert)
         {
             initialise(isAlert, alert);
@@ -31,8 +35,9 @@ namespace AlarmManagerT
             Device.SetFlags(new string[] { "RadioButton_Experimental" });
 
             InitializeComponent();
+            VersionTracking.Track(); //Initialise global version tracking
 
-            MessagingCenter.Subscribe<MenuPageViewModel>(this, "TEST", (_) => testPoint(((MainPage)Current.MainPage).client)); //TODO: RBF
+            MessagingCenter.Subscribe<AboutPage>(this, AboutPage.MESSAGING_KEYS.SHOW_ALERT_PAGE.ToString(), (sender) => showAlertPage());
 
             if (isAlert)
             {
@@ -44,17 +49,18 @@ namespace AlarmManagerT
             new MessagingService().SetupListeners(((MainPage)Current.MainPage).client);
         }
 
-        private void testPoint(CommunicationService client) //TODO: RBF
-        {
-            //client.subscribePushNotifications(CrossFirebasePushNotification.Current.Token); //TODO: RBF
-
-            /*Task.Delay(2000).ContinueWith(t =>
-            {
-                INotifications notifications = DependencyService.Get<INotifications>();
-                notifications.showAlertNotification(Alert.getTestSample("56561564544")); //TODO: RBF
-            });*/
-            MainPage = new AlertPage(Alert.getTestSample("32156464864"));
-            return;
+        private void showAlertPage() {
+            Collection<string> configs = DataService.getConfigList();
+            Alert testAlert;
+            if(configs.Count > 0) {
+                AlertConfig config = DataService.getAlertConfig(configs[0]);
+                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Message, config);
+            } else {
+                Logger.Info("No configurations found. Using mock configuration for sample AlertPage.");
+                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Title, AppResources.App_DeveloperMode_AlertPage_Message, "", 0, false);
+            }
+            Logger.Info("Launchin AlertPage from Developer Mode");
+            MainPage = new AlertPage(testAlert);
         }
 
         protected override void OnStart()

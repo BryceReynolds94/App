@@ -77,7 +77,7 @@ namespace AlarmManagerT.ViewModels
                 }
                 if (alertConfig.timeRestriction)
                 {
-                    outString = outString + " | " + alertConfig.activeTimeConfig.getActiveString();
+                    outString = outString + Environment.NewLine + alertConfig.activeTimeConfig.getActiveString();
                 }
                 return outString;
             }

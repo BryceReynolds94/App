@@ -13,7 +13,7 @@ using Plugin.FirebasePushNotification;
 
 
 //https://github.com/CrossGeeks/FirebasePushNotificationPlugin/blob/master/docs/GettingStarted.md
-//TODO: Do FCM setup in iOS
+//TODO iOS: Do FCM setup in iOS
 namespace AlarmManagerT.Droid
 {
     [Application]

@@ -29,14 +29,9 @@ namespace AlarmManagerT.Models
 
         public void setDay(DayOfWeek day, bool dayActive)
         {
-            if (!dayActive) //TODO: Check this - seems to be wrong logic (day stackup)
+            if (!dayActive) //TODO: Testing
             {
-                foreach (DayOfWeek setDay in activeDays) {
-                    if (setDay.ToString().Equals(day.ToString())) {
-                        activeDays.Remove(setDay);
-                        return;
-                    }
-                }
+                activeDays.Remove(day);
             }
             else if(!checkDay(day))
             {
@@ -45,12 +40,7 @@ namespace AlarmManagerT.Models
         }
 
         public bool checkDay(DayOfWeek day) {
-            foreach(DayOfWeek setDay in activeDays) {
-                if(setDay.ToString().Equals(day.ToString())) {
-                    return true;
-                }
-            }
-            return false;
+            return activeDays.Contains(day);
         }
 
         public bool isActiveTime(DateTime compareTime)
@@ -85,7 +75,7 @@ namespace AlarmManagerT.Models
                 string days = dateTime.ToString("ddd");
                 outString = outString + days  + ", ";
             }
-            return outString + activeStartTime.ToString(@"hh\:mm") + " - " + activeStopTime.ToString(@"hh\:mm"); //TODO: Possibly make this more compact - deal with field overflow in XAML
+            return outString + activeStartTime.ToString(@"hh\:mm") + " - " + activeStopTime.ToString(@"hh\:mm");
         }
 
     }

@@ -27,7 +27,7 @@ namespace AlarmManagerT.Droid {
         public static readonly string STANDARD_CHANNEL_ID = "Standard Notifications";
 
 
-        public void showAlertNotification(Alert alert) { //TODO: Include Logo for message
+        public void showAlertNotification(Alert alert) {
             prepareAlert();
 
             Intent intent = new Intent(Application.Context, typeof(MainActivity))

@@ -26,9 +26,9 @@ namespace AlarmManagerT.Services
             USER_PHONE, //Phone number of Telegram user for display
             USER_HAS_PHOTO, //Whether user has a profile pic
             USER_PHOTO,
+            DEVELOPER_MODE,
             REFRESH_LOCK_TIME, //Time untill incoming FCM messages should be ignored
             LAST_REFRESH_TIME, //Last time new messages were collected from Telegram
-            APP_VERSION, //Version code of app //TODO: Implement this
             HAS_PROMPTED_DND_PERMISSION, //Whether the user has been asked to grant DND Permission in Android
             FCM_TOKEN //Token for FCM messages
         }; 

@@ -3,20 +3,53 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AlarmManagerT.Views.AboutPage"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:AlarmManagerT.Resources"
              Title="{Binding Title}">
     <ContentPage.Content>
-        <StackLayout>
-            <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Images.launcher_dark.svg" x:Name="MainIcon" HeightRequest="200" Margin="0,50">
-                <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding DeveloperMode}"/>
-                </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-            </ffimageloadingsvg:SvgCachedImage>
-            <Label Text="This is the about page"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            <Label Text="Legal stuff"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Margin="20">
+            <Grid Margin="0,30" HeightRequest="100">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Images.launcher_dark.svg" x:Name="MainIcon" Grid.RowSpan="2">
+                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding DeveloperMode}"/>
+                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                </ffimageloadingsvg:SvgCachedImage>
+
+                <Label Text="{x:Static resources:AppResources.AboutPage_App_Name}" Grid.Row="0" Grid.Column="1"  FontSize="Large" VerticalOptions="End"/>
+                <Label Text="{Binding AppVersion}" Grid.Row="1" Grid.Column="1"  FontSize="Medium" VerticalOptions="Start"/>
+            </Grid>
+
+            <Label Text="TODO: Legal stuff (privacy policy, GDPR/DSGVO, etc, Telegram, etc...)" />
+
+            <Grid IsVisible="{Binding IsDeveloperMode}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.ColumnSpan="2" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_ShareLogBtn}" Command="{Binding ShareLog}" TextColor="{StaticResource PrimaryColor}"/>
+                <Button Grid.ColumnSpan="2" Grid.Row="1" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_HideDeveloperModeBtn}" Command="{Binding HideDeveloperMode}"/>
+                <Button Grid.Row="2" Grid.Column="0" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_ShowAlertPageBtn}" Command="{Binding ShowAlertPage}"/>
+                <Button Grid.Row="2" Grid.Column="1" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_TestNotificationBtn}" Command="{Binding TestNotification}"/>
+                <Button Grid.Row="3" Grid.Column="0" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_RestartClientBtn}" Command="{Binding RestartClient}"/>
+                <Button Grid.Row="3" Grid.Column="1" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_TestFCMMessageBtn}" Command="{Binding TestFCMMessage}"/>
+
+                <Label Grid.Row="4" Grid.ColumnSpan="2" Text="Log" />
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

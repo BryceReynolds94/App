@@ -61,6 +61,11 @@ namespace AlarmManagerT.Services {
             }
         }
 
+        public async Task forceReloadConnection() {
+            client.Dispose();
+            await connectClient();
+        }
+
         public event EventHandler StatusChanged;
 
         private async Task connectClient() {
@@ -104,7 +109,7 @@ namespace AlarmManagerT.Services {
             }
             Logger.Debug("Loggin out user.");
 
-            string token = await CrossFirebasePushNotification.Current.GetTokenAsync(); //TODO: Check this
+            string token = await CrossFirebasePushNotification.Current.GetTokenAsync(); //TODO: Testing
 
             TLRequestUnregisterDevice unregisterRequest = new TLRequestUnregisterDevice() {
                 TokenType = 2,

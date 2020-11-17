@@ -10,7 +10,6 @@ namespace AlarmManagerT.ViewModels
 {
     class MenuPageViewModel : BaseViewModel
     {
-        public Command Test { get; set; } //TODO: RBF
         public Command About { get; set; }
         public Command Share { get; set; }
         public Command NotificationSettings { get; set; }
@@ -19,7 +18,6 @@ namespace AlarmManagerT.ViewModels
 
         public MenuPageViewModel()
         {
-            Test = new Command(() => MessagingCenter.Send(this, "TEST")); //TODO: RBF
 
             NotificationSettings = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.NotificationSettings));
             About = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.AboutPage));
