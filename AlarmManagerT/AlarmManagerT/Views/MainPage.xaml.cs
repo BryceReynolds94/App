@@ -14,7 +14,7 @@ namespace AlarmManagerT.Views {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
-    public partial class MainPage : MasterDetailPage {
+    public partial class MainPage : FlyoutPage {
 
         private NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -24,7 +24,7 @@ namespace AlarmManagerT.Views {
         public MainPage() {
             InitializeComponent();
 
-            MasterBehavior = MasterBehavior.Popover;
+            FlyoutLayoutBehavior = FlyoutLayoutBehavior.Popover;
             client = new CommunicationService();
 
             Detail = new NavigationPage(new HomeStatusPage(client));

@@ -11,9 +11,11 @@
         <StackLayout Padding="10">
             <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Title}" VerticalOptions="Center"  />
 
-            <RadioButton Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Any}" IsChecked="{Binding TriggerTypeAny}" GroupName="Trigger" />
-            <RadioButton Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Server}" IsChecked="{Binding TriggerTypeServer}" GroupName="Trigger"/>
-            <RadioButton x:Name="BtnKeyword" Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Keyword}" IsChecked="{Binding TriggerTypeKeyword}" GroupName="Trigger"/>
+            <StackLayout RadioButtonGroup.GroupName="Trigger" >
+                <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Any}" IsChecked="{Binding TriggerTypeAny}"/>
+                <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Server}" IsChecked="{Binding TriggerTypeServer}" />
+                <RadioButton x:Name="BtnKeyword" Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Keyword}" IsChecked="{Binding TriggerTypeKeyword}"/>
+            </StackLayout>
 
             <Grid x:Name="GridKeyword" IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}" VerticalOptions="Start" Padding="20,0">
                 <Grid.RowDefinitions>
@@ -31,8 +33,8 @@
             </Grid>
 
             <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Title}" VerticalOptions="Center"/>
-            <RadioButton Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Any}" IsChecked="{Binding TimeTypeAny}" GroupName="Time"/>
-            <RadioButton x:Name="BtnTimeSet" Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Set}" IsChecked="{Binding TimeTypeSet}" GroupName="Time"/>
+            <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Any}" IsChecked="{Binding TimeTypeAny}" GroupName="Time"/>
+            <RadioButton x:Name="BtnTimeSet" Content="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Set}" IsChecked="{Binding TimeTypeSet}" GroupName="Time"/>
 
             <Grid Padding="20,0" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}">
                 <Grid.RowDefinitions>
