@@ -8,7 +8,7 @@
              x:Class="AlarmManagerT.Views.AlertPage">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource PrimaryColor}" Padding="20">
-            <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Images.launcher_light.svg" x:Name="MainIcon" HeightRequest="200" Margin="0,50" VerticalOptions="StartAndExpand"/>
+            <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Resources.Images.launcher_light.svg" x:Name="MainIcon" HeightRequest="200" Margin="0,50" VerticalOptions="StartAndExpand"/>
             
             <Grid>
                 <Grid.RowDefinitions>
@@ -22,7 +22,7 @@
 
                 <Frame Padding="0" CornerRadius="20" IsClippedToBounds="True">
                     <Grid>
-                        <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Images.group_default.svg"/>
+                        <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Resources.Images.group_default.svg"/>
                         <Image IsVisible="{Binding ShowCustomPic}" Source="{Binding GroupPic}"/>
                     </Grid>
                 </Frame>
@@ -32,12 +32,12 @@
             </Grid>
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
-                <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Images.icon_clear.svg" HeightRequest="50" Margin="50,0">
+                <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Resources.Images.icon_clear.svg" HeightRequest="50" Margin="50,0">
                     <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding Cancel}"/>
                     </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
                 </ffimageloadingsvg:SvgCachedImage>
-                <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Images.icon_confirm.svg" HeightRequest="50" Margin="50,0">
+                <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Resources.Images.icon_confirm.svg" HeightRequest="50" Margin="50,0">
                     <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding Confirm}"/>
                     </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>

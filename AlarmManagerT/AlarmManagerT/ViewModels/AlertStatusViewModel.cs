@@ -103,11 +103,11 @@ namespace AlarmManagerT.ViewModels
             get {
                 if (alertConfig.snoozeActive)
                 {
-                    return "resource://AlarmManagerT.Images.icon_alert_snooze_inactive.svg";
+                    return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze_inactive.svg";
                 }
                 else
                 {
-                    return "resource://AlarmManagerT.Images.icon_history.svg";
+                    return "resource://AlarmManagerT.Resources.Images.icon_history.svg";
                 }
             }
         }
@@ -118,15 +118,15 @@ namespace AlarmManagerT.ViewModels
             get {
                 if (!alertConfig.isActive)
                 {
-                    return "resource://AlarmManagerT.Images.icon_alert_snooze_inactive.svg";
+                    return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze_inactive.svg";
                 }
                 else if (alertConfig.snoozeActive)
                 {
-                    return "resource://AlarmManagerT.Images.icon_alert_snooze_off.svg";
+                    return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze_off.svg";
                 }
                 else
                 {
-                    return "resource://AlarmManagerT.Images.icon_alert_snooze.svg";
+                    return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze.svg";
                 }
             }
         }

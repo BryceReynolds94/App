@@ -213,11 +213,11 @@ namespace AlarmManagerT.ViewModels
             get {
                 if(warningState == WARNING_ACTION.DEACTIVATED)
                 {
-                    return "resource://AlarmManagerT.Images.icon_alert_off.svg";
+                    return "resource://AlarmManagerT.Resources.Images.icon_alert_off.svg";
                 }
                 else
                 {
-                    return "resource://AlarmManagerT.Images.icon_alert.svg";
+                    return "resource://AlarmManagerT.Resources.Images.icon_alert.svg";
                 }
             }
         }
@@ -227,11 +227,11 @@ namespace AlarmManagerT.ViewModels
                 switch (warningState)
                 {
                     case WARNING_ACTION.SNOOZE_SET:
-                        return "resource://AlarmManagerT.Images.icon_alert_snooze_off.svg";
+                        return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze_off.svg";
                     case WARNING_ACTION.DEACTIVATED:
-                        return "resource://AlarmManagerT.Images.icon_alert_snooze_inactive.svg";
+                        return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze_inactive.svg";
                     default:
-                        return "resource://AlarmManagerT.Images.icon_alert_snooze.svg";
+                        return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze.svg";
                 }
             }
          }

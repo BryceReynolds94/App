@@ -11,49 +11,49 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\group_default.svg" />
-    <None Remove="Images\icon_about.svg" />
-    <None Remove="Images\icon_add.svg" />
-    <None Remove="Images\icon_alert.svg" />
-    <None Remove="Images\icon_alert_off.svg" />
-    <None Remove="Images\icon_alert_snooze.svg" />
-    <None Remove="Images\icon_alert_snooze_inactive.svg" />
-    <None Remove="Images\icon_alert_snooze_off.svg" />
-    <None Remove="Images\icon_clear.svg" />
-    <None Remove="Images\icon_confirm.svg" />
-    <None Remove="Images\icon_delete.svg" />
-    <None Remove="Images\icon_history.svg" />
-    <None Remove="Images\icon_logout.svg" />
-    <None Remove="Images\icon_settings.svg" />
-    <None Remove="Images\icon_share.svg" />
-    <None Remove="Images\icon_trigger.svg" />
-    <None Remove="Images\launcher_dark.svg" />
-    <None Remove="Images\launcher_icon.svg" />
-    <None Remove="Images\launcher_light.svg" />
-    <None Remove="Images\user_default.svg" />
+    <None Remove="Resources\Images\group_default.svg" />
+    <None Remove="Resources\Images\icon_about.svg" />
+    <None Remove="Resources\Images\icon_add.svg" />
+    <None Remove="Resources\Images\icon_alert.svg" />
+    <None Remove="Resources\Images\icon_alert_off.svg" />
+    <None Remove="Resources\Images\icon_alert_snooze.svg" />
+    <None Remove="Resources\Images\icon_alert_snooze_inactive.svg" />
+    <None Remove="Resources\Images\icon_alert_snooze_off.svg" />
+    <None Remove="Resources\Images\icon_clear.svg" />
+    <None Remove="Resources\Images\icon_confirm.svg" />
+    <None Remove="Resources\Images\icon_delete.svg" />
+    <None Remove="Resources\Images\icon_history.svg" />
+    <None Remove="Resources\Images\icon_logout.svg" />
+    <None Remove="Resources\Images\icon_settings.svg" />
+    <None Remove="Resources\Images\icon_share.svg" />
+    <None Remove="Resources\Images\icon_trigger.svg" />
+    <None Remove="Resources\Images\launcher_dark.svg" />
+    <None Remove="Resources\Images\launcher_icon.svg" />
+    <None Remove="Resources\Images\launcher_light.svg" />
+    <None Remove="Resources\Images\user_default.svg" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Images\group_default.svg" />
-    <EmbeddedResource Include="Images\icon_about.svg" />
-    <EmbeddedResource Include="Images\icon_add.svg" />
-    <EmbeddedResource Include="Images\icon_alert.svg" />
-    <EmbeddedResource Include="Images\icon_alert_off.svg" />
-    <EmbeddedResource Include="Images\icon_alert_snooze.svg" />
-    <EmbeddedResource Include="Images\icon_alert_snooze_inactive.svg" />
-    <EmbeddedResource Include="Images\icon_alert_snooze_off.svg" />
-    <EmbeddedResource Include="Images\icon_clear.svg" />
-    <EmbeddedResource Include="Images\icon_confirm.svg" />
-    <EmbeddedResource Include="Images\icon_delete.svg" />
-    <EmbeddedResource Include="Images\icon_history.svg" />
-    <EmbeddedResource Include="Images\icon_logout.svg" />
-    <EmbeddedResource Include="Images\icon_settings.svg" />
-    <EmbeddedResource Include="Images\icon_share.svg" />
-    <EmbeddedResource Include="Images\icon_trigger.svg" />
-    <EmbeddedResource Include="Images\launcher_dark.svg" />
-    <EmbeddedResource Include="Images\launcher_icon.svg" />
-    <EmbeddedResource Include="Images\launcher_light.svg" />
-    <EmbeddedResource Include="Images\user_default.svg" />
+    <EmbeddedResource Include="Resources\Images\group_default.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_about.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_add.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_alert.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_alert_off.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_alert_snooze.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_alert_snooze_inactive.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_alert_snooze_off.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_clear.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_confirm.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_delete.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_history.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_logout.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_settings.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_share.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_trigger.svg" />
+    <EmbeddedResource Include="Resources\Images\launcher_dark.svg" />
+    <EmbeddedResource Include="Resources\Images\launcher_icon.svg" />
+    <EmbeddedResource Include="Resources\Images\launcher_light.svg" />
+    <EmbeddedResource Include="Resources\Images\user_default.svg" />
   </ItemGroup>
 
   <ItemGroup>
