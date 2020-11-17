@@ -9134,25 +9134,28 @@ namespace AlarmManagerT.Droid
 			public const int notification_bg_normal_pressed = 2131165328;
 			
 			// aapt resource value: 0x7F070091
-			public const int notification_icon_background = 2131165329;
+			public const int notification_icon = 2131165329;
 			
 			// aapt resource value: 0x7F070092
-			public const int notification_template_icon_bg = 2131165330;
+			public const int notification_icon_background = 2131165330;
 			
 			// aapt resource value: 0x7F070093
-			public const int notification_template_icon_low_bg = 2131165331;
+			public const int notification_template_icon_bg = 2131165331;
 			
 			// aapt resource value: 0x7F070094
-			public const int notification_tile_bg = 2131165332;
+			public const int notification_template_icon_low_bg = 2131165332;
 			
 			// aapt resource value: 0x7F070095
-			public const int notify_panel_notification_icon_bg = 2131165333;
+			public const int notification_tile_bg = 2131165333;
 			
 			// aapt resource value: 0x7F070096
-			public const int tooltip_frame_dark = 2131165334;
+			public const int notify_panel_notification_icon_bg = 2131165334;
 			
 			// aapt resource value: 0x7F070097
-			public const int tooltip_frame_light = 2131165335;
+			public const int tooltip_frame_dark = 2131165335;
+			
+			// aapt resource value: 0x7F070098
+			public const int tooltip_frame_light = 2131165336;
 			
 			static Drawable()
 			{
@@ -10390,134 +10393,137 @@ namespace AlarmManagerT.Droid
 			// aapt resource value: 0x7F0D001A
 			public const int abc_toolbar_collapse_description = 2131558426;
 			
-			// aapt resource value: 0x7F0D001B
-			public const int appbar_scrolling_view_behavior = 2131558427;
-			
 			// aapt resource value: 0x7F0D001C
-			public const int bottom_sheet_behavior = 2131558428;
+			public const int appbar_scrolling_view_behavior = 2131558428;
+			
+			// aapt resource value: 0x7F0D001B
+			public const int app_name = 2131558427;
 			
 			// aapt resource value: 0x7F0D001D
-			public const int character_counter_content_description = 2131558429;
+			public const int bottom_sheet_behavior = 2131558429;
 			
 			// aapt resource value: 0x7F0D001E
-			public const int character_counter_pattern = 2131558430;
+			public const int character_counter_content_description = 2131558430;
 			
 			// aapt resource value: 0x7F0D001F
-			public const int common_google_play_services_enable_button = 2131558431;
+			public const int character_counter_pattern = 2131558431;
 			
 			// aapt resource value: 0x7F0D0020
-			public const int common_google_play_services_enable_text = 2131558432;
+			public const int common_google_play_services_enable_button = 2131558432;
 			
 			// aapt resource value: 0x7F0D0021
-			public const int common_google_play_services_enable_title = 2131558433;
+			public const int common_google_play_services_enable_text = 2131558433;
 			
 			// aapt resource value: 0x7F0D0022
-			public const int common_google_play_services_install_button = 2131558434;
+			public const int common_google_play_services_enable_title = 2131558434;
 			
 			// aapt resource value: 0x7F0D0023
-			public const int common_google_play_services_install_text = 2131558435;
+			public const int common_google_play_services_install_button = 2131558435;
 			
 			// aapt resource value: 0x7F0D0024
-			public const int common_google_play_services_install_title = 2131558436;
+			public const int common_google_play_services_install_text = 2131558436;
 			
 			// aapt resource value: 0x7F0D0025
-			public const int common_google_play_services_notification_channel_name = 2131558437;
+			public const int common_google_play_services_install_title = 2131558437;
 			
 			// aapt resource value: 0x7F0D0026
-			public const int common_google_play_services_notification_ticker = 2131558438;
+			public const int common_google_play_services_notification_channel_name = 2131558438;
 			
 			// aapt resource value: 0x7F0D0027
-			public const int common_google_play_services_unknown_issue = 2131558439;
+			public const int common_google_play_services_notification_ticker = 2131558439;
 			
 			// aapt resource value: 0x7F0D0028
-			public const int common_google_play_services_unsupported_text = 2131558440;
+			public const int common_google_play_services_unknown_issue = 2131558440;
 			
 			// aapt resource value: 0x7F0D0029
-			public const int common_google_play_services_update_button = 2131558441;
+			public const int common_google_play_services_unsupported_text = 2131558441;
 			
 			// aapt resource value: 0x7F0D002A
-			public const int common_google_play_services_update_text = 2131558442;
+			public const int common_google_play_services_update_button = 2131558442;
 			
 			// aapt resource value: 0x7F0D002B
-			public const int common_google_play_services_update_title = 2131558443;
+			public const int common_google_play_services_update_text = 2131558443;
 			
 			// aapt resource value: 0x7F0D002C
-			public const int common_google_play_services_updating_text = 2131558444;
+			public const int common_google_play_services_update_title = 2131558444;
 			
 			// aapt resource value: 0x7F0D002D
-			public const int common_google_play_services_wear_update_text = 2131558445;
+			public const int common_google_play_services_updating_text = 2131558445;
 			
 			// aapt resource value: 0x7F0D002E
-			public const int common_open_on_phone = 2131558446;
+			public const int common_google_play_services_wear_update_text = 2131558446;
 			
 			// aapt resource value: 0x7F0D002F
-			public const int common_signin_button_text = 2131558447;
+			public const int common_open_on_phone = 2131558447;
 			
 			// aapt resource value: 0x7F0D0030
-			public const int common_signin_button_text_long = 2131558448;
+			public const int common_signin_button_text = 2131558448;
 			
 			// aapt resource value: 0x7F0D0031
-			public const int default_web_client_id = 2131558449;
+			public const int common_signin_button_text_long = 2131558449;
 			
 			// aapt resource value: 0x7F0D0032
-			public const int fab_transformation_scrim_behavior = 2131558450;
+			public const int default_web_client_id = 2131558450;
 			
 			// aapt resource value: 0x7F0D0033
-			public const int fab_transformation_sheet_behavior = 2131558451;
+			public const int fab_transformation_scrim_behavior = 2131558451;
 			
 			// aapt resource value: 0x7F0D0034
-			public const int fcm_fallback_notification_channel_label = 2131558452;
+			public const int fab_transformation_sheet_behavior = 2131558452;
 			
 			// aapt resource value: 0x7F0D0035
-			public const int firebase_database_url = 2131558453;
+			public const int fcm_fallback_notification_channel_label = 2131558453;
 			
 			// aapt resource value: 0x7F0D0036
-			public const int gcm_defaultSenderId = 2131558454;
+			public const int firebase_database_url = 2131558454;
 			
 			// aapt resource value: 0x7F0D0037
-			public const int google_api_key = 2131558455;
+			public const int gcm_defaultSenderId = 2131558455;
 			
 			// aapt resource value: 0x7F0D0038
-			public const int google_app_id = 2131558456;
+			public const int google_api_key = 2131558456;
 			
 			// aapt resource value: 0x7F0D0039
-			public const int google_crash_reporting_api_key = 2131558457;
+			public const int google_app_id = 2131558457;
 			
 			// aapt resource value: 0x7F0D003A
-			public const int google_storage_bucket = 2131558458;
+			public const int google_crash_reporting_api_key = 2131558458;
 			
 			// aapt resource value: 0x7F0D003B
-			public const int hide_bottom_view_on_scroll_behavior = 2131558459;
+			public const int google_storage_bucket = 2131558459;
 			
 			// aapt resource value: 0x7F0D003C
-			public const int mtrl_chip_close_icon_content_description = 2131558460;
+			public const int hide_bottom_view_on_scroll_behavior = 2131558460;
 			
 			// aapt resource value: 0x7F0D003D
-			public const int overflow_tab_title = 2131558461;
+			public const int mtrl_chip_close_icon_content_description = 2131558461;
 			
 			// aapt resource value: 0x7F0D003E
-			public const int password_toggle_content_description = 2131558462;
+			public const int overflow_tab_title = 2131558462;
 			
 			// aapt resource value: 0x7F0D003F
-			public const int path_password_eye = 2131558463;
+			public const int password_toggle_content_description = 2131558463;
 			
 			// aapt resource value: 0x7F0D0040
-			public const int path_password_eye_mask_strike_through = 2131558464;
+			public const int path_password_eye = 2131558464;
 			
 			// aapt resource value: 0x7F0D0041
-			public const int path_password_eye_mask_visible = 2131558465;
+			public const int path_password_eye_mask_strike_through = 2131558465;
 			
 			// aapt resource value: 0x7F0D0042
-			public const int path_password_strike_through = 2131558466;
+			public const int path_password_eye_mask_visible = 2131558466;
 			
 			// aapt resource value: 0x7F0D0043
-			public const int project_id = 2131558467;
+			public const int path_password_strike_through = 2131558467;
 			
 			// aapt resource value: 0x7F0D0044
-			public const int search_menu_title = 2131558468;
+			public const int project_id = 2131558468;
 			
 			// aapt resource value: 0x7F0D0045
-			public const int status_bar_notification_info_overflow = 2131558469;
+			public const int search_menu_title = 2131558469;
+			
+			// aapt resource value: 0x7F0D0046
+			public const int status_bar_notification_info_overflow = 2131558470;
 			
 			static String()
 			{
@@ -15145,7 +15151,10 @@ namespace AlarmManagerT.Droid
 		{
 			
 			// aapt resource value: 0x7F100000
-			public const int xamarin_essentials_fileprovider_file_paths = 2131755008;
+			public const int file_paths = 2131755008;
+			
+			// aapt resource value: 0x7F100001
+			public const int xamarin_essentials_fileprovider_file_paths = 2131755009;
 			
 			static Xml()
 			{

@@ -1,8 +1,11 @@
 ﻿using AlarmManagerT.Resources;
 using AlarmManagerT.Services;
+using AlarmManagerT.Views;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -20,7 +23,7 @@ namespace AlarmManagerT.ViewModels {
         public Command TestFCMMessage { get; set; }
 
         private DateTime developerTapStart = DateTime.MinValue;
-        private int developerTapCount = 0; 
+        private int developerTapCount = 0;
         public AboutPageViewModel() {
 
             Title = AppResources.AboutPage_Title;
@@ -31,6 +34,8 @@ namespace AlarmManagerT.ViewModels {
             TestNotification = new Command(() => requestTestNotification(this, null));
             RestartClient = new Command(() => requestRestartClient(this, null));
             TestFCMMessage = new Command(() => requestTestFCMMessage(this, null));
+
+            reloadLogLoop();
         }
 
         public EventHandler requestShareLog;
@@ -39,15 +44,22 @@ namespace AlarmManagerT.ViewModels {
         public EventHandler requestRestartClient;
         public EventHandler requestTestFCMMessage;
 
+        private void reloadLogLoop() {
+            if (IsDeveloperMode) {
+                OnPropertyChanged(nameof(LogText));
+                Task.Delay(5000).ContinueWith((t) => reloadLogLoop());
+            }
+        }
+
         private void countDeveloperMode() {
-            if(DateTime.Now.Subtract(developerTapStart).TotalSeconds < 2) {
+            if (DateTime.Now.Subtract(developerTapStart).TotalSeconds < 2) {
                 developerTapCount++;
             } else {
                 developerTapCount = 1;
                 developerTapStart = DateTime.Now;
             }
 
-            if(developerTapCount > 4) {
+            if (developerTapCount > 4) {
                 initiateDeveloperMode();
                 developerTapCount = 0;
             }
@@ -57,6 +69,7 @@ namespace AlarmManagerT.ViewModels {
             Logger.Info("Developer Mode activated.");
             DataService.setConfigValue(DataService.DATA_KEYS.DEVELOPER_MODE, true);
             OnPropertyChanged(nameof(IsDeveloperMode));
+            reloadLogLoop();
         }
 
         private void stopDeveloperMode() {
@@ -71,9 +84,21 @@ namespace AlarmManagerT.ViewModels {
             }
         }
 
-        public bool IsDeveloperMode{
+        public bool IsDeveloperMode {
             get {
                 return DataService.getConfigValue<bool>(DataService.DATA_KEYS.DEVELOPER_MODE, false);
+            }
+        }
+
+        public string LogText {
+            get {
+                string logFile = AboutPage.getLogFileLocation();
+                if (logFile == null) {
+                    return AppResources.AboutPage_DeveloperMode_Log_Default;
+                }
+                string[] logArray = File.ReadAllLines(logFile);
+                Array.Reverse(logArray);
+                return string.Join(Environment.NewLine, logArray);
             }
         }
     }

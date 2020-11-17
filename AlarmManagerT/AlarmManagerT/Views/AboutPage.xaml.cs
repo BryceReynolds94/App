@@ -22,7 +22,7 @@ namespace AlarmManagerT.Views {
 
         private AboutPageViewModel viewModel;
 
-        public enum MESSAGING_KEYS { SHOW_ALERT_PAGE, RESTART_CLIENT}
+        public enum MESSAGING_KEYS { SHOW_ALERT_PAGE, RESTART_CLIENT }
         public AboutPage() {
             InitializeComponent();
 
@@ -34,19 +34,31 @@ namespace AlarmManagerT.Views {
             viewModel.requestTestNotification += testNotification;
         }
 
-        private void shareLog(object sender , EventArgs args) {
-            Logger.Info("Launched Log sharing");
-                        
-            FileTarget target = NLog.LogManager.Configuration.FindTargetByName<FileTarget>("file");
+        public static string getLogFileLocation() {
+            FileTarget target = NLog.LogManager.Configuration.FindTargetByName<FileTarget>("logfile");
+            if (target == null) {
+                Logger.Error("Could not finde log target.");
+                return null;
+            }
             string logFile = target.FileName.Render(new NLog.LogEventInfo { TimeStamp = DateTime.Now });
 
             if (!File.Exists(logFile)) {
                 Logger.Error("Log file could not be found.");
-                return;
+                return null;
             }
+            return logFile;
+        }
 
-            Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
-            navigation.navigateShare("LOG"); //TODO: Impelemnt this with actual NLOG.Log
+        private void shareLog(object sender, EventArgs args) {
+            Logger.Info("Launched Log sharing");
+
+            string logFile = getLogFileLocation();
+            if (logFile != null) {
+                Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
+                navigation.navigateShareFile(logFile); //TODO: Testing
+            } else {
+                Logger.Warn("Could not share log file as no file was found.");
+            }
         }
 
         private void showAlertPage(object sender, EventArgs args) {
@@ -66,7 +78,7 @@ namespace AlarmManagerT.Views {
 
         private void testNotification(object sender, EventArgs args) {
             Collection<string> configs = DataService.getConfigList();
-            if(configs.Count > 0) {
+            if (configs.Count > 0) {
                 Logger.Info("Sending notification test message in 5s.");
                 AlertConfig config = DataService.getAlertConfig(configs.First());
 

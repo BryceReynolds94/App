@@ -29,7 +29,6 @@ namespace AlarmManagerT.Views
 
         private async void performLogin(object sender, string phoneNumber)
         {
-            //TODO: Check valid phoneNumber
             TStatus result = await client.requestCode(phoneNumber);
             viewModel.changeErrorStatus(result);
             if (result != TStatus.OK)

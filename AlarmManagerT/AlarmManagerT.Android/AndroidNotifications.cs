@@ -46,7 +46,8 @@ namespace AlarmManagerT.Droid {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(Application.Context, alert.configID)
                 .SetContentTitle(alert.title)
                 .SetContentText(alert.text)
-                .SetSmallIcon(Resource.Mipmap.ic_launcher) //TODO: Testing
+                .SetSmallIcon(Resource.Drawable.notification_icon) //use simplified xml vector
+                .SetColor(Resource.Color.colorPrimary) //set app color for small notification icon
                 .SetLargeIcon(largePic)
                 .SetPriority(NotificationCompat.PriorityHigh)
                 .SetCategory(NotificationCompat.CategoryMessage)
@@ -104,6 +105,7 @@ namespace AlarmManagerT.Droid {
             notificationChannel.EnableLights(true);
             notificationChannel.SetVibrationPattern(new long[] { 0, 1000, 500, 100, 100, 1000, 500, 100, 100, 1000 }); //TODO: Check this vibration pattern
             notificationChannel.EnableVibration(true);
+            //TODO: Add sound
 
             NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);
             notificationManager.CreateNotificationChannel(notificationChannel);

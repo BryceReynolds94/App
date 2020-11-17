@@ -15,7 +15,6 @@ using AlarmManagerT.Resources;
 
 namespace AlarmManagerT
 {
-    //TODO: Refactoring: Move Images folder into Resources folder -- all XML usage has to be refactored
     public partial class App : Application
     {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();

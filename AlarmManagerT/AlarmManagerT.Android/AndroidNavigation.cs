@@ -12,6 +12,7 @@ using Android.Widget;
 using Android.Provider;
 using Xamarin.Essentials;
 using Android.Content.PM;
+using System.IO;
 
 [assembly: Xamarin.Forms.Dependency(typeof(AlarmManagerT.Droid.AndroidNavigation))] //register for dependency service as platform-specific code
 namespace AlarmManagerT.Droid
@@ -36,8 +37,7 @@ namespace AlarmManagerT.Droid
 
         public void navigateShare(string message)
         {
-            Intent intent = new Intent()
-                .SetAction(Intent.ActionSend)
+            Intent intent = new Intent(Intent.ActionSend)
                 .PutExtra(Intent.ExtraText, message)
                 .SetType("text/plain");
 
@@ -45,9 +45,24 @@ namespace AlarmManagerT.Droid
             Platform.CurrentActivity.StartActivity(shareIntent);
         }
 
+        public void navigateShareFile(string fileName) {
+
+            Android.Net.Uri contentUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.fileprovider", new Java.IO.File(fileName));
+            //FileProvider defined in Manifest
+
+            Intent intent = new Intent(Intent.ActionSend)
+                .SetData(contentUri)
+                .PutExtra(Intent.ExtraStream, contentUri)
+                .PutExtra(Intent.ExtraEmail, "alarmmanager@bartunik.de") //TODO: RBF
+                .AddFlags(ActivityFlags.GrantReadUriPermission)
+                .SetType("text/plain");
+            Platform.CurrentActivity.StartActivity(Intent.CreateChooser(intent, (string) null));
+        }
+
         public void navigateTelegramChat(int chatID)
         {
             if (!isTelegramInstalled()) {
+                quitApplication();
                 return;
             }
             Platform.CurrentActivity.StartActivity(getTelegramIntent(chatID));
@@ -55,7 +70,7 @@ namespace AlarmManagerT.Droid
 
         public static Intent getTelegramIntent(int chatID) {
             Intent intent = new Intent(Intent.ActionView)
-                .SetData(Android.Net.Uri.Parse("http://telegram.me/" + chatID)) //TODO: Check this
+                .SetData(Android.Net.Uri.Parse("http://telegram.me/" + chatID)) //TODO: Testing
                 .SetPackage("org.telegram.messenger");
             return intent;
         }
@@ -72,7 +87,7 @@ namespace AlarmManagerT.Droid
 
         public void quitApplication()
         {
-            Intent intent = new Intent(Intent.ActionMain) //TODO: Testing
+            Intent intent = new Intent(Intent.ActionMain)
                 .AddCategory(Intent.CategoryHome)
                 .AddFlags(ActivityFlags.NewTask);
             Platform.CurrentActivity.StartActivity(intent);

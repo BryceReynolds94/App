@@ -108,7 +108,7 @@ namespace AlarmManagerT.Services
             }
             catch(Exception e)
             {
-                Logger.Warn(e, "Exception occured while trying to receive DATA_KEY " + key.ToString());
+                Logger.Debug(e, "Could not find DATA_KEY " + key.ToString());
                 return defaultValue;
             }
             return value;

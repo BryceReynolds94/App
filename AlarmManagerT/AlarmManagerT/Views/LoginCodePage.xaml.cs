@@ -29,7 +29,6 @@ namespace AlarmManagerT.Views
 
         private async void performAuthentication(object sender, string code)
         {
-            //TODO: Check valid code before commit
             TStatus result = await client.confirmCode(code);
             if(result == TStatus.PASSWORD_REQUIRED) {
                 Navigation.InsertPageBefore(new LoginPasswordPage(client), this);

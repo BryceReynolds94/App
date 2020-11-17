@@ -35,7 +35,7 @@ namespace AlarmManagerT.Views
         private async void startAnimation() {
             await MainIcon.ScaleTo(1.3, 1000);
             await MainIcon.ScaleTo(1, 1000);
-            await Task.Delay(500);
+            //await Task.Delay(500);
             startAnimation();
         }
 

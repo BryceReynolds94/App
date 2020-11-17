@@ -7,10 +7,10 @@
              Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout Margin="20">
-            <Grid Margin="0,30" HeightRequest="100">
+            <Grid Margin="0,30">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -28,7 +28,8 @@
 
             <Label Text="TODO: Legal stuff (privacy policy, GDPR/DSGVO, etc, Telegram, etc...)" />
 
-            <Grid IsVisible="{Binding IsDeveloperMode}">
+            <ScrollView IsVisible="{Binding IsDeveloperMode}">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -48,8 +49,9 @@
                 <Button Grid.Row="3" Grid.Column="0" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_RestartClientBtn}" Command="{Binding RestartClient}"/>
                 <Button Grid.Row="3" Grid.Column="1" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_TestFCMMessageBtn}" Command="{Binding TestFCMMessage}"/>
 
-                <Label Grid.Row="4" Grid.ColumnSpan="2" Text="Log" />
+                <Label Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding LogText}" />
             </Grid>
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

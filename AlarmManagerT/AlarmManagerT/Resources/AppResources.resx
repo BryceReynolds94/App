@@ -126,6 +126,9 @@
   <data name="AboutPage_DeveloperMode_HideDeveloperModeBtn" xml:space="preserve">
     <value>Hide Developer Mode</value>
   </data>
+  <data name="AboutPage_DeveloperMode_Log_Default" xml:space="preserve">
+    <value>Log could not be read from file.</value>
+  </data>
   <data name="AboutPage_DeveloperMode_RestartClientBtn" xml:space="preserve">
     <value>Restart Client</value>
   </data>
@@ -164,6 +167,9 @@
   </data>
   <data name="App_DeveloperMode_AlertPage_Title" xml:space="preserve">
     <value>Test Alert Group Title</value>
+  </data>
+  <data name="App_Name" xml:space="preserve">
+    <value>PagerBuddy</value>
   </data>
   <data name="ConfigureGroupPage_Title" xml:space="preserve">
     <value>Select Chat</value>
@@ -223,13 +229,13 @@
     <value>Messages with a keyword</value>
   </data>
   <data name="ConfigureKeywordPage_Trigger_Server" xml:space="preserve">
-    <value>Messages from AlarmManagerT-Server</value>
+    <value>Messages from PagerBuddy-Server</value>
   </data>
   <data name="ConfigureKeywordPage_Trigger_Title" xml:space="preserve">
     <value>Trigger</value>
   </data>
   <data name="HomeStatusPage_DNDPermissionPrompt_Message" xml:space="preserve">
-    <value>To ensure notifications when the phone is set to silent or Do Not Disturb please grant AlarmManagerT access in your permissions settings.</value>
+    <value>To ensure notifications when the phone is set to silent or Do Not Disturb please grant PagerBuddy access in your permissions settings.</value>
   </data>
   <data name="HomeStatusPage_DNDPermissionPrompt_Title" xml:space="preserve">
     <value>Grant Do Not Disturb access</value>
@@ -271,7 +277,7 @@
     <value>{0} Weeks</value>
   </data>
   <data name="HomeStatusPage_Title" xml:space="preserve">
-    <value>AlarmManagerT</value>
+    <value>PagerBuddy</value>
   </data>
   <data name="HomeStatusPage_Warning_Deactivated" xml:space="preserve">
     <value>All alerts deactivated</value>

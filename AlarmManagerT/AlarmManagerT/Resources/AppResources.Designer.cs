@@ -88,6 +88,15 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log could not be read from file..
+        /// </summary>
+        public static string AboutPage_DeveloperMode_Log_Default {
+            get {
+                return ResourceManager.GetString("AboutPage_DeveloperMode_Log_Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restart Client.
         /// </summary>
         public static string AboutPage_DeveloperMode_RestartClientBtn {
@@ -201,6 +210,15 @@ namespace AlarmManagerT.Resources {
         public static string App_DeveloperMode_AlertPage_Title {
             get {
                 return ResourceManager.GetString("App_DeveloperMode_AlertPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PagerBuddy.
+        /// </summary>
+        public static string App_Name {
+            get {
+                return ResourceManager.GetString("App_Name", resourceCulture);
             }
         }
         
@@ -376,7 +394,7 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Messages from AlarmManagerT-Server.
+        ///   Looks up a localized string similar to Messages from PagerBuddy-Server.
         /// </summary>
         public static string ConfigureKeywordPage_Trigger_Server {
             get {
@@ -403,7 +421,7 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To ensure notifications when the phone is set to silent or Do Not Disturb please grant AlarmManagerT access in your permissions settings..
+        ///   Looks up a localized string similar to To ensure notifications when the phone is set to silent or Do Not Disturb please grant PagerBuddy access in your permissions settings..
         /// </summary>
         public static string HomeStatusPage_DNDPermissionPrompt_Message {
             get {
@@ -520,7 +538,7 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AlarmManagerT.
+        ///   Looks up a localized string similar to PagerBuddy.
         /// </summary>
         public static string HomeStatusPage_Title {
             get {
