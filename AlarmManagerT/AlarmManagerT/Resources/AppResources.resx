@@ -156,6 +156,12 @@
   <data name="AlertStatus_Status_Default" xml:space="preserve">
     <value>Event was not triggered yet</value>
   </data>
+  <data name="AlertStatus_Trigger_Any" xml:space="preserve">
+    <value>Any chat message</value>
+  </data>
+  <data name="AlertStatus_Trigger_Server" xml:space="preserve">
+    <value>PagerBuddy-Server</value>
+  </data>
   <data name="Android_AndroidNotifications_AlertChannel_Description" xml:space="preserve">
     <value>Configured alert notifications.</value>
   </data>
@@ -170,6 +176,9 @@
   </data>
   <data name="App_Name" xml:space="preserve">
     <value>PagerBuddy</value>
+  </data>
+  <data name="App_Share_Message" xml:space="preserve">
+    <value>Check out PagerBuddy and never miss an urgent message again. The app is available for Android and iOS.</value>
   </data>
   <data name="ConfigureGroupPage_Title" xml:space="preserve">
     <value>Select Chat</value>

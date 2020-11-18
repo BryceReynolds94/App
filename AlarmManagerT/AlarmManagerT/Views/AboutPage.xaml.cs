@@ -17,6 +17,7 @@ using Xamarin.Forms.Xaml;
 namespace AlarmManagerT.Views {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AboutPage : ContentPage {
+        //TODO: Complete AboutPage with legal info
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -55,7 +56,7 @@ namespace AlarmManagerT.Views {
             string logFile = getLogFileLocation();
             if (logFile != null) {
                 Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
-                navigation.navigateShareFile(logFile); //TODO: Testing
+                navigation.navigateShareFile(logFile);
             } else {
                 Logger.Warn("Could not share log file as no file was found.");
             }

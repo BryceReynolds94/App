@@ -66,15 +66,20 @@ namespace AlarmManagerT.ViewModels
         public string GroupName => alertConfig.triggerGroup.name;
         public string KeywordText {
             get {
-                string outString;
-                if (alertConfig.triggerType == AlertConfig.TRIGGER_TYPE.ANY || alertConfig.triggerType == AlertConfig.TRIGGER_TYPE.SERVER)
-                {
-                    outString = alertConfig.triggerType.ToString();
+                
+                string outString = "";
+                switch (alertConfig.triggerType) {
+                    case AlertConfig.TRIGGER_TYPE.ANY:
+                        outString = AppResources.AlertStatus_Trigger_Any;
+                        break;
+                    case AlertConfig.TRIGGER_TYPE.SERVER:
+                        outString = AppResources.AlertStatus_Trigger_Server;
+                        break;
+                    case AlertConfig.TRIGGER_TYPE.KEYWORD:
+                        outString = alertConfig.triggerKeyword;
+                        break;
                 }
-                else
-                {
-                    outString = alertConfig.triggerKeyword;
-                }
+
                 if (alertConfig.timeRestriction)
                 {
                     outString = outString + Environment.NewLine + alertConfig.activeTimeConfig.getActiveString();

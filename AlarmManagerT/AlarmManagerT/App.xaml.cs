@@ -30,9 +30,6 @@ namespace AlarmManagerT
 
         private void initialise(bool isAlert, Alert alert = null)
         {
-            //TODO: Keep an eye on the experimental flags
-            Device.SetFlags(new string[] { "RadioButton_Experimental" });
-
             InitializeComponent();
             VersionTracking.Track(); //Initialise global version tracking
 

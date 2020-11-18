@@ -42,7 +42,7 @@ namespace AlarmManagerT.Services {
 
         private static readonly int API_ID = ***REMOVED***;
         private static readonly string API_HASH = "***REMOVED***";
-        //TODO: Hide these values from potential attackers
+        //TODO: Hide API_HASH from potential attackers
 
         private string clientRequestCodeHash = null;
         private string clientPhoneNumber = null;

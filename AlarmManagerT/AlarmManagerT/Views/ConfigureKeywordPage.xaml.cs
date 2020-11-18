@@ -12,8 +12,6 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-//TODO: RadioButtons are currently broken, solution expected in XF 5.0 very soon (alt. revert to 4.7)
-//TODO: Update to XF 5.0
 
 namespace AlarmManagerT.Views
 {

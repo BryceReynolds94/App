@@ -11,10 +11,9 @@ using TeleSharp.TL;
 using AlarmManagerT.Resources;
 
 namespace AlarmManagerT.Views {
-    // Learn more about making custom code visible in the Xamarin.Forms previewer
-    // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
     public partial class MainPage : FlyoutPage {
+        //TODO: Design first-app-use behaviour (welcome message, force login)
 
         private NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -95,7 +94,7 @@ namespace AlarmManagerT.Views {
 
         private void requestShare() {
             Interfaces.INavigation navigationInterface = DependencyService.Get<Interfaces.INavigation>();
-            navigationInterface.navigateShare("SAMPLE MESSAGE"); //TODO: Write Message to share
+            navigationInterface.navigateShare(AppResources.App_Share_Message); //TODO Later: Update share message with actual links
             IsPresented = false;
         }
     }

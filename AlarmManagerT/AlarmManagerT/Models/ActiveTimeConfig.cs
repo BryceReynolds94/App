@@ -29,7 +29,7 @@ namespace AlarmManagerT.Models
 
         public void setDay(DayOfWeek day, bool dayActive)
         {
-            if (!dayActive) //TODO: Testing
+            if (!dayActive)
             {
                 activeDays.Remove(day);
             }

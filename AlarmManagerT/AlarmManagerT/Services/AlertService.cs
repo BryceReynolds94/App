@@ -48,7 +48,7 @@ namespace AlarmManagerT.Services {
 
                 Logger.Debug("Quick succession updates. Setting lock time for 2s.");
 
-                Task.Delay(lockDuration).Wait(); //TODO: Unsure about this
+                Task.Delay(lockDuration).Wait();
                 Logger.Debug("Lock time over.");
                 return false;
             }

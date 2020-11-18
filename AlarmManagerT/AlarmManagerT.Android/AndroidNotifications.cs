@@ -10,12 +10,14 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-using Android.Support.V4.App; //needed for compat notifications https://docs.microsoft.com/en-us/xamarin/android/app-fundamentals/notifications/local-notifications-walkthrough
+using AndroidX.Core.App;
 using Android.Media;
 using System.Drawing;
 using AlarmManagerT.Models;
 using AlarmManagerT.Services;
 using System.Collections.ObjectModel;
+using AndroidX.Core.Content;
+using AlarmManagerT.Views;
 
 [assembly: Xamarin.Forms.Dependency(typeof(AlarmManagerT.Droid.AndroidNotifications))] //register for dependency service as platform-specific code
 namespace AlarmManagerT.Droid {
@@ -48,12 +50,12 @@ namespace AlarmManagerT.Droid {
                 .SetContentText(alert.text)
                 .SetSmallIcon(Resource.Drawable.notification_icon) //use simplified xml vector
                 .SetColor(Resource.Color.colorPrimary) //set app color for small notification icon
-                .SetLargeIcon(largePic)
+                .SetLargeIcon(largePic) //group pic
                 .SetPriority(NotificationCompat.PriorityHigh)
-                .SetCategory(NotificationCompat.CategoryMessage)
+                .SetCategory(NotificationCompat.CategoryMessage) //category for message classification
                 .SetAutoCancel(true) //cancel notification when tapped
                 .SetFullScreenIntent(fullScreenIntent, true)
-                .SetStyle(new NotificationCompat.BigTextStyle().BigText(alert.text));
+                .SetStyle(new NotificationCompat.BigTextStyle().BigText(alert.text)); //extend message on tap
 
             if (AndroidNavigation.isTelegramInstalled()) {
                 builder.SetContentIntent(PendingIntent.GetActivity(Application.Context, 0, AndroidNavigation.getTelegramIntent(alert.chatID), 0));
@@ -105,7 +107,11 @@ namespace AlarmManagerT.Droid {
             notificationChannel.EnableLights(true);
             notificationChannel.SetVibrationPattern(new long[] { 0, 1000, 500, 100, 100, 1000, 500, 100, 100, 1000 }); //TODO: Check this vibration pattern
             notificationChannel.EnableVibration(true);
-            //TODO: Add sound
+
+            Android.Net.Uri soundUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.fileprovider", new Java.IO.File(AlertPage.soundFile));
+            //FileProvider defined in Manifest
+
+            notificationChannel.SetSound(soundUri, new AudioAttributes.Builder().SetUsage(AudioUsageKind.NotificationCommunicationInstant).Build()); //TODO: Testing
 
             NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);
             notificationManager.CreateNotificationChannel(notificationChannel);

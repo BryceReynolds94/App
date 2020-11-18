@@ -178,6 +178,24 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any chat message.
+        /// </summary>
+        public static string AlertStatus_Trigger_Any {
+            get {
+                return ResourceManager.GetString("AlertStatus_Trigger_Any", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PagerBuddy-Server.
+        /// </summary>
+        public static string AlertStatus_Trigger_Server {
+            get {
+                return ResourceManager.GetString("AlertStatus_Trigger_Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configured alert notifications..
         /// </summary>
         public static string Android_AndroidNotifications_AlertChannel_Description {
@@ -219,6 +237,15 @@ namespace AlarmManagerT.Resources {
         public static string App_Name {
             get {
                 return ResourceManager.GetString("App_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check out PagerBuddy and never miss an urgent message again. The app is available for Android and iOS..
+        /// </summary>
+        public static string App_Share_Message {
+            get {
+                return ResourceManager.GetString("App_Share_Message", resourceCulture);
             }
         }
         
