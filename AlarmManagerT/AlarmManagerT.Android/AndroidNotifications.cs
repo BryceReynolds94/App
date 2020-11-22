@@ -116,7 +116,7 @@ namespace AlarmManagerT.Droid {
             notificationChannel.SetVibrationPattern(new long[] { 0, 1000, 500, 100, 100, 1000, 500, 100, 100, 1000 }); //TODO: Check this vibration pattern
             notificationChannel.EnableVibration(true);
 
-            Uri fileUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.fileprovider", getSoundFile());
+            Uri fileUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.pagerbuddy.fileprovider", getSoundFile());
             notificationChannel.SetSound(fileUri, new AudioAttributes.Builder().SetUsage(AudioUsageKind.NotificationCommunicationInstant).Build()); //TODO: Find out how to set user-visible description
 
             NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);

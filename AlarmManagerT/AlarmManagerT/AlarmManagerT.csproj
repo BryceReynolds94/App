@@ -23,6 +23,7 @@
     <None Remove="Resources\Images\icon_confirm.svg" />
     <None Remove="Resources\Images\icon_delete.svg" />
     <None Remove="Resources\Images\icon_history.svg" />
+    <None Remove="Resources\Images\icon_lock.svg" />
     <None Remove="Resources\Images\icon_logout.svg" />
     <None Remove="Resources\Images\icon_settings.svg" />
     <None Remove="Resources\Images\icon_share.svg" />
@@ -46,6 +47,7 @@
     <EmbeddedResource Include="Resources\Images\icon_confirm.svg" />
     <EmbeddedResource Include="Resources\Images\icon_delete.svg" />
     <EmbeddedResource Include="Resources\Images\icon_history.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_lock.svg" />
     <EmbeddedResource Include="Resources\Images\icon_logout.svg" />
     <EmbeddedResource Include="Resources\Images\icon_settings.svg" />
     <EmbeddedResource Include="Resources\Images\icon_share.svg" />

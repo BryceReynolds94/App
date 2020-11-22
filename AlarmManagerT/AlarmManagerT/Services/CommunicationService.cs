@@ -40,10 +40,6 @@ namespace AlarmManagerT.Services {
             }
         }
 
-        private static readonly int API_ID = ***REMOVED***;
-        private static readonly string API_HASH = "***REMOVED***";
-        //TODO: Hide API_HASH from potential attackers
-
         private string clientRequestCodeHash = null;
         private string clientPhoneNumber = null;
 
@@ -71,7 +67,7 @@ namespace AlarmManagerT.Services {
         private async Task connectClient() {
             clientStatus = STATUS.OFFLINE;
             try {
-                client = new TelegramClient(API_ID, API_HASH, new MySessionStore(this));
+                client = new TelegramClient(KeyService.checkID(this), KeyService.checkHash(this), new MySessionStore(this));
             } catch (Exception e) {
                 Logger.Error(e, "Initialisation of TelegramClient failed");
                 return;

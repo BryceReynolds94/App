@@ -47,13 +47,13 @@ namespace AlarmManagerT.Droid
 
         public void navigateShareFile(string fileName) {
 
-            Android.Net.Uri contentUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.fileprovider", new Java.IO.File(fileName));
+            Android.Net.Uri contentUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.pagerbuddy.fileprovider", new Java.IO.File(fileName));
             //FileProvider defined in Manifest
 
             Intent intent = new Intent(Intent.ActionSend)
                 .SetData(contentUri)
                 .PutExtra(Intent.ExtraStream, contentUri)
-                .PutExtra(Intent.ExtraEmail, "alarmmanager@bartunik.de") //TODO: RBF
+                .PutExtra(Intent.ExtraEmail, Resources.AppResources.AboutPage_Developer_Contact)
                 .AddFlags(ActivityFlags.GrantReadUriPermission)
                 .SetType("text/plain");
             Platform.CurrentActivity.StartActivity(Intent.CreateChooser(intent, (string) null));
