@@ -85,8 +85,7 @@ namespace AlarmManagerT.Droid {
             if (!audioManager.IsVolumeFixed) //do not bother with devices that do not have volume control
             {
                 try {
-                    audioManager.SetStreamVolume(Android.Media.Stream.Notification, audioManager.GetStreamMaxVolume(Android.Media.Stream.Notification), 0); //TODO: Check if stream is correct
-                    //TODO: Possibly also set media stream to max
+                    audioManager.SetStreamVolume(Android.Media.Stream.Notification, audioManager.GetStreamMaxVolume(Android.Media.Stream.Notification), 0);
                 } catch (Exception e) {
                     Logger.Warn(e, "Could not set volume. Probably due to insufficient permissions");
                 }
@@ -113,7 +112,7 @@ namespace AlarmManagerT.Droid {
                 Group = ALERT_CHANNEL_ID
             };
             notificationChannel.EnableLights(true);
-            notificationChannel.SetVibrationPattern(new long[] { 0, 1000, 500, 100, 100, 1000, 500, 100, 100, 1000 }); //TODO: Check this vibration pattern
+            notificationChannel.SetVibrationPattern(new long[] { 0, 1000, 500, 100, 100, 1000, 500, 100, 100, 1000 }); //TODO: Testing - Check this vibration pattern
             notificationChannel.EnableVibration(true);
 
             Uri fileUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.pagerbuddy.fileprovider", getSoundFile());

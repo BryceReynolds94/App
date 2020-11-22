@@ -30,7 +30,8 @@ namespace AlarmManagerT.Services
             REFRESH_LOCK_TIME, //Time untill incoming FCM messages should be ignored
             LAST_REFRESH_TIME, //Last time new messages were collected from Telegram
             HAS_PROMPTED_DND_PERMISSION, //Whether the user has been asked to grant DND Permission in Android
-            FCM_TOKEN //Token for FCM messages
+            FCM_TOKEN, //Token for FCM messages
+            LAST_MESSAGE_ID
         }; 
 
 

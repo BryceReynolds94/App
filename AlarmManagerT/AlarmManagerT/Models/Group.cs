@@ -12,8 +12,6 @@ namespace AlarmManagerT.Models
         public MemoryStream image;
         public bool hasImage = false;
 
-        public int lastMessageID = 0;
-
         public Group(string groupName, int groupID)
         {
             name = groupName;

@@ -65,8 +65,10 @@ namespace AlarmManagerT.Services {
                 configList.Add(DataService.getAlertConfig(id));
             }
 
+            int currentMessageID = DataService.getConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, 0);
+
             foreach (AlertConfig config in configList) {
-                TLAbsMessages result = await client.getMessages(config.triggerGroup.id, config.triggerGroup.lastMessageID);
+                TLAbsMessages result = await client.getMessages(config.triggerGroup.id, currentMessageID);
                 TLVector<TLAbsMessage> messageList;
 
                 if (result is TLMessages) {
@@ -81,15 +83,6 @@ namespace AlarmManagerT.Services {
 
                 if (messageList.Count < 1) {
                     break;
-                } else {
-                    foreach (TLAbsMessage rawMessage in messageList) {
-                        if (rawMessage is TLMessage) {
-                            config.triggerGroup.lastMessageID = (rawMessage as TLMessage).Id;
-                            break;
-                        } else {
-                            messageList.Remove(rawMessage);
-                        }
-                    }
                 }
 
                 foreach (TLAbsMessage rawMessage in messageList) {
@@ -117,6 +110,8 @@ namespace AlarmManagerT.Services {
                 //persists values to clean up
                 config.saveChanges();
             }
+            //update message id index
+            DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await client.getLastMessageID(currentMessageID));
         }
 
         private void alertMessage(AlertConfig config, TLMessage message) {

@@ -73,7 +73,7 @@ namespace AlarmManagerT.Models
                         return Regex.IsMatch(message, triggerKeyword);
                     }
                 case TRIGGER_TYPE.SERVER:
-                    //TODO: Invent PagerBuddy-Server syntax
+                    //TODO Later: Invent PagerBuddy-Server syntax
                     break;
             }
             return false;

@@ -90,8 +90,8 @@ namespace AlarmManagerT.Services {
                 Logger.Debug("User is authorised allready.");
                 clientStatus = STATUS.AUTHORISED;
                 saveUserData(await getUser());
-
-
+                //Update current message index
+                DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0));
             } else {
                 Logger.Debug("User is not authorised. Awaiting login data.");
                 clientStatus = STATUS.WAIT_PHONE;
@@ -252,7 +252,7 @@ namespace AlarmManagerT.Services {
             return TStatus.OK;
         }
 
-        private void loginCompleted(TLUser user) {
+        private async void loginCompleted(TLUser user) {
             saveUserData(user);
             clientStatus = STATUS.AUTHORISED;
 
@@ -262,6 +262,8 @@ namespace AlarmManagerT.Services {
             } else {
                 Logger.Warn("Could not subscribe to FCM Messages as no token available");
             }
+            //ser current message id
+            DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0));
         }
 
         public async void saveUserData(TLUser user) {
@@ -311,7 +313,7 @@ namespace AlarmManagerT.Services {
                 Logger.Error(e, "Exception while trying to fetch chat list.");
                 return new TLVector<TLAbsChat>();
             }
-
+            
             return dialogs.Chats;
         }
 
@@ -368,38 +370,31 @@ namespace AlarmManagerT.Services {
             return user;
         }
 
-        public async Task<int> getCurrentMessageID(int chatID) {
+        public async Task<int> getLastMessageID(int currentID) {
             if (clientStatus != STATUS.AUTHORISED) {
-                Logger.Warn("Attempting to get message ID without user authorisation. Current status: " + clientStatus.ToString());
-                return 0;
+                Logger.Warn("Attempted to get last message ID with inappropriate client status. Current status: " + clientStatus.ToString());
+                return currentID;
             }
 
-            TLRequestGetHistory request = new TLRequestGetHistory() { //https://core.telegram.org/method/messages.getHistory
-                Peer = new TLInputPeerChat() { ChatId = chatID },
-                Limit = 1
+            TLMethod requestDialogList = new TLRequestGetDialogs() { //https://core.telegram.org/method/messages.getDialogs
+                OffsetPeer = new TLInputPeerSelf(),
+                Limit = 100
             };
 
-            TLAbsMessages messages;
+            TLDialogs dialogs;
             try {
-                messages = await client.SendRequestAsync<TLAbsMessages>(request);
+                dialogs = await client.SendRequestAsync<TLDialogs>(requestDialogList);
             } catch (Exception e) {
-                Logger.Error(e, "Exception while trying to retrieve messages.");
-                return 0;
+                Logger.Error(e, "Exception while trying to fetch chat list for message IDs.");
+                return currentID;
             }
 
-            TLAbsMessage msg;
-            if(messages is TLMessages) {
-                msg = (messages as TLMessages).Messages[0];
-            }else if(messages is TLMessagesSlice) {
-                msg = (messages as TLMessagesSlice).Messages[0];
-            } else {
-                return 0;
+            foreach(TLAbsMessage msg in dialogs.Messages) {
+                if(msg is TLMessage) {
+                    currentID = Math.Max((msg as TLMessage).Id, currentID);
+                };
             }
-
-            if(msg is TLMessage) {
-                return (msg as TLMessage).Id;
-            }
-            return 0;
+            return currentID;
         }
 
         public async Task<TLAbsMessages> getMessages(int chatID, int lastMessageID) {
@@ -448,6 +443,7 @@ namespace AlarmManagerT.Services {
 
                 var buffer = File.ReadAllBytes(file);
                 Session session = Session.FromBytes(buffer, this, sessionUserId);
+
                 client.user = session.TLUser;
                 return session;
             }
