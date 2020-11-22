@@ -11,18 +11,14 @@ using AlarmManagerT.Interfaces;
 using INavigation = AlarmManagerT.Interfaces.INavigation;
 using AlarmManagerT.Models;
 using System.IO;
-using Plugin.SimpleAudioPlayer;
 
 namespace AlarmManagerT.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlertPage : ContentPage
-    {
-        public static readonly string soundFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Resources.Sounds.pagerbuddy_sound.mp3");
+    {      
 
         AlertPageViewModel viewModel;
-
-        ISimpleAudioPlayer audioPlayer;
 
         private int groupID;
 
@@ -36,39 +32,25 @@ namespace AlarmManagerT.Views
             viewModel.RequestConfirm += confirm;
 
             startAnimation();
-            playSound(); //TODO: Testing
         }
 
-        private void playSound() {
-            audioPlayer = CrossSimpleAudioPlayer.Current;
-            audioPlayer.Load(soundFile);
-            audioPlayer.Loop = true;
-            audioPlayer.Play();
-        }
 
-        private void stopSound() {
-            if(audioPlayer != null && audioPlayer.IsPlaying) {
-                audioPlayer.Stop();
-            }
-        }
 
         private async void startAnimation() {
-            await MainIcon.ScaleTo(1.3, 1000);
-            await MainIcon.ScaleTo(1, 1000);
+            await MainIcon.ScaleTo(1.3, 517);
+            await MainIcon.ScaleTo(1, 517);
             //await Task.Delay(500);
             startAnimation();
         }
 
         private void cancel(object sender, EventArgs args)
         {
-            stopSound();
             INavigation nav = DependencyService.Get<INavigation>();
-            nav.quitApplication();
+            nav.quitApplication(); 
         }
 
         private void confirm(object sender, EventArgs args)
         {
-            stopSound();
             INavigation nav = DependencyService.Get<INavigation>();
             nav.navigateTelegramChat(groupID);
         }

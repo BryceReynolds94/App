@@ -79,6 +79,33 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PagerBuddy Privacy Policy.
+        /// </summary>
+        public static string AboutPage_AppPP_Link {
+            get {
+                return ResourceManager.GetString("AboutPage_AppPP_Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Developed by Max Bartunik.
+        /// </summary>
+        public static string AboutPage_Developer {
+            get {
+                return ResourceManager.GetString("AboutPage_Developer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pagerbuddy@bartunik.de.
+        /// </summary>
+        public static string AboutPage_Developer_Contact {
+            get {
+                return ResourceManager.GetString("AboutPage_Developer_Contact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide Developer Mode.
         /// </summary>
         public static string AboutPage_DeveloperMode_HideDeveloperModeBtn {
@@ -151,6 +178,33 @@ namespace AlarmManagerT.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Personal Information you enter while using this App is stored locally on your device. Only necessary information for authentication is passed to Telegram. If an error occurs some log data regarding device statistics and configuration of PagerBuddy may be collected. Links to Telegrams Privacy Policy and the full Privacy Policy for PagerBuddy are provided below..
+        /// </summary>
+        public static string AboutPage_PrivacyPolicy {
+            get {
+                return ResourceManager.GetString("AboutPage_PrivacyPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PagerBuddy is neither affiliated nor endorsed by Telegram..
+        /// </summary>
+        public static string AboutPage_Telegram {
+            get {
+                return ResourceManager.GetString("AboutPage_Telegram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telegram Privacy Policy.
+        /// </summary>
+        public static string AboutPage_TelegramPP_Link {
+            get {
+                return ResourceManager.GetString("AboutPage_TelegramPP_Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string AboutPage_Title {
@@ -210,6 +264,24 @@ namespace AlarmManagerT.Resources {
         public static string Android_AndroidNotifications_AlertChannel_Title {
             get {
                 return ResourceManager.GetString("Android_AndroidNotifications_AlertChannel_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifications relevant to general app behaviour and updates..
+        /// </summary>
+        public static string Android_AndroidNotifications_StandardChannel_Description {
+            get {
+                return ResourceManager.GetString("Android_AndroidNotifications_StandardChannel_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App Information.
+        /// </summary>
+        public static string Android_AndroidNotifications_StandardChannel_Title {
+            get {
+                return ResourceManager.GetString("Android_AndroidNotifications_StandardChannel_Title", resourceCulture);
             }
         }
         

@@ -1,4 +1,5 @@
 ﻿<paths xmlns:android="http://schemas.android.com/apk/res/android">
   <files-path name="logs" path="log" />
+  <files-path name="sounds" path="sounds" />
 </paths>
 

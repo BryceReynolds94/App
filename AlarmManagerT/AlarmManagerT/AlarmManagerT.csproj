@@ -31,7 +31,6 @@
     <None Remove="Resources\Images\launcher_icon.svg" />
     <None Remove="Resources\Images\launcher_light.svg" />
     <None Remove="Resources\Images\user_default.svg" />
-    <None Remove="Resources\Sounds\pagerbuddy_sound.mp3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,7 +54,6 @@
     <EmbeddedResource Include="Resources\Images\launcher_icon.svg" />
     <EmbeddedResource Include="Resources\Images\launcher_light.svg" />
     <EmbeddedResource Include="Resources\Images\user_default.svg" />
-    <EmbeddedResource Include="Resources\Sounds\pagerbuddy_sound.mp3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,7 +62,6 @@
     <PackageReference Include="NLog" Version="4.7.5" />
     <PackageReference Include="Plugin.FirebasePushNotification" Version="3.3.10" />
     <PackageReference Include="TLSharp.Standard" Version="1.0.1" />
-    <PackageReference Include="Xam.Plugin.SimpleAudioPlayer" Version="1.4.0" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.1709-pre4" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre4" />

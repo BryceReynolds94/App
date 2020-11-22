@@ -17,7 +17,6 @@ using Xamarin.Forms.Xaml;
 namespace AlarmManagerT.Views {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AboutPage : ContentPage {
-        //TODO: Complete AboutPage with legal info
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 

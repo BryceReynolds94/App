@@ -21,6 +21,7 @@ namespace AlarmManagerT.ViewModels {
         public Command TestNotification { get; set; }
         public Command RestartClient { get; set; }
         public Command TestFCMMessage { get; set; }
+        public Command Hyperlink { get; set; }
 
         private DateTime developerTapStart = DateTime.MinValue;
         private int developerTapCount = 0;
@@ -34,6 +35,7 @@ namespace AlarmManagerT.ViewModels {
             TestNotification = new Command(() => requestTestNotification(this, null));
             RestartClient = new Command(() => requestRestartClient(this, null));
             TestFCMMessage = new Command(() => requestTestFCMMessage(this, null));
+            Hyperlink = new Command<string>(async (url) => await Launcher.OpenAsync(url));
 
             reloadLogLoop();
         }
@@ -69,6 +71,7 @@ namespace AlarmManagerT.ViewModels {
             Logger.Info("Developer Mode activated.");
             DataService.setConfigValue(DataService.DATA_KEYS.DEVELOPER_MODE, true);
             OnPropertyChanged(nameof(IsDeveloperMode));
+            OnPropertyChanged(nameof(NotDeveloperMode));
             reloadLogLoop();
         }
 
@@ -76,6 +79,7 @@ namespace AlarmManagerT.ViewModels {
             Logger.Info("Deactivating Developer Mode.");
             DataService.setConfigValue(DataService.DATA_KEYS.DEVELOPER_MODE, false);
             OnPropertyChanged(nameof(IsDeveloperMode));
+            OnPropertyChanged(nameof(NotDeveloperMode));
         }
 
         public string AppVersion {
@@ -89,6 +93,8 @@ namespace AlarmManagerT.ViewModels {
                 return DataService.getConfigValue<bool>(DataService.DATA_KEYS.DEVELOPER_MODE, false);
             }
         }
+
+        public bool NotDeveloperMode { get => !IsDeveloperMode; }
 
         public string LogText {
             get {

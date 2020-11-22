@@ -6,8 +6,8 @@
              xmlns:resources="clr-namespace:AlarmManagerT.Resources"
              Title="{Binding Title}">
     <ContentPage.Content>
-        <StackLayout Margin="20">
-            <Grid Margin="0,30">
+        <StackLayout>
+            <Grid Margin="20,50">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
@@ -25,11 +25,27 @@
                 <Label Text="{x:Static resources:AppResources.AboutPage_App_Name}" Grid.Row="0" Grid.Column="1"  FontSize="Large" VerticalOptions="End"/>
                 <Label Text="{Binding AppVersion}" Grid.Row="1" Grid.Column="1"  FontSize="Medium" VerticalOptions="Start"/>
             </Grid>
+            
+            <StackLayout Margin="20" IsVisible="{Binding NotDeveloperMode}" VerticalOptions="FillAndExpand">
+                <Label Text="{x:Static resources:AppResources.AboutPage_Developer}" HorizontalOptions="Center" VerticalOptions="EndAndExpand" FontSize="Large"/>
+                <Label Text="{x:Static resources:AppResources.AboutPage_Developer_Contact}" HorizontalOptions="Center" VerticalOptions="StartAndExpand" FontSize="Medium"/>
 
-            <Label Text="TODO: Legal stuff (privacy policy, GDPR/DSGVO, etc, Telegram, etc...)" /> 
+                <Label Text="{x:Static resources:AppResources.AboutPage_PrivacyPolicy}" VerticalOptions="EndAndExpand"/>
+                <Label Text="{x:Static resources:AppResources.AboutPage_AppPP_Link}" TextDecorations="Underline" HorizontalOptions="Center" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Hyperlink}" CommandParameter="http://www.bartunik.de/policy"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="{x:Static resources:AppResources.AboutPage_TelegramPP_Link}" TextDecorations="Underline" HorizontalOptions="Center" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Hyperlink}" CommandParameter="http://www.telegram.org/privacy"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="{x:Static resources:AppResources.AboutPage_Telegram}" Margin="0,20" VerticalOptions="EndAndExpand"/>
+            </StackLayout>
 
             <ScrollView IsVisible="{Binding IsDeveloperMode}">
-            <Grid>
+            <Grid Margin="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>

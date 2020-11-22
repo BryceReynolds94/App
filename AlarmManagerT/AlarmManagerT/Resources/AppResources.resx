@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AboutPage_AppPP_Link" xml:space="preserve">
+    <value>PagerBuddy Privacy Policy</value>
+  </data>
   <data name="AboutPage_App_Name" xml:space="preserve">
     <value>PagerBuddy</value>
   </data>
   <data name="AboutPage_App_VersionInfo" xml:space="preserve">
     <value>version {0} ({1})</value>
+  </data>
+  <data name="AboutPage_Developer" xml:space="preserve">
+    <value>Developed by Max Bartunik</value>
   </data>
   <data name="AboutPage_DeveloperMode_HideDeveloperModeBtn" xml:space="preserve">
     <value>Hide Developer Mode</value>
@@ -147,6 +153,18 @@
   <data name="AboutPage_DeveloperMode_TestNotification_Message" xml:space="preserve">
     <value>TEST NOTIFICATION</value>
   </data>
+  <data name="AboutPage_Developer_Contact" xml:space="preserve">
+    <value>pagerbuddy@bartunik.de</value>
+  </data>
+  <data name="AboutPage_PrivacyPolicy" xml:space="preserve">
+    <value>All Personal Information you enter while using this App is stored locally on your device. Only necessary information for authentication is passed to Telegram. If an error occurs some log data regarding device statistics and configuration of PagerBuddy may be collected. Links to Telegrams Privacy Policy and the full Privacy Policy for PagerBuddy are provided below.</value>
+  </data>
+  <data name="AboutPage_Telegram" xml:space="preserve">
+    <value>PagerBuddy is neither affiliated nor endorsed by Telegram.</value>
+  </data>
+  <data name="AboutPage_TelegramPP_Link" xml:space="preserve">
+    <value>Telegram Privacy Policy</value>
+  </data>
   <data name="AboutPage_Title" xml:space="preserve">
     <value>About</value>
   </data>
@@ -167,6 +185,12 @@
   </data>
   <data name="Android_AndroidNotifications_AlertChannel_Title" xml:space="preserve">
     <value>Alert Notifications</value>
+  </data>
+  <data name="Android_AndroidNotifications_StandardChannel_Description" xml:space="preserve">
+    <value>Notifications relevant to general app behaviour and updates.</value>
+  </data>
+  <data name="Android_AndroidNotifications_StandardChannel_Title" xml:space="preserve">
+    <value>App Information</value>
   </data>
   <data name="App_DeveloperMode_AlertPage_Message" xml:space="preserve">
     <value>TEST NOTIFICATION</value>

@@ -38,8 +38,17 @@ namespace AlarmManagerT.Droid
 
             FirebasePushNotificationManager.ProcessIntent(this, Intent); //Added to enable FirebasePushNotificationPlugin
 
+            WakeScreenAlertPage(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()));
             LoadApplication(new App(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()), GetAlertFromIntent(Intent)));
             new AndroidNotifications().SetupNotificationChannels(); //Application has to be loaded first
+        }
+
+        private void WakeScreenAlertPage(bool isAlert) {
+            if (isAlert) {
+                SetShowWhenLocked(true);
+                SetTurnScreenOn(true);
+                ((KeyguardManager)GetSystemService(Context.KeyguardService)).RequestDismissKeyguard(this, null);
+            }
         }
 
         private Alert GetAlertFromIntent(Intent intent)

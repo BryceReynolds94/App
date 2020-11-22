@@ -16,8 +16,12 @@ using System.Drawing;
 using AlarmManagerT.Models;
 using AlarmManagerT.Services;
 using System.Collections.ObjectModel;
-using AndroidX.Core.Content;
 using AlarmManagerT.Views;
+using Xamarin.Essentials;
+using Uri = Android.Net.Uri;
+using Java.IO;
+using System.Threading.Tasks;
+using System.IO;
 
 [assembly: Xamarin.Forms.Dependency(typeof(AlarmManagerT.Droid.AndroidNotifications))] //register for dependency service as platform-specific code
 namespace AlarmManagerT.Droid {
@@ -25,8 +29,8 @@ namespace AlarmManagerT.Droid {
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static readonly string ALERT_CHANNEL_ID = "Alert Notifications";
-        public static readonly string STANDARD_CHANNEL_ID = "Standard Notifications";
+        public static readonly string ALERT_CHANNEL_ID = "de.bartunik.pagerbuddy.alert";
+        public static readonly string STANDARD_CHANNEL_ID = "de.bartunik.pagerbuddy.standard";
 
 
         public void showAlertNotification(Alert alert) {
@@ -61,8 +65,11 @@ namespace AlarmManagerT.Droid {
                 builder.SetContentIntent(PendingIntent.GetActivity(Application.Context, 0, AndroidNavigation.getTelegramIntent(alert.chatID), 0));
             }
 
+            Notification notification = builder.Build();
+            notification.Flags |= NotificationFlags.Insistent; //repeat sound untill acknowledged
+
             NotificationManager manager = NotificationManager.FromContext(Application.Context);
-            manager.Notify(new Random().Next(), builder.Build()); //Currently no need to access notification later - so set ID random and forget
+            manager.Notify(new Random().Next(), notification); //Currently no need to access notification later - so set ID random and forget
         }
 
         private void prepareAlert() {
@@ -78,7 +85,8 @@ namespace AlarmManagerT.Droid {
             if (!audioManager.IsVolumeFixed) //do not bother with devices that do not have volume control
             {
                 try {
-                    audioManager.SetStreamVolume(Stream.Notification, audioManager.GetStreamMaxVolume(Stream.Notification), 0); //TODO: Check if stream is correct
+                    audioManager.SetStreamVolume(Android.Media.Stream.Notification, audioManager.GetStreamMaxVolume(Android.Media.Stream.Notification), 0); //TODO: Check if stream is correct
+                    //TODO: Possibly also set media stream to max
                 } catch (Exception e) {
                     Logger.Warn(e, "Could not set volume. Probably due to insufficient permissions");
                 }
@@ -108,13 +116,29 @@ namespace AlarmManagerT.Droid {
             notificationChannel.SetVibrationPattern(new long[] { 0, 1000, 500, 100, 100, 1000, 500, 100, 100, 1000 }); //TODO: Check this vibration pattern
             notificationChannel.EnableVibration(true);
 
-            Android.Net.Uri soundUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.fileprovider", new Java.IO.File(AlertPage.soundFile));
-            //FileProvider defined in Manifest
-
-            notificationChannel.SetSound(soundUri, new AudioAttributes.Builder().SetUsage(AudioUsageKind.NotificationCommunicationInstant).Build()); //TODO: Testing
+            Uri fileUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.fileprovider", getSoundFile());
+            notificationChannel.SetSound(fileUri, new AudioAttributes.Builder().SetUsage(AudioUsageKind.NotificationCommunicationInstant).Build()); //TODO: Find out how to set user-visible description
 
             NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);
             notificationManager.CreateNotificationChannel(notificationChannel);
+        }
+
+        private Java.IO.File getSoundFile() {
+            string saveFileLocation = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/sounds/notification.mp3";
+            Java.IO.File saveFile = new Java.IO.File(saveFileLocation);
+            if (saveFile.Exists()) {
+                return saveFile;
+            }
+
+            Directory.CreateDirectory(Path.GetDirectoryName(saveFileLocation));
+            //System.IO.Stream inputStream = Application.Context.Assets.Open("pagerbuddy_sound.mp3");
+            StreamReader inputStream = new StreamReader(Application.Context.Assets.Open("pagerbuddy_sound.mp3"));
+            FileStream outputStream = new FileStream(saveFileLocation, FileMode.Create);
+
+            _ = inputStream.BaseStream.CopyToAsync(outputStream); //Do not wait for copy as sometimes lagging
+            //TODO: Observe when we have problems with lagging write
+
+            return saveFile;
         }
 
         public void removeNotificationChannel(AlertConfig alertConfig) {
@@ -131,8 +155,8 @@ namespace AlarmManagerT.Droid {
                 Description = Resources.AppResources.Android_AndroidNotifications_AlertChannel_Description
             };
 
-            string standardName = "App Information"; //TODO: RBF
-            string standardDescription = "Notifications relevant to general app behaviour and updates."; //TODO: RBF
+            string standardName = Resources.AppResources.Android_AndroidNotifications_StandardChannel_Title;
+            string standardDescription = Resources.AppResources.Android_AndroidNotifications_StandardChannel_Description;
             NotificationChannel standardChannel = new NotificationChannel(AndroidNotifications.STANDARD_CHANNEL_ID, standardName, NotificationImportance.Default) {
                 Description = standardDescription
 
