@@ -104,7 +104,7 @@
     <AndroidResource Include="Resources\values\colors.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AlarmManagerT\PagerBuddy.csproj">
+    <ProjectReference Include="..\PagerBuddy\PagerBuddy.csproj">
       <Project>{55F79DE2-CE2B-4FA3-A432-9A1E44F3396B}</Project>
       <Name>PagerBuddy</Name>
     </ProjectReference>
