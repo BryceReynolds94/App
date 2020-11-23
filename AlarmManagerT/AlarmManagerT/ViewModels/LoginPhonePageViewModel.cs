@@ -31,11 +31,6 @@ namespace AlarmManagerT.ViewModels {
         public delegate void StringRequestHandler(object sender, string load);
 
         private void commitPhoneNumber() {
-            if (PhoneNumber.StartsWith("+99966") && PhoneNumber.Length == 11) {
-                Logger.Info("User entered a Test Number - accepting for test authorisation.");
-                RequestClientLogin.Invoke(this, PhoneNumber);
-                return;
-            }
 
             PhoneNumber no;
             try {

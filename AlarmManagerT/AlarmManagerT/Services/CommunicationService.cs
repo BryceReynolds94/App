@@ -45,14 +45,14 @@ namespace AlarmManagerT.Services {
 
         public enum STATUS { NEW, OFFLINE, WAIT_PHONE, WAIT_CODE, WAIT_PASSWORD, AUTHORISED };
 
-        public enum MESSAGING_KEYS { USER_DATA_CHANGED};
+        public enum MESSAGING_KEYS { USER_DATA_CHANGED };
 
         public CommunicationService() {
             _ = connectClient();
         }
 
         public async Task reloadConnection() {
-            if(clientStatus == STATUS.OFFLINE || clientStatus == STATUS.NEW) {
+            if (clientStatus == STATUS.OFFLINE || clientStatus == STATUS.NEW) {
                 await connectClient();
             }
         }
@@ -75,7 +75,7 @@ namespace AlarmManagerT.Services {
 
             try {
                 await client.ConnectAsync();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 Logger.Error(e, "Exception during connection attempt");
                 Logger.Error("Fatal Problem with client. Clearing session store and starting again.");
 
@@ -89,7 +89,7 @@ namespace AlarmManagerT.Services {
             if (client.IsUserAuthorized()) {
                 Logger.Debug("User is authorised allready.");
                 clientStatus = STATUS.AUTHORISED;
-                saveUserData(await getUser());
+                await saveUserData(await getUser());
                 //Update current message index
                 DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0));
             } else {
@@ -99,7 +99,7 @@ namespace AlarmManagerT.Services {
         }
 
         public async Task logoutUser() {
-            if(clientStatus != STATUS.AUTHORISED) {
+            if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to logout user without authorisation. Current state: " + clientStatus.ToString());
                 return;
             }
@@ -114,20 +114,20 @@ namespace AlarmManagerT.Services {
 
             try {
                 await client.SendRequestAsync<TLAbsBool>(unregisterRequest); //https://core.telegram.org/method/account.unregisterDevice
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to unregister device.");
             }
 
             try {
                 await client.SendRequestAsync<TLAbsBool>(new TLRequestLogOut()); //https://core.telegram.org/method/auth.logOut
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to logout user.");
             }
 
             clientStatus = STATUS.NEW;
 
             new MySessionStore(this).Clear();
-            
+
             await reloadConnection();
         }
 
@@ -151,7 +151,7 @@ namespace AlarmManagerT.Services {
         }
 
         public async Task<TStatus> loginWithPassword(string password) {
-            if(clientStatus != STATUS.WAIT_PASSWORD) {
+            if (clientStatus != STATUS.WAIT_PASSWORD) {
                 Logger.Warn("Attempted to perform 2FA without appropriate client status. Current status: " + clientStatus.ToString());
                 return TStatus.WRONG_CLIENT_STATUS;
             }
@@ -159,7 +159,7 @@ namespace AlarmManagerT.Services {
             TLPassword passwordConfig;
             try {
                 passwordConfig = await client.GetPasswordSetting();
-            }catch(Exception e) {
+            } catch (Exception e) {
                 Logger.Error(e, "Exception occured while trying to receive password configuration");
                 return TStatus.UNKNOWN;
             }
@@ -167,8 +167,8 @@ namespace AlarmManagerT.Services {
             TLUser user;
             try {
                 user = await client.MakeAuthWithPasswordAsync(passwordConfig, password);
-            }catch(Exception e) {
-                
+            } catch (Exception e) {
+
                 TException exception = getTException(e.Message);
                 switch (exception) {
                     case TException.PASSWORD_HASH_INVALID:
@@ -240,9 +240,9 @@ namespace AlarmManagerT.Services {
                 Logger.Info(e, "Two factor authentication needed.");
                 clientStatus = STATUS.WAIT_PASSWORD;
                 return TStatus.PASSWORD_REQUIRED;
-            }catch (InvalidPhoneCodeException e) {
+            } catch (InvalidPhoneCodeException e) {
                 Logger.Info(e, "Incorrect code entered.");
-                return TStatus.INVALID_CODE;                
+                return TStatus.INVALID_CODE;
             } catch (Exception e) {
                 Logger.Error(e, "Authenticating user code failed.");
                 return TStatus.UNKNOWN;
@@ -253,21 +253,21 @@ namespace AlarmManagerT.Services {
         }
 
         private async void loginCompleted(TLUser user) {
-            saveUserData(user);
+            await saveUserData(user);
             clientStatus = STATUS.AUTHORISED;
 
             string token = CrossFirebasePushNotification.Current.Token;
             if (token.Length > 1) {
-                _ = Task.Delay(500).ContinueWith((r) => subscribePushNotifications(token));
+                await subscribePushNotifications(token);
             } else {
                 Logger.Warn("Could not subscribe to FCM Messages as no token available");
             }
-            //ser current message id
+            //set current message id
             DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0));
         }
 
-        public async void saveUserData(TLUser user) {
-            if(user == null) {
+        public async Task saveUserData(TLUser user) {
+            if (user == null) {
                 Logger.Error("Attempting to save null user.");
                 return;
             }
@@ -306,15 +306,20 @@ namespace AlarmManagerT.Services {
                 Limit = 100
             };
 
-            TLDialogs dialogs;
+            TLAbsDialogs dialogs;
             try {
-                dialogs = await client.SendRequestAsync<TLDialogs>(requestDialogList);
+                dialogs = await client.SendRequestAsync<TLAbsDialogs>(requestDialogList);
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list.");
                 return new TLVector<TLAbsChat>();
             }
-            
-            return dialogs.Chats;
+
+            if (!(dialogs is TLDialogs)) {
+                Logger.Error("Unexpected return Type while fetching dialogs. Type: " + dialogs.GetType());
+                return new TLVector<TLAbsChat>();
+            }
+
+            return (dialogs as TLDialogs).Chats;
         }
 
         public async Task<TLFile> getProfilePic(TLFileLocation location) {
@@ -327,7 +332,7 @@ namespace AlarmManagerT.Services {
             TLFile file;
             try {
                 file = await client.GetFile(loc, 1024 * 256);
-            }catch(Exception exception) {
+            } catch (Exception exception) {
                 Logger.Error(exception, "Exception while trying to fetch profile pic.");
                 return new TLFile();
             }
@@ -342,7 +347,7 @@ namespace AlarmManagerT.Services {
             TLVector<TLChat> foundChats;
             try {
                 foundChats = await client.SendRequestAsync<TLVector<TLChat>>(request);
-            }catch(Exception exception) {
+            } catch (Exception exception) {
                 Logger.Error(exception, "Exception while retrieving chat from chatID.");
                 return new TLFile();
             }
@@ -381,18 +386,25 @@ namespace AlarmManagerT.Services {
                 Limit = 100
             };
 
-            TLDialogs dialogs;
+            TLAbsDialogs dialogs;
             try {
-                dialogs = await client.SendRequestAsync<TLDialogs>(requestDialogList);
+                dialogs = await client.SendRequestAsync<TLAbsDialogs>(requestDialogList);
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list for message IDs.");
                 return currentID;
             }
 
-            foreach(TLAbsMessage msg in dialogs.Messages) {
-                if(msg is TLMessage) {
-                    currentID = Math.Max((msg as TLMessage).Id, currentID);
-                };
+            if (!(dialogs is TLDialogs)) {
+                Logger.Error("Unexpected return Type while fetching dialogs. Type: " + dialogs.GetType());
+                return currentID;
+            }
+
+            //first dialog has highest message id
+            TLAbsMessage msg = (dialogs as TLDialogs).Messages[0];
+            if (msg is TLMessage) {
+                currentID = Math.Max((msg as TLMessage).Id, currentID);
+            } else if (msg is TLMessageService) {
+                currentID = Math.Max((msg as TLMessageService).Id, currentID);
             }
             return currentID;
         }
@@ -404,7 +416,7 @@ namespace AlarmManagerT.Services {
             }
 
             TLRequestGetHistory request = new TLRequestGetHistory() { //https://core.telegram.org/method/messages.getHistory
-                Peer = new TLInputPeerChat() {ChatId = chatID},
+                Peer = new TLInputPeerChat() { ChatId = chatID },
                 Limit = 100,
                 MinId = lastMessageID + 1
             };
@@ -436,7 +448,7 @@ namespace AlarmManagerT.Services {
             }
 
             public Session Load(string sessionUserId) {
-;
+                ;
                 if (!File.Exists(file)) {
                     return (Session)null;
                 }
