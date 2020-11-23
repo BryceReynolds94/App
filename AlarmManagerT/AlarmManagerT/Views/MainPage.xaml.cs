@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-using AlarmManagerT.Models;
-using AlarmManagerT.Services;
+using PagerBuddy.Models;
+using PagerBuddy.Services;
 using TeleSharp.TL;
-using AlarmManagerT.Resources;
+using PagerBuddy.Resources;
 
-namespace AlarmManagerT.Views {
+namespace PagerBuddy.Views {
     [DesignTimeVisible(false)]
     public partial class MainPage : FlyoutPage {
         //TODO: Design first-app-use behaviour (welcome message, force login)

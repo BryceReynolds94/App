@@ -4,16 +4,16 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-             xmlns:resources="clr-namespace:AlarmManagerT.Resources"
+             xmlns:resources="clr-namespace:PagerBuddy.Resources"
              mc:Ignorable="d"
-             x:Class="AlarmManagerT.Views.MenuPage"
+             x:Class="PagerBuddy.Views.MenuPage"
              Title="Menu">
 
     <StackLayout VerticalOptions="FillAndExpand">
         <StackLayout Orientation="Horizontal" Padding="10,20" BackgroundColor="{StaticResource PrimaryColor}">
             <Frame Padding="0" WidthRequest="60" HeightRequest="60" CornerRadius="30" IsClippedToBounds="True" VerticalOptions="Center" >
                 <Grid>
-                    <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Resources.Images.user_default.svg" IsVisible="{Binding ShowDefaultPic}"/>
+                    <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.user_default.svg" IsVisible="{Binding ShowDefaultPic}"/>
                     <Image Source="{Binding UserPic, TargetNullValue={x:Null}}" IsVisible="{Binding UserHasPic}" />
                 </Grid>
             </Frame>
@@ -26,28 +26,28 @@
             </StackLayout.GestureRecognizers>
         </StackLayout>
         <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
-            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Resources.Images.icon_alert.svg"/>
+            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_alert.svg"/>
             <Label Text="{x:Static resources:AppResources.MenuPage_Action_NotificationSettings}" FontSize="Large" VerticalOptions="Center"/>
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding NotificationSettings}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
         <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
-            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Resources.Images.icon_share.svg"/>
+            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_share.svg"/>
             <Label Text="{x:Static resources:AppResources.MenuPage_Action_Share}" FontSize="Large" VerticalOptions="Center"/>
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding Share}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
         <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0" VerticalOptions="StartAndExpand">
-            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Resources.Images.icon_about.svg"/>
+            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_about.svg"/>
             <Label Text="{x:Static resources:AppResources.MenuPage_Action_About}" FontSize="Large" VerticalOptions="Center"/>
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding About}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
         <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,20" VerticalOptions="End">
-            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://AlarmManagerT.Resources.Images.icon_logout.svg"/>
+            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_logout.svg"/>
             <Label Text="{x:Static resources:AppResources.MenuPage_Action_Logout}" FontSize="Large" VerticalOptions="Center"/>
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding Logout}"/>

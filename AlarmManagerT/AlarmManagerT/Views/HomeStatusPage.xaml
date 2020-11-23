@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              mc:Ignorable="d"
-             x:Class="AlarmManagerT.Views.HomeStatusPage"
+             x:Class="PagerBuddy.Views.HomeStatusPage"
              Title="{Binding Title}"
              x:Name="BrowseItemsPage">
 
@@ -35,7 +35,7 @@
                     <TapGestureRecognizer Command="{Binding ToggleAllSnooze}"/>
                 </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
                 </ffimageloadingsvg:SvgCachedImage>
-            <ffimageloadingsvg:SvgCachedImage  Source="resource://AlarmManagerT.Resources.Images.icon_add.svg" IsEnabled="{Binding AddEnabled}" HorizontalOptions="FillAndExpand">
+            <ffimageloadingsvg:SvgCachedImage  Source="resource://PagerBuddy.Resources.Images.icon_add.svg" IsEnabled="{Binding AddEnabled}" HorizontalOptions="FillAndExpand">
                 <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding AddConfig}"/>
                 </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
@@ -77,13 +77,13 @@
                                 <Switch x:Name="SwitchIsActive" IsToggled="{Binding IsActive}" Grid.Column="3" Grid.ColumnSpan="2" />
                                 <Frame Padding="0" CornerRadius="15" IsClippedToBounds="True">
                                     <Grid>
-                                        <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Resources.Images.group_default.svg" />
+                                        <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://PagerBuddy.Resources.Images.group_default.svg" />
                                         <Image Source="{Binding GroupPicPath, TargetNullValue={x:Null}}" IsVisible="{Binding HasPic}" />
                                     </Grid>
                                 </Frame>
                                 <Label Text="{Binding GroupName}" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="2"/>
 
-                                <ffimageloadingsvg:SvgCachedImage Grid.Row="1" Source="resource://AlarmManagerT.Resources.Images.icon_trigger.svg" HeightRequest="30"/>
+                                <ffimageloadingsvg:SvgCachedImage Grid.Row="1" Source="resource://PagerBuddy.Resources.Images.icon_trigger.svg" HeightRequest="30"/>
                                 <Label Text="{Binding KeywordText}" Grid.Row="1" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="3"/>
 
                                 <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Source="{Binding StatusFieldPic}" />
@@ -94,12 +94,12 @@
                                         <TapGestureRecognizer Command="{Binding SnoozeAlert}" />
                                     </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
                                 </ffimageloadingsvg:SvgCachedImage>
-                                <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Grid.Column="3" WidthRequest="30" Source="resource://AlarmManagerT.Resources.Images.icon_settings.svg">
+                                <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Grid.Column="3" WidthRequest="30" Source="resource://PagerBuddy.Resources.Images.icon_settings.svg">
                                     <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding EditAlert}" />
                                     </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
                                 </ffimageloadingsvg:SvgCachedImage>
-                                <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Grid.Column="4" WidthRequest="30" Source="resource://AlarmManagerT.Resources.Images.icon_delete.svg">
+                                <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Grid.Column="4" WidthRequest="30" Source="resource://PagerBuddy.Resources.Images.icon_delete.svg">
                                     <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding DeleteAlert}" />
                                     </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>

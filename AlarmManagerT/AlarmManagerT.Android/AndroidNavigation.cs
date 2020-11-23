@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AlarmManagerT.Interfaces;
+using PagerBuddy.Interfaces;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -14,8 +14,8 @@ using Xamarin.Essentials;
 using Android.Content.PM;
 using System.IO;
 
-[assembly: Xamarin.Forms.Dependency(typeof(AlarmManagerT.Droid.AndroidNavigation))] //register for dependency service as platform-specific code
-namespace AlarmManagerT.Droid
+[assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.Droid.AndroidNavigation))] //register for dependency service as platform-specific code
+namespace PagerBuddy.Droid
 {
     class AndroidNavigation : INavigation
     {

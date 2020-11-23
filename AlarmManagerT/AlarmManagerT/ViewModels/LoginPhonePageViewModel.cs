@@ -1,13 +1,13 @@
-﻿using AlarmManagerT.Resources;
+﻿using PagerBuddy.Resources;
 using PhoneNumbers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using Xamarin.Forms;
-using static AlarmManagerT.Services.ClientExceptions;
+using static PagerBuddy.Services.ClientExceptions;
 
-namespace AlarmManagerT.ViewModels {
+namespace PagerBuddy.ViewModels {
     public class LoginPhonePageViewModel : BaseViewModel {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 

@@ -1,6 +1,6 @@
-﻿using AlarmManagerT.Resources;
-using AlarmManagerT.Services;
-using AlarmManagerT.Views;
+﻿using PagerBuddy.Resources;
+using PagerBuddy.Services;
+using PagerBuddy.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace AlarmManagerT.ViewModels {
+namespace PagerBuddy.ViewModels {
     public class AboutPageViewModel : BaseViewModel {
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();

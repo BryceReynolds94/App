@@ -1,11 +1,11 @@
-﻿using AlarmManagerT.Models;
+﻿using PagerBuddy.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Xamarin.Forms;
 
-namespace AlarmManagerT.ViewModels
+namespace PagerBuddy.ViewModels
 {
     public class GroupViewModel
     {

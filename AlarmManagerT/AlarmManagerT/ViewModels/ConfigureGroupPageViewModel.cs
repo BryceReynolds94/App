@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-using AlarmManagerT.Models;
-using AlarmManagerT.Views;
-using AlarmManagerT.Services;
+using PagerBuddy.Models;
+using PagerBuddy.Views;
+using PagerBuddy.Services;
 using TeleSharp.TL;
 using TeleSharp.TL.Upload;
 using System.IO;
-using AlarmManagerT.Resources;
+using PagerBuddy.Resources;
 
-namespace AlarmManagerT.ViewModels
+namespace PagerBuddy.ViewModels
 {
     public class ConfigureGroupPageViewModel : BaseViewModel
     {

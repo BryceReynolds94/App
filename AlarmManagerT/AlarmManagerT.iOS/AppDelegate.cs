@@ -6,7 +6,7 @@ using FFImageLoading.Svg.Forms;
 using Foundation;
 using UIKit;
 
-namespace AlarmManagerT.iOS
+namespace PagerBuddy.iOS
 {
     // The UIApplicationDelegate for the application. This class is responsible for launching the 
     // User Interface of the application, as well as listening (and optionally responding) to 

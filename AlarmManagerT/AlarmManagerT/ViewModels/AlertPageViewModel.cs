@@ -1,10 +1,10 @@
-﻿using AlarmManagerT.Services;
+﻿using PagerBuddy.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace AlarmManagerT.ViewModels
+namespace PagerBuddy.ViewModels
 {
     public class AlertPageViewModel : BaseViewModel
     {

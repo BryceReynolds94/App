@@ -1,12 +1,12 @@
-﻿using AlarmManagerT.Interfaces;
-using AlarmManagerT.Models;
+﻿using PagerBuddy.Interfaces;
+using PagerBuddy.Models;
 using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace AlarmManagerT.Services
+namespace PagerBuddy.Services
 {
     public class MessagingService
     {

@@ -7,8 +7,8 @@
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{9AA2D3C6-3393-45F1-8E7C-5A9901728795}</TemplateGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>AlarmManagerT.Droid</RootNamespace>
-    <AssemblyName>AlarmManagerT.Android</AssemblyName>
+    <RootNamespace>PagerBuddy.Droid</RootNamespace>
+    <AssemblyName>PagerBuddy.Android</AssemblyName>
     <Deterministic>True</Deterministic>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
@@ -97,9 +97,9 @@
     <AndroidResource Include="Resources\values\colors.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AlarmManagerT\AlarmManagerT.csproj">
-      <Project>{FCBD4B6F-A5FA-4C4D-B637-D02002A59A57}</Project>
-      <Name>AlarmManagerT</Name>
+    <ProjectReference Include="..\AlarmManagerT\PagerBuddy.csproj">
+      <Project>{55F79DE2-CE2B-4FA3-A432-9A1E44F3396B}</Project>
+      <Name>PagerBuddy</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
-﻿using AlarmManagerT.Interfaces;
-using AlarmManagerT.Models;
+﻿using PagerBuddy.Interfaces;
+using PagerBuddy.Models;
 using Plugin.FirebasePushNotification;
 using System;
 using System.Collections;
@@ -11,7 +11,7 @@ using TeleSharp.TL;
 using TeleSharp.TL.Messages;
 using Xamarin.Forms;
 
-namespace AlarmManagerT.Services {
+namespace PagerBuddy.Services {
     public class AlertService {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 

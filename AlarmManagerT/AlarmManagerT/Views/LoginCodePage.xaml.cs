@@ -1,5 +1,5 @@
-﻿using AlarmManagerT.Services;
-using AlarmManagerT.ViewModels;
+﻿using PagerBuddy.Services;
+using PagerBuddy.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using static AlarmManagerT.Services.ClientExceptions;
+using static PagerBuddy.Services.ClientExceptions;
 
-namespace AlarmManagerT.Views
+namespace PagerBuddy.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginCodePage : ContentPage

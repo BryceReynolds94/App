@@ -1,4 +1,4 @@
-﻿using AlarmManagerT.ViewModels;
+﻿using PagerBuddy.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using AlarmManagerT.Interfaces;
-using INavigation = AlarmManagerT.Interfaces.INavigation;
-using AlarmManagerT.Models;
+using PagerBuddy.Interfaces;
+using INavigation = PagerBuddy.Interfaces.INavigation;
+using PagerBuddy.Models;
 using System.IO;
 
-namespace AlarmManagerT.Views
+namespace PagerBuddy.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlertPage : ContentPage

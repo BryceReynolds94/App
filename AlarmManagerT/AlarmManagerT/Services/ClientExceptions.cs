@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace AlarmManagerT.Services
+namespace PagerBuddy.Services
 {
     public static class ClientExceptions
     {

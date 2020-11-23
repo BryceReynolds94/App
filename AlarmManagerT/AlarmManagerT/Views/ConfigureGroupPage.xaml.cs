@@ -1,6 +1,6 @@
-﻿using AlarmManagerT.Models;
-using AlarmManagerT.Services;
-using AlarmManagerT.ViewModels;
+﻿using PagerBuddy.Models;
+using PagerBuddy.Services;
+using PagerBuddy.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +13,7 @@ using TeleSharp.TL.Upload;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace AlarmManagerT.Views {
+namespace PagerBuddy.Views {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ConfigureGroupPage : ContentPage {
         ConfigureGroupPageViewModel viewModel;

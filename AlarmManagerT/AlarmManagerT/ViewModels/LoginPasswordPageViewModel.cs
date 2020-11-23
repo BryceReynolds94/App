@@ -1,11 +1,11 @@
-﻿using AlarmManagerT.Resources;
+﻿using PagerBuddy.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
-using static AlarmManagerT.Services.ClientExceptions;
+using static PagerBuddy.Services.ClientExceptions;
 
-namespace AlarmManagerT.ViewModels {
+namespace PagerBuddy.ViewModels {
     public class LoginPasswordPageViewModel : BaseViewModel {
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();

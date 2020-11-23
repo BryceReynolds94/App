@@ -1,4 +1,4 @@
-﻿using AlarmManagerT.Models;
+﻿using PagerBuddy.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Schema;
 using System;
@@ -8,7 +8,7 @@ using System.IO;
 using System.Text;
 using Xamarin.Forms;
 
-namespace AlarmManagerT.Services
+namespace PagerBuddy.Services
 {
     public class DataService
     {

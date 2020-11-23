@@ -1,4 +1,4 @@
-﻿using AlarmManagerT.Services;
+﻿using PagerBuddy.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using static AlarmManagerT.Services.ClientExceptions;
+using static PagerBuddy.Services.ClientExceptions;
 
-namespace AlarmManagerT.ViewModels {
+namespace PagerBuddy.ViewModels {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPasswordPage : ContentPage {
 

@@ -5,10 +5,10 @@ using System.Runtime.CompilerServices;
 
 using Xamarin.Forms;
 
-using AlarmManagerT.Models;
-using AlarmManagerT.Services;
+using PagerBuddy.Models;
+using PagerBuddy.Services;
 
-namespace AlarmManagerT.ViewModels
+namespace PagerBuddy.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

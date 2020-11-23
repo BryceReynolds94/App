@@ -1,7 +1,7 @@
-﻿using AlarmManagerT.Interfaces;
-using AlarmManagerT.Models;
-using AlarmManagerT.Services;
-using AlarmManagerT.ViewModels;
+﻿using PagerBuddy.Interfaces;
+using PagerBuddy.Models;
+using PagerBuddy.Services;
+using PagerBuddy.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +13,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 
-namespace AlarmManagerT.Views
+namespace PagerBuddy.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ConfigureKeywordPage : ContentPage

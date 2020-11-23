@@ -1,7 +1,7 @@
-﻿using AlarmManagerT.Models;
-using AlarmManagerT.Resources;
-using AlarmManagerT.Services;
-using AlarmManagerT.ViewModels;
+﻿using PagerBuddy.Models;
+using PagerBuddy.Resources;
+using PagerBuddy.Services;
+using PagerBuddy.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using TeleSharp.TL;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace AlarmManagerT.Views
+namespace PagerBuddy.Views
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer

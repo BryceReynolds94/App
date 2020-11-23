@@ -1,19 +1,19 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using AlarmManagerT.Services;
-using AlarmManagerT.Views;
+using PagerBuddy.Services;
+using PagerBuddy.Views;
 using System.Collections;
-using AlarmManagerT.ViewModels;
+using PagerBuddy.ViewModels;
 using Plugin.FirebasePushNotification;
-using AlarmManagerT.Interfaces;
+using PagerBuddy.Interfaces;
 using System.Threading.Tasks;
-using AlarmManagerT.Models;
+using PagerBuddy.Models;
 using Xamarin.Essentials;
 using System.Collections.ObjectModel;
-using AlarmManagerT.Resources;
+using PagerBuddy.Resources;
 
-namespace AlarmManagerT
+namespace PagerBuddy
 {
 
     //TODO Later: IMplement rating prompt https://developer.android.com/guide/playcore/in-app-review/ (similar for iOS)

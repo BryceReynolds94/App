@@ -1,9 +1,9 @@
-﻿using AlarmManagerT.Models;
+﻿using PagerBuddy.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AlarmManagerT.Interfaces
+namespace PagerBuddy.Interfaces
 {
     public interface INotifications
     {

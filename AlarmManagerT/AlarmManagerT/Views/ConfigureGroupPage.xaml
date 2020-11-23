@@ -6,7 +6,7 @@
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              mc:Ignorable="d"
              Title="{Binding Title}"
-             x:Class="AlarmManagerT.Views.ConfigureGroupPage">
+             x:Class="PagerBuddy.Views.ConfigureGroupPage">
 
     <StackLayout>
         <RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
@@ -40,7 +40,7 @@
                             </Grid.RowDefinitions>
                             <Frame Padding="0" CornerRadius="20" IsClippedToBounds="True">
                                 <Grid>
-                                    <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://AlarmManagerT.Resources.Images.group_default.svg"/>
+                                    <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://PagerBuddy.Resources.Images.group_default.svg"/>
                                     <Image IsVisible="{Binding ShowCustomPic}" Source="{Binding GroupPic}"/>
                                 </Grid>
                             </Frame>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AlarmManagerT.Services;
+using PagerBuddy.Services;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -14,7 +14,7 @@ using Plugin.FirebasePushNotification;
 
 //https://github.com/CrossGeeks/FirebasePushNotificationPlugin/blob/master/docs/GettingStarted.md
 //TODO iOS: Do FCM setup in iOS
-namespace AlarmManagerT.Droid
+namespace PagerBuddy.Droid
 {
     [Application]
     public class MainApplication : Application

@@ -3,10 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:resources="clr-namespace:AlarmManagerT.Resources"
+             xmlns:resources="clr-namespace:PagerBuddy.Resources"
              mc:Ignorable="d"
              Title="{Binding Title}"
-             x:Class="AlarmManagerT.Views.ConfigureKeywordPage">
+             x:Class="PagerBuddy.Views.ConfigureKeywordPage">
     <ContentPage.Content>
         <StackLayout Padding="10">
             <Label x:Name="TitleLabel" Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Title}" VerticalOptions="Center"  />

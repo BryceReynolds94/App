@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-using AlarmManagerT.Models;
-using AlarmManagerT.Views;
-using AlarmManagerT.ViewModels;
-using AlarmManagerT.Services;
-using AlarmManagerT.Interfaces;
+using PagerBuddy.Models;
+using PagerBuddy.Views;
+using PagerBuddy.ViewModels;
+using PagerBuddy.Services;
+using PagerBuddy.Interfaces;
 using FFImageLoading.Svg.Forms;
 using System.Xml;
 using System.Collections.ObjectModel;
 using Plugin.FirebasePushNotification;
-using AlarmManagerT.Resources;
+using PagerBuddy.Resources;
 
-namespace AlarmManagerT.Views
+namespace PagerBuddy.Views
 { 
 
     [DesignTimeVisible(false)]

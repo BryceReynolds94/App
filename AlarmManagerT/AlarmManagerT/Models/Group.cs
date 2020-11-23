@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Xamarin.Forms;
 
-namespace AlarmManagerT.Models
+namespace PagerBuddy.Models
 {
     public class Group
     {

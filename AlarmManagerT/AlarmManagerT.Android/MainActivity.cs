@@ -13,11 +13,11 @@ using Firebase.Messaging;
 using System.Drawing;
 using Android.Content;
 using System.Collections.Generic;
-using AlarmManagerT.Models;
-using AlarmManagerT.Services;
-using AlarmManagerT.Resources;
+using PagerBuddy.Models;
+using PagerBuddy.Services;
+using PagerBuddy.Resources;
 
-namespace AlarmManagerT.Droid
+namespace PagerBuddy.Droid
 {
     [Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity

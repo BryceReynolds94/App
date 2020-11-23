@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AlarmManagerT.Models
+namespace PagerBuddy.Models
 {
     public class Alert
     {

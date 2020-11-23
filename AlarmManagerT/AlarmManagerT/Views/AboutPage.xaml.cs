@@ -1,7 +1,7 @@
-﻿using AlarmManagerT.Models;
-using AlarmManagerT.Resources;
-using AlarmManagerT.Services;
-using AlarmManagerT.ViewModels;
+﻿using PagerBuddy.Models;
+using PagerBuddy.Resources;
+using PagerBuddy.Services;
+using PagerBuddy.ViewModels;
 using NLog.Targets;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace AlarmManagerT.Views {
+namespace PagerBuddy.Views {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AboutPage : ContentPage {
 

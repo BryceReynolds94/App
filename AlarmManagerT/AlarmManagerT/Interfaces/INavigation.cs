@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AlarmManagerT.Interfaces
+namespace PagerBuddy.Interfaces
 {
     public interface INavigation
     {

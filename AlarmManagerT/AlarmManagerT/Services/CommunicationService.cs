@@ -1,4 +1,4 @@
-﻿using AlarmManagerT.Models;
+﻿using PagerBuddy.Models;
 using Newtonsoft.Json.Linq;
 using Plugin.FirebasePushNotification;
 using System;
@@ -19,9 +19,9 @@ using TeleSharp.TL.Upload;
 using TeleSharp.TL.Users;
 using TLSharp.Core;
 using Xamarin.Forms;
-using static AlarmManagerT.Services.ClientExceptions;
+using static PagerBuddy.Services.ClientExceptions;
 
-namespace AlarmManagerT.Services {
+namespace PagerBuddy.Services {
     public class CommunicationService {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 

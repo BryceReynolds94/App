@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AlarmManagerT.Interfaces;
+using PagerBuddy.Interfaces;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -13,18 +13,18 @@ using Android.Widget;
 using AndroidX.Core.App;
 using Android.Media;
 using System.Drawing;
-using AlarmManagerT.Models;
-using AlarmManagerT.Services;
+using PagerBuddy.Models;
+using PagerBuddy.Services;
 using System.Collections.ObjectModel;
-using AlarmManagerT.Views;
+using PagerBuddy.Views;
 using Xamarin.Essentials;
 using Uri = Android.Net.Uri;
 using Java.IO;
 using System.Threading.Tasks;
 using System.IO;
 
-[assembly: Xamarin.Forms.Dependency(typeof(AlarmManagerT.Droid.AndroidNotifications))] //register for dependency service as platform-specific code
-namespace AlarmManagerT.Droid {
+[assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.Droid.AndroidNotifications))] //register for dependency service as platform-specific code
+namespace PagerBuddy.Droid {
     public class AndroidNotifications : INotifications {
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();

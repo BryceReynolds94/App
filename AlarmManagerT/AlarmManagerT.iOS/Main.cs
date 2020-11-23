@@ -5,7 +5,7 @@ using System.Linq;
 using Foundation;
 using UIKit;
 
-namespace AlarmManagerT.iOS
+namespace PagerBuddy.iOS
 {
     public class Application
     {

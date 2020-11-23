@@ -1,11 +1,11 @@
-﻿using AlarmManagerT.Models;
-using AlarmManagerT.Resources;
+﻿using PagerBuddy.Models;
+using PagerBuddy.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace AlarmManagerT.ViewModels
+namespace PagerBuddy.ViewModels
 {
     public class ConfigureKeywordPageViewModel : BaseViewModel
     {

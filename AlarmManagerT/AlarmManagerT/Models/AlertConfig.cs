@@ -1,13 +1,13 @@
-﻿using AlarmManagerT.Interfaces;
-using AlarmManagerT.Services;
-using AlarmManagerT.ViewModels;
+﻿using PagerBuddy.Interfaces;
+using PagerBuddy.Services;
+using PagerBuddy.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using Xamarin.Forms;
 
-namespace AlarmManagerT.Models
+namespace PagerBuddy.Models
 {
     public class AlertConfig 
     {

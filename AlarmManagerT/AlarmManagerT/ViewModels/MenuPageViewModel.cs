@@ -1,12 +1,12 @@
-﻿using AlarmManagerT.Resources;
-using AlarmManagerT.Services;
-using AlarmManagerT.Views;
+﻿using PagerBuddy.Resources;
+using PagerBuddy.Services;
+using PagerBuddy.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace AlarmManagerT.ViewModels
+namespace PagerBuddy.ViewModels
 {
     class MenuPageViewModel : BaseViewModel
     {

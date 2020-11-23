@@ -1,13 +1,13 @@
-﻿using AlarmManagerT.Resources;
+﻿using PagerBuddy.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using static AlarmManagerT.Services.ClientExceptions;
+using static PagerBuddy.Services.ClientExceptions;
 
-namespace AlarmManagerT.ViewModels
+namespace PagerBuddy.ViewModels
 {
     public class LoginCodePageViewModel : BaseViewModel
     {

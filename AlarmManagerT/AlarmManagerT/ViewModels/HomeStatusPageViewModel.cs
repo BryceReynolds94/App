@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-using AlarmManagerT.Models;
-using AlarmManagerT.Views;
-using AlarmManagerT.Services;
+using PagerBuddy.Models;
+using PagerBuddy.Views;
+using PagerBuddy.Services;
 using TeleSharp.TL.Upload;
 using System.Collections.Generic;
 using System.Data;
-using AlarmManagerT.Resources;
+using PagerBuddy.Resources;
 
-namespace AlarmManagerT.ViewModels
+namespace PagerBuddy.ViewModels
 {
     public class HomeStatusPageViewModel : BaseViewModel
     {
@@ -213,11 +213,11 @@ namespace AlarmManagerT.ViewModels
             get {
                 if(warningState == WARNING_ACTION.DEACTIVATED)
                 {
-                    return "resource://AlarmManagerT.Resources.Images.icon_alert_off.svg";
+                    return "resource://PagerBuddy.Resources.Images.icon_alert_off.svg";
                 }
                 else
                 {
-                    return "resource://AlarmManagerT.Resources.Images.icon_alert.svg";
+                    return "resource://PagerBuddy.Resources.Images.icon_alert.svg";
                 }
             }
         }
@@ -227,11 +227,11 @@ namespace AlarmManagerT.ViewModels
                 switch (warningState)
                 {
                     case WARNING_ACTION.SNOOZE_SET:
-                        return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze_off.svg";
+                        return "resource://PagerBuddy.Resources.Images.icon_alert_snooze_off.svg";
                     case WARNING_ACTION.DEACTIVATED:
-                        return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze_inactive.svg";
+                        return "resource://PagerBuddy.Resources.Images.icon_alert_snooze_inactive.svg";
                     default:
-                        return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze.svg";
+                        return "resource://PagerBuddy.Resources.Images.icon_alert_snooze.svg";
                 }
             }
          }

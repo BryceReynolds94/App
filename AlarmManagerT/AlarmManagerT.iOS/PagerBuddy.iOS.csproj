@@ -9,9 +9,9 @@
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{65C0771A-452F-423B-995C-F0AE46E643BA}</TemplateGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AlarmManagerT.iOS</RootNamespace>
+    <RootNamespace>PagerBuddy.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>AlarmManagerT.iOS</AssemblyName>
+    <AssemblyName>PagerBuddy.iOS</AssemblyName>
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <ProvisioningType>automatic</ProvisioningType>
@@ -61,6 +61,9 @@
     <MtouchArch>ARM64</MtouchArch>
     <CodesignKey>iPhone Developer</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -137,9 +140,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\AlarmManagerT\AlarmManagerT.csproj">
-      <Project>{FCBD4B6F-A5FA-4C4D-B637-D02002A59A57}</Project>
-      <Name>AlarmManagerT</Name>
+    <ProjectReference Include="..\AlarmManagerT\PagerBuddy.csproj">
+      <Project>{55F79DE2-CE2B-4FA3-A432-9A1E44F3396B}</Project>
+      <Name>PagerBuddy</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

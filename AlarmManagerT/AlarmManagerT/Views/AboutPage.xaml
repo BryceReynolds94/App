@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AlarmManagerT.Views.AboutPage"
+             x:Class="PagerBuddy.Views.AboutPage"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-             xmlns:resources="clr-namespace:AlarmManagerT.Resources"
+             xmlns:resources="clr-namespace:PagerBuddy.Resources"
              Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout>
@@ -16,7 +16,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ffimageloadingsvg:SvgCachedImage Source="resource://AlarmManagerT.Resources.Images.launcher_dark.svg" x:Name="MainIcon" Grid.RowSpan="2">
+                <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.launcher_dark.svg" x:Name="MainIcon" Grid.RowSpan="2">
                     <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding DeveloperMode}"/>
                     </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>

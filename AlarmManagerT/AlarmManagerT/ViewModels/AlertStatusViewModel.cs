@@ -1,11 +1,11 @@
-﻿using AlarmManagerT.Models;
-using AlarmManagerT.Resources;
-using AlarmManagerT.Services;
+﻿using PagerBuddy.Models;
+using PagerBuddy.Resources;
+using PagerBuddy.Services;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
-namespace AlarmManagerT.ViewModels
+namespace PagerBuddy.ViewModels
 {
     public class AlertStatusViewModel : BaseViewModel
     {
@@ -108,11 +108,11 @@ namespace AlarmManagerT.ViewModels
             get {
                 if (alertConfig.snoozeActive)
                 {
-                    return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze_inactive.svg";
+                    return "resource://PagerBuddy.Resources.Images.icon_alert_snooze_inactive.svg";
                 }
                 else
                 {
-                    return "resource://AlarmManagerT.Resources.Images.icon_history.svg";
+                    return "resource://PagerBuddy.Resources.Images.icon_history.svg";
                 }
             }
         }
@@ -123,15 +123,15 @@ namespace AlarmManagerT.ViewModels
             get {
                 if (!alertConfig.isActive)
                 {
-                    return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze_inactive.svg";
+                    return "resource://PagerBuddy.Resources.Images.icon_alert_snooze_inactive.svg";
                 }
                 else if (alertConfig.snoozeActive)
                 {
-                    return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze_off.svg";
+                    return "resource://PagerBuddy.Resources.Images.icon_alert_snooze_off.svg";
                 }
                 else
                 {
-                    return "resource://AlarmManagerT.Resources.Images.icon_alert_snooze.svg";
+                    return "resource://PagerBuddy.Resources.Images.icon_alert_snooze.svg";
                 }
             }
         }
