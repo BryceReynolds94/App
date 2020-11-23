@@ -37,9 +37,8 @@ namespace PagerBuddy.Views
 
 
         private async void startAnimation() {
-            await MainIcon.ScaleTo(1.3, 517);
-            await MainIcon.ScaleTo(1, 517);
-            //await Task.Delay(500);
+            await MainIcon.ScaleTo(1.3, 1010);
+            await MainIcon.ScaleTo(1, 1000);
             startAnimation();
         }
 

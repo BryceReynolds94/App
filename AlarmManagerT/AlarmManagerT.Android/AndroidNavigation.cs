@@ -70,7 +70,7 @@ namespace PagerBuddy.Droid
 
         public static Intent getTelegramIntent(int chatID) {
             Intent intent = new Intent(Intent.ActionView)
-                .SetData(Android.Net.Uri.Parse("http://telegram.me/" + chatID)) //TODO: Testing
+                .SetData(Android.Net.Uri.Parse("http://telegram.me/" + chatID)) //TODO: PHY Testing
                 .SetPackage("org.telegram.messenger");
             return intent;
         }

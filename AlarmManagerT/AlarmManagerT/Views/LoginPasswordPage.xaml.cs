@@ -29,6 +29,7 @@ namespace PagerBuddy.ViewModels {
             TStatus result = await client.loginWithPassword(password);
             if(result != TStatus.OK) {
                 viewModel.updateErrorState(result);
+                viewModel.setWaitStatus(false);
             } else {
                 await Navigation.PopToRootAsync();
             }

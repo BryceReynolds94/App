@@ -511,11 +511,20 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string HomeStatusPage_DNDPermissionPrompt_Cancel {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_DNDPermissionPrompt_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Take me there.
         /// </summary>
-        public static string HomeStatusPage_DND_PermissionPrompt_Confirm {
+        public static string HomeStatusPage_DNDPermissionPrompt_Confirm {
             get {
-                return ResourceManager.GetString("HomeStatusPage_DND_PermissionPrompt_Confirm", resourceCulture);
+                return ResourceManager.GetString("HomeStatusPage_DNDPermissionPrompt_Confirm", resourceCulture);
             }
         }
         
@@ -660,6 +669,42 @@ namespace PagerBuddy.Resources {
         public static string HomeStatusPage_Warning_Snooze {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Warning_Snooze", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not now.
+        /// </summary>
+        public static string HomeStatusPage_WelcomePrompt_Cancel {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_WelcomePrompt_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string HomeStatusPage_WelcomePrompt_Confirm {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_WelcomePrompt_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome! I am your notification Buddy for urgent messages. Start by logging in to your Telegram account..
+        /// </summary>
+        public static string HomeStatusPage_WelcomePrompt_Message {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_WelcomePrompt_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telegram Login.
+        /// </summary>
+        public static string HomeStatusPage_WelcomePrompt_Title {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_WelcomePrompt_Title", resourceCulture);
             }
         }
         
@@ -817,7 +862,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter your phone number to log into your Telegram account:.
+        ///   Looks up a localized string similar to Enter your phone number to log into your Telegram account. If you do not have Telegram yet, install the app and setup a new account for free..
         /// </summary>
         public static string LoginPhonePage_Prompt {
             get {

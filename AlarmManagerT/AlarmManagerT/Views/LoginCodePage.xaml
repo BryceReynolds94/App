@@ -4,13 +4,15 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:resources="clr-namespace:PagerBuddy.Resources"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              mc:Ignorable="d"
              Title="{Binding Title}"
              x:Class="PagerBuddy.Views.LoginCodePage">
     <ContentPage.Content>
-        <StackLayout Padding="10" VerticalOptions="CenterAndExpand">
-            <StackLayout VerticalOptions="Center">
-                <Label Text="{x:Static resources:AppResources.LoginCodePage_Prompt}" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="30,0"/>
+        <AbsoluteLayout>
+            <StackLayout Padding="40,0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+                <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_lock.svg" HorizontalOptions="Center" HeightRequest="200" Margin="0,40"/>
+            <Label Text="{x:Static resources:AppResources.LoginCodePage_Prompt}" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
                 <Entry Placeholder="{x:Static resources:AppResources.LoginCodePage_Code_Placeholder}" 
                        Text="{Binding CodeText}"
                        MaxLength="5"
@@ -20,9 +22,11 @@
                        HorizontalTextAlignment="Center" 
                        ReturnCommand="{Binding Return}"
                        ClearButtonVisibility="WhileEditing"/>
-                <Label Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="{StaticResource WarningColor}" TextColor="White" Padding="10" Margin="30,0"/>
-            </StackLayout>
+            <Label Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="{StaticResource WarningColor}" TextColor="White" Padding="10" />
             <Button Text="{x:Static resources:AppResources.LoginCodePage_NextBtn}" HorizontalOptions="Center" Command="{Binding Next}"/>
         </StackLayout>
+        <BoxView IsVisible="{Binding IsWaiting}" BackgroundColor="Gray" Opacity="0.2" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
+        <ActivityIndicator IsVisible="{Binding IsWaiting}" IsRunning="True" HorizontalOptions="Center" VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

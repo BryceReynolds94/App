@@ -17,6 +17,7 @@ using System.Xml;
 using System.Collections.ObjectModel;
 using Plugin.FirebasePushNotification;
 using PagerBuddy.Resources;
+using Xamarin.Essentials;
 
 namespace PagerBuddy.Views
 { 
@@ -71,6 +72,10 @@ namespace PagerBuddy.Views
             if (viewModel.alertList.Count == 0) {
                 viewModel.IsBusy = true;
             }
+
+            if (VersionTracking.IsFirstLaunchEver) {
+                showWelcomePrompt().Wait();
+            }
         }
 
         private async void editAlertConfig(AlertConfig alertConfig)
@@ -88,14 +93,13 @@ namespace PagerBuddy.Views
         private void deleteAlertConfig(AlertConfig alertConfig)
         {
             DataService.deleteAlertConfig(alertConfig);
-            alertList.Remove(alertConfig);
+            AlertConfig remove = alertList.First(x => x.id.Equals(alertConfig.id));
+            alertList.Remove(remove);
             
             INotifications notifications = DependencyService.Get<INotifications>();
             notifications.removeNotificationChannel(alertConfig);
 
-
             viewModel.fillAlertList(alertList);
-
         }
 
         private void updateClientErrorStatus(object sender, EventArgs eventArgs)
@@ -159,10 +163,29 @@ namespace PagerBuddy.Views
 
         private async Task showDNDPermissionPrompt()
         {
-            await DisplayAlert(AppResources.HomeStatusPage_DNDPermissionPrompt_Title, AppResources.HomeStatusPage_DNDPermissionPrompt_Message, AppResources.HomeStatusPage_DND_PermissionPrompt_Confirm);
+            bool confirmed = await DisplayAlert(AppResources.HomeStatusPage_DNDPermissionPrompt_Title, 
+                AppResources.HomeStatusPage_DNDPermissionPrompt_Message, 
+                AppResources.HomeStatusPage_DNDPermissionPrompt_Confirm, 
+                AppResources.HomeStatusPage_DNDPermissionPrompt_Cancel);
+
+            if (!confirmed) {
+                return;
+            }
 
             Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
             navigation.navigateNotificationPolicyAccess();
+        }
+
+        private async Task showWelcomePrompt() {
+            bool confirmed = await DisplayAlert(AppResources.HomeStatusPage_WelcomePrompt_Title,
+                AppResources.HomeStatusPage_WelcomePrompt_Message,
+                AppResources.HomeStatusPage_WelcomePrompt_Confirm,
+                AppResources.HomeStatusPage_WelcomePrompt_Cancel);
+
+            if (!confirmed) {
+                return;
+            }
+            login(this, null);
         }
 
         private Collection<AlertConfig> getAlertConfigs()

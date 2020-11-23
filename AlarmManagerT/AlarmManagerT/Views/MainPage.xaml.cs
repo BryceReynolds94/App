@@ -13,8 +13,6 @@ using PagerBuddy.Resources;
 namespace PagerBuddy.Views {
     [DesignTimeVisible(false)]
     public partial class MainPage : FlyoutPage {
-        //TODO: Design first-app-use behaviour (welcome message, force login)
-
         private NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public CommunicationService client;
@@ -62,9 +60,6 @@ namespace PagerBuddy.Views {
         }
 
         private async Task LogoutUser() {
-            if(client.clientStatus != CommunicationService.STATUS.AUTHORISED) {
-                return;
-            }
             bool result = await DisplayAlert(AppResources.MenuPage_LogoutPrompt_Title, AppResources.MenuPage_LogoutPrompt_Text, AppResources.MenuPage_LogoutPrompt_Confirm, AppResources.MenuPage_LogoutPrompt_Cancel);
 
             if (result) {

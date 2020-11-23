@@ -101,11 +101,11 @@ namespace PagerBuddy.Services {
         public async Task logoutUser() {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to logout user without authorisation. Current state: " + clientStatus.ToString());
-                return;
             }
-            Logger.Debug("Loggin out user.");
 
-            string token = await CrossFirebasePushNotification.Current.GetTokenAsync(); //TODO: Testing
+            Logger.Debug("Logging out user.");
+
+            string token = CrossFirebasePushNotification.Current.Token;
 
             TLRequestUnregisterDevice unregisterRequest = new TLRequestUnregisterDevice() {
                 TokenType = 2,
@@ -113,13 +113,13 @@ namespace PagerBuddy.Services {
             };
 
             try {
-                await client.SendRequestAsync<TLAbsBool>(unregisterRequest); //https://core.telegram.org/method/account.unregisterDevice
+                await client.SendRequestAsync<bool>(unregisterRequest); //https://core.telegram.org/method/account.unregisterDevice
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to unregister device.");
             }
 
             try {
-                await client.SendRequestAsync<TLAbsBool>(new TLRequestLogOut()); //https://core.telegram.org/method/auth.logOut
+                await client.SendRequestAsync<bool>(new TLRequestLogOut()); //https://core.telegram.org/method/auth.logOut
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to logout user.");
             }
@@ -128,7 +128,7 @@ namespace PagerBuddy.Services {
 
             new MySessionStore(this).Clear();
 
-            await reloadConnection();
+            await forceReloadConnection();
         }
 
         public async Task subscribePushNotifications(string token) {
@@ -256,7 +256,7 @@ namespace PagerBuddy.Services {
             await saveUserData(user);
             clientStatus = STATUS.AUTHORISED;
 
-            string token = CrossFirebasePushNotification.Current.Token;
+            string token = await CrossFirebasePushNotification.Current.GetTokenAsync();
             if (token.Length > 1) {
                 await subscribePushNotifications(token);
             } else {
@@ -418,7 +418,7 @@ namespace PagerBuddy.Services {
             TLRequestGetHistory request = new TLRequestGetHistory() { //https://core.telegram.org/method/messages.getHistory
                 Peer = new TLInputPeerChat() { ChatId = chatID },
                 Limit = 100,
-                MinId = lastMessageID + 1
+                MinId = lastMessageID
             };
 
             TLAbsMessages messages;

@@ -112,7 +112,7 @@ namespace PagerBuddy.Droid {
                 Group = ALERT_CHANNEL_ID
             };
             notificationChannel.EnableLights(true);
-            notificationChannel.SetVibrationPattern(new long[] { 0, 1000, 500, 100, 100, 1000, 500, 100, 100, 1000 }); //TODO: Testing - Check this vibration pattern
+            notificationChannel.SetVibrationPattern(new long[] { 0, 1000, 500, 100, 100, 1000, 500, 100, 100, 1000 }); //TODO: PHY Testing - Check this vibration pattern
             notificationChannel.EnableVibration(true);
 
             Uri fileUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.pagerbuddy.fileprovider", getSoundFile());

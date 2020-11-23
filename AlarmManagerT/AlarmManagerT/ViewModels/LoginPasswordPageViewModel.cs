@@ -13,11 +13,13 @@ namespace PagerBuddy.ViewModels {
         public Command Return { get; set; }
         public Command Next { get; set; }
         private TStatus errorStatus = TStatus.OK;
+
+        private bool waitOperation = false;
         public LoginPasswordPageViewModel() {
 
             Title = AppResources.LoginPasswordPage_Title;
-            Return = new Command(() => RequestAuthenticate.Invoke(this, Password));
-            Next = new Command(() => RequestAuthenticate.Invoke(this, Password));
+            Return = new Command(() => requestAuthentication());
+            Next = new Command(() => requestAuthentication());
 
         }
 
@@ -26,6 +28,11 @@ namespace PagerBuddy.ViewModels {
 
         public string Password { get; set; }
 
+        private void requestAuthentication() {
+            setWaitStatus(true);
+            RequestAuthenticate.Invoke(this, Password);
+        }
+
         public void updateErrorState(TStatus newStatus) {
             if (errorStatus != newStatus) {
                 errorStatus = newStatus;
@@ -33,6 +40,14 @@ namespace PagerBuddy.ViewModels {
                 OnPropertyChanged(nameof(ErrorActive));
             }
         }
+
+        public void setWaitStatus(bool isWait) {
+            waitOperation = isWait;
+            OnPropertyChanged(nameof(IsWaiting));
+        }
+
+        public bool IsWaiting => waitOperation;
+
         public string ErrorText {
             get {
                 switch (errorStatus) {

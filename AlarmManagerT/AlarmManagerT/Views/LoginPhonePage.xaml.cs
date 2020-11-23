@@ -31,6 +31,7 @@ namespace PagerBuddy.Views
         {
             TStatus result = await client.requestCode(phoneNumber);
             viewModel.changeErrorStatus(result);
+            viewModel.setWaitStatus(false);
             if (result != TStatus.OK)
             {
                 return;

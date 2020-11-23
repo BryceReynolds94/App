@@ -17,6 +17,7 @@ namespace PagerBuddy.ViewModels {
         private TStatus errorStatus = TStatus.OK;
         public Command Next { get; set; }
         public Command Return { get; set; }
+        private bool waitOperation = false;
 
         public LoginPhonePageViewModel() {
             Title = AppResources.LoginPhonePage_Title;
@@ -47,7 +48,13 @@ namespace PagerBuddy.ViewModels {
             }
             string formattedNo = phoneUtil.Format(no, PhoneNumberFormat.E164);
             PhoneNumber = formattedNo;
+            setWaitStatus(true);
             RequestClientLogin.Invoke(this, formattedNo);
+        }
+
+        public void setWaitStatus(bool isWait) {
+            waitOperation = isWait;
+            OnPropertyChanged(nameof(IsWaiting));
         }
 
         public void changeErrorStatus(TStatus newStatus) {
@@ -60,11 +67,9 @@ namespace PagerBuddy.ViewModels {
 
         public string PhoneNumber { get; set; }
 
-        public string PhoneNumberHint {
-            get {
-                return "+" + phoneUtil.GetCountryCodeForRegion(regionCode);
-            }
-        }
+        public bool IsWaiting => waitOperation;
+
+        public string PhoneNumberHint => "+" + phoneUtil.GetCountryCodeForRegion(regionCode);
 
         public string ErrorText {
             get {

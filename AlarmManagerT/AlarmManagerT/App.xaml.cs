@@ -16,7 +16,7 @@ using PagerBuddy.Resources;
 namespace PagerBuddy
 {
 
-    //TODO Later: IMplement rating prompt https://developer.android.com/guide/playcore/in-app-review/ (similar for iOS)
+    //TODO Later: Implement rating prompt https://developer.android.com/guide/playcore/in-app-review/ (similar for iOS)
     public partial class App : Application
     {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();

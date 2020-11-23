@@ -86,7 +86,6 @@ namespace PagerBuddy.Services {
                 }
 
                 foreach (TLAbsMessage rawMessage in messageList) {
-                    //TODO: Testing
                     if (!(rawMessage is TLMessage)) {
                         break;
                     }

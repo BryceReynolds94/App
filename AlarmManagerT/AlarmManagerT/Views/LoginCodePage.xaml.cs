@@ -31,12 +31,14 @@ namespace PagerBuddy.Views
         {
             TStatus result = await client.confirmCode(code);
             if(result == TStatus.PASSWORD_REQUIRED) {
+                viewModel.setWaitStatus(false);
                 Navigation.InsertPageBefore(new LoginPasswordPage(client), this);
                 await Navigation.PopAsync();
                 return;
 
             }else if(result != TStatus.OK){
                 viewModel.updateErrorState(result);
+                viewModel.setWaitStatus(false);
                 return;
             } 
             await Navigation.PopToRootAsync();

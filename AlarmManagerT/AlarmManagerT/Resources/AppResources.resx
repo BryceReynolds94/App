@@ -267,14 +267,17 @@
   <data name="ConfigureKeywordPage_Trigger_Title" xml:space="preserve">
     <value>Trigger</value>
   </data>
+  <data name="HomeStatusPage_DNDPermissionPrompt_Cancel" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="HomeStatusPage_DNDPermissionPrompt_Confirm" xml:space="preserve">
+    <value>Take me there</value>
+  </data>
   <data name="HomeStatusPage_DNDPermissionPrompt_Message" xml:space="preserve">
     <value>To ensure notifications when the phone is set to silent or Do Not Disturb please grant PagerBuddy access in your permissions settings.</value>
   </data>
   <data name="HomeStatusPage_DNDPermissionPrompt_Title" xml:space="preserve">
     <value>Grant Do Not Disturb access</value>
-  </data>
-  <data name="HomeStatusPage_DND_PermissionPrompt_Confirm" xml:space="preserve">
-    <value>Take me there</value>
   </data>
   <data name="HomeStatusPage_Error_NoInternet" xml:space="preserve">
     <value>No Internet Connection</value>
@@ -317,6 +320,18 @@
   </data>
   <data name="HomeStatusPage_Warning_Snooze" xml:space="preserve">
     <value>All alerts deactivated untill {0:dd.MM.yy HH:mm}</value>
+  </data>
+  <data name="HomeStatusPage_WelcomePrompt_Cancel" xml:space="preserve">
+    <value>Not now</value>
+  </data>
+  <data name="HomeStatusPage_WelcomePrompt_Confirm" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="HomeStatusPage_WelcomePrompt_Message" xml:space="preserve">
+    <value>Welcome! I am your notification Buddy for urgent messages. Start by logging in to your Telegram account.</value>
+  </data>
+  <data name="HomeStatusPage_WelcomePrompt_Title" xml:space="preserve">
+    <value>Telegram Login</value>
   </data>
   <data name="LoginCodePage_Code_Placeholder" xml:space="preserve">
     <value>code</value>
@@ -370,7 +385,7 @@
     <value>Login</value>
   </data>
   <data name="LoginPhonePage_Prompt" xml:space="preserve">
-    <value>Enter your phone number to log into your Telegram account:</value>
+    <value>Enter your phone number to log into your Telegram account. If you do not have Telegram yet, install the app and setup a new account for free.</value>
   </data>
   <data name="LoginPhonePage_Title" xml:space="preserve">
     <value>Login</value>
