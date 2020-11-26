@@ -45,13 +45,7 @@
 
 
         <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
-        <d:CollectionView.ItemsSource>
-            <x:Array Type="{x:Type x:String}">
-                <x:String>1</x:String>
-                <x:String>2</x:String>
-            </x:Array>
-        </d:CollectionView.ItemsSource>
-        <CollectionView.ItemTemplate>
+            <CollectionView.ItemTemplate>
             <DataTemplate>
                     <StackLayout Padding="10,10,10,0">
                         <Frame x:Name="Backdrop" BackgroundColor="{StaticResource SecondaryColorGrey}"  CornerRadius="10" Padding="10">

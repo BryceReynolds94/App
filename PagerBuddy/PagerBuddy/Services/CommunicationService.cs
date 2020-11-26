@@ -412,7 +412,7 @@ namespace PagerBuddy.Services {
         public async Task<TLAbsMessages> getMessages(int chatID, int lastMessageID) {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempting to get messages without user authorisation. Current status: " + clientStatus.ToString());
-                return new TLMessages();
+                return null;
             }
 
             TLRequestGetHistory request = new TLRequestGetHistory() { //https://core.telegram.org/method/messages.getHistory
@@ -426,7 +426,7 @@ namespace PagerBuddy.Services {
                 messages = await client.SendRequestAsync<TLAbsMessages>(request);
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to retrieve messages.");
-                return new TLMessages();
+                return null;
             }
             return messages;
         }

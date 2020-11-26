@@ -71,14 +71,19 @@ namespace PagerBuddy.Services {
                 TLAbsMessages result = await client.getMessages(config.triggerGroup.id, currentMessageID);
                 TLVector<TLAbsMessage> messageList;
 
-                if (result is TLMessages) {
-                    messageList = (result as TLMessages).Messages;
-                } else if (result is TLMessagesSlice) {
-                    messageList = (result as TLMessagesSlice).Messages;
-                } else {
-                    Logger.Warn("Retrieving Messages from Telegram did not yield a valid message type.");
-                    break; //we did not get valid result 
+                if(result == null) {
+                    Logger.Error("Retrieving messages returned null.");
+                    break;
                 }
+
+                    if (result is TLMessages) {
+                        messageList = (result as TLMessages).Messages;
+                    } else if (result is TLMessagesSlice) {
+                        messageList = (result as TLMessagesSlice).Messages;
+                    } else {
+                        Logger.Warn("Retrieving Messages from Telegram did not yield a valid message type.");
+                        break; //we did not get valid result 
+                    }
 
 
                 if (messageList.Count < 1) {

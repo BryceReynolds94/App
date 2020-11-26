@@ -57,6 +57,10 @@ namespace PagerBuddy.Views
             MessagingCenter.Subscribe<AlertStatusViewModel, Action<DateTime>>(this, AlertStatusViewModel.MESSAGING_KEYS.REQUEST_SNOOZE_TIME.ToString(), (obj, callback) => snoozeTimeRequest(obj, callback));
 
             MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => deleteAllAlertConfigs());
+
+            if (VersionTracking.IsFirstLaunchEver) {
+                showWelcomePrompt().Wait();//TODO: Testing - seems to not load properly (later in code?)
+            }
         }
 
         protected override void OnAppearing()
@@ -71,10 +75,6 @@ namespace PagerBuddy.Views
 
             if (viewModel.alertList.Count == 0) {
                 viewModel.IsBusy = true;
-            }
-
-            if (VersionTracking.IsFirstLaunchEver) {
-                showWelcomePrompt().Wait();
             }
         }
 

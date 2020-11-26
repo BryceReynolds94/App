@@ -22,6 +22,8 @@ namespace PagerBuddy.Droid
     [Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+
+        //TODO: Check if user has play services and warn as fatal
         protected override void OnCreate(Bundle savedInstanceState)
         {
 
