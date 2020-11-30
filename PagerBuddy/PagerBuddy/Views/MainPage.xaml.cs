@@ -9,6 +9,7 @@ using PagerBuddy.Models;
 using PagerBuddy.Services;
 using TeleSharp.TL;
 using PagerBuddy.Resources;
+using Xamarin.Essentials;
 
 namespace PagerBuddy.Views {
     [DesignTimeVisible(false)]
@@ -35,7 +36,7 @@ namespace PagerBuddy.Views {
                     requestNotificationSettings();
                     break;
                 case MenuPage.MENU_PAGE.Share:
-                    requestShare();
+                    await requestShare();
                     break;
                 case MenuPage.MENU_PAGE.AboutPage:
                     await requestAboutPageNavigation();
@@ -88,9 +89,14 @@ namespace PagerBuddy.Views {
             IsPresented = false;
         }
 
-        private void requestShare() {
-            Interfaces.INavigation navigationInterface = DependencyService.Get<Interfaces.INavigation>();
-            navigationInterface.navigateShare(AppResources.App_Share_Message); //TODO Later: Update share message with actual links
+        private async Task requestShare() {
+            //TODO: Testing - remove share interface if successfull
+            //https://docs.microsoft.com/en-us/xamarin/essentials/share?context=xamarin%2Fios&tabs=android
+            await Share.RequestAsync(new ShareTextRequest(AppResources.App_Share_Message));
+
+
+            //Interfaces.INavigation navigationInterface = DependencyService.Get<Interfaces.INavigation>();
+            //navigationInterface.navigateShare(AppResources.App_Share_Message); //TODO Later: Update share message with actual links
             IsPresented = false;
         }
     }

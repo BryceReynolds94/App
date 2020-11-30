@@ -150,9 +150,11 @@ namespace PagerBuddy.Droid {
         public void SetupNotificationChannels() {
             //TODO: Handle default notification channel for FCM
 
-            NotificationChannelGroup channelGroup = new NotificationChannelGroup(ALERT_CHANNEL_ID, Resources.AppResources.Android_AndroidNotifications_AlertChannel_Title) {
-                Description = Resources.AppResources.Android_AndroidNotifications_AlertChannel_Description
-            };
+            NotificationChannelGroup channelGroup = new NotificationChannelGroup(ALERT_CHANNEL_ID, Resources.AppResources.Android_AndroidNotifications_AlertChannel_Title);
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.P) { //Channel group description only added in API 28
+                channelGroup.Description = Resources.AppResources.Android_AndroidNotifications_AlertChannel_Description;
+            }
 
             string standardName = Resources.AppResources.Android_AndroidNotifications_StandardChannel_Title;
             string standardDescription = Resources.AppResources.Android_AndroidNotifications_StandardChannel_Description;
