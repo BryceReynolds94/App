@@ -430,6 +430,15 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invert selection.
+        /// </summary>
+        public static string ConfigureKeywordPage_Time_Flip {
+            get {
+                return ResourceManager.GetString("ConfigureKeywordPage_Time_Flip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to from.
         /// </summary>
         public static string ConfigureKeywordPage_Time_From {
@@ -561,6 +570,15 @@ namespace PagerBuddy.Resources {
         public static string HomeStatusPage_Error_NoTelegram {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Error_NoTelegram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not.
+        /// </summary>
+        public static string HomeStatusPage_FlipTime_Prefix {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_FlipTime_Prefix", resourceCulture);
             }
         }
         

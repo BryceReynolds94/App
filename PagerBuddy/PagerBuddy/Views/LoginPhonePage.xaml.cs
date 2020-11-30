@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using static PagerBuddy.Services.ClientExceptions;
 
+//TODO: Check if Telegram is installed and show link if necessary
 namespace PagerBuddy.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]

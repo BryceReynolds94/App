@@ -35,16 +35,6 @@ namespace PagerBuddy.Droid
             Platform.CurrentActivity.StartActivity(intent);
         }
 
-        public void navigateShare(string message)
-        {
-            Intent intent = new Intent(Intent.ActionSend)
-                .PutExtra(Intent.ExtraText, message)
-                .SetType("text/plain");
-
-            Intent shareIntent = Intent.CreateChooser(intent, (string) null);
-            Platform.CurrentActivity.StartActivity(shareIntent);
-        }
-
         public void navigateShareFile(string fileName) {
 
             Android.Net.Uri contentUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.pagerbuddy.fileprovider", new Java.IO.File(fileName));

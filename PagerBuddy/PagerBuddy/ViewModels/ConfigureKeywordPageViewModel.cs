@@ -62,6 +62,13 @@ namespace PagerBuddy.ViewModels
                 }
             }
         }
+
+        public bool FlipTime {
+            get => alertConfig.activeTimeConfig.flipActiveTime;
+            set => alertConfig.activeTimeConfig.flipActiveTime = value;
+
+        }
+
         public string KeywordText {
             get => alertConfig.triggerKeyword;
             set => alertConfig.triggerKeyword = value;

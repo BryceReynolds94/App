@@ -90,13 +90,8 @@ namespace PagerBuddy.Views {
         }
 
         private async Task requestShare() {
-            //TODO: Testing - remove share interface if successfull
             //https://docs.microsoft.com/en-us/xamarin/essentials/share?context=xamarin%2Fios&tabs=android
             await Share.RequestAsync(new ShareTextRequest(AppResources.App_Share_Message));
-
-
-            //Interfaces.INavigation navigationInterface = DependencyService.Get<Interfaces.INavigation>();
-            //navigationInterface.navigateShare(AppResources.App_Share_Message); //TODO Later: Update share message with actual links
             IsPresented = false;
         }
     }

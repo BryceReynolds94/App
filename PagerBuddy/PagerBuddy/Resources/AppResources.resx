@@ -240,6 +240,9 @@
   <data name="ConfigureKeywordPage_Time_Day_Wednesday" xml:space="preserve">
     <value>We</value>
   </data>
+  <data name="ConfigureKeywordPage_Time_Flip" xml:space="preserve">
+    <value>Invert selection</value>
+  </data>
   <data name="ConfigureKeywordPage_Time_From" xml:space="preserve">
     <value>from</value>
   </data>
@@ -284,6 +287,9 @@
   </data>
   <data name="HomeStatusPage_Error_NoTelegram" xml:space="preserve">
     <value>Not Connected to Telegram</value>
+  </data>
+  <data name="HomeStatusPage_FlipTime_Prefix" xml:space="preserve">
+    <value>Not</value>
   </data>
   <data name="HomeStatusPage_IndividualSnooze_Prompt" xml:space="preserve">
     <value>Deactivate for</value>

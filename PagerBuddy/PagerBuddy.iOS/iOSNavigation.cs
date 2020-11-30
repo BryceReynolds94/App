@@ -19,11 +19,6 @@ namespace PagerBuddy.iOS {
             throw new NotImplementedException();
         }
 
-        public void navigateShare(string message) {
-            //TODO: IOS Implementation
-            throw new NotImplementedException();
-        }
-
         public void navigateShareFile(string fileName) {
             //TODO: IOS Implementation
             throw new NotImplementedException();

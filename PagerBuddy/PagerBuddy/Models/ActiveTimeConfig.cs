@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PagerBuddy.Resources;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,6 +15,7 @@ namespace PagerBuddy.Models
         public TimeSpan activeStartTime = new TimeSpan(10, 0, 0);
         public TimeSpan activeStopTime = new TimeSpan(22, 0, 0);
 
+        public bool flipActiveTime = false;
         
         public void initDays() {
             activeDays = new List<DayOfWeek> {
@@ -36,6 +38,7 @@ namespace PagerBuddy.Models
             else if(!checkDay(day))
             {
                 activeDays.Add(day);
+                activeDays.Sort();
             }
         }
 
@@ -45,6 +48,7 @@ namespace PagerBuddy.Models
 
         public bool isActiveTime(DateTime compareTime)
         {
+           bool result = false;
            if (checkDay(compareTime.DayOfWeek))
             {
                 bool beforeStopTime;
@@ -56,18 +60,19 @@ namespace PagerBuddy.Models
                     beforeStopTime = compareTime.TimeOfDay < activeStopTime;
                     afterStartTime = compareTime.TimeOfDay > activeStartTime;
                 }
-                
-                if(afterStartTime && beforeStopTime)
-                {
-                    return true;
-                }
+
+                result = afterStartTime && beforeStopTime;
             }
-            return false;
+            return result ^ flipActiveTime;
         }
 
         public string getActiveString()
         {
             string outString = "";
+
+            if (flipActiveTime) {
+                outString = AppResources.HomeStatusPage_FlipTime_Prefix + " ";
+            }
 
             foreach (DayOfWeek day in activeDays)
             {

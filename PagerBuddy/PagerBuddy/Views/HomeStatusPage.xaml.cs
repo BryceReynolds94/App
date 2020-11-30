@@ -59,7 +59,7 @@ namespace PagerBuddy.Views
             MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => deleteAllAlertConfigs());
 
             if (VersionTracking.IsFirstLaunchEver) {
-                showWelcomePrompt().Wait();//TODO: Testing - seems to not load properly (later in code?)
+                _ = showWelcomePrompt();//TODO: Testing - seems to not load properly (later in code?)
             }
         }
 
