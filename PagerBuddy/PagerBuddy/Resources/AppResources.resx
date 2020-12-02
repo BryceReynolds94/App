@@ -289,13 +289,13 @@
     <value>Not Connected to Telegram</value>
   </data>
   <data name="HomeStatusPage_FlipTime_Prefix" xml:space="preserve">
-    <value>Not</value>
+    <value>Except</value>
   </data>
   <data name="HomeStatusPage_IndividualSnooze_Prompt" xml:space="preserve">
     <value>Deactivate for</value>
   </data>
   <data name="HomeStatusPage_Snooze_Cancel" xml:space="preserve">
-    <value>cancel</value>
+    <value>Cancel</value>
   </data>
   <data name="HomeStatusPage_Snooze_Day" xml:space="preserve">
     <value>1 Day</value>

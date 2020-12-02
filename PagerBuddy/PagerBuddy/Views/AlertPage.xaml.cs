@@ -46,6 +46,8 @@ namespace PagerBuddy.Views
         {
             INavigation nav = DependencyService.Get<INavigation>();
             nav.quitApplication(); 
+
+            //TODO: Problem with Notification vib/sound persisting. Possibly manually clear notification?
         }
 
         private void confirm(object sender, EventArgs args)

@@ -96,14 +96,15 @@ namespace PagerBuddy.Services {
                     }
                     TLMessage msg = rawMessage as TLMessage;
 
-                    DateTime timestamp = new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(msg.Date);  //Unix base time
+                    //TODO: PHY Testing - problem with time zone comparison (is UTC correct here?)
+                    DateTime timestamp = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(msg.Date);  //Unix base time
 
                     if (config.isAlert(msg.Message, timestamp)) {
-                        DateTime referenceTime = DateTime.Now.Subtract(new TimeSpan(0, 10, 0)); //grace period of 10min
-                        if (timestamp.CompareTo(referenceTime) < 0) //timestamp is older than referenceTime
+                        DateTime referenceTime = DateTime.UtcNow.Subtract(new TimeSpan(0, 10, 0)); //grace period of 10min
+                        if (timestamp < referenceTime) //timestamp is older than referenceTime
                         {
                             //discard missed messages older than 10min
-                            Logger.Info("An alert was dismissed as it was not detected within 10min of message posting");
+                            Logger.Info("An alert was dismissed as it was not detected within 10min of message posting. Message posted at (UTC): " + timestamp.ToShortTimeString());
                         } else {
                             config.lastTriggered = DateTime.Now;
                             alertMessage(config, msg);

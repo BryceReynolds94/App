@@ -25,28 +25,28 @@
                 <TapGestureRecognizer Command="{Binding Profile}" />
             </StackLayout.GestureRecognizers>
         </StackLayout>
-        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
+        <StackLayout Orientation="Horizontal" MinimumHeightRequest="40" Padding="10,0">
             <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_alert.svg"/>
             <Label Text="{x:Static resources:AppResources.MenuPage_Action_NotificationSettings}" FontSize="Large" VerticalOptions="Center"/>
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding NotificationSettings}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
-        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0">
+        <StackLayout Orientation="Horizontal" MinimumHeightRequest="40" Padding="10,0">
             <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_share.svg"/>
             <Label Text="{x:Static resources:AppResources.MenuPage_Action_Share}" FontSize="Large" VerticalOptions="Center"/>
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding Share}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
-        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0" VerticalOptions="StartAndExpand">
+        <StackLayout Orientation="Horizontal" MinimumHeightRequest="40" Padding="10,0" VerticalOptions="StartAndExpand">
             <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_about.svg"/>
             <Label Text="{x:Static resources:AppResources.MenuPage_Action_About}" FontSize="Large" VerticalOptions="Center"/>
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding About}"/>
             </StackLayout.GestureRecognizers>
         </StackLayout>
-        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,20" VerticalOptions="End">
+        <StackLayout Orientation="Horizontal" MinimumHeightRequest="40" Padding="10,20" VerticalOptions="End">
             <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_logout.svg"/>
             <Label Text="{x:Static resources:AppResources.MenuPage_Action_Logout}" FontSize="Large" VerticalOptions="Center"/>
             <StackLayout.GestureRecognizers>

@@ -574,7 +574,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not.
+        ///   Looks up a localized string similar to Except.
         /// </summary>
         public static string HomeStatusPage_FlipTime_Prefix {
             get {
@@ -592,7 +592,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cancel.
+        ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string HomeStatusPage_Snooze_Cancel {
             get {
