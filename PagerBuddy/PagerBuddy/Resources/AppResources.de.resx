@@ -163,7 +163,7 @@
     <value>Abmelden</value>
   </data>
   <data name="MenuPage_Action_NotificationSettings" xml:space="preserve">
-    <value>Benachrichtigungseinstellungen</value>
+    <value>Benachrichtigungen konfigurieren</value>
   </data>
   <data name="MenuPage_Action_Share" xml:space="preserve">
     <value>Teilen</value>
@@ -182,5 +182,116 @@
   </data>
   <data name="MenuPage_UserPhone_Default" xml:space="preserve">
     <value>Telefonnummer</value>
+  </data>
+  <data name="AboutPage_AppPP_Link" xml:space="preserve">
+    <value>Datenschutzerklärung PagerBuddy</value>
+  </data>
+  <data name="AboutPage_Developer" xml:space="preserve">
+    <value>Von Max Bartunik entwickelt</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_HideDeveloperModeBtn" xml:space="preserve">
+    <value>Entwicklermodus ausblenden</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_Log_Default" xml:space="preserve">
+    <value>Es konnte keine Logdatei geladen werden.</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_RestartClientBtn" xml:space="preserve">
+    <value>Client neu starten</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_ShowAlertPageBtn" xml:space="preserve">
+    <value>Alarmseite anzeigen</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_TestFCMMessageBtn" xml:space="preserve">
+    <value>FCM Testnachricht</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_TestNotification_Message" xml:space="preserve">
+    <value>BENACHRICHTIGUNGSTEST</value>
+  </data>
+  <data name="AboutPage_TelegramPP_Link" xml:space="preserve">
+    <value>Datenschutzerklärung Telegram</value>
+  </data>
+  <data name="AlertStatus_Status_Deactivated" xml:space="preserve">
+    <value>Deaktiviert bis {0:dd.MM.yy HH:mm}</value>
+  </data>
+  <data name="AlertStatus_Status_Default" xml:space="preserve">
+    <value>Ereignis wurde noch nicht ausgelöst</value>
+  </data>
+  <data name="AlertStatus_Trigger_Any" xml:space="preserve">
+    <value>Alle Nachrichten</value>
+  </data>
+  <data name="AlertStatus_Trigger_Server" xml:space="preserve">
+    <value>PagerBuddy-Server</value>
+  </data>
+  <data name="Android_AndroidNotifications_StandardChannel_Description" xml:space="preserve">
+    <value>Generelle Benachrichtigungen zur App und Updates.</value>
+  </data>
+  <data name="App_DeveloperMode_AlertPage_Message" xml:space="preserve">
+    <value>BENACHRICHTIGUNGSTEST</value>
+  </data>
+  <data name="App_DeveloperMode_AlertPage_Title" xml:space="preserve">
+    <value>Test Gruppentitel</value>
+  </data>
+  <data name="App_Share_Message" xml:space="preserve">
+    <value>Hol dir PagerBuddy und verpasse nie wieder eine dringende Benachrichtigung. PagerBuddy gibt es für Android und iOS.</value>
+  </data>
+  <data name="ConfigureGroupPage_Title" xml:space="preserve">
+    <value>Chat auswählen</value>
+  </data>
+  <data name="ConfigureKeywordPage_Keyword_Hint" xml:space="preserve">
+    <value>Du kannst Regular Expressions verwenden</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_Any" xml:space="preserve">
+    <value>Immer</value>
+  </data>
+  <data name="ConfigureKeywordPage_Trigger_Keyword" xml:space="preserve">
+    <value>Nachrichten mit einem Schlüsselwort</value>
+  </data>
+  <data name="ConfigureKeywordPage_Trigger_Server" xml:space="preserve">
+    <value>Nachrichten vom PagerBuddy-Server</value>
+  </data>
+  <data name="HomeStatusPage_DNDPermissionPrompt_Message" xml:space="preserve">
+    <value>Erlaube PagerBuddy den Zugriff während dem "Nicht stören" Modus um unabhängig von einer Stummschaltung sicher Benachrichtigungen zu erhalten. Den Zugriff kannst du in deinen Einstellungen konfigurieren.</value>
+  </data>
+  <data name="HomeStatusPage_DNDPermissionPrompt_Title" xml:space="preserve">
+    <value>Zugriff während "Nicht stören" erlauben</value>
+  </data>
+  <data name="HomeStatusPage_Error_NoTelegram" xml:space="preserve">
+    <value>Nicht mit Telegram verbunden</value>
+  </data>
+  <data name="HomeStatusPage_IndividualSnooze_Prompt" xml:space="preserve">
+    <value>Deaktivieren für</value>
+  </data>
+  <data name="HomeStatusPage_Snooze_Prompt" xml:space="preserve">
+    <value>Alle Benachrichtigungen deaktivieren für</value>
+  </data>
+  <data name="HomeStatusPage_Warning_Deactivated" xml:space="preserve">
+    <value>Alle Benachrichtigungen deaktiviert</value>
+  </data>
+  <data name="HomeStatusPage_Warning_Snooze" xml:space="preserve">
+    <value>Alle Benachrichtigungen deaktiviert bis {0:dd.MM.yy HH:mm}</value>
+  </data>
+  <data name="HomeStatusPage_WelcomePrompt_Message" xml:space="preserve">
+    <value>Willkommen! Ich bin dein Buddy für dringende Benachrichtigungen. Log dich zum loslegen mit deinem Telegram-Account ein.</value>
+  </data>
+  <data name="HomeStatusPage_WelcomePrompt_Title" xml:space="preserve">
+    <value>Telegram Login</value>
+  </data>
+  <data name="LoginCodePage_Error_InvalidCode" xml:space="preserve">
+    <value>Der eingegebene Code war nicht richtig!</value>
+  </data>
+  <data name="LoginCodePage_Error_NoCode" xml:space="preserve">
+    <value>Du hast keinen korrekten Code eingegeben. Ein Authentifizierungscode für Telegram besteht aus fünf Zahlen.</value>
+  </data>
+  <data name="LoginCodePage_Prompt" xml:space="preserve">
+    <value>Authentifiziere dich mit dem Bestätigungscode der an deine Telefonnummer verschickt wurde</value>
+  </data>
+  <data name="LoginPasswordPage_Prompt" xml:space="preserve">
+    <value>Gib das Passwort für deinen Telegram-Account ein:</value>
+  </data>
+  <data name="LoginPhonePage_Error_NoPhoneNumber" xml:space="preserve">
+    <value>Die eingegeben Nummer ist keine gültige Telefonnummer. Überprüfe deine Eingabe und verwende eine Ländervorwahl.</value>
+  </data>
+  <data name="MenuPage_LogoutPrompt_Text" xml:space="preserve">
+    <value>Bist du dir sicher? Alle Konfigurationen werden gelöscht.</value>
   </data>
 </root>

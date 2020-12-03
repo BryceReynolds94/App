@@ -122,6 +122,7 @@
   </data>
   <data name="AboutPage_App_Name" xml:space="preserve">
     <value>PagerBuddy</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="AboutPage_App_VersionInfo" xml:space="preserve">
     <value>version {0} ({1})</value>
@@ -152,9 +153,6 @@
   </data>
   <data name="AboutPage_DeveloperMode_TestNotification_Message" xml:space="preserve">
     <value>TEST NOTIFICATION</value>
-  </data>
-  <data name="AboutPage_Developer_Contact" xml:space="preserve">
-    <value>pagerbuddy@bartunik.de</value>
   </data>
   <data name="AboutPage_PrivacyPolicy" xml:space="preserve">
     <value>All Personal Information you enter while using this App is stored locally on your device. Only necessary information for authentication is passed to Telegram. If an error occurs some log data regarding device statistics and configuration of PagerBuddy may be collected. Links to Telegrams Privacy Policy and the full Privacy Policy for PagerBuddy are provided below.</value>
@@ -200,6 +198,7 @@
   </data>
   <data name="App_Name" xml:space="preserve">
     <value>PagerBuddy</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="App_Share_Message" xml:space="preserve">
     <value>Check out PagerBuddy and never miss an urgent message again. The app is available for Android and iOS.</value>
@@ -320,6 +319,7 @@
   </data>
   <data name="HomeStatusPage_Title" xml:space="preserve">
     <value>PagerBuddy</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="HomeStatusPage_Warning_Deactivated" xml:space="preserve">
     <value>All alerts deactivated</value>
@@ -425,5 +425,9 @@
   </data>
   <data name="MenuPage_UserPhone_Default" xml:space="preserve">
     <value>Phone Number</value>
+  </data>
+  <data name="App_DeveloperContact" xml:space="preserve">
+    <value>pagerbuddy@bartunik.de</value>
+    <comment>@Invariant</comment>
   </data>
 </root>

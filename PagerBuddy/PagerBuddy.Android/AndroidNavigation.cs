@@ -43,7 +43,7 @@ namespace PagerBuddy.Droid
             Intent intent = new Intent(Intent.ActionSend)
                 .SetData(contentUri)
                 .PutExtra(Intent.ExtraStream, contentUri)
-                .PutExtra(Intent.ExtraEmail, Resources.AppResources.AboutPage_Developer_Contact)
+                .PutExtra(Intent.ExtraEmail, Resources.AppResources.App_DeveloperContact)
                 .AddFlags(ActivityFlags.GrantReadUriPermission)
                 .SetType("text/plain");
             Platform.CurrentActivity.StartActivity(Intent.CreateChooser(intent, (string) null));

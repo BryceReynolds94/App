@@ -97,15 +97,6 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pagerbuddy@bartunik.de.
-        /// </summary>
-        public static string AboutPage_Developer_Contact {
-            get {
-                return ResourceManager.GetString("AboutPage_Developer_Contact", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Hide Developer Mode.
         /// </summary>
         public static string AboutPage_DeveloperMode_HideDeveloperModeBtn {
@@ -282,6 +273,15 @@ namespace PagerBuddy.Resources {
         public static string Android_AndroidNotifications_StandardChannel_Title {
             get {
                 return ResourceManager.GetString("Android_AndroidNotifications_StandardChannel_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pagerbuddy@bartunik.de.
+        /// </summary>
+        public static string App_DeveloperContact {
+            get {
+                return ResourceManager.GetString("App_DeveloperContact", resourceCulture);
             }
         }
         

@@ -28,7 +28,6 @@
             
             <StackLayout Margin="20" IsVisible="{Binding NotDeveloperMode}" VerticalOptions="FillAndExpand">
                 <Label Text="{x:Static resources:AppResources.AboutPage_Developer}" HorizontalOptions="Center" VerticalOptions="EndAndExpand" FontSize="Large"/>
-                <Label Text="{x:Static resources:AppResources.AboutPage_Developer_Contact}" HorizontalOptions="Center" VerticalOptions="StartAndExpand" FontSize="Medium"/>
 
                 <Label Text="{x:Static resources:AppResources.AboutPage_PrivacyPolicy}" VerticalOptions="EndAndExpand"/>
                 <Label Text="{x:Static resources:AppResources.AboutPage_AppPP_Link}" TextDecorations="Underline" HorizontalOptions="Center" >
@@ -41,7 +40,7 @@
                         <TapGestureRecognizer Command="{Binding Hyperlink}" CommandParameter="http://www.telegram.org/privacy"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <Label Text="{x:Static resources:AppResources.AboutPage_Telegram}" Margin="0,20" VerticalOptions="EndAndExpand"/>
+                <Label Text="{x:Static resources:AppResources.AboutPage_Telegram}"  VerticalOptions="EndAndExpand"/>
             </StackLayout>
 
             <ScrollView IsVisible="{Binding IsDeveloperMode}">

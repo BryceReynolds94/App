@@ -49,17 +49,16 @@ namespace PagerBuddy.Droid {
                 largePic = Android.Graphics.BitmapFactory.DecodeResource(Application.Context.Resources, Resource.Drawable.group_default);
             }
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(Application.Context, alert.configID)
+            Notification.Builder builder = new Notification.Builder(Application.Context, alert.configID)
                 .SetContentTitle(alert.title)
                 .SetContentText(alert.text)
                 .SetSmallIcon(Resource.Drawable.notification_icon) //use simplified xml vector
                 .SetColor(Resource.Color.colorPrimary) //set app color for small notification icon
                 .SetLargeIcon(largePic) //group pic
-                .SetPriority(NotificationCompat.PriorityHigh)
                 .SetCategory(NotificationCompat.CategoryMessage) //category for message classification
                 .SetAutoCancel(true) //cancel notification when tapped
                 .SetFullScreenIntent(fullScreenIntent, true)
-                .SetStyle(new NotificationCompat.BigTextStyle().BigText(alert.text)); //extend message on tap
+                .SetStyle(new Notification.BigTextStyle().BigText(alert.text)); //extend message on tap
 
             if (AndroidNavigation.isTelegramInstalled()) {
                 builder.SetContentIntent(PendingIntent.GetActivity(Application.Context, 0, AndroidNavigation.getTelegramIntent(alert.chatID), 0));
@@ -115,14 +114,21 @@ namespace PagerBuddy.Droid {
             notificationChannel.SetVibrationPattern(new long[] { 0, 1000, 500, 100, 100, 1000, 500, 100, 100, 1000 }); //TODO: PHY Testing - Check this vibration pattern
             notificationChannel.EnableVibration(true);
 
-            Uri fileUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.pagerbuddy.fileprovider", getSoundFile());
+            //Uri fileUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.pagerbuddy.fileprovider", getSoundFile());
+            //TODO: Testing (RBF)
+
+            Uri fileUri = new Uri.Builder()
+                .Scheme(ContentResolver.SchemeAndroidResource)
+                .Authority(AppInfo.PackageName)
+                .Path(Resource.Raw.pagerbuddy_sound.ToString()).Build();
+
             notificationChannel.SetSound(fileUri, new AudioAttributes.Builder().SetUsage(AudioUsageKind.NotificationCommunicationInstant).Build()); //TODO: Find out how to set user-visible description
 
             NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);
             notificationManager.CreateNotificationChannel(notificationChannel);
         }
 
-        private Java.IO.File getSoundFile() {
+       /* private Java.IO.File getSoundFile() {
             string saveFileLocation = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/sounds/notification.mp3";
             Java.IO.File saveFile = new Java.IO.File(saveFileLocation);
             if (saveFile.Exists()) {
@@ -138,7 +144,7 @@ namespace PagerBuddy.Droid {
             //TODO: Observe when we have problems with lagging write
 
             return saveFile;
-        }
+        }*/
 
         public void removeNotificationChannel(AlertConfig alertConfig) {
             Logger.Debug("Deleting notification channel for config: " + alertConfig.triggerGroup.name);
