@@ -36,6 +36,8 @@ namespace PagerBuddy.Droid {
         public void showAlertNotification(Alert alert) {
             prepareAlert();
 
+            alert.notificationID = new Random().Next(); //we need this to cancel notification on UI input
+
             Intent intent = new Intent(Application.Context, typeof(MainActivity))
                 .SetFlags(ActivityFlags.NewTask | ActivityFlags.MultipleTask | ActivityFlags.ExcludeFromRecents)
                 .PutExtra(Alert.EXTRAS.ALERT_FLAG.ToString(), DataService.serialiseObject(alert));
@@ -60,7 +62,7 @@ namespace PagerBuddy.Droid {
                 .SetFullScreenIntent(fullScreenIntent, true)
                 .SetStyle(new Notification.BigTextStyle().BigText(alert.text)); //extend message on tap
 
-            if (AndroidNavigation.isTelegramInstalled()) {
+            if (new AndroidNavigation().isTelegramInstalled()) {
                 builder.SetContentIntent(PendingIntent.GetActivity(Application.Context, 0, AndroidNavigation.getTelegramIntent(alert.chatID), 0));
             }
 
@@ -68,7 +70,12 @@ namespace PagerBuddy.Droid {
             notification.Flags |= NotificationFlags.Insistent; //repeat sound untill acknowledged
 
             NotificationManager manager = NotificationManager.FromContext(Application.Context);
-            manager.Notify(new Random().Next(), notification); //Currently no need to access notification later - so set ID random and forget
+            manager.Notify(alert.notificationID, notification);
+        }
+
+        public void closeNotification(int notificationID) {
+            NotificationManager manager = NotificationManager.FromContext(Application.Context);
+            manager.Cancel(notificationID);
         }
 
         private void prepareAlert() {
@@ -111,40 +118,19 @@ namespace PagerBuddy.Droid {
                 Group = ALERT_CHANNEL_ID
             };
             notificationChannel.EnableLights(true);
-            notificationChannel.SetVibrationPattern(new long[] { 0, 1000, 500, 100, 100, 1000, 500, 100, 100, 1000 }); //TODO: PHY Testing - Check this vibration pattern
+            notificationChannel.SetVibrationPattern(new long[] { 0, 100, 100, 1010, 800 });
             notificationChannel.EnableVibration(true);
-
-            //Uri fileUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.pagerbuddy.fileprovider", getSoundFile());
-            //TODO: Testing (RBF)
 
             Uri fileUri = new Uri.Builder()
                 .Scheme(ContentResolver.SchemeAndroidResource)
                 .Authority(AppInfo.PackageName)
                 .Path(Resource.Raw.pagerbuddy_sound.ToString()).Build();
 
-            notificationChannel.SetSound(fileUri, new AudioAttributes.Builder().SetUsage(AudioUsageKind.NotificationCommunicationInstant).Build()); //TODO: Find out how to set user-visible description
+            notificationChannel.SetSound(fileUri, new AudioAttributes.Builder().SetUsage(AudioUsageKind.NotificationCommunicationInstant).Build());
 
             NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);
             notificationManager.CreateNotificationChannel(notificationChannel);
         }
-
-       /* private Java.IO.File getSoundFile() {
-            string saveFileLocation = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/sounds/notification.mp3";
-            Java.IO.File saveFile = new Java.IO.File(saveFileLocation);
-            if (saveFile.Exists()) {
-                return saveFile;
-            }
-
-            Directory.CreateDirectory(Path.GetDirectoryName(saveFileLocation));
-            //System.IO.Stream inputStream = Application.Context.Assets.Open("pagerbuddy_sound.mp3");
-            StreamReader inputStream = new StreamReader(Application.Context.Assets.Open("pagerbuddy_sound.mp3"));
-            FileStream outputStream = new FileStream(saveFileLocation, FileMode.Create);
-
-            _ = inputStream.BaseStream.CopyToAsync(outputStream); //Do not wait for copy as sometimes lagging
-            //TODO: Observe when we have problems with lagging write
-
-            return saveFile;
-        }*/
 
         public void removeNotificationChannel(AlertConfig alertConfig) {
             Logger.Debug("Deleting notification channel for config: " + alertConfig.triggerGroup.name);

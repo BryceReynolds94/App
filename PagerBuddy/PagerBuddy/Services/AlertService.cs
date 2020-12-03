@@ -96,7 +96,6 @@ namespace PagerBuddy.Services {
                     }
                     TLMessage msg = rawMessage as TLMessage;
 
-                    //TODO: PHY Testing - problem with time zone comparison (is UTC correct here?)
                     DateTime timestamp = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(msg.Date);  //Unix base time
 
                     if (config.isAlert(msg.Message, timestamp)) {

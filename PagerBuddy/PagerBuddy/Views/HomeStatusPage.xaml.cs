@@ -20,9 +20,9 @@ using PagerBuddy.Resources;
 using Xamarin.Essentials;
 
 namespace PagerBuddy.Views
-{ 
+{
 
-    [DesignTimeVisible(false)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomeStatusPage : ContentPage
     {
         HomeStatusPageViewModel viewModel;

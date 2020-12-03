@@ -430,4 +430,7 @@
     <value>pagerbuddy@bartunik.de</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="LoginPhonePage_InstallTelegram" xml:space="preserve">
+    <value>Install Telegram App</value>
+  </data>
 </root>

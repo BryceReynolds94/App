@@ -8,6 +8,7 @@ namespace PagerBuddy.Interfaces
     public interface INotifications
     {
         void showAlertNotification(Alert alert);
+        void closeNotification(int notificationID);
 
         void showStandardNotification(string title, string text);
 

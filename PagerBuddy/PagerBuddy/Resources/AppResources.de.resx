@@ -294,4 +294,7 @@
   <data name="MenuPage_LogoutPrompt_Text" xml:space="preserve">
     <value>Bist du dir sicher? Alle Konfigurationen werden gelöscht.</value>
   </data>
+  <data name="LoginPhonePage_InstallTelegram" xml:space="preserve">
+    <value>Telegram installieren</value>
+  </data>
 </root>

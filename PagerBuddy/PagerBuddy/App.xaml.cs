@@ -15,7 +15,6 @@ using PagerBuddy.Resources;
 
 namespace PagerBuddy
 {
-
     //TODO Later: Implement rating prompt https://developer.android.com/guide/playcore/in-app-review/ (similar for iOS)
     public partial class App : Application
     {
@@ -55,7 +54,7 @@ namespace PagerBuddy
                 testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Message, config);
             } else {
                 Logger.Info("No configurations found. Using mock configuration for sample AlertPage.");
-                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Title, AppResources.App_DeveloperMode_AlertPage_Message, "", 0, false);
+                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Title, AppResources.App_DeveloperMode_AlertPage_Message, "", 0, false, 0);
             }
             Logger.Info("Launchin AlertPage from Developer Mode");
             MainPage = new AlertPage(testAlert);

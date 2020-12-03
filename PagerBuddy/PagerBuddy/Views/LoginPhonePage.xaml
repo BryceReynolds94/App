@@ -20,6 +20,11 @@
                        ClearButtonVisibility="WhileEditing" />
                 <Label Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="{StaticResource WarningColor}" TextColor="White" Padding="10"/>
                 <Button Text="{x:Static resources:AppResources.LoginPhonePage_NextBtn}" HorizontalOptions="Center" Command="{Binding Next}"/>
+                <Label Text="{x:Static resources:AppResources.LoginPhonePage_InstallTelegram}" TextDecorations="Underline" HorizontalOptions="Center" VerticalOptions="End" IsVisible="{Binding IsTelegramNotInstalled}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Hyperlink}"/>
+                    </Label.GestureRecognizers>
+                </Label>
             </StackLayout>
             <BoxView IsVisible="{Binding IsWaiting}" BackgroundColor="Gray" Opacity="0.2" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
             <ActivityIndicator IsVisible="{Binding IsWaiting}" IsRunning="True" HorizontalOptions="Center" VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>

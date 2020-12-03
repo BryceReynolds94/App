@@ -871,6 +871,15 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Install Telegram App.
+        /// </summary>
+        public static string LoginPhonePage_InstallTelegram {
+            get {
+                return ResourceManager.GetString("LoginPhonePage_InstallTelegram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string LoginPhonePage_NextBtn {

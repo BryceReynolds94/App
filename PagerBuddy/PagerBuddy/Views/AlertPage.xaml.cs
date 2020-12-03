@@ -21,12 +21,14 @@ namespace PagerBuddy.Views
         AlertPageViewModel viewModel;
 
         private int groupID;
+        private int notificationID;
 
         public AlertPage(Alert alert)
         {
             InitializeComponent();
 
             this.groupID = alert.chatID;
+            this.notificationID = alert.notificationID;
             BindingContext = viewModel = new AlertPageViewModel(alert.title, alert.text, alert.configID, alert.hasPic);
             viewModel.RequestCancel += cancel;
             viewModel.RequestConfirm += confirm;
@@ -44,14 +46,18 @@ namespace PagerBuddy.Views
 
         private void cancel(object sender, EventArgs args)
         {
+            INotifications notifications = DependencyService.Get<INotifications>();
+            notifications.closeNotification(notificationID);
+
             INavigation nav = DependencyService.Get<INavigation>();
             nav.quitApplication(); 
-
-            //TODO: Problem with Notification vib/sound persisting. Possibly manually clear notification?
         }
 
         private void confirm(object sender, EventArgs args)
         {
+            INotifications notifications = DependencyService.Get<INotifications>();
+            notifications.closeNotification(notificationID);
+
             INavigation nav = DependencyService.Get<INavigation>();
             nav.navigateTelegramChat(groupID);
         }

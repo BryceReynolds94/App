@@ -58,14 +58,16 @@ namespace PagerBuddy.Droid
             Platform.CurrentActivity.StartActivity(getTelegramIntent(chatID));
         }
 
+        //Telegram intent handling:
+        //https://github.com/DrKLO/Telegram/blob/5a47056c7b1cb0b7d095ca6e7d1a288c01f8f160/TMessagesProj/src/main/java/org/telegram/ui/LaunchActivity.java#L1101
         public static Intent getTelegramIntent(int chatID) {
             Intent intent = new Intent(Intent.ActionView)
-                .SetData(Android.Net.Uri.Parse("http://telegram.me/" + chatID)) //TODO: Find correct intent syntax
+                .SetData(Android.Net.Uri.Parse("tg:openmessage/?chat_id=" + chatID))
                 .SetPackage("org.telegram.messenger");
             return intent;
         }
 
-        public static bool isTelegramInstalled() {
+        public bool isTelegramInstalled() {
             try {
                 Platform.CurrentActivity.PackageManager.GetPackageInfo("org.telegram.messenger", PackageInfoFlags.Activities);
             } catch (PackageManager.NameNotFoundException e) {

@@ -19,15 +19,19 @@ namespace PagerBuddy.ViewModels {
         public Command Return { get; set; }
         private bool waitOperation = false;
 
+        public Command Hyperlink { get; set; }
+
         public LoginPhonePageViewModel() {
             Title = AppResources.LoginPhonePage_Title;
             Next = new Command(() => commitPhoneNumber());
             Return = new Command(() => commitPhoneNumber());
+            Hyperlink = new Command(() => RequestTelegramLink.Invoke(this, null));
 
             string cultureName = CultureInfo.CurrentCulture.Name;
             regionCode = cultureName.Substring(cultureName.Length - 2);
         }
 
+        public EventHandler RequestTelegramLink;
         public StringRequestHandler RequestClientLogin;
         public delegate void StringRequestHandler(object sender, string load);
 
@@ -68,6 +72,13 @@ namespace PagerBuddy.ViewModels {
         public string PhoneNumber { get; set; }
 
         public bool IsWaiting => waitOperation;
+         
+        public bool IsTelegramNotInstalled {
+            get {
+                Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
+                return !navigation.isTelegramInstalled(); //TODO: Testing
+            }
+        }
 
         public string PhoneNumberHint => "+" + phoneUtil.GetCountryCodeForRegion(regionCode);
 

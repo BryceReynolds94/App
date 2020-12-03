@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using static PagerBuddy.Services.ClientExceptions;
 
-//TODO: Check if Telegram is installed and show link if necessary
 namespace PagerBuddy.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -26,6 +26,17 @@ namespace PagerBuddy.Views
 
             BindingContext = viewModel = new LoginPhonePageViewModel();
             viewModel.RequestClientLogin += performLogin;
+            viewModel.RequestTelegramLink += installTelegram;
+        }
+
+        private async void installTelegram(object sender, EventArgs args) {
+            string url = "";
+            if (Device.RuntimePlatform == Device.Android) {
+                url = "https://play.google.com/store/apps/details?id=org.telegram.messenger";
+            } else if(Device.RuntimePlatform == Device.iOS) {
+                url = "https://apps.apple.com/us/app/telegram-messenger/id686449807";
+            }
+            await Launcher.OpenAsync(url);
         }
 
         private async void performLogin(object sender, string phoneNumber)
