@@ -61,7 +61,7 @@ namespace PagerBuddy.ViewModels {
                 developerTapStart = DateTime.Now;
             }
 
-            if (developerTapCount > 4) {
+            if (developerTapCount > 9) {
                 initiateDeveloperMode();
                 developerTapCount = 0;
             }

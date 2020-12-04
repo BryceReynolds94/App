@@ -149,7 +149,7 @@
     <value>Test FCM Message</value>
   </data>
   <data name="AboutPage_DeveloperMode_TestNotificationBtn" xml:space="preserve">
-    <value>Test Notification</value>
+    <value>Alert Test</value>
   </data>
   <data name="AboutPage_DeveloperMode_TestNotification_Message" xml:space="preserve">
     <value>TEST NOTIFICATION</value>
@@ -179,7 +179,7 @@
     <value>PagerBuddy-Server</value>
   </data>
   <data name="Android_AndroidNotifications_AlertChannel_Description" xml:space="preserve">
-    <value>Configured alert notifications.</value>
+    <value>Alert notifications you configured in PagerBuddy.</value>
   </data>
   <data name="Android_AndroidNotifications_AlertChannel_Title" xml:space="preserve">
     <value>Alert Notifications</value>
@@ -358,7 +358,7 @@
     <value>Authenticate using the confirmation code sent to your phone number</value>
   </data>
   <data name="LoginCodePage_Title" xml:space="preserve">
-    <value>Send</value>
+    <value>Authenticate</value>
   </data>
   <data name="LoginPasswordPage_Error_Default" xml:space="preserve">
     <value>An unknown error occured. Try again later...</value>
@@ -373,7 +373,7 @@
     <value>Password</value>
   </data>
   <data name="LoginPasswordPage_Prompt" xml:space="preserve">
-    <value>Enter the password for your Telegram account:</value>
+    <value>Enter the password for your Telegram account</value>
   </data>
   <data name="LoginPasswordPage_Title" xml:space="preserve">
     <value>Enter Password</value>
@@ -388,7 +388,7 @@
     <value>The entered number is not a valid phone number. Check your input and use a country code.</value>
   </data>
   <data name="LoginPhonePage_NextBtn" xml:space="preserve">
-    <value>Login</value>
+    <value>Confirm</value>
   </data>
   <data name="LoginPhonePage_Prompt" xml:space="preserve">
     <value>Enter your phone number to log into your Telegram account. If you do not have Telegram yet, install the app and setup a new account for free.</value>

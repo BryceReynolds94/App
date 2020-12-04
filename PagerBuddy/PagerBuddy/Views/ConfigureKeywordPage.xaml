@@ -8,6 +8,7 @@
              Title="{Binding Title}"
              x:Class="PagerBuddy.Views.ConfigureKeywordPage">
     <ContentPage.Content>
+        <ScrollView>
         <StackLayout Padding="10">
             <Label x:Name="TitleLabel" Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Title}" VerticalOptions="Center" FontSize="Large" Padding="5,0" />
 
@@ -124,5 +125,6 @@
 
             <Button Text="{x:Static resources:AppResources.ConfigureKeywordPage_NextBtn}" HorizontalOptions="End" Command="{Binding NextClickedCommand}"/>
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

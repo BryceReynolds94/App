@@ -160,7 +160,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test Notification.
+        ///   Looks up a localized string similar to Alert Test.
         /// </summary>
         public static string AboutPage_DeveloperMode_TestNotificationBtn {
             get {
@@ -241,7 +241,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configured alert notifications..
+        ///   Looks up a localized string similar to Alert notifications you configured in PagerBuddy..
         /// </summary>
         public static string Android_AndroidNotifications_AlertChannel_Description {
             get {
@@ -781,7 +781,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Send.
+        ///   Looks up a localized string similar to Authenticate.
         /// </summary>
         public static string LoginCodePage_Title {
             get {
@@ -826,7 +826,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the password for your Telegram account:.
+        ///   Looks up a localized string similar to Enter the password for your Telegram account.
         /// </summary>
         public static string LoginPasswordPage_Prompt {
             get {
@@ -880,7 +880,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Login.
+        ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string LoginPhonePage_NextBtn {
             get {

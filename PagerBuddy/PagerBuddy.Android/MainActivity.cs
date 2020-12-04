@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using PagerBuddy.Models;
 using PagerBuddy.Services;
 using PagerBuddy.Resources;
+using Android.Gms.Common;
 
 namespace PagerBuddy.Droid
 {
@@ -23,7 +24,7 @@ namespace PagerBuddy.Droid
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
 
-        //TODO: Check if user has play services and warn as fatal
+        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         protected override void OnCreate(Bundle savedInstanceState)
         {
 
@@ -42,6 +43,7 @@ namespace PagerBuddy.Droid
 
             WakeScreenAlertPage(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()));
             LoadApplication(new App(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()), GetAlertFromIntent(Intent)));
+            CheckPlayServices(); //Try our best to inform user of missing Play Services
             new AndroidNotifications().SetupNotificationChannels(); //Application has to be loaded first
         }
 
@@ -59,6 +61,20 @@ namespace PagerBuddy.Droid
                 return DataService.deserialiseObject<Alert>(intent.GetStringExtra(Alert.EXTRAS.ALERT_FLAG.ToString()));
             }
             return null;
+        }
+
+        private void CheckPlayServices() {
+            GoogleApiAvailability api = GoogleApiAvailability.Instance;
+            int status = api.IsGooglePlayServicesAvailable(this);
+            if(status != ConnectionResult.Success) {
+                Logger.Error("Google Play Services are not available. The App will not function properly.");
+                if (api.IsUserResolvableError(status)) {
+                    api.GetErrorDialog(this, status, 1).Show();
+                } else {
+                    Logger.Error("Missing Google Play Services not resolvable by user. Critical failure. Status: " + status);
+                }
+            }
+
         }
 
 

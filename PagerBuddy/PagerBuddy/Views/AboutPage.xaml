@@ -6,6 +6,7 @@
              xmlns:resources="clr-namespace:PagerBuddy.Resources"
              Title="{Binding Title}">
     <ContentPage.Content>
+        <ScrollView>
         <StackLayout>
             <Grid Margin="20,50">
                 <Grid.RowDefinitions>
@@ -43,13 +44,13 @@
                 <Label Text="{x:Static resources:AppResources.AboutPage_Telegram}"  VerticalOptions="EndAndExpand"/>
             </StackLayout>
 
-            <ScrollView IsVisible="{Binding IsDeveloperMode}">
-            <Grid Margin="20">
+            
+            <Grid Margin="20" IsVisible="{Binding IsDeveloperMode}" VerticalOptions="StartAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -66,7 +67,8 @@
 
                 <Label Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding LogText}" />
             </Grid>
-            </ScrollView>
+            
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

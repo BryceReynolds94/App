@@ -76,7 +76,7 @@ namespace PagerBuddy.ViewModels {
         public bool IsTelegramNotInstalled {
             get {
                 Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
-                return !navigation.isTelegramInstalled(); //TODO: Testing
+                return !navigation.isTelegramInstalled();
             }
         }
 

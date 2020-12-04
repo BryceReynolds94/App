@@ -19,7 +19,7 @@
     <value>Log teilen</value>
   </data>
   <data name="AboutPage_DeveloperMode_TestNotificationBtn" xml:space="preserve">
-    <value>Testbenachrichtigung</value>
+    <value>Alarm Test</value>
   </data>
   <data name="AboutPage_Title" xml:space="preserve">
     <value>Info</value>
@@ -130,7 +130,7 @@
     <value>Bestätigen</value>
   </data>
   <data name="LoginCodePage_Title" xml:space="preserve">
-    <value>Senden</value>
+    <value>Authentifizieren</value>
   </data>
   <data name="LoginPasswordPage_Error_Default" xml:space="preserve">
     <value>Unbekannter Fehler. Versuchen Sie es später noch mal...</value>
@@ -151,7 +151,7 @@
     <value>Unbekannter Fehler. Versuchen Sie es später noch mal...</value>
   </data>
   <data name="LoginPhonePage_NextBtn" xml:space="preserve">
-    <value>Anmelden</value>
+    <value>Bestätigen</value>
   </data>
   <data name="LoginPhonePage_Title" xml:space="preserve">
     <value>Anmelden</value>
@@ -286,7 +286,7 @@
     <value>Authentifiziere dich mit dem Bestätigungscode der an deine Telefonnummer verschickt wurde</value>
   </data>
   <data name="LoginPasswordPage_Prompt" xml:space="preserve">
-    <value>Gib das Passwort für deinen Telegram-Account ein:</value>
+    <value>Gib das Passwort für deinen Telegram-Account ein</value>
   </data>
   <data name="LoginPhonePage_Error_NoPhoneNumber" xml:space="preserve">
     <value>Die eingegeben Nummer ist keine gültige Telefonnummer. Überprüfe deine Eingabe und verwende eine Ländervorwahl.</value>
@@ -296,5 +296,20 @@
   </data>
   <data name="LoginPhonePage_InstallTelegram" xml:space="preserve">
     <value>Telegram installieren</value>
+  </data>
+  <data name="Android_AndroidNotifications_AlertChannel_Description" xml:space="preserve">
+    <value>Im PagerBuddy konfigurierte Alarmbenachrichtigungen.</value>
+  </data>
+  <data name="LoginPhonePage_Error_InvalidPhoneNumber" xml:space="preserve">
+    <value>Für die eingegebene Telefonnummer gibt es kein Telegram-Account oder es wurden zu viele Login-Versuche gemacht. Überprüfe die eingegebene Telefonnummer.</value>
+  </data>
+  <data name="LoginPhonePage_Prompt" xml:space="preserve">
+    <value>Gib deine Telefonnummer ein um dich in dein Telegram-Account einzuloggen. Wenn du noch kein Telegram-Account hast, installiere die App und lege kostenlos deinen Account an.</value>
+  </data>
+  <data name="AboutPage_Telegram" xml:space="preserve">
+    <value>PagerBuddy gehört nicht zu Telegram und wird auch nicht von Telegram unterstützt.</value>
+  </data>
+  <data name="AboutPage_PrivacyPolicy" xml:space="preserve">
+    <value>Persönliche Informationen, die während der Verwendung der App gesammelt werden, werden ausschließlich lokal auf deinen Gerät gespeichert. Nur notwendige Daten zur Authentifizierung werden an Telegram weitergegeben. Im Falle eines Fehlers können Daten zum Gerätezustand und der Konfiguration von PagerBuddy gesammelt werden. Links zu den vollen Datenschutzerklärungen von Telegram und PagerBuddy sind unten angegeben.</value>
   </data>
 </root>
