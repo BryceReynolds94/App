@@ -9,6 +9,11 @@ using UIKit;
 [assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.iOS.iOSNavigation))] //register for dependency service as platform-specific code
 namespace PagerBuddy.iOS {
     class iOSNavigation : INavigation {
+        public bool isTelegramInstalled() {
+            //TODO: IOS Implementation
+            throw new NotImplementedException();
+        }
+
         public void navigateNotificationPolicyAccess() {
             //TODO: IOS Implementation
             throw new NotImplementedException();

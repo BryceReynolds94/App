@@ -15,6 +15,11 @@ namespace PagerBuddy.iOS {
             throw new NotImplementedException();
         }
 
+        public void closeNotification(int notificationID) {
+            //TODO: IOS Implementation
+            throw new NotImplementedException();
+        }
+
         public void removeNotificationChannel(AlertConfig config) {
             //TODO: IOS Implementation
             throw new NotImplementedException();
