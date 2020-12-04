@@ -15,7 +15,7 @@
    version="1.1"
    id="svg4917"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
-   sodipodi:docname="icon_white.svg"
+   sodipodi:docname="launcher_light.svg"
    inkscape:export-filename="C:\Users\maxba\Downloads\iconFront.png"
    inkscape:export-xdpi="6.3500004"
    inkscape:export-ydpi="6.3500004">
@@ -29,7 +29,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="397.68232"
+     inkscape:cx="164.33708"
      inkscape:cy="242.98441"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -38,7 +38,8 @@
      inkscape:window-height="1017"
      inkscape:window-x="1912"
      inkscape:window-y="-8"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     inkscape:pagecheckerboard="true" />
   <metadata
      id="metadata4914">
     <rdf:RDF>
@@ -73,24 +74,5 @@
        sodipodi:end="3.1415927"
        sodipodi:open="true"
        d="m 242.29855,148.51422 a 26.298552,24.550022 0 0 1 -13.14927,21.26094 26.298552,24.550022 0 0 1 -26.29856,0 26.298552,24.550022 0 0 1 -13.14927,-21.26094" />
-    <path
-       style="display:inline;opacity:0.2;fill:#00236a;fill-opacity:1;stroke:none;stroke-width:0.26499999;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 131.30857,135.62517 129,139.6252 H 216.00001 303 l -2.30861,-4.00003 h -84.69138 z"
-       id="path4504-3"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccc" />
-    <path
-       style="display:inline;opacity:0.2;fill:#00236a;fill-opacity:1;stroke:none;stroke-width:0.26499999;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 189.70116,148.51385 a 26.298551,24.550022 0 0 0 13.15041,21.26173 26.298551,24.550022 0 0 0 26.29686,0 26.298551,24.550022 0 0 0 13.15041,-21.26173 h -0.38283 a 26.298551,24.550022 0 0 1 -12.76758,17.26171 26.298551,24.550022 0 0 1 -26.29686,0 26.298551,24.550022 0 0 1 -12.7793,-17.26171 z"
-       id="path4506-4"
-       inkscape:connector-curvature="0" />
-    <rect
-       style="display:inline;opacity:0.2;fill:#00236a;fill-opacity:1;stroke:none;stroke-width:0.26458329;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect4705"
-       width="99.999992"
-       height="3.9999995"
-       x="166"
-       y="118.29128"
-       ry="0" />
   </g>
 </svg>
