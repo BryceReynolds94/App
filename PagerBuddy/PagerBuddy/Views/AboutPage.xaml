@@ -6,7 +6,8 @@
              xmlns:resources="clr-namespace:PagerBuddy.Resources"
              Title="{Binding Title}">
     <ContentPage.Content>
-        <ScrollView>
+        <StackLayout>
+        <ScrollView VerticalOptions="FillAndExpand">
         <StackLayout>
             <Grid Margin="20,50">
                 <Grid.RowDefinitions>
@@ -45,7 +46,7 @@
             </StackLayout>
 
             
-            <Grid Margin="20" IsVisible="{Binding IsDeveloperMode}" VerticalOptions="StartAndExpand">
+            <Grid Margin="20" IsVisible="{Binding IsDeveloperMode}" VerticalOptions="StartAndExpand" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -70,5 +71,6 @@
             
         </StackLayout>
         </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

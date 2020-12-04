@@ -25,6 +25,7 @@ namespace PagerBuddy.ViewModels {
 
         private DateTime developerTapStart = DateTime.MinValue;
         private int developerTapCount = 0;
+
         public AboutPageViewModel() {
 
             Title = AppResources.AboutPage_Title;
@@ -49,6 +50,7 @@ namespace PagerBuddy.ViewModels {
         private void reloadLogLoop() {
             if (IsDeveloperMode) {
                 OnPropertyChanged(nameof(LogText));
+                OnPropertyChanged(nameof(OuterLayout));
                 Task.Delay(5000).ContinueWith((t) => reloadLogLoop());
             }
         }
@@ -81,6 +83,9 @@ namespace PagerBuddy.ViewModels {
             OnPropertyChanged(nameof(IsDeveloperMode));
             OnPropertyChanged(nameof(NotDeveloperMode));
         }
+
+        //empty Binding for forcing layout update
+        public string OuterLayout => "OuterLayout";
 
         public string AppVersion {
             get {

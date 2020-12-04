@@ -11,6 +11,7 @@ namespace PagerBuddy.iOS {
     class iOSNavigation : INavigation {
         public bool isTelegramInstalled() {
             //TODO: IOS Implementation
+            //https://stackoverflow.com/questions/41545283/how-to-check-app-is-installed-or-not-in-phone
             throw new NotImplementedException();
         }
 

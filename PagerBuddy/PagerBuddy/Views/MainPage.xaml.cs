@@ -47,6 +47,9 @@ namespace PagerBuddy.Views {
                 case MenuPage.MENU_PAGE.Login:
                     await LoginUser();
                     break;
+                case MenuPage.MENU_PAGE.Donate:
+                    await requestDonate();
+                    break;
                 default:
                     break;
             }
@@ -92,6 +95,11 @@ namespace PagerBuddy.Views {
         private async Task requestShare() {
             //https://docs.microsoft.com/en-us/xamarin/essentials/share?context=xamarin%2Fios&tabs=android
             await Share.RequestAsync(new ShareTextRequest(AppResources.App_Share_Message));
+            IsPresented = false;
+        }
+
+        private async Task requestDonate() {
+            await Launcher.OpenAsync("https://www.buymeacoffee.com/maxbartunik");
             IsPresented = false;
         }
     }

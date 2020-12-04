@@ -36,7 +36,7 @@ namespace PagerBuddy.Droid
         }
 
         public void navigateShareFile(string fileName) {
-
+            //TODO: Possibly remove this
             Android.Net.Uri contentUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.pagerbuddy.fileprovider", new Java.IO.File(fileName));
             //FileProvider defined in Manifest
 

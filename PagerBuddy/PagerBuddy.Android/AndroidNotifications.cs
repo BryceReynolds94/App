@@ -150,7 +150,7 @@ namespace PagerBuddy.Droid {
 
             string standardName = Resources.AppResources.Android_AndroidNotifications_StandardChannel_Title;
             string standardDescription = Resources.AppResources.Android_AndroidNotifications_StandardChannel_Description;
-            NotificationChannel standardChannel = new NotificationChannel(AndroidNotifications.STANDARD_CHANNEL_ID, standardName, NotificationImportance.Default) {
+            NotificationChannel standardChannel = new NotificationChannel(STANDARD_CHANNEL_ID, standardName, NotificationImportance.Default) {
                 Description = standardDescription
 
             };

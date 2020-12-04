@@ -15,6 +15,7 @@ namespace PagerBuddy.ViewModels
         public Command NotificationSettings { get; set; }
         public Command Logout { get; set; }
         public Command Profile { get; set; }
+        public Command Donate { get; set; }
 
         public MenuPageViewModel()
         {
@@ -24,6 +25,7 @@ namespace PagerBuddy.ViewModels
             Share = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.Share));
             Logout = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.LogoutUser));
             Profile = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.Login));
+            Donate = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.Donate));
 
             MessagingCenter.Subscribe<CommunicationService>(this, CommunicationService.MESSAGING_KEYS.USER_DATA_CHANGED.ToString(), (_) => userDataChanged());
             MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => userDataChanged());

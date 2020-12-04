@@ -169,7 +169,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All Personal Information you enter while using this App is stored locally on your device. Only necessary information for authentication is passed to Telegram. If an error occurs some log data regarding device statistics and configuration of PagerBuddy may be collected. Links to Telegrams Privacy Policy and the full Privacy Policy for PagerBuddy are provided below..
+        ///   Looks up a localized string similar to All Personal Information you enter while using this App is stored locally on your device. Only necessary information for authentication is passed to Telegram. If an error occurs some log data regarding device statistics and configuration of PagerBuddy may be collected. Links to Telegrams Privacy Policy and the Privacy Policy for PagerBuddy are provided below..
         /// </summary>
         public static string AboutPage_PrivacyPolicy {
             get {
@@ -912,6 +912,15 @@ namespace PagerBuddy.Resources {
         public static string MenuPage_Action_About {
             get {
                 return ResourceManager.GetString("MenuPage_Action_About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buy me tea.
+        /// </summary>
+        public static string MenuPage_Action_Donate {
+            get {
+                return ResourceManager.GetString("MenuPage_Action_Donate", resourceCulture);
             }
         }
         

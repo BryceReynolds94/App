@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Essentials;
 
 namespace PagerBuddy.Views {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -49,13 +50,15 @@ namespace PagerBuddy.Views {
             return logFile;
         }
 
-        private void shareLog(object sender, EventArgs args) {
+        private async void shareLog(object sender, EventArgs args) {
             Logger.Info("Launched Log sharing");
 
             string logFile = getLogFileLocation();
             if (logFile != null) {
-                Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
-                navigation.navigateShareFile(logFile);
+                await Share.RequestAsync(new ShareFileRequest(new ShareFile(logFile))); //TODO: Testing
+
+                //Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
+                //navigation.navigateShareFile(logFile);
             } else {
                 Logger.Warn("Could not share log file as no file was found.");
             }
