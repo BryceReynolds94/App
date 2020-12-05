@@ -38,9 +38,9 @@ namespace PagerBuddy.Services {
 
             int lockDuration = 2000; //milliseconds
 
-            if (lockTime.CompareTo(currentTime) > 0) {
+            if (lockTime > currentTime) {
                 return true; //we are in time lock - do nothing
-            } else if (lastRefreshTime.AddMilliseconds(lockDuration).CompareTo(currentTime) > 0) {
+            } else if (lastRefreshTime.AddMilliseconds(lockDuration) > currentTime) {
                 //short succession updates
                 //set 2s lock time and snooze 2s
                 DataService.setConfigValue(DataService.DATA_KEYS.REFRESH_LOCK_TIME, currentTime.AddMilliseconds(lockDuration).Ticks);
@@ -59,6 +59,8 @@ namespace PagerBuddy.Services {
 
 
         private async void checkNewMessages(CommunicationService client) {
+            Logger.Info("Checking for new messages.");
+
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
             Collection<string> configIDs = DataService.getConfigList();
             foreach (string id in configIDs) {
@@ -119,6 +121,8 @@ namespace PagerBuddy.Services {
         }
 
         private void alertMessage(AlertConfig config, TLMessage message) {
+
+            //We need to init Xamarin.Forms before here
             INotifications notifications = DependencyService.Get<INotifications>();
             notifications.showAlertNotification(new Alert(message.Message, config));
 

@@ -32,6 +32,14 @@ namespace PagerBuddy
             initialise(isAlert, alert);
         }
 
+        public App(bool initialiseOnly) {
+            if (initialiseOnly) {
+                InitializeComponent();
+            } else {
+                initialise(false);
+            }
+        }
+
         public App()
         {
             initialise(false);
@@ -50,7 +58,7 @@ namespace PagerBuddy
                 return;
             }
 
-            MainPage = new MainPage();
+            MainPage = new MainPage(VersionTracking.IsFirstLaunchEver);
             new MessagingService().SetupListeners(((MainPage)Current.MainPage).client);
         }
 

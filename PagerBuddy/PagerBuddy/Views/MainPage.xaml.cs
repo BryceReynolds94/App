@@ -19,13 +19,13 @@ namespace PagerBuddy.Views {
         public CommunicationService client;
 
         public enum MESSAGING_KEYS { LOGOUT_USER};
-        public MainPage() {
+        public MainPage(bool isFirstLaunchEver = false) {
             InitializeComponent();
 
             FlyoutLayoutBehavior = FlyoutLayoutBehavior.Popover;
             client = new CommunicationService();
 
-            Detail = new NavigationPage(new HomeStatusPage(client));
+            Detail = new NavigationPage(new HomeStatusPage(client, isFirstLaunchEver));
 
             MessagingCenter.Subscribe<AboutPage>(this, AboutPage.MESSAGING_KEYS.RESTART_CLIENT.ToString(), async (sender) => await client.forceReloadConnection());
         }

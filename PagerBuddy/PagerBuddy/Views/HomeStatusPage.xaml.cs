@@ -33,7 +33,7 @@ namespace PagerBuddy.Views
 
         public delegate Task<DateTime> SnoozeTimeHandler(object sender, string title);
 
-        public HomeStatusPage(CommunicationService client)
+        public HomeStatusPage(CommunicationService client, bool isFirstLaunchEver = false)
         {
             InitializeComponent();
             this.client = client;
@@ -58,7 +58,7 @@ namespace PagerBuddy.Views
 
             MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => deleteAllAlertConfigs());
 
-            if (VersionTracking.IsFirstLaunchEver) {
+            if (isFirstLaunchEver) {
                 _ = showWelcomePrompt();
             }
         }
