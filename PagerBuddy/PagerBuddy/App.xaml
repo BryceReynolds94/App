@@ -22,6 +22,8 @@
             <Color x:Key="ErrorColor">#F44336</Color>
             <Color x:Key="WarningColor">#F4511E</Color>
 
+            <Color x:Key="BackgroundColor">#FAFAFA</Color>
+
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource PrimaryColor}" />
                 <Setter Property="BarTextColor" Value="{StaticResource PrimaryTextColor}" />

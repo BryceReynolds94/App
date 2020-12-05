@@ -1,24 +1,22 @@
-﻿using PagerBuddy.Models;
+﻿using FFImageLoading.Svg.Forms;
+using PagerBuddy.Models;
 using PagerBuddy.Resources;
 using PagerBuddy.Services;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
-namespace PagerBuddy.ViewModels
-{
-    public class AlertStatusViewModel : BaseViewModel
-    {
+namespace PagerBuddy.ViewModels {
+    public class AlertStatusViewModel : BaseViewModel {
         private AlertConfig alertConfig;
 
         public Command SnoozeAlert { get; set; }
         public Command EditAlert { get; set; }
         public Command DeleteAlert { get; set; }
 
-        public enum MESSAGING_KEYS { EDIT_ALERT_CONFIG, DELETE_ALERT_CONFIG, REQUEST_SNOOZE_TIME};
-        
-        public AlertStatusViewModel(AlertConfig alertConfig)
-        {
+        public enum MESSAGING_KEYS { EDIT_ALERT_CONFIG, DELETE_ALERT_CONFIG, REQUEST_SNOOZE_TIME };
+
+        public AlertStatusViewModel(AlertConfig alertConfig) {
             this.alertConfig = alertConfig;
 
             EditAlert = new Command(() => MessagingCenter.Send(this, MESSAGING_KEYS.EDIT_ALERT_CONFIG.ToString(), alertConfig));
@@ -26,19 +24,13 @@ namespace PagerBuddy.ViewModels
             SnoozeAlert = new Command(() => setSnooze());
         }
 
-        private void setSnooze()
-        {
-            if (alertConfig.snoozeActive)
-            {
+        private void setSnooze() {
+            if (alertConfig.snoozeActive) {
                 alertConfig.setSnoozeTime(DateTime.MinValue);
                 alertPropertiesChanged();
-            }
-            else
-            {
-                Action<DateTime> action = new Action<DateTime>((dateTime) =>
-                {
-                    if (dateTime > DateTime.Now)
-                    {
+            } else {
+                Action<DateTime> action = new Action<DateTime>((dateTime) => {
+                    if (dateTime > DateTime.Now) {
                         alertConfig.setSnoozeTime(dateTime);
                         alertPropertiesChanged();
                     }
@@ -56,8 +48,7 @@ namespace PagerBuddy.ViewModels
             }
         }
 
-        private void alertPropertiesChanged()
-        {
+        private void alertPropertiesChanged() {
             OnPropertyChanged(nameof(StatusFieldPic));
             OnPropertyChanged(nameof(StatusFieldText));
             OnPropertyChanged(nameof(SnoozePic));
@@ -66,7 +57,7 @@ namespace PagerBuddy.ViewModels
         public string GroupName => alertConfig.triggerGroup.name;
         public string KeywordText {
             get {
-                
+
                 string outString = "";
                 switch (alertConfig.triggerType) {
                     case AlertConfig.TRIGGER_TYPE.ANY:
@@ -80,8 +71,7 @@ namespace PagerBuddy.ViewModels
                         break;
                 }
 
-                if (alertConfig.timeRestriction)
-                {
+                if (alertConfig.timeRestriction) {
                     outString = outString + Environment.NewLine + alertConfig.activeTimeConfig.getActiveString();
                 }
                 return outString;
@@ -89,68 +79,53 @@ namespace PagerBuddy.ViewModels
         }
         public string StatusFieldText {
             get {
-                if (alertConfig.snoozeActive)
-                {
+                if (alertConfig.snoozeActive) {
                     return string.Format(AppResources.AlertStatus_Status_Deactivated, alertConfig.snoozeTime);
-                }
-                else if (alertConfig.lastTriggered > DateTime.MinValue)
-                {
+                } else if (alertConfig.lastTriggered > DateTime.MinValue) {
                     return alertConfig.lastTriggered.ToString("dd.MM.yyyy HH:mm");
-                }
-                else
-                {
+                } else {
                     return AppResources.AlertStatus_Status_Default;
                 }
             }
         }
 
-        public string StatusFieldPic {
+        public ImageSource TriggerPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_trigger.svg");
+
+        public ImageSource StatusFieldPic {
             get {
-                if (alertConfig.snoozeActive)
-                {
-                    return "resource://PagerBuddy.Resources.Images.icon_alert_snooze_inactive.svg";
-                }
-                else
-                {
-                    return "resource://PagerBuddy.Resources.Images.icon_history.svg";
+                if (alertConfig.snoozeActive) {
+                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze_inactive.svg");
+                } else {
+                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_history.svg");
                 }
             }
         }
 
         public bool SnoozeEnabled => alertConfig.isActive;
-
-        public string SnoozePic {
+        public ImageSource SnoozePic {
             get {
-                if (!alertConfig.isActive)
-                {
-                    return "resource://PagerBuddy.Resources.Images.icon_alert_snooze_inactive.svg";
-                }
-                else if (alertConfig.snoozeActive)
-                {
-                    return "resource://PagerBuddy.Resources.Images.icon_alert_snooze_off.svg";
-                }
-                else
-                {
-                    return "resource://PagerBuddy.Resources.Images.icon_alert_snooze.svg";
+                if (!alertConfig.isActive) {
+                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze_inactive.svg");
+                } else if (alertConfig.snoozeActive) {
+                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze_off.svg");
+                } else {
+                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze.svg");
                 }
             }
         }
 
-        public bool ShowDefaultPic => !alertConfig.triggerGroup.hasImage;
-        public bool HasPic => alertConfig.triggerGroup.hasImage;
-
-        public string GroupPicPath {
+        public ImageSource GroupPic {
             get {
-                if (alertConfig.triggerGroup.hasImage)
-                {
-                    return DataService.profilePicSavePath(alertConfig.id);
-                }
-                else
-                {
-                    return null;
+                if (alertConfig.triggerGroup.hasImage) {
+                    return ImageSource.FromFile(DataService.profilePicSavePath(alertConfig.id));
+                } else {
+                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.group_default.svg");
                 }
             }
         }
+
+        public ImageSource EditPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_settings.svg");
+        public ImageSource DeletePic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_delete.svg");
 
     }
 }

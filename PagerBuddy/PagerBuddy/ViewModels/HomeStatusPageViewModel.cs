@@ -12,11 +12,10 @@ using TeleSharp.TL.Upload;
 using System.Collections.Generic;
 using System.Data;
 using PagerBuddy.Resources;
+using FFImageLoading.Svg.Forms;
 
-namespace PagerBuddy.ViewModels
-{
-    public class HomeStatusPageViewModel : BaseViewModel
-    {
+namespace PagerBuddy.ViewModels {
+    public class HomeStatusPageViewModel : BaseViewModel {
         public ObservableCollection<AlertStatusViewModel> alertList { get; set; }
 
         private enum ERROR_ACTION { NO_INTERNET, NO_TELEGRAM, NONE };
@@ -28,7 +27,6 @@ namespace PagerBuddy.ViewModels
         public Command ToggleAllActive { get; set; }
         public Command ToggleAllSnooze { get; set; }
         public Command AddConfig { get; set; }
-
         public Command ErrorAction { get; set; }
         public Command WarningAction { get; set; }
 
@@ -42,7 +40,7 @@ namespace PagerBuddy.ViewModels
         public delegate void UpdateStatusEventHandler(object sender, bool newStatus);
         public delegate void UpdateSnoozeEventHandler(object sender, DateTime snoozeTime);
 
-        public HomeStatusPageViewModel(Collection<AlertConfig> rawAlertList){
+        public HomeStatusPageViewModel(Collection<AlertConfig> rawAlertList) {
             Title = AppResources.HomeStatusPage_Title;
             fillAlertList(rawAlertList);
 
@@ -55,64 +53,49 @@ namespace PagerBuddy.ViewModels
 
         }
 
-        public void fillAlertList(Collection<AlertConfig> alertConfigs)
-        {
+        public void fillAlertList(Collection<AlertConfig> alertConfigs) {
             alertList = new ObservableCollection<AlertStatusViewModel>();
 
-            foreach(AlertConfig config in alertConfigs)
-            {
+            foreach (AlertConfig config in alertConfigs) {
                 alertList.Add(new AlertStatusViewModel(config));
             }
             OnPropertyChanged(nameof(alertList));
         }
 
-        public void setWarningState(bool allDeactivated, bool allSnoozed)
-        {
-            if (allDeactivated)
-            {
+        public void setWarningState(bool allDeactivated, bool allSnoozed) {
+            if (allDeactivated) {
                 warningState = WARNING_ACTION.DEACTIVATED;
-            }else if (allSnoozed)
-            {
+            } else if (allSnoozed) {
                 warningState = WARNING_ACTION.SNOOZE_SET;
-            }
-            else
-            {
+            } else {
                 warningState = WARNING_ACTION.NONE;
             }
             OnPropertyChanged(nameof(WarningText));
             OnPropertyChanged(nameof(WarningActive));
             OnPropertyChanged(nameof(ToggleAllActiveIcon));
             OnPropertyChanged(nameof(ToggleAllSnoozeIcon));
-            OnPropertyChanged(nameof(ToggleSnoozeEnabled));
+            OnPropertyChanged(nameof(ToggleAllSnoozeEnabled));
         }
 
-        public void setErrorState(bool hasInternet, bool isAuthorised)
-        {
-            if (!hasInternet)
-            {
+        public void setErrorState(bool hasInternet, bool isAuthorised) {
+            if (!hasInternet) {
                 errorState = ERROR_ACTION.NO_INTERNET;
-            }else if (!isAuthorised)
-            {
+            } else if (!isAuthorised) {
                 errorState = ERROR_ACTION.NO_TELEGRAM;
-            }
-            else
-            {
+            } else {
                 errorState = ERROR_ACTION.NONE;
             }
             OnPropertyChanged(nameof(ErrorText));
             OnPropertyChanged(nameof(ErrorActive));
-            OnPropertyChanged(nameof(AddEnabled));
+            OnPropertyChanged(nameof(AddConfigEnabled));
+            OnPropertyChanged(nameof(AddConfigIcon));
         }
 
-        private void updateAllActiveState()
-        {
-            if(warningState == WARNING_ACTION.DEACTIVATED)
-            {
+        private void updateAllActiveState() {
+            if (warningState == WARNING_ACTION.DEACTIVATED) {
                 warningState = WARNING_ACTION.NONE;
                 AllDeactivatedStateChanged.Invoke(this, false);
-            }
-            else
-            {
+            } else {
                 warningState = WARNING_ACTION.DEACTIVATED;
                 AllDeactivatedStateChanged.Invoke(this, true);
             }
@@ -120,21 +103,16 @@ namespace PagerBuddy.ViewModels
             OnPropertyChanged(nameof(WarningActive));
             OnPropertyChanged(nameof(ToggleAllActiveIcon));
             OnPropertyChanged(nameof(ToggleAllSnoozeIcon));
-            OnPropertyChanged(nameof(ToggleSnoozeEnabled));
+            OnPropertyChanged(nameof(ToggleAllSnoozeEnabled));
         }
 
-        private async void updateAllSnoozeState()
-        {
-            if(warningState == WARNING_ACTION.SNOOZE_SET)
-            {
+        private async void updateAllSnoozeState() {
+            if (warningState == WARNING_ACTION.SNOOZE_SET) {
                 warningState = WARNING_ACTION.NONE;
                 AllSnoozeStateChanged.Invoke(this, DateTime.MinValue);
-            }
-            else
-            {
+            } else {
                 DateTime snoozeTime = await RequestSnoozeTime.Invoke(this, AppResources.HomeStatusPage_Snooze_Prompt);
-                if (snoozeTime > DateTime.Now)
-                {
+                if (snoozeTime > DateTime.Now) {
                     warningState = WARNING_ACTION.SNOOZE_SET;
                     AllSnoozeStateChanged.Invoke(this, snoozeTime);
                 }
@@ -144,36 +122,28 @@ namespace PagerBuddy.ViewModels
             OnPropertyChanged(nameof(ToggleAllSnoozeIcon));
         }
 
-        private void ErrorActionClicked()
-        {
-            if (errorState == ERROR_ACTION.NO_TELEGRAM)
-            {
+        private void ErrorActionClicked() {
+            if (errorState == ERROR_ACTION.NO_TELEGRAM) {
                 RequestLogin.Invoke(this, null);
-            }
-            else if (errorState == ERROR_ACTION.NO_INTERNET)
-            {
+            } else if (errorState == ERROR_ACTION.NO_INTERNET) {
                 RequestRefresh.Invoke(this, null);
             }
 
         }
 
-        private void WarningActionClicked()
-        {
-            if (warningState == WARNING_ACTION.SNOOZE_SET)
-            {
+        private void WarningActionClicked() {
+            if (warningState == WARNING_ACTION.SNOOZE_SET) {
                 updateAllSnoozeState();
-            }
-            else if (warningState == WARNING_ACTION.DEACTIVATED)
-            {
+            } else if (warningState == WARNING_ACTION.DEACTIVATED) {
                 updateAllActiveState();
             }
 
         }
 
+
         public string ErrorText {
             get {
-                switch (errorState)
-                {
+                switch (errorState) {
                     case ERROR_ACTION.NO_INTERNET:
                         return AppResources.HomeStatusPage_Error_NoInternet;
                     case ERROR_ACTION.NO_TELEGRAM:
@@ -187,8 +157,7 @@ namespace PagerBuddy.ViewModels
 
         public string WarningText {
             get {
-                switch (warningState)
-                {
+                switch (warningState) {
                     case WARNING_ACTION.SNOOZE_SET:
                         DateTime snoozeTime = new DateTime(DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.Now.Ticks));
                         return string.Format(AppResources.HomeStatusPage_Warning_Snooze, snoozeTime);
@@ -201,48 +170,43 @@ namespace PagerBuddy.ViewModels
             }
         }
 
-        public bool ErrorActive {
-            get => errorState != ERROR_ACTION.NONE;
-        }
+        public bool ErrorActive => errorState != ERROR_ACTION.NONE;
 
-        public bool WarningActive {
-            get => warningState != WARNING_ACTION.NONE;
-        }
+        public bool WarningActive => warningState != WARNING_ACTION.NONE;
 
-        public string ToggleAllActiveIcon {
+
+        public ImageSource ToggleAllActiveIcon {
             get {
-                if(warningState == WARNING_ACTION.DEACTIVATED)
-                {
-                    return "resource://PagerBuddy.Resources.Images.icon_alert_off.svg";
-                }
-                else
-                {
-                    return "resource://PagerBuddy.Resources.Images.icon_alert.svg";
+                if (warningState == WARNING_ACTION.DEACTIVATED) {
+                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_off.svg");
+                } else {
+                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert.svg");
                 }
             }
         }
-
-        public string ToggleAllSnoozeIcon {
+        public bool ToggleAllSnoozeEnabled => warningState != WARNING_ACTION.DEACTIVATED;
+        public ImageSource ToggleAllSnoozeIcon {
             get {
-                switch (warningState)
-                {
+                switch (warningState) {
                     case WARNING_ACTION.SNOOZE_SET:
-                        return "resource://PagerBuddy.Resources.Images.icon_alert_snooze_off.svg";
+                        return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze_off.svg");
                     case WARNING_ACTION.DEACTIVATED:
-                        return "resource://PagerBuddy.Resources.Images.icon_alert_snooze_inactive.svg";
+                        return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze_inactive.svg");
                     default:
-                        return "resource://PagerBuddy.Resources.Images.icon_alert_snooze.svg";
+                        return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze.svg");
                 }
             }
-         }
-
-        public bool ToggleSnoozeEnabled {
-            get => warningState != WARNING_ACTION.DEACTIVATED;
         }
 
-        public bool AddEnabled {
-            get => errorState == ERROR_ACTION.NONE;
+        public bool AddConfigEnabled => errorState == ERROR_ACTION.NONE;
+        public ImageSource AddConfigIcon {
+            get {
+                if (AddConfigEnabled) { 
+                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_add.svg");
+                } else {
+                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_add_inactive.svg");
+                }
+            }
         }
-
     }
 }

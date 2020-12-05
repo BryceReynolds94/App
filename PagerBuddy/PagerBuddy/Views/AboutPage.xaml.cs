@@ -55,10 +55,7 @@ namespace PagerBuddy.Views {
 
             string logFile = getLogFileLocation();
             if (logFile != null) {
-                await Share.RequestAsync(new ShareFileRequest(new ShareFile(logFile))); //TODO: Testing
-
-                //Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
-                //navigation.navigateShareFile(logFile);
+                await Share.RequestAsync(new ShareFileRequest(new ShareFile(logFile)));
             } else {
                 Logger.Warn("Could not share log file as no file was found.");
             }

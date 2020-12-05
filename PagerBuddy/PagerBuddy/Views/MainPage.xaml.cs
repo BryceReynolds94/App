@@ -56,7 +56,7 @@ namespace PagerBuddy.Views {
         }
 
         private async Task LoginUser() {
-            if(client.clientStatus == CommunicationService.STATUS.OFFLINE || client.clientStatus == CommunicationService.STATUS.AUTHORISED) {
+            if(client.clientStatus == CommunicationService.STATUS.OFFLINE || client.clientStatus == CommunicationService.STATUS.NEW || client.clientStatus == CommunicationService.STATUS.AUTHORISED) {
                 return;
             }
             await Detail.Navigation.PushAsync(new LoginPhonePage(client));

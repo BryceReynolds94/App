@@ -73,6 +73,9 @@ namespace PagerBuddy.Views
             bool allSnoozed = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue.Ticks) > DateTime.Now.Ticks;
             viewModel.setWarningState(allOff, allSnoozed);
 
+            alertList = getAlertConfigs();
+            viewModel.fillAlertList(alertList);
+
             if (viewModel.alertList.Count == 0) {
                 viewModel.IsBusy = true;
             }

@@ -7,43 +7,37 @@
              mc:Ignorable="d"
              x:Class="PagerBuddy.Views.AlertPage">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource PrimaryColor}" Padding="20">
-            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.launcher_light.svg" x:Name="MainIcon" HeightRequest="200" Margin="0,50" VerticalOptions="StartAndExpand"/>
-            
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+        
+        <StackLayout BackgroundColor="{StaticResource PrimaryColor}" >
+            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.launcher_light.svg" x:Name="MainIcon" HeightRequest="200" Margin="20,70" VerticalOptions="StartAndExpand"/>
 
-                <Frame Padding="0" CornerRadius="20" IsClippedToBounds="True">
-                    <Grid>
-                        <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://PagerBuddy.Resources.Images.group_default.svg" />
-                        <Image IsVisible="{Binding ShowCustomPic}" Source="{Binding GroupPic}"/>
-                    </Grid>
-                </Frame>
+            <ScrollView Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                <Label Text="{Binding AlertTitle}"  Grid.Column="1" TextColor="{StaticResource PrimaryTextColor}" FontSize="Title" Margin="10,0,0,0"/>
-                <Label Text="{Binding AlertText}" TextColor="{StaticResource PrimaryTextColor}" Grid.Column="1" Grid.Row="1" Margin="10,0,0,0"/>
-            </Grid>
+                    <Frame Padding="0" CornerRadius="20" IsClippedToBounds="True">
+                        <Image Source="{Binding GroupPic}"/>
+                    </Frame>
 
-            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
-                <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://PagerBuddy.Resources.Images.icon_clear.svg" HeightRequest="50" Margin="50,0">
-                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding Cancel}"/>
-                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                </ffimageloadingsvg:SvgCachedImage>
-                <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://PagerBuddy.Resources.Images.icon_confirm.svg" HeightRequest="50" Margin="50,0">
-                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding Confirm}"/>
-                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                </ffimageloadingsvg:SvgCachedImage>
+                    <Label Text="{Binding AlertTitle}"  Grid.Column="1" TextColor="{StaticResource PrimaryTextColor}" FontSize="Title" Margin="10,0,0,0"/>
+                    <Label Text="{Binding AlertText}" TextColor="{StaticResource PrimaryTextColor}" Grid.Column="1" Grid.Row="1" Margin="10,0,0,0"/>
+                </Grid>
+            </ScrollView>
+
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="0,0,0,20">
+                <ImageButton Source="{Binding ClearPic}" HeightRequest="50" WidthRequest="50" Margin="50,0" Command="{Binding Cancel}" CornerRadius="25" BackgroundColor="{StaticResource PrimaryColor}"/>
+                <ImageButton Source="{Binding ConfirmPic}" HeightRequest="50" WidthRequest="50" Margin="50,0" Command="{Binding Confirm}" CornerRadius="25" BackgroundColor="{StaticResource PrimaryColor}"/>
             </StackLayout>
 
         </StackLayout>
+        
     </ContentPage.Content>
 </ContentPage>

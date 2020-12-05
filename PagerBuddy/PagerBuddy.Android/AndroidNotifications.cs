@@ -57,7 +57,8 @@ namespace PagerBuddy.Droid {
                 .SetSmallIcon(Resource.Drawable.notification_icon) //use simplified xml vector
                 .SetColor(Resource.Color.colorPrimary) //set app color for small notification icon
                 .SetLargeIcon(largePic) //group pic
-                .SetCategory(NotificationCompat.CategoryMessage) //category for message classification
+                //TODO: PHY Testing - Possibly revert to Notification.CategoryMessage if does not guarantee persistance
+                .SetCategory(Notification.CategoryCall) //category for message classification 
                 .SetAutoCancel(true) //cancel notification when tapped
                 .SetFullScreenIntent(fullScreenIntent, true)
                 .SetStyle(new Notification.BigTextStyle().BigText(alert.text)); //extend message on tap

@@ -80,7 +80,7 @@ namespace PagerBuddy.Services {
                 Logger.Error("Fatal Problem with client. Clearing session store and starting again.");
 
                 new MySessionStore(this).Clear();
-                _ = connectClient();
+                await connectClient();
                 return;
             }
             clientStatus = STATUS.NEW;
@@ -88,10 +88,10 @@ namespace PagerBuddy.Services {
 
             if (client.IsUserAuthorized()) {
                 Logger.Debug("User is authorised allready.");
-                clientStatus = STATUS.AUTHORISED;
                 await saveUserData(await getUser());
                 //Update current message index
-                DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0));
+                DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0, true));
+                clientStatus = STATUS.AUTHORISED;
             } else {
                 Logger.Debug("User is not authorised. Awaiting login data.");
                 clientStatus = STATUS.WAIT_PHONE;
@@ -180,7 +180,7 @@ namespace PagerBuddy.Services {
                 }
             }
 
-            loginCompleted(user);
+            await loginCompleted(user);
             return TStatus.OK;
         }
 
@@ -248,11 +248,11 @@ namespace PagerBuddy.Services {
                 return TStatus.UNKNOWN;
             }
 
-            loginCompleted(user);
+            await loginCompleted(user);
             return TStatus.OK;
         }
 
-        private async void loginCompleted(TLUser user) {
+        private async Task loginCompleted(TLUser user) {
             await saveUserData(user);
             clientStatus = STATUS.AUTHORISED;
 
@@ -339,24 +339,6 @@ namespace PagerBuddy.Services {
             return file;
         }
 
-        public async Task<TLFile> getProfilePic(int chatID) {
-            TLRequestGetChats request = new TLRequestGetChats() { //https://core.telegram.org/method/messages.getChats
-                Id = new TLVector<int>() { chatID }
-            };
-
-            TLVector<TLChat> foundChats;
-            try {
-                foundChats = await client.SendRequestAsync<TLVector<TLChat>>(request);
-            } catch (Exception exception) {
-                Logger.Error(exception, "Exception while retrieving chat from chatID.");
-                return new TLFile();
-            }
-
-            TLFileLocation loc = (foundChats.First().Photo as TLChatPhoto).PhotoSmall as TLFileLocation;
-            TLFile file = await getProfilePic(loc);
-            return file;
-        }
-
         public async Task<TLUser> getUser() {
 
             TLRequestGetUsers request = new TLRequestGetUsers() { //https://core.telegram.org/method/users.getUsers
@@ -375,8 +357,8 @@ namespace PagerBuddy.Services {
             return user;
         }
 
-        public async Task<int> getLastMessageID(int currentID) {
-            if (clientStatus != STATUS.AUTHORISED) {
+        public async Task<int> getLastMessageID(int currentID, bool init = false) {
+            if (clientStatus != STATUS.AUTHORISED && !init) {
                 Logger.Warn("Attempted to get last message ID with inappropriate client status. Current status: " + clientStatus.ToString());
                 return currentID;
             }

@@ -37,6 +37,7 @@ namespace PagerBuddy.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             CachedImageRenderer.Init(true); //Addded to enable FFImageLoading
+            CachedImageRenderer.InitImageViewHandler();
             var ignore = typeof(SvgCachedImage); //Added to enable SVG FFImageLoading
 
             FirebasePushNotificationManager.ProcessIntent(this, Intent); //Added to enable FirebasePushNotificationPlugin

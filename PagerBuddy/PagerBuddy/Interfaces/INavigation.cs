@@ -9,7 +9,6 @@ namespace PagerBuddy.Interfaces
         void navigateNotificationSettings();
         void navigateNotificationPolicyAccess();
         void navigateTelegramChat(int chatID);
-        void navigateShareFile(string fileName);
         void quitApplication();
         bool isTelegramInstalled();
     }

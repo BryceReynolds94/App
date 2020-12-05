@@ -35,20 +35,6 @@ namespace PagerBuddy.Droid
             Platform.CurrentActivity.StartActivity(intent);
         }
 
-        public void navigateShareFile(string fileName) {
-            //TODO: Possibly remove this
-            Android.Net.Uri contentUri = FileProvider.GetUriForFile(Application.Context, "de.bartunik.pagerbuddy.fileprovider", new Java.IO.File(fileName));
-            //FileProvider defined in Manifest
-
-            Intent intent = new Intent(Intent.ActionSend)
-                .SetData(contentUri)
-                .PutExtra(Intent.ExtraStream, contentUri)
-                .PutExtra(Intent.ExtraEmail, Resources.AppResources.App_DeveloperContact)
-                .AddFlags(ActivityFlags.GrantReadUriPermission)
-                .SetType("text/plain");
-            Platform.CurrentActivity.StartActivity(Intent.CreateChooser(intent, (string) null));
-        }
-
         public void navigateTelegramChat(int chatID)
         {
             if (!isTelegramInstalled()) {

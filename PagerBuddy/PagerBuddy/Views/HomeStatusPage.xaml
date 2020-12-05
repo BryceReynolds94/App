@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              mc:Ignorable="d"
              x:Class="PagerBuddy.Views.HomeStatusPage"
              Title="{Binding Title}"
@@ -12,7 +11,7 @@
     <ContentPage.ToolbarItems>
     </ContentPage.ToolbarItems>
 
-    <StackLayout>
+    <StackLayout >
         <Label x:Name="ErrorActionText" Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="{StaticResource ErrorColor}" TextColor="White" Padding="10">
             <Label.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding ErrorAction}" />
@@ -23,24 +22,14 @@
                 <TapGestureRecognizer Command="{Binding WarningAction}"/>
             </Label.GestureRecognizers>
         </Label>
-        
-        <StackLayout Orientation="Horizontal" HeightRequest="50" Margin="0,5,0,0">
-            <ffimageloadingsvg:SvgCachedImage Source="{Binding ToggleAllActiveIcon}" HorizontalOptions="FillAndExpand">
-                <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ToggleAllActive}"/>
-                </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                </ffimageloadingsvg:SvgCachedImage>
-            <ffimageloadingsvg:SvgCachedImage Source="{Binding ToggleAllSnoozeIcon}" IsEnabled="{Binding ToggleSnoozeEnabled}" HorizontalOptions="FillAndExpand">
-                <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ToggleAllSnooze}"/>
-                </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                </ffimageloadingsvg:SvgCachedImage>
-            <ffimageloadingsvg:SvgCachedImage  Source="resource://PagerBuddy.Resources.Images.icon_add.svg" IsEnabled="{Binding AddEnabled}" HorizontalOptions="FillAndExpand">
-                <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding AddConfig}"/>
-                </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-            </ffimageloadingsvg:SvgCachedImage>
 
+        <StackLayout Orientation="Horizontal" HeightRequest="50" Margin="0,5,0,0">
+            <ImageButton Source="{Binding ToggleAllActiveIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllActive}" />
+            <ImageButton Source="{Binding ToggleAllSnoozeIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllSnooze}" IsEnabled="{Binding ToggleAllSnoozeEnabled}"/>
+            <ImageButton Source="{Binding AddConfigIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding AddConfig}" IsEnabled="{Binding AddConfigEnabled}"/>
         </StackLayout>
 
 
@@ -53,51 +42,41 @@
                                 <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference SwitchIsActive}, Path=IsToggled}" Value="True">
                                     <Setter Property="BackgroundColor" Value="{StaticResource SecondaryColor}" />
                                 </DataTrigger>
-
                             </Frame.Triggers>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="30"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="30"/>
                                 </Grid.ColumnDefinitions>
                                 <Switch x:Name="SwitchIsActive" IsToggled="{Binding IsActive}" Grid.Column="3" Grid.ColumnSpan="2" />
-                                <Frame Padding="0" CornerRadius="15" IsClippedToBounds="True">
-                                    <Grid>
-                                        <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding ShowDefaultPic}" Source="resource://PagerBuddy.Resources.Images.group_default.svg" />
-                                        <Image Source="{Binding GroupPicPath, TargetNullValue={x:Null}}" IsVisible="{Binding HasPic}" />
-                                    </Grid>
+                                <Frame Padding="0" HeightRequest="30" CornerRadius="15" IsClippedToBounds="True">
+                                    <Image Source="{Binding GroupPic}" />
                                 </Frame>
                                 <Label Text="{Binding GroupName}" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="2"/>
 
-                                <ffimageloadingsvg:SvgCachedImage Grid.Row="1" Source="resource://PagerBuddy.Resources.Images.icon_trigger.svg" HeightRequest="30"/>
+                                <Image Source="{Binding TriggerPic}" Grid.Row="1" HeightRequest="30" />
                                 <Label Text="{Binding KeywordText}" Grid.Row="1" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="3"/>
 
-                                <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Source="{Binding StatusFieldPic}" HeightRequest="30"/>
+                                <Image Source="{Binding StatusFieldPic}" Grid.Row="2" HeightRequest="30" />
                                 <Label Text="{Binding StatusFieldText}" Grid.Row="2" Grid.Column="1" VerticalOptions="Center"/>
 
-                                <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Grid.Column="2" WidthRequest="30" IsEnabled="{Binding SnoozeEnabled}" Source="{Binding SnoozePic}">
-                                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding SnoozeAlert}" />
-                                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                                </ffimageloadingsvg:SvgCachedImage>
-                                <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Grid.Column="3" WidthRequest="30" Source="resource://PagerBuddy.Resources.Images.icon_settings.svg">
-                                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding EditAlert}" />
-                                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                                </ffimageloadingsvg:SvgCachedImage>
-                                <ffimageloadingsvg:SvgCachedImage Grid.Row="2" Grid.Column="4" WidthRequest="30" Source="resource://PagerBuddy.Resources.Images.icon_delete.svg">
-                                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding DeleteAlert}" />
-                                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
-                                </ffimageloadingsvg:SvgCachedImage>
+
+                                <ImageButton Grid.Row="2" Grid.Column="2" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
+                                             Source="{Binding SnoozePic}" Command="{Binding SnoozeAlert}" IsEnabled="{Binding SnoozeEnabled}" />
+
+                                <ImageButton Grid.Row="2" Grid.Column="3" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
+                                             Source="{Binding EditPic}" Command="{Binding EditAlert}" />
+                                
+                                <ImageButton Grid.Row="2" Grid.Column="4" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
+                                             Source="{Binding DeletePic}" Command="{Binding DeleteAlert}" />
                             </Grid>
                         </Frame>
                     </StackLayout>

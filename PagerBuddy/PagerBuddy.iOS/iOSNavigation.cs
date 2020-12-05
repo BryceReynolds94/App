@@ -25,11 +25,6 @@ namespace PagerBuddy.iOS {
             throw new NotImplementedException();
         }
 
-        public void navigateShareFile(string fileName) {
-            //TODO: IOS Implementation
-            throw new NotImplementedException();
-        }
-
         public void navigateTelegramChat(int chatID) {
             //TODO: IOS Implementation
             throw new NotImplementedException();

@@ -1,4 +1,5 @@
-﻿using PagerBuddy.Services;
+﻿using FFImageLoading.Svg.Forms;
+using PagerBuddy.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,13 +12,15 @@ namespace PagerBuddy.ViewModels
         public Command Cancel { get; set; }
         public Command Confirm { get; set; }
 
+        private bool hasPic;
+        private string picFile;
+
         public AlertPageViewModel(string alertTitle, string alertText, string alertID, bool hasPic)
         {
-            setAlertInfo(alertTitle, alertText);
+            this.hasPic = hasPic;
+            this.picFile = DataService.profilePicSavePath(alertID);
 
-            if (hasPic) {
-                setAlertGroupPic(alertID);
-            }
+            setAlertInfo(alertTitle, alertText);
 
             Cancel = new Command(() => RequestCancel.Invoke(this, null));
             Confirm = new Command(() => RequestConfirm.Invoke(this, null));
@@ -35,21 +38,20 @@ namespace PagerBuddy.ViewModels
             OnPropertyChanged(nameof(AlertTitle));
         }
 
-        private void setAlertGroupPic(string alertID)
-        {
-            GroupPic = DataService.profilePicSavePath(alertID);
-            ShowCustomPic = true;
-            OnPropertyChanged(nameof(ShowDefaultPic));
-            OnPropertyChanged(nameof(ShowCustomPic));
-            OnPropertyChanged(nameof(GroupPic));
+        public ImageSource GroupPic {
+            get {
+                if (hasPic) {
+                    return ImageSource.FromFile(picFile);
+                } else {
+                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.group_default.svg");
+                }
+            }
         }
-
-        public bool ShowDefaultPic => !ShowCustomPic;
-        public bool ShowCustomPic { get; private set; } = false;
-        public string GroupPic { get; private set; } = null;
         public string AlertText { get; private set; }
         public string AlertTitle { get; private set; }
 
+        public ImageSource ClearPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_clear.svg");
+        public ImageSource ConfirmPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_confirm.svg");
 
     }
 }

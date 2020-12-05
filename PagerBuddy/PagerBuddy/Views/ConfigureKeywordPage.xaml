@@ -10,12 +10,12 @@
     <ContentPage.Content>
         <ScrollView>
         <StackLayout Padding="10">
-            <Label x:Name="TitleLabel" Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Title}" VerticalOptions="Center" FontSize="Large" Padding="5,0" />
+            <Label x:Name="TitleLabel" Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Title}" VerticalOptions="Center" FontSize="Medium" Padding="5,0" />
 
             <StackLayout RadioButtonGroup.GroupName="Trigger" >
-                <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Any}" IsChecked="{Binding TriggerTypeAny}" TextColor="Gray"/>
-                <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Server}" IsChecked="{Binding TriggerTypeServer}" TextColor="Gray"/>
-                <RadioButton x:Name="BtnKeyword" Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Keyword}" IsChecked="{Binding TriggerTypeKeyword}" TextColor="Gray"/>
+                <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Any}" IsChecked="{Binding TriggerTypeAny}" TextColor="Gray" FontSize="Body"/>
+                <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Server}" IsChecked="{Binding TriggerTypeServer}" TextColor="Gray" FontSize="Body"/>
+                <RadioButton x:Name="BtnKeyword" Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Keyword}" IsChecked="{Binding TriggerTypeKeyword}" TextColor="Gray" FontSize="Body"/>
             </StackLayout>
 
             <Grid x:Name="GridKeyword" IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}" VerticalOptions="Start" Padding="30,0,20,0">
@@ -33,9 +33,9 @@
                 
             </Grid>
 
-            <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Title}" VerticalOptions="Center" FontSize="Large" Padding="5,0"/>
-            <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Any}" IsChecked="{Binding TimeTypeAny}" GroupName="Time" TextColor="Gray"/>
-            <RadioButton x:Name="BtnTimeSet" Content="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Set}" IsChecked="{Binding TimeTypeSet}" GroupName="Time" TextColor="Gray"/>
+            <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Title}" VerticalOptions="Center" FontSize="Medium" Padding="5,0"/>
+            <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Any}" IsChecked="{Binding TimeTypeAny}" GroupName="Time" TextColor="Gray" FontSize="Body"/>
+            <RadioButton x:Name="BtnTimeSet" Content="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Set}" IsChecked="{Binding TimeTypeSet}" GroupName="Time" TextColor="Gray" FontSize="Body"/>
 
             <StackLayout Padding="30,0,20,0" Orientation="Horizontal" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}">
                 <Switch IsToggled="{Binding FlipTime}" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}"/>
@@ -116,9 +116,9 @@
             </Grid>
             <StackLayout Padding="30,0,20,0" Orientation="Horizontal" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" HorizontalOptions="Center">
                 <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_From}" VerticalOptions="Center" />
-                <TimePicker HorizontalOptions="Start" Time="{Binding FromTime}" Format="t" TextColor="Gray"/>
+                <TimePicker HorizontalOptions="Start" Time="{Binding FromTime}" Format="t" TextColor="Gray" FontSize="Body"/>
                 <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_To}" VerticalOptions="Center" />
-                <TimePicker  HorizontalOptions="Start" Time="{Binding ToTime}" Format="t" TextColor="Gray"/>
+                <TimePicker  HorizontalOptions="Start" Time="{Binding ToTime}" Format="t" TextColor="Gray" FontSize="Body"/>
             </StackLayout>
 
 

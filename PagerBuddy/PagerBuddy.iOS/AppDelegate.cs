@@ -28,6 +28,7 @@ namespace PagerBuddy.iOS
             global::Xamarin.Forms.Forms.Init();
 
             CachedImageRenderer.Init(); //Added to enable FFImageLoading
+            CachedImageRenderer.InitImageSourceHandler();
             var ignore = typeof(SvgCachedImage); //Added to enable SVG FFImageLoading
 
             LoadApplication(new App());

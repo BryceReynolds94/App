@@ -33,6 +33,7 @@ namespace PagerBuddy.Droid
                 if (!Xamarin.Forms.Forms.IsInitialized) //If Forms is initalised we do not have to handle notification here
                 {
                     Xamarin.Forms.Forms.Init(Application.Context, null); //We need to make sure Xamarin.Forms is initialised when notifications are received in killed state
+                    //TODO: PHY Testing - do we have to init FFImageLoading here?
                     MessagingService.BackgroundFirebaseMessage(this, p);
                 }
 

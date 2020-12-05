@@ -3,19 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:resources="clr-namespace:PagerBuddy.Resources"
              mc:Ignorable="d"
              x:Class="PagerBuddy.Views.MenuPage"
              Title="Menu">
 
-    <StackLayout VerticalOptions="FillAndExpand">
+    <StackLayout Spacing="0">
         <StackLayout Orientation="Horizontal" Padding="10,20" BackgroundColor="{StaticResource PrimaryColor}">
             <Frame Padding="0" WidthRequest="60" HeightRequest="60" CornerRadius="30" IsClippedToBounds="True" VerticalOptions="Center" >
-                <Grid>
-                    <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.user_default.svg" IsVisible="{Binding ShowDefaultPic}"/>
-                    <Image Source="{Binding UserPic, TargetNullValue={x:Null}}" IsVisible="{Binding UserHasPic}" />
-                </Grid>
+                <Image Source="{Binding UserPic}" />
             </Frame>
             <StackLayout Margin="10,0" VerticalOptions="Center">
                 <Label Text="{Binding UserName}" FontSize="Large" TextColor="{StaticResource PrimaryTextColor}"/>
@@ -25,43 +21,41 @@
                 <TapGestureRecognizer Command="{Binding Profile}" />
             </StackLayout.GestureRecognizers>
         </StackLayout>
-        <StackLayout Orientation="Horizontal" MinimumHeightRequest="40" Padding="10,0">
-            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_alert.svg" HeightRequest="30"/>
-            <Label Text="{x:Static resources:AppResources.MenuPage_Action_NotificationSettings}" FontSize="Large" VerticalOptions="Center"/>
-            <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NotificationSettings}"/>
-            </StackLayout.GestureRecognizers>
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" MinimumHeightRequest="40" Padding="10,0">
-            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_share.svg" HeightRequest="30"/>
-            <Label Text="{x:Static resources:AppResources.MenuPage_Action_Share}" FontSize="Large" VerticalOptions="Center"/>
-            <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding Share}"/>
-            </StackLayout.GestureRecognizers>
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" MinimumHeightRequest="40" Padding="10,0">
-            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_coffee.svg" HeightRequest="30"/>
-            <Label Text="{x:Static resources:AppResources.MenuPage_Action_Donate}" FontSize="Large" VerticalOptions="Center"/>
-            <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding Donate}"/>
-            </StackLayout.GestureRecognizers>
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" HeightRequest="40" Padding="10,0" VerticalOptions="StartAndExpand">
-            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_about.svg"/>
-            <Label Text="{x:Static resources:AppResources.MenuPage_Action_About}" FontSize="Large" VerticalOptions="Center"/>
-            <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding About}"/>
-            </StackLayout.GestureRecognizers>
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" MinimumHeightRequest="40" Padding="10,20" VerticalOptions="End">
-            <ffimageloadingsvg:SvgCachedImage Margin="5" Source="resource://PagerBuddy.Resources.Images.icon_logout.svg" HeightRequest="30"/>
-            <Label Text="{x:Static resources:AppResources.MenuPage_Action_Logout}" FontSize="Large" VerticalOptions="Center"/>
-            <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding Logout}"/>
-            </StackLayout.GestureRecognizers>
-        </StackLayout>
-
-
+        <Grid>
+            <ImageButton BackgroundColor="{StaticResource BackgroundColor}" CornerRadius="0" Command="{Binding NotificationSettings}" />
+            <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5">
+                <Image Margin="5" Source="{Binding NotificationConfigPic}" HeightRequest="30" WidthRequest="30"/>
+                <Label Text="{x:Static resources:AppResources.MenuPage_Action_NotificationSettings}" FontSize="Medium" VerticalOptions="Center"/>
+            </StackLayout>
+        </Grid>
+        <Grid>
+            <ImageButton BackgroundColor="{StaticResource BackgroundColor}" CornerRadius="0" Command="{Binding Share}" HeightRequest="40"/>
+            <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5">
+                <Image Margin="5" Source="{Binding SharePic}" HeightRequest="30" WidthRequest="30"/>
+                <Label Text="{x:Static resources:AppResources.MenuPage_Action_Share}" FontSize="Medium" VerticalOptions="Center"/>
+            </StackLayout>
+        </Grid>
+        <Grid>
+            <ImageButton BackgroundColor="{StaticResource BackgroundColor}" CornerRadius="0" Command="{Binding Donate}" />
+            <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5">
+                <Image Margin="5" Source="{Binding DonatePic}" HeightRequest="30" WidthRequest="30"/>
+                <Label Text="{x:Static resources:AppResources.MenuPage_Action_Donate}" FontSize="Medium" VerticalOptions="Center"/>
+            </StackLayout>
+        </Grid>
+        <Grid VerticalOptions="StartAndExpand">
+            <ImageButton BackgroundColor="{StaticResource BackgroundColor}" CornerRadius="0" Command="{Binding About}" />
+            <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5">
+                <Image Margin="5" Source="{Binding AboutPic}" HeightRequest="30" WidthRequest="30"/>
+                <Label Text="{x:Static resources:AppResources.MenuPage_Action_About}" FontSize="Medium" VerticalOptions="Center"/>
+            </StackLayout>
+        </Grid>
+        <Grid VerticalOptions="End" Padding="0,10">
+            <ImageButton BackgroundColor="{StaticResource BackgroundColor}" CornerRadius="0" Command="{Binding Logout}" />
+            <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5">
+                <Image Margin="5" Source="{Binding LogoutPic}" HeightRequest="30" WidthRequest="30"/>
+                <Label Text="{x:Static resources:AppResources.MenuPage_Action_Logout}" FontSize="Medium" VerticalOptions="Center"/>
+            </StackLayout>
+        </Grid>
     </StackLayout>
 
 </ContentPage>
