@@ -95,7 +95,7 @@ namespace PagerBuddy.ViewModels {
 
         public bool IsDeveloperMode {
             get {
-                return DataService.getConfigValue<bool>(DataService.DATA_KEYS.DEVELOPER_MODE, false);
+                return DataService.getConfigValue(DataService.DATA_KEYS.DEVELOPER_MODE, false);
             }
         }
 

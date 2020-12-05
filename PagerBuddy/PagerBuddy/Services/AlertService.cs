@@ -33,8 +33,8 @@ namespace PagerBuddy.Services {
         }
 
         private bool checkLockTime(DateTime currentTime) {
-            DateTime lockTime = new DateTime(DataService.getConfigValue<long>(DataService.DATA_KEYS.REFRESH_LOCK_TIME, DateTime.MinValue.Ticks));
-            DateTime lastRefreshTime = new DateTime(DataService.getConfigValue<long>(DataService.DATA_KEYS.LAST_REFRESH_TIME, DateTime.MinValue.Ticks));
+            DateTime lockTime = DataService.getConfigValue(DataService.DATA_KEYS.REFRESH_LOCK_TIME, DateTime.MinValue);
+            DateTime lastRefreshTime = DataService.getConfigValue(DataService.DATA_KEYS.LAST_REFRESH_TIME, DateTime.MinValue);
 
             int lockDuration = 2000; //milliseconds
 
@@ -43,8 +43,8 @@ namespace PagerBuddy.Services {
             } else if (lastRefreshTime.AddMilliseconds(lockDuration) > currentTime) {
                 //short succession updates
                 //set 2s lock time and snooze 2s
-                DataService.setConfigValue(DataService.DATA_KEYS.REFRESH_LOCK_TIME, currentTime.AddMilliseconds(lockDuration).Ticks);
-                DataService.setConfigValue(DataService.DATA_KEYS.LAST_REFRESH_TIME, currentTime.AddMilliseconds(lockDuration).Ticks);
+                DataService.setConfigValue(DataService.DATA_KEYS.REFRESH_LOCK_TIME, currentTime.AddMilliseconds(lockDuration));
+                DataService.setConfigValue(DataService.DATA_KEYS.LAST_REFRESH_TIME, currentTime.AddMilliseconds(lockDuration));
 
                 Logger.Debug("Quick succession updates. Setting lock time for 2s.");
 
@@ -53,7 +53,7 @@ namespace PagerBuddy.Services {
                 return false;
             }
             //continue as planned
-            DataService.setConfigValue(DataService.DATA_KEYS.LAST_REFRESH_TIME, currentTime.Ticks);
+            DataService.setConfigValue(DataService.DATA_KEYS.LAST_REFRESH_TIME, currentTime);
             return false;
         }
 

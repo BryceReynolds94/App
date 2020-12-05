@@ -70,7 +70,7 @@ namespace PagerBuddy.Views
             updateClientErrorStatus(this, null);
 
             bool allOff = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_DEACTIVATE_ALL, false);
-            bool allSnoozed = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue.Ticks) > DateTime.Now.Ticks;
+            bool allSnoozed = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue) > DateTime.Now;
             viewModel.setWarningState(allOff, allSnoozed);
 
             alertList = getAlertConfigs();
@@ -139,7 +139,7 @@ namespace PagerBuddy.Views
 
         private void saveSnoozeState(object sender, DateTime state)
         {
-            DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, state.Ticks);
+            DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, state);
         }
 
         private async void alertConfigSaved(AlertConfig alertConfig)

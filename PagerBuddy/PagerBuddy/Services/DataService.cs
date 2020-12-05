@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace PagerBuddy.Services
 {
@@ -37,9 +38,11 @@ namespace PagerBuddy.Services
 
         public static AlertConfig getAlertConfig(string id)
         {
-            string confString = read(id, (string) null);
-            if(confString == null) {
-                confString = serialiseObject(new AlertConfig());
+            string confString = serialiseObject(new AlertConfig());
+            if (!Preferences.ContainsKey(id)) {
+                Logger.Debug("Could not find AlertConfig with ID " + id);
+            } else {
+                confString = Preferences.Get(id, confString);
             }
             return deserialiseObject<AlertConfig>(confString);
         }
@@ -50,7 +53,7 @@ namespace PagerBuddy.Services
             if (!configList.Contains(alertConfig.id))
             {
                 configList.Add(alertConfig.id);
-                save(DATA_KEYS.ALERT_CONFIG_LIST.ToString(), serialiseObject(configList));
+                setConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, serialiseObject(configList));
             }
             updateAlertConfig(alertConfig);
         }
@@ -61,15 +64,16 @@ namespace PagerBuddy.Services
             configList.Remove(alertConfig.id);
             removeProfilePic(alertConfig.id);
 
-            save(alertConfig.id, (string) null);
-            save(DATA_KEYS.ALERT_CONFIG_LIST.ToString(), serialiseObject(configList));
-            persist();
+            if (Preferences.ContainsKey(alertConfig.id)) {
+                Preferences.Remove(alertConfig.id);
+            }
+
+            setConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, serialiseObject(configList));
         }
 
         public static void updateAlertConfig(AlertConfig alertConfig)
         {
-            save(alertConfig.id, serialiseObject(alertConfig));
-            persist();
+            Preferences.Set(alertConfig.id, serialiseObject(alertConfig));
         }
 
         public static void saveProfilePic(string name, MemoryStream image)
@@ -91,47 +95,56 @@ namespace PagerBuddy.Services
 
         public static Collection<string> getConfigList()
         {
-            string list = read(DATA_KEYS.ALERT_CONFIG_LIST.ToString(), (string) null);
+            string list = getConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, (string) null);
 
             if(list == null) {
                 list = serialiseObject(new Collection<string>());
-                save(DATA_KEYS.ALERT_CONFIG_LIST.ToString(), list);
+                setConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, list);
             }
             return deserialiseObject<Collection<string>>(list);
         }
 
-        public static T getConfigValue<T>(DATA_KEYS key, T defaultValue)
+        public static string getConfigValue(DATA_KEYS key, string defaultValue)
         {
-            return read(key.ToString(), defaultValue);
-        }
-
-        public static void setConfigValue(DATA_KEYS key, object value)
-        {
-            if(value == null || !(value.GetType().IsPrimitive || value is string))
-            {
-                Logger.Error("Trying to save an invalid data type to DATA_KEY " + key.ToString());
-                return;
-            }
-            save(key.ToString(), value);
-        }
-
-        private static void save<T>(string key, T value) {
-            Application.Current.Properties[key] = value;
-        }
-
-        private static T read<T>(string key, T defaultValue) {
-            T value;
-            try {
-                value = (T) Application.Current.Properties[key];
-            } catch (Exception e) {
-                Logger.Debug(e, "Could not find DATA_KEY " + key);
+            if (!Preferences.ContainsKey(key.ToString())) {
+                Logger.Debug("Could not find DATA_KEY " + key);
                 return defaultValue;
             }
-            return value;
+            return Preferences.Get(key.ToString(), defaultValue);
+        }
+        public static bool getConfigValue(DATA_KEYS key, bool defaultValue) {
+            if (!Preferences.ContainsKey(key.ToString())) {
+                Logger.Debug("Could not find DATA_KEY " + key);
+                return defaultValue;
+            }
+            return Preferences.Get(key.ToString(), defaultValue);
+        }
+        public static int getConfigValue(DATA_KEYS key, int defaultValue) {
+            if (!Preferences.ContainsKey(key.ToString())) {
+                Logger.Debug("Could not find DATA_KEY " + key);
+                return defaultValue;
+            }
+            return Preferences.Get(key.ToString(), defaultValue);
+        }
+        public static DateTime getConfigValue(DATA_KEYS key, DateTime defaultValue) {
+            if (!Preferences.ContainsKey(key.ToString())) {
+                Logger.Debug("Could not find DATA_KEY " + key);
+                return defaultValue;
+            }
+            return Preferences.Get(key.ToString(), defaultValue);
         }
 
-        private static void persist() {
-            Application.Current.SavePropertiesAsync();
+        public static void setConfigValue(DATA_KEYS key, bool value){
+            Preferences.Set(key.ToString(), value);
+        }
+        public static void setConfigValue(DATA_KEYS key, string value) {
+            Preferences.Set(key.ToString(), value);
+        }
+        public static void setConfigValue(DATA_KEYS key, int value) {
+            Preferences.Set(key.ToString(), value);
+        }
+        public static void setConfigValue(DATA_KEYS key, DateTime value) {
+            Preferences.Set(key.ToString(), value);
         }
 
         public static string serialiseObject(object obj)
