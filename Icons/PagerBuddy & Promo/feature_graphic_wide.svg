@@ -87,14 +87,14 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35355339"
-     inkscape:cx="899.07283"
+     inkscape:cx="1406.1376"
      inkscape:cy="231.55007"
      inkscape:document-units="px"
-     inkscape:current-layer="layer5"
+     inkscape:current-layer="layer3"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
-     inkscape:window-x="-8"
+     inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      units="px"
@@ -148,7 +148,7 @@
      transform="translate(0,-9)">
     <g
        id="g847"
-       transform="matrix(5.0925304,0,0,5.0658537,-173.6485,-1155.69)"
+       transform="matrix(5.0925304,0,0,5.0658537,-119.90838,-1155.69)"
        style="stroke-width:0.1968824">
       <path
          inkscape:connector-curvature="0"
@@ -196,17 +196,17 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none"
-       x="1657.6146"
-       y="282.66733"
+       x="1524.6786"
+       y="279.8389"
        id="text851"><tspan
          sodipodi:role="line"
          id="tspan849"
-         x="1657.6146"
-         y="282.66733"
+         x="1524.6786"
+         y="279.8389"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:80px;font-family:'Leelawadee UI';-inkscape-font-specification:'Leelawadee UI Bold';fill:#ffffff;fill-opacity:1">PagerBuddy</tspan><tspan
          sodipodi:role="line"
-         x="1657.6146"
-         y="346.63715"
+         x="1524.6786"
+         y="343.80872"
          id="tspan853"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:40px;font-family:'Leelawadee UI';-inkscape-font-specification:'Leelawadee UI Bold';fill:#ffffff;fill-opacity:1">by Max Bartunik</tspan></text>
   </g>

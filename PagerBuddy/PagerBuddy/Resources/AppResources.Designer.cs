@@ -313,7 +313,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check out PagerBuddy and never miss an urgent message again. The app is available for Android and iOS..
+        ///   Looks up a localized string similar to Check out PagerBuddy and never miss an urgent message again. The app is currently available for Android and will be coming soon for iOS..
         /// </summary>
         public static string App_Share_Message {
             get {

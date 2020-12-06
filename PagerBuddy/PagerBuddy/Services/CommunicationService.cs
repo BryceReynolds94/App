@@ -18,7 +18,7 @@ using TeleSharp.TL.Updates;
 using TeleSharp.TL.Upload;
 using TeleSharp.TL.Users;
 using TLSharp.Core;
-using Xamarin.Forms;
+using Xamarin.Forms; 
 using static PagerBuddy.Services.ClientExceptions;
 
 namespace PagerBuddy.Services {
@@ -43,12 +43,12 @@ namespace PagerBuddy.Services {
         private string clientRequestCodeHash = null;
         private string clientPhoneNumber = null;
 
-        public enum STATUS { NEW, OFFLINE, WAIT_PHONE, WAIT_CODE, WAIT_PASSWORD, AUTHORISED };
+        public enum STATUS {OFFLINE, NEW, WAIT_PHONE, WAIT_CODE, WAIT_PASSWORD, AUTHORISED };
 
         public enum MESSAGING_KEYS { USER_DATA_CHANGED };
 
-        public CommunicationService() {
-            _ = connectClient();
+        public CommunicationService(bool isBackgroundCall = false) {
+            _ = connectClient(isBackgroundCall);
         }
 
         public async Task reloadConnection() {
@@ -64,7 +64,7 @@ namespace PagerBuddy.Services {
 
         public event EventHandler StatusChanged;
 
-        private async Task connectClient() {
+        private async Task connectClient(bool isBackgroundCall = false) {
             clientStatus = STATUS.OFFLINE;
             try {
                 client = new TelegramClient(KeyService.checkID(this), KeyService.checkHash(this), new MySessionStore(this));
@@ -77,6 +77,10 @@ namespace PagerBuddy.Services {
                 await client.ConnectAsync();
             } catch (Exception e) {
                 Logger.Error(e, "Exception during connection attempt");
+                if (isBackgroundCall) {
+                    Logger.Warn("Stoppig client initialisation after fatal error while called in background.");
+                    return;
+                }
                 Logger.Error("Fatal Problem with client. Clearing session store and starting again.");
 
                 new MySessionStore(this).Clear();
@@ -85,12 +89,14 @@ namespace PagerBuddy.Services {
             }
             clientStatus = STATUS.NEW;
 
-
             if (client.IsUserAuthorized()) {
-                Logger.Debug("User is authorised allready.");
-                await saveUserData(await getUser());
-                //Update current message index
-                DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0, true));
+                Logger.Debug("User is authorised already.");
+                this.user = await getUserUpdate(this.user);
+                if (!isBackgroundCall) { //only do this stuff if we are not retrieving alert messages
+                    await saveUserData(user);
+                    //Update current message index
+                    DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0, true));
+                }
                 clientStatus = STATUS.AUTHORISED;
             } else {
                 Logger.Debug("User is not authorised. Awaiting login data.");
@@ -234,6 +240,7 @@ namespace PagerBuddy.Services {
                 return TStatus.WRONG_CLIENT_STATUS;
             }
 
+            TLUser user;
             try {
                 user = await client.MakeAuthAsync(clientPhoneNumber, clientRequestCodeHash, code);
             } catch (CloudPasswordNeededException e) {
@@ -253,6 +260,7 @@ namespace PagerBuddy.Services {
         }
 
         private async Task loginCompleted(TLUser user) {
+            this.user = user;
             await saveUserData(user);
             clientStatus = STATUS.AUTHORISED;
 
@@ -339,22 +347,22 @@ namespace PagerBuddy.Services {
             return file;
         }
 
-        public async Task<TLUser> getUser() {
+        public async Task<TLUser> getUserUpdate(TLUser user) {
 
             TLRequestGetUsers request = new TLRequestGetUsers() { //https://core.telegram.org/method/users.getUsers
                 Id = new TLVector<TLAbsInputUser> { new TLInputUser() { UserId = user.Id, AccessHash = (long)user.AccessHash } }
             };
 
-            TLVector<TLAbsUser> outUser;
+            TLUser outUser;
             try {
-                outUser = await client.SendRequestAsync<TLVector<TLAbsUser>>(request);
-                user = outUser.First() as TLUser;
+                TLVector<TLAbsUser> result = await client.SendRequestAsync<TLVector<TLAbsUser>>(request);
+                outUser = result.First() as TLUser;
             } catch (Exception e) {
                 Logger.Error(e, "Exception while fetching user data.");
                 return new TLUser();
             }
 
-            return user;
+            return outUser;
         }
 
         public async Task<int> getLastMessageID(int currentID, bool init = false) {

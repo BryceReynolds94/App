@@ -15,6 +15,7 @@
     <None Remove="Resources\Images\icon_about.svg" />
     <None Remove="Resources\Images\icon_add.svg" />
     <None Remove="Resources\Images\icon_add_inactive.svg" />
+    <None Remove="Resources\Images\icon_add_light.svg" />
     <None Remove="Resources\Images\icon_alert.svg" />
     <None Remove="Resources\Images\icon_alert_off.svg" />
     <None Remove="Resources\Images\icon_alert_snooze.svg" />
@@ -40,6 +41,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Images\group_default.svg" />
     <EmbeddedResource Include="Resources\Images\icon_about.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_add_light.svg" />
     <EmbeddedResource Include="Resources\Images\icon_add_inactive.svg" />
     <EmbeddedResource Include="Resources\Images\icon_add.svg" />
     <EmbeddedResource Include="Resources\Images\icon_alert.svg" />

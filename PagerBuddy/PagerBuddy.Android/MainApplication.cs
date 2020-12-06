@@ -19,6 +19,7 @@ namespace PagerBuddy.Droid
     [Application]
     public class MainApplication : Application
     {
+        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public MainApplication(IntPtr handle, JniHandleOwnership transer) : base(handle, transer)
         {
         }
@@ -32,9 +33,10 @@ namespace PagerBuddy.Droid
             {
                 if (!Xamarin.Forms.Forms.IsInitialized) //If Forms is initalised we do not have to handle notification here
                 {
+                    Logger.Debug("Notification received in background. Initialising Platform.");
+                    Xamarin.Essentials.Platform.Init(this); //We need to init Essentials from killed state to use preference storage
                     Xamarin.Forms.Forms.Init(Application.Context, null); //We need to make sure Xamarin.Forms is initialised when notifications are received in killed state
                     
-                    //TODO: PHY Testing - do we have to init FFImageLoading here?
                     MessagingService.BackgroundFirebaseMessage(this, p);
                 }
 

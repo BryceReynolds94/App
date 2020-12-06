@@ -32,7 +32,7 @@ namespace PagerBuddy.Droid {
         public static readonly string ALERT_CHANNEL_ID = "de.bartunik.pagerbuddy.alert";
         public static readonly string STANDARD_CHANNEL_ID = "de.bartunik.pagerbuddy.standard";
 
-
+        
         public void showAlertNotification(Alert alert) {
             prepareAlert();
 

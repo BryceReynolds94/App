@@ -201,7 +201,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="App_Share_Message" xml:space="preserve">
-    <value>Check out PagerBuddy and never miss an urgent message again. The app is available for Android and iOS.</value>
+    <value>Check out PagerBuddy and never miss an urgent message again. The app is currently available for Android and will be coming soon for iOS.</value>
   </data>
   <data name="ConfigureGroupPage_Title" xml:space="preserve">
     <value>Select Chat</value>

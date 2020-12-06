@@ -24,7 +24,7 @@ namespace PagerBuddy.Services {
                 return;
             }
 
-            CommunicationService client = new CommunicationService();
+            CommunicationService client = new CommunicationService(true); //only perform small client init and do not retry on fatal errors
             client.StatusChanged += (sender, args) => {
                 if (client.clientStatus == CommunicationService.STATUS.AUTHORISED) {
                     checkNewMessages(client);
@@ -67,6 +67,10 @@ namespace PagerBuddy.Services {
                 configList.Add(DataService.getAlertConfig(id));
             }
 
+            if(configList.Count < 1) {
+                Logger.Debug("Configuration list is empty. Will not check messages, but update message ID pointer.");
+            }
+
             int currentMessageID = DataService.getConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, 0);
 
             foreach (AlertConfig config in configList) {
@@ -89,6 +93,7 @@ namespace PagerBuddy.Services {
 
 
                 if (messageList.Count < 1) {
+                    Logger.Debug("No new messages for AlertConfig " + config.triggerGroup.name);
                     break;
                 }
 
@@ -98,10 +103,10 @@ namespace PagerBuddy.Services {
                     }
                     TLMessage msg = rawMessage as TLMessage;
 
-                    DateTime timestamp = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(msg.Date);  //Unix base time
+                    DateTime timestamp = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(msg.Date).ToLocalTime();  //Unix base time -- we need locacl time for alert time comparison
 
                     if (config.isAlert(msg.Message, timestamp)) {
-                        DateTime referenceTime = DateTime.UtcNow.Subtract(new TimeSpan(0, 10, 0)); //grace period of 10min
+                        DateTime referenceTime = DateTime.Now.Subtract(new TimeSpan(0, 10, 0)); //grace period of 10min
                         if (timestamp < referenceTime) //timestamp is older than referenceTime
                         {
                             //discard missed messages older than 10min
@@ -121,12 +126,10 @@ namespace PagerBuddy.Services {
         }
 
         private void alertMessage(AlertConfig config, TLMessage message) {
+            Logger.Info("Alert was detected. Posting it to notifications.");
 
-            //We need to init Xamarin.Forms before here
             INotifications notifications = DependencyService.Get<INotifications>();
             notifications.showAlertNotification(new Alert(message.Message, config));
-
-            Logger.Info("Alert was detected. Posting it to notifications.");
         }
 
     }

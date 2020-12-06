@@ -27,7 +27,6 @@ namespace PagerBuddy.Droid
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         protected override void OnCreate(Bundle savedInstanceState)
         {
-
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -55,11 +54,12 @@ namespace PagerBuddy.Droid
                 ((KeyguardManager)GetSystemService(Context.KeyguardService)).RequestDismissKeyguard(this, null);
             }
         }
-
+         
         private Alert GetAlertFromIntent(Intent intent)
         {
             if (intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString())){
-                return DataService.deserialiseObject<Alert>(intent.GetStringExtra(Alert.EXTRAS.ALERT_FLAG.ToString()));
+                Alert alert =  DataService.deserialiseObject<Alert>(intent.GetStringExtra(Alert.EXTRAS.ALERT_FLAG.ToString()));
+                return alert;
             }
             return null;
         }

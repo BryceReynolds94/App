@@ -11,6 +11,7 @@ namespace PagerBuddy.Models
 {
     public class AlertConfig 
     {
+        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public enum TRIGGER_TYPE { ANY, SERVER, KEYWORD};
 
         public bool isActive = true;
@@ -26,6 +27,7 @@ namespace PagerBuddy.Models
         public bool timeRestriction = false;
 
         public DateTime lastTriggered = DateTime.MinValue;
+        public DateTime lockTime = DateTime.MinValue;
 
         public void saveChanges()
         {
@@ -47,8 +49,8 @@ namespace PagerBuddy.Models
             this.snoozeTime = snoozeTime;
             saveChanges();
         }
-
-        public Boolean isAlert(string message, DateTime time)
+        
+        public bool isAlert(string message, DateTime time)
         {
             if (!isActive || snoozeActive) 
             {
@@ -59,25 +61,29 @@ namespace PagerBuddy.Models
                 return false;
             }
 
+            bool result = false;
             switch (triggerType)
             {
                 case TRIGGER_TYPE.ANY:
-                    return true;
+                    result = true;
+                    break;
                 case TRIGGER_TYPE.KEYWORD:
-                    if (triggerKeyword == null)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return Regex.IsMatch(message, triggerKeyword);
-                    }
+                    result = (!(triggerKeyword == null)) && Regex.IsMatch(message, triggerKeyword);
+                    break;
                 case TRIGGER_TYPE.SERVER:
                     //TODO Later: Invent PagerBuddy-Server syntax
                     break;
             }
-            return false;
-            
+
+            if (result) {
+                if(lockTime > time) {
+                    result = false;
+                    Logger.Info("Suppressed alert as insufficient time has passed since the last qualified alert message.");
+                }
+                lockTime = time.AddMinutes(5); //Require no message that would qualify as alert for 5 minutes before next alert
+            }
+
+            return result;   
         }
         
 

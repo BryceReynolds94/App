@@ -25,14 +25,14 @@ namespace PagerBuddy.Droid
         {
             Intent intent = new Intent(Settings.ActionAppNotificationSettings);
             intent.PutExtra(Settings.ExtraAppPackage, Application.Context.PackageName); 
-            Platform.CurrentActivity.StartActivity(intent);
+            Application.Context.StartActivity(intent);
         }
 
         public void navigateNotificationPolicyAccess()
         {
             Intent intent = new Intent(Settings.ActionNotificationPolicyAccessSettings);
             intent.PutExtra(Settings.ExtraAppPackage, Application.Context.PackageName);
-            Platform.CurrentActivity.StartActivity(intent);
+            Application.Context.StartActivity(intent);
         }
 
         public void navigateTelegramChat(int chatID)
@@ -41,7 +41,7 @@ namespace PagerBuddy.Droid
                 quitApplication();
                 return;
             }
-            Platform.CurrentActivity.StartActivity(getTelegramIntent(chatID));
+            Application.Context.StartActivity(getTelegramIntent(chatID));
         }
 
         //Telegram intent handling:
@@ -55,7 +55,7 @@ namespace PagerBuddy.Droid
 
         public bool isTelegramInstalled() {
             try {
-                Platform.CurrentActivity.PackageManager.GetPackageInfo("org.telegram.messenger", PackageInfoFlags.Activities);
+                Application.Context.PackageManager.GetPackageInfo("org.telegram.messenger", PackageInfoFlags.Activities); 
             } catch (PackageManager.NameNotFoundException e) {
                 Logger.Warn(e, "Telegram package is not installed.");
                 return false;
@@ -68,7 +68,7 @@ namespace PagerBuddy.Droid
             Intent intent = new Intent(Intent.ActionMain)
                 .AddCategory(Intent.CategoryHome)
                 .AddFlags(ActivityFlags.NewTask);
-            Platform.CurrentActivity.StartActivity(intent);
+            Application.Context.StartActivity(intent);
         }
 
     }

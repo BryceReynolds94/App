@@ -208,5 +208,8 @@ namespace PagerBuddy.ViewModels {
                 }
             }
         }
+
+        public ImageSource AddConfigTabIcon => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_add_light.svg");
+
     }
 }

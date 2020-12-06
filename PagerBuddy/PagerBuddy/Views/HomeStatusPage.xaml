@@ -35,7 +35,7 @@
 
         <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
             <CollectionView.ItemTemplate>
-            <DataTemplate>
+                <DataTemplate>
                     <StackLayout Padding="10,10,10,0">
                         <Frame x:Name="Backdrop" BackgroundColor="{StaticResource SecondaryColorGrey}"  CornerRadius="10" Padding="10">
                             <Frame.Triggers>
@@ -74,14 +74,20 @@
 
                                 <ImageButton Grid.Row="2" Grid.Column="3" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
                                              Source="{Binding EditPic}" Command="{Binding EditAlert}" />
-                                
+
                                 <ImageButton Grid.Row="2" Grid.Column="4" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
                                              Source="{Binding DeletePic}" Command="{Binding DeleteAlert}" />
                             </Grid>
                         </Frame>
                     </StackLayout>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.Footer>
+                <StackLayout Padding="10,10,10,0" IsVisible="{Binding AddConfigEnabled}">
+                    <ImageButton BackgroundColor="{StaticResource BackgroundColor}" BorderColor="LightGray" BorderWidth="2" Source="{Binding AddConfigTabIcon}"  
+                         CornerRadius="10" Padding="10,30"  HeightRequest="110" VerticalOptions="Start"/>
+                </StackLayout>
+            </CollectionView.Footer>
+        </CollectionView>
     </StackLayout>
 </ContentPage>

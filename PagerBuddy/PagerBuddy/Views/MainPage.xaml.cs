@@ -19,13 +19,13 @@ namespace PagerBuddy.Views {
         public CommunicationService client;
 
         public enum MESSAGING_KEYS { LOGOUT_USER};
-        public MainPage(bool isFirstLaunchEver = false) {
+        public MainPage() {
             InitializeComponent();
 
             FlyoutLayoutBehavior = FlyoutLayoutBehavior.Popover;
             client = new CommunicationService();
 
-            Detail = new NavigationPage(new HomeStatusPage(client, isFirstLaunchEver));
+            Detail = new NavigationPage(new HomeStatusPage(client));
 
             MessagingCenter.Subscribe<AboutPage>(this, AboutPage.MESSAGING_KEYS.RESTART_CLIENT.ToString(), async (sender) => await client.forceReloadConnection());
         }
@@ -94,7 +94,9 @@ namespace PagerBuddy.Views {
 
         private async Task requestShare() {
             //https://docs.microsoft.com/en-us/xamarin/essentials/share?context=xamarin%2Fios&tabs=android
-            await Share.RequestAsync(new ShareTextRequest(AppResources.App_Share_Message));
+            ShareTextRequest request = new ShareTextRequest(AppResources.App_Share_Message);
+            request.Uri = "http://www.bartunik.de/pagerbuddy";
+            await Share.RequestAsync(request);
             IsPresented = false;
         }
 

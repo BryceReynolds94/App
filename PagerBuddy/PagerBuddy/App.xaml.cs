@@ -27,38 +27,19 @@ namespace PagerBuddy
     public partial class App : Application
     {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        public App(bool isAlert, Alert alert)
+        public App(bool isAlert = false, Alert alert = null)
         {
-            initialise(isAlert, alert);
-        }
-
-        public App(bool initialiseOnly) {
-            if (initialiseOnly) {
-                InitializeComponent();
-            } else {
-                initialise(false);
-            }
-        }
-
-        public App()
-        {
-            initialise(false);
-        }
-
-        private void initialise(bool isAlert, Alert alert = null)
-        {
+            Logger.Debug("Starting App.");
             InitializeComponent();
             VersionTracking.Track(); //Initialise global version tracking
 
-            MessagingCenter.Subscribe<AboutPage>(this, AboutPage.MESSAGING_KEYS.SHOW_ALERT_PAGE.ToString(), (sender) => showAlertPage());
-
-            if (isAlert)
-            {
+            if (isAlert && alert != null) {
                 MainPage = new AlertPage(alert);
                 return;
             }
 
-            MainPage = new MainPage(VersionTracking.IsFirstLaunchEver);
+            MessagingCenter.Subscribe<AboutPage>(this, AboutPage.MESSAGING_KEYS.SHOW_ALERT_PAGE.ToString(), (sender) => showAlertPage());
+            MainPage = new MainPage();
             new MessagingService().SetupListeners(((MainPage)Current.MainPage).client);
         }
 
@@ -72,7 +53,7 @@ namespace PagerBuddy
                 Logger.Info("No configurations found. Using mock configuration for sample AlertPage.");
                 testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Title, AppResources.App_DeveloperMode_AlertPage_Message, "", 0, false, 0);
             }
-            Logger.Info("Launchin AlertPage from Developer Mode");
+            Logger.Info("Launching AlertPage from Developer Mode");
             MainPage = new AlertPage(testAlert);
         }
 
