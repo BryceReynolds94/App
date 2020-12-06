@@ -84,7 +84,7 @@
             </CollectionView.ItemTemplate>
             <CollectionView.Footer>
                 <StackLayout Padding="10,10,10,0" IsVisible="{Binding AddConfigEnabled}">
-                    <ImageButton BackgroundColor="{StaticResource BackgroundColor}" BorderColor="LightGray" BorderWidth="2" Source="{Binding AddConfigTabIcon}"  
+                    <ImageButton BackgroundColor="{StaticResource BackgroundColor}" BorderColor="LightGray" BorderWidth="2" Source="{Binding AddConfigTabIcon}"  Command="{Binding AddConfig}"
                          CornerRadius="10" Padding="10,30"  HeightRequest="110" VerticalOptions="Start"/>
                 </StackLayout>
             </CollectionView.Footer>
