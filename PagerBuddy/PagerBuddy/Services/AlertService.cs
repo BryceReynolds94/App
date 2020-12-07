@@ -25,8 +25,8 @@ namespace PagerBuddy.Services {
             }
 
             CommunicationService client = new CommunicationService(true); //only perform small client init and do not retry on fatal errors
-            client.StatusChanged += (sender, args) => {
-                if (client.clientStatus == CommunicationService.STATUS.AUTHORISED) {
+            client.StatusChanged += (sender, newStatus) => {
+                if (newStatus == CommunicationService.STATUS.AUTHORISED) {
                     checkNewMessages(client);
                 }
             };

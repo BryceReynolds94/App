@@ -69,7 +69,7 @@ namespace PagerBuddy.Views
             bool allSnoozed = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue) > DateTime.Now;
             viewModel.setWarningState(allOff, allSnoozed);
 
-            updateClientStatus(this, null);
+            updateClientStatus(this, client.clientStatus);
 
             alertList = getAlertConfigs();
             viewModel.fillAlertList(alertList);
@@ -99,14 +99,18 @@ namespace PagerBuddy.Views
             viewModel.fillAlertList(alertList);
         }
 
-        private void updateClientStatus(object sender, EventArgs eventArgs)
+        private void updateClientStatus(object sender, CommunicationService.STATUS newStatus)
         {
-            CommunicationService.STATUS clientStatus = client.clientStatus;
-            bool hasInternet = clientStatus == CommunicationService.STATUS.NEW || clientStatus > CommunicationService.STATUS.OFFLINE; //suppress warning if loading
-            bool isAuthorised = clientStatus == CommunicationService.STATUS.NEW || clientStatus == CommunicationService.STATUS.AUTHORISED; //suppress warning if loading
+            bool isLoading = newStatus == CommunicationService.STATUS.NEW || newStatus == CommunicationService.STATUS.ONLINE;
+            viewModel.setLoadingState(isLoading);
 
+            if (isLoading) { //Suppress warning updates while we are loading
+                return;
+            }
+
+            bool hasInternet = !(newStatus == CommunicationService.STATUS.OFFLINE);
+            bool isAuthorised = newStatus == CommunicationService.STATUS.AUTHORISED;
             viewModel.setErrorState(hasInternet, isAuthorised);
-            viewModel.setLoadingState(clientStatus == CommunicationService.STATUS.NEW);
         }
 
         private async void login(object sender, EventArgs eventArgs)

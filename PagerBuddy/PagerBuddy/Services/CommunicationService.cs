@@ -28,6 +28,8 @@ namespace PagerBuddy.Services {
         private TelegramClient client;
         private TLUser user;
 
+        private CommunicationServiceQueue queue;
+
         private STATUS status;
         public STATUS clientStatus {
             get {
@@ -35,7 +37,7 @@ namespace PagerBuddy.Services {
             }
             private set {
                 status = value;
-                StatusChanged?.Invoke(this, null);
+                StatusChanged?.Invoke(this, value);
                 Logger.Info("Status of CommunicationService changed to " + value.ToString());
             }
         }
@@ -49,6 +51,7 @@ namespace PagerBuddy.Services {
 
         public CommunicationService(bool isBackgroundCall = false) {
             Logger.Debug("Initialising CommunicationService. Is background call: " + isBackgroundCall);
+            queue = new CommunicationServiceQueue();
             _ = connectClient(isBackgroundCall);
         }
 
@@ -64,7 +67,8 @@ namespace PagerBuddy.Services {
             await connectClient(isBackgroundCall);
         }
 
-        public event EventHandler StatusChanged;
+        public event ClientStausEventHandler StatusChanged;
+        public delegate void ClientStausEventHandler(object sender, STATUS newStatus);
 
         private async Task connectClient(bool isBackgroundCall = false) {
             clientStatus = STATUS.NEW;
@@ -114,7 +118,7 @@ namespace PagerBuddy.Services {
         private async Task<bool> tryConnect(bool isBackgroundCall, int attempt = 0) {
 
             try {
-                await client.ConnectAsync();
+                await queue.Enqueue(new Func<Task>(() => client.ConnectAsync()));
             } catch (InvalidOperationException e) {
                 //TODO: Testing - can we recover from this?
                 Logger.Error(e, "Exception during connection attempt.");
@@ -162,7 +166,6 @@ namespace PagerBuddy.Services {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to logout user without authorisation. Current state: " + clientStatus.ToString());
             }
-
             Logger.Debug("Logging out user.");
 
             string token = CrossFirebasePushNotification.Current.Token;
@@ -173,13 +176,13 @@ namespace PagerBuddy.Services {
             };
 
             try {
-                await client.SendRequestAsync<bool>(unregisterRequest); //https://core.telegram.org/method/account.unregisterDevice
+                await queue.Enqueue(new Func<Task>(() => client.SendRequestAsync<bool>(unregisterRequest))); //https://core.telegram.org/method/account.unregisterDevice
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to unregister device.");
             }
 
             try {
-                await client.SendRequestAsync<bool>(new TLRequestLogOut()); //https://core.telegram.org/method/auth.logOut
+                await queue.Enqueue(new Func<Task>(() => client.SendRequestAsync<bool>(new TLRequestLogOut()))); //https://core.telegram.org/method/auth.logOut
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to logout user.");
             }
@@ -201,7 +204,7 @@ namespace PagerBuddy.Services {
             };
 
             try {
-                await client.SendRequestAsync<bool>(request);
+                await queue.Enqueue(new Func<Task>(() => client.SendRequestAsync<bool>(request)));
             } catch (Exception e) {
                 Logger.Error(e, "Subscribing to push notifications failed");
                 await checkConnectionOnError(e);
@@ -217,7 +220,7 @@ namespace PagerBuddy.Services {
 
             TLPassword passwordConfig;
             try {
-                passwordConfig = await client.GetPasswordSetting();
+                passwordConfig = await queue.Enqueue(new Func<Task<TLPassword>>(() => client.GetPasswordSetting()));
             } catch (Exception e) {
                 Logger.Error(e, "Exception occured while trying to receive password configuration");
                 await checkConnectionOnError(e);
@@ -226,7 +229,7 @@ namespace PagerBuddy.Services {
 
             TLUser user;
             try {
-                user = await client.MakeAuthWithPasswordAsync(passwordConfig, password);
+                user = await queue.Enqueue(new Func<Task<TLUser>>(() => client.MakeAuthWithPasswordAsync(passwordConfig, password)));
             } catch (Exception e) {
                 TException exception = getTException(e.Message);
                 switch (exception) {
@@ -254,7 +257,7 @@ namespace PagerBuddy.Services {
 
             string hash;
             try {
-                hash = await client.SendCodeRequestAsync(phoneNumber);
+                hash = await queue.Enqueue(new Func<Task<string>>(() => client.SendCodeRequestAsync(phoneNumber)));
             } catch (Exception e) {
 
                 TException exception = getTException(e.Message);
@@ -297,7 +300,7 @@ namespace PagerBuddy.Services {
 
             TLUser user;
             try {
-                user = await client.MakeAuthAsync(clientPhoneNumber, clientRequestCodeHash, code);
+                user = await queue.Enqueue(new Func<Task<TLUser>>(() => client.MakeAuthAsync(clientPhoneNumber, clientRequestCodeHash, code)));
             } catch (CloudPasswordNeededException e) {
                 Logger.Info(e, "Two factor authentication needed.");
                 clientStatus = STATUS.WAIT_PASSWORD;
@@ -372,7 +375,7 @@ namespace PagerBuddy.Services {
 
             TLAbsDialogs dialogs;
             try {
-                dialogs = await client.SendRequestAsync<TLAbsDialogs>(requestDialogList);
+                dialogs = await queue.Enqueue(new Func<Task<TLAbsDialogs>>(() => client.SendRequestAsync<TLAbsDialogs>(requestDialogList)));
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list.");
                 await checkConnectionOnError(e);
@@ -400,7 +403,7 @@ namespace PagerBuddy.Services {
 
             TLFile file;
             try {
-                file = await client.GetFile(loc, 1024 * 256);
+                file = await queue.Enqueue(new Func<Task<TLFile>>(() => client.GetFile(loc, 1024 * 256)));
             } catch (Exception exception) {
                 Logger.Error(exception, "Exception while trying to fetch profile pic.");
                 await checkConnectionOnError(exception);
@@ -421,7 +424,7 @@ namespace PagerBuddy.Services {
 
             TLUser outUser;
             try {
-                TLVector<TLAbsUser> result = await client.SendRequestAsync<TLVector<TLAbsUser>>(request);
+                TLVector<TLAbsUser> result = await queue.Enqueue(new Func<Task<TLVector<TLAbsUser>>>(() => client.SendRequestAsync<TLVector<TLAbsUser>>(request)));
                 outUser = result.First() as TLUser;
             } catch (Exception e) {
                 Logger.Error(e, "Exception while fetching user data.");
@@ -445,7 +448,7 @@ namespace PagerBuddy.Services {
 
             TLAbsDialogs dialogs;
             try {
-                dialogs = await client.SendRequestAsync<TLAbsDialogs>(requestDialogList);
+                dialogs = await queue.Enqueue(new Func<Task<TLAbsDialogs>>(() => client.SendRequestAsync<TLAbsDialogs>(requestDialogList)));
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list for message IDs.");
                 await checkConnectionOnError(e);
@@ -481,7 +484,7 @@ namespace PagerBuddy.Services {
 
             TLAbsMessages messages;
             try {
-                messages = await client.SendRequestAsync<TLAbsMessages>(request);
+                messages = await queue.Enqueue(new Func<Task<TLAbsMessages>>(() => client.SendRequestAsync<TLAbsMessages>(request)));
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to retrieve messages.");
                 await checkConnectionOnError(e);
