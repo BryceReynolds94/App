@@ -57,7 +57,7 @@ namespace PagerBuddy.Droid
             try {
                 Application.Context.PackageManager.GetPackageInfo("org.telegram.messenger", PackageInfoFlags.Activities); 
             } catch (PackageManager.NameNotFoundException e) {
-                Logger.Warn(e, "Telegram package is not installed.");
+                Logger.Warn("Telegram package is not installed.");
                 return false;
             }
             return true;

@@ -9,7 +9,6 @@
              Title="{Binding Title}"
              x:Class="PagerBuddy.Views.LoginPhonePage">
     <ContentPage.Content>
-
         <AbsoluteLayout>
             <ScrollView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
                 <StackLayout Padding="20" >
@@ -29,8 +28,8 @@
                 </Label>
             </StackLayout>
         </ScrollView>
-        <BoxView IsVisible="{Binding IsWaiting}" BackgroundColor="Gray" Opacity="0.2" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
-            <ActivityIndicator IsVisible="{Binding IsWaiting}" IsRunning="True" HorizontalOptions="Center" VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
+        <BoxView IsVisible="{Binding IsBusy}" BackgroundColor="Gray" Opacity="0.2" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="True" HorizontalOptions="Center" VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

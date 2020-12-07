@@ -11,24 +11,24 @@
     <ContentPage.Content>
         <AbsoluteLayout>
             <ScrollView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
-            <StackLayout Padding="20" >
-                <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_lock.svg" HorizontalOptions="Center" HeightRequest="200" Margin="0,40"/>
-            <Label Text="{x:Static resources:AppResources.LoginCodePage_Prompt}" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
-                <Entry Placeholder="{x:Static resources:AppResources.LoginCodePage_Code_Placeholder}" 
-                       Text="{Binding CodeText}"
-                       MaxLength="5"
-                       Keyboard="Numeric" 
-                       WidthRequest="150" 
-                       HorizontalOptions="Center" 
-                       HorizontalTextAlignment="Center" 
-                       ReturnCommand="{Binding Return}"
-                       ClearButtonVisibility="WhileEditing"/>
-            <Label Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="{StaticResource WarningColor}" TextColor="White" Padding="10" />
-            <Button Text="{x:Static resources:AppResources.LoginCodePage_NextBtn}" HorizontalOptions="Center" Command="{Binding Next}"/>
-        </StackLayout>
+                <StackLayout Padding="20" >
+                    <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_lock.svg" HorizontalOptions="Center" HeightRequest="200" Margin="0,40"/>
+                    <Label Text="{x:Static resources:AppResources.LoginCodePage_Prompt}" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                        <Entry Placeholder="{x:Static resources:AppResources.LoginCodePage_Code_Placeholder}" 
+                               Text="{Binding CodeText}"
+                               MaxLength="5"
+                               Keyboard="Numeric" 
+                               WidthRequest="150" 
+                               HorizontalOptions="Center" 
+                               HorizontalTextAlignment="Center" 
+                               ReturnCommand="{Binding Return}"
+                               ClearButtonVisibility="WhileEditing"/>
+                    <Label Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="{StaticResource WarningColor}" TextColor="White" Padding="10" />
+                    <Button Text="{x:Static resources:AppResources.LoginCodePage_NextBtn}" HorizontalOptions="Center" Command="{Binding Next}"/>
+                </StackLayout>
             </ScrollView>
-            <BoxView IsVisible="{Binding IsWaiting}" BackgroundColor="Gray" Opacity="0.2" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
-        <ActivityIndicator IsVisible="{Binding IsWaiting}" IsRunning="True" HorizontalOptions="Center" VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
+            <BoxView IsVisible="{Binding IsBusy}" BackgroundColor="Gray" Opacity="0.2" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="True" HorizontalOptions="Center" VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -16,8 +16,6 @@ namespace PagerBuddy.ViewModels
         public Command Next { get; set; }
         public Command Return { get; set; }
 
-        private bool waitOperation = false;
-
         public LoginCodePageViewModel()
         {
             Title = AppResources.LoginCodePage_Title;
@@ -49,11 +47,8 @@ namespace PagerBuddy.ViewModels
             }
         }
         public void setWaitStatus(bool isWait) {
-            waitOperation = isWait;
-            OnPropertyChanged(nameof(IsWaiting));
+            IsBusy = isWait;
         }
-
-        public bool IsWaiting => waitOperation;
 
         public string CodeText { get; set; }
         public string ErrorText {

@@ -17,7 +17,6 @@ namespace PagerBuddy.ViewModels {
         private TStatus errorStatus = TStatus.OK;
         public Command Next { get; set; }
         public Command Return { get; set; }
-        private bool waitOperation = false;
 
         public Command Hyperlink { get; set; }
 
@@ -57,8 +56,7 @@ namespace PagerBuddy.ViewModels {
         }
 
         public void setWaitStatus(bool isWait) {
-            waitOperation = isWait;
-            OnPropertyChanged(nameof(IsWaiting));
+            IsBusy = isWait;
         }
 
         public void changeErrorStatus(TStatus newStatus) {
@@ -70,8 +68,6 @@ namespace PagerBuddy.ViewModels {
         }
 
         public string PhoneNumber { get; set; }
-
-        public bool IsWaiting => waitOperation;
          
         public bool IsTelegramNotInstalled {
             get {

@@ -8,10 +8,8 @@ using Xamarin.Forms;
 using PagerBuddy.Models;
 using PagerBuddy.Services;
 
-namespace PagerBuddy.ViewModels
-{
-    public class BaseViewModel : INotifyPropertyChanged
-    {
+namespace PagerBuddy.ViewModels {
+    public class BaseViewModel : INotifyPropertyChanged {
 
         bool isBusy = false;
         public bool IsBusy {
@@ -25,12 +23,10 @@ namespace PagerBuddy.ViewModels
             set { SetProperty(ref title, value); }
         }
 
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName]string propertyName = "",
-            Action onChanged = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
+        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName] string propertyName = "", Action onChanged = null) {
+            if (EqualityComparer<T>.Default.Equals(backingStore, value)) {
                 return false;
+            }
 
             backingStore = value;
             onChanged?.Invoke();
@@ -40,8 +36,7 @@ namespace PagerBuddy.ViewModels
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "") {
             var changed = PropertyChanged;
             if (changed == null)
                 return;

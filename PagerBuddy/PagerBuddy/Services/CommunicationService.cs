@@ -43,51 +43,47 @@ namespace PagerBuddy.Services {
         private string clientRequestCodeHash = null;
         private string clientPhoneNumber = null;
 
-        public enum STATUS {OFFLINE, NEW, WAIT_PHONE, WAIT_CODE, WAIT_PASSWORD, AUTHORISED };
+        public enum STATUS { NEW, OFFLINE, ONLINE, WAIT_PHONE, WAIT_CODE, WAIT_PASSWORD, AUTHORISED };
 
         public enum MESSAGING_KEYS { USER_DATA_CHANGED };
 
         public CommunicationService(bool isBackgroundCall = false) {
+            Logger.Debug("Initialising CommunicationService. Is background call: " + isBackgroundCall);
             _ = connectClient(isBackgroundCall);
         }
 
         public async Task reloadConnection() {
-            if (clientStatus == STATUS.OFFLINE || clientStatus == STATUS.NEW) {
+            if (clientStatus == STATUS.OFFLINE) { //Do not reload if we are currently connecting or have successfully connected
+                Logger.Info("Reloading connection.");
                 await connectClient();
             }
         }
 
-        public async Task forceReloadConnection() {
+        public async Task forceReloadConnection(bool isBackgroundCall = false) {
             client.Dispose();
-            await connectClient();
+            await connectClient(isBackgroundCall);
         }
 
         public event EventHandler StatusChanged;
 
         private async Task connectClient(bool isBackgroundCall = false) {
-            clientStatus = STATUS.OFFLINE;
+            clientStatus = STATUS.NEW;
             try {
                 client = new TelegramClient(KeyService.checkID(this), KeyService.checkHash(this), new MySessionStore(this));
             } catch (Exception e) {
                 Logger.Error(e, "Initialisation of TelegramClient failed");
+                clientStatus = STATUS.OFFLINE;
+                scheduleRetry(isBackgroundCall);
                 return;
             }
 
-            try {
-                await client.ConnectAsync();
-            } catch (Exception e) {
-                Logger.Error(e, "Exception during connection attempt");
-                if (isBackgroundCall) {
-                    Logger.Warn("Stoppig client initialisation after fatal error while called in background.");
-                    return;
-                }
-                Logger.Error("Fatal Problem with client. Clearing session store and starting again.");
-
-                new MySessionStore(this).Clear();
-                await connectClient();
+            if(! await tryConnect(isBackgroundCall)) {
+                clientStatus = STATUS.OFFLINE;
+                scheduleRetry(isBackgroundCall);
                 return;
             }
-            clientStatus = STATUS.NEW;
+
+            clientStatus = STATUS.ONLINE;
 
             if (client.IsUserAuthorized()) {
                 Logger.Debug("User is authorised already.");
@@ -101,6 +97,64 @@ namespace PagerBuddy.Services {
             } else {
                 Logger.Debug("User is not authorised. Awaiting login data.");
                 clientStatus = STATUS.WAIT_PHONE;
+            }
+        }
+
+        private void scheduleRetry(bool isBackgroundCall) {
+            if (isBackgroundCall) {
+                Logger.Warn("Client called in background. Not scheduling another connection attempt.");
+                return;
+            }
+            Logger.Warn("Could not connect client. Will retry in 5 seconds.");
+
+            //Retry in 5 seconds
+            Task.Delay(5000).ContinueWith(t => reloadConnection());
+        }
+
+        private async Task<bool> tryConnect(bool isBackgroundCall, int attempt = 0) {
+
+            try {
+                await client.ConnectAsync();
+            } catch (InvalidOperationException e) {
+                //TODO: Testing - can we recover from this?
+                Logger.Error(e, "Exception during connection attempt.");
+                if (attempt > 2) {
+                    Logger.Error("No success connecting within 3 attempts. Giving up.");
+                    return false;
+                }
+                Logger.Warn("Trying again.");
+                return await tryConnect(isBackgroundCall, ++attempt);
+            } catch (Exception e) {
+                Logger.Error(e, "Unknown exception during connection attempt");
+                if (isBackgroundCall) {
+                    Logger.Warn("Stoppig client initialisation after fatal error while called in background.");
+                    return false;
+                }
+
+                Logger.Error("Fatal Problem with client. Clearing session store and starting again.");
+                clientStatus = STATUS.NEW;
+                new MySessionStore(this).Clear();
+                await forceReloadConnection(isBackgroundCall);
+                return false;
+            }
+            return true;
+        }
+
+        private async Task checkConnectionOnError(Exception e = null) {
+            //TODO: Testing
+            if(clientStatus > STATUS.OFFLINE) {
+                if (client.IsConnected) {
+                    if (clientStatus == STATUS.AUTHORISED && !client.IsUserAuthorized()) {
+                        //Something went very wrong - set offline as a recovery solution
+                        Logger.Warn("Status set to authorised but user is not authorised. Force setting offline status.");
+                        clientStatus = STATUS.OFFLINE;
+                        await reloadConnection();
+                    }
+                } else {
+                    Logger.Warn("Client is not connected. Force setting offline status.");
+                    clientStatus = STATUS.OFFLINE;
+                    await reloadConnection();
+                }
             }
         }
 
@@ -131,9 +185,7 @@ namespace PagerBuddy.Services {
             }
 
             clientStatus = STATUS.NEW;
-
             new MySessionStore(this).Clear();
-
             await forceReloadConnection();
         }
 
@@ -152,6 +204,7 @@ namespace PagerBuddy.Services {
                 await client.SendRequestAsync<bool>(request);
             } catch (Exception e) {
                 Logger.Error(e, "Subscribing to push notifications failed");
+                await checkConnectionOnError(e);
             }
 
         }
@@ -167,6 +220,7 @@ namespace PagerBuddy.Services {
                 passwordConfig = await client.GetPasswordSetting();
             } catch (Exception e) {
                 Logger.Error(e, "Exception occured while trying to receive password configuration");
+                await checkConnectionOnError(e);
                 return TStatus.UNKNOWN;
             }
 
@@ -174,7 +228,6 @@ namespace PagerBuddy.Services {
             try {
                 user = await client.MakeAuthWithPasswordAsync(passwordConfig, password);
             } catch (Exception e) {
-
                 TException exception = getTException(e.Message);
                 switch (exception) {
                     case TException.PASSWORD_HASH_INVALID:
@@ -182,6 +235,7 @@ namespace PagerBuddy.Services {
                         return TStatus.INVALID_PASSWORD;
                     default:
                         Logger.Error(e, "Unknown exception occured while trying to perform authentication with password");
+                        await checkConnectionOnError(e);
                         return TStatus.UNKNOWN;
                 }
             }
@@ -225,6 +279,7 @@ namespace PagerBuddy.Services {
                         return await requestCode(phoneNumber);
                     default:
                         Logger.Error(e, "Unknown exception while trying to authenticate user.");
+                        await checkConnectionOnError(e);
                         return TStatus.UNKNOWN;
                 }
             }
@@ -252,6 +307,7 @@ namespace PagerBuddy.Services {
                 return TStatus.INVALID_CODE;
             } catch (Exception e) {
                 Logger.Error(e, "Authenticating user code failed.");
+                await checkConnectionOnError(e);
                 return TStatus.UNKNOWN;
             }
 
@@ -274,7 +330,7 @@ namespace PagerBuddy.Services {
             DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0));
         }
 
-        public async Task saveUserData(TLUser user) {
+        private async Task saveUserData(TLUser user) {
             if (user == null) {
                 Logger.Error("Attempting to save null user.");
                 return;
@@ -319,6 +375,7 @@ namespace PagerBuddy.Services {
                 dialogs = await client.SendRequestAsync<TLAbsDialogs>(requestDialogList);
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list.");
+                await checkConnectionOnError(e);
                 return new TLVector<TLAbsChat>();
             }
 
@@ -331,6 +388,10 @@ namespace PagerBuddy.Services {
         }
 
         public async Task<TLFile> getProfilePic(TLFileLocation location) {
+            if (clientStatus < STATUS.ONLINE) {
+                Logger.Warn("Attempted to load profile pic without appropriate client status. Current status: " + clientStatus.ToString());
+                return new TLFile();
+            }
             TLInputFileLocation loc = new TLInputFileLocation() {
                 LocalId = location.LocalId,
                 Secret = location.Secret,
@@ -342,12 +403,17 @@ namespace PagerBuddy.Services {
                 file = await client.GetFile(loc, 1024 * 256);
             } catch (Exception exception) {
                 Logger.Error(exception, "Exception while trying to fetch profile pic.");
+                await checkConnectionOnError(exception);
                 return new TLFile();
             }
             return file;
         }
 
-        public async Task<TLUser> getUserUpdate(TLUser user) {
+        private async Task<TLUser> getUserUpdate(TLUser user) {
+            if (clientStatus < STATUS.ONLINE) {
+                Logger.Warn("Attempted to retrieve user update without appropriate client status. Current status: " + clientStatus.ToString());
+                return new TLUser();
+            }
 
             TLRequestGetUsers request = new TLRequestGetUsers() { //https://core.telegram.org/method/users.getUsers
                 Id = new TLVector<TLAbsInputUser> { new TLInputUser() { UserId = user.Id, AccessHash = (long)user.AccessHash } }
@@ -359,6 +425,7 @@ namespace PagerBuddy.Services {
                 outUser = result.First() as TLUser;
             } catch (Exception e) {
                 Logger.Error(e, "Exception while fetching user data.");
+                await checkConnectionOnError(e);
                 return new TLUser();
             }
 
@@ -366,7 +433,7 @@ namespace PagerBuddy.Services {
         }
 
         public async Task<int> getLastMessageID(int currentID, bool init = false) {
-            if (clientStatus != STATUS.AUTHORISED && !init) {
+            if ((clientStatus != STATUS.AUTHORISED && !init) || clientStatus < STATUS.ONLINE) {
                 Logger.Warn("Attempted to get last message ID with inappropriate client status. Current status: " + clientStatus.ToString());
                 return currentID;
             }
@@ -381,6 +448,7 @@ namespace PagerBuddy.Services {
                 dialogs = await client.SendRequestAsync<TLAbsDialogs>(requestDialogList);
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list for message IDs.");
+                await checkConnectionOnError(e);
                 return currentID;
             }
 
@@ -416,6 +484,7 @@ namespace PagerBuddy.Services {
                 messages = await client.SendRequestAsync<TLAbsMessages>(request);
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to retrieve messages.");
+                await checkConnectionOnError(e);
                 return null;
             }
             return messages;

@@ -8,13 +8,10 @@ using static PagerBuddy.Services.ClientExceptions;
 namespace PagerBuddy.ViewModels {
     public class LoginPasswordPageViewModel : BaseViewModel {
 
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-
         public Command Return { get; set; }
         public Command Next { get; set; }
         private TStatus errorStatus = TStatus.OK;
 
-        private bool waitOperation = false;
         public LoginPasswordPageViewModel() {
 
             Title = AppResources.LoginPasswordPage_Title;
@@ -42,11 +39,8 @@ namespace PagerBuddy.ViewModels {
         }
 
         public void setWaitStatus(bool isWait) {
-            waitOperation = isWait;
-            OnPropertyChanged(nameof(IsWaiting));
+            IsBusy = isWait;
         }
-
-        public bool IsWaiting => waitOperation;
 
         public string ErrorText {
             get {

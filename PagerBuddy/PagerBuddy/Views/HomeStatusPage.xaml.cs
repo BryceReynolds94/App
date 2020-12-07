@@ -37,18 +37,15 @@ namespace PagerBuddy.Views
         {
             InitializeComponent();
             this.client = client;
-            this.client.StatusChanged += updateClientErrorStatus;
+            this.client.StatusChanged += updateClientStatus;
 
-
-            alertList = getAlertConfigs();
-            BindingContext = viewModel = new HomeStatusPageViewModel(alertList);
+            BindingContext = viewModel = new HomeStatusPageViewModel();
             viewModel.RequestSnoozeTime += getSnoozeTime;
             viewModel.AllDeactivatedStateChanged += saveDeactivatedState;
             viewModel.AllSnoozeStateChanged += saveSnoozeState;
             viewModel.AddConfigurationRequest += addConfig;
             viewModel.RequestLogin += login;
             viewModel.RequestRefresh += refreshClient;
-                
 
             MessagingCenter.Subscribe<ConfigureKeywordPage, AlertConfig>(this, ConfigureKeywordPage.MESSAGING_KEYS.ALERT_CONFIG_SAVED.ToString(), (obj, alertConfig) => alertConfigSaved(alertConfig));
             
@@ -68,18 +65,14 @@ namespace PagerBuddy.Views
         {
             base.OnAppearing();
 
-            updateClientErrorStatus(this, null);
-
             bool allOff = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_DEACTIVATE_ALL, false);
             bool allSnoozed = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue) > DateTime.Now;
             viewModel.setWarningState(allOff, allSnoozed);
 
+            updateClientStatus(this, null);
+
             alertList = getAlertConfigs();
             viewModel.fillAlertList(alertList);
-
-            if (viewModel.alertList.Count == 0) {
-                viewModel.IsBusy = true;
-            }
         }
 
         private async void editAlertConfig(AlertConfig alertConfig)
@@ -106,10 +99,14 @@ namespace PagerBuddy.Views
             viewModel.fillAlertList(alertList);
         }
 
-        private void updateClientErrorStatus(object sender, EventArgs eventArgs)
+        private void updateClientStatus(object sender, EventArgs eventArgs)
         {
             CommunicationService.STATUS clientStatus = client.clientStatus;
-            viewModel.setErrorState(clientStatus != CommunicationService.STATUS.OFFLINE, clientStatus == CommunicationService.STATUS.AUTHORISED);
+            bool hasInternet = clientStatus == CommunicationService.STATUS.NEW || clientStatus > CommunicationService.STATUS.OFFLINE; //suppress warning if loading
+            bool isAuthorised = clientStatus == CommunicationService.STATUS.NEW || clientStatus == CommunicationService.STATUS.AUTHORISED; //suppress warning if loading
+
+            viewModel.setErrorState(hasInternet, isAuthorised);
+            viewModel.setLoadingState(clientStatus == CommunicationService.STATUS.NEW);
         }
 
         private async void login(object sender, EventArgs eventArgs)

@@ -23,7 +23,6 @@ namespace PagerBuddy.ViewModels {
 
         private ERROR_ACTION errorState = ERROR_ACTION.NONE;
         private WARNING_ACTION warningState = WARNING_ACTION.NONE;
-
         public Command ToggleAllActive { get; set; }
         public Command ToggleAllSnooze { get; set; }
         public Command AddConfig { get; set; }
@@ -40,9 +39,9 @@ namespace PagerBuddy.ViewModels {
         public delegate void UpdateStatusEventHandler(object sender, bool newStatus);
         public delegate void UpdateSnoozeEventHandler(object sender, DateTime snoozeTime);
 
-        public HomeStatusPageViewModel(Collection<AlertConfig> rawAlertList) {
+        public HomeStatusPageViewModel() {
             Title = AppResources.HomeStatusPage_Title;
-            fillAlertList(rawAlertList);
+            fillAlertList(new Collection<AlertConfig>());
 
             ToggleAllActive = new Command(() => updateAllActiveState());
             ToggleAllSnooze = new Command(() => updateAllSnoozeState());
@@ -89,6 +88,10 @@ namespace PagerBuddy.ViewModels {
             OnPropertyChanged(nameof(ErrorActive));
             OnPropertyChanged(nameof(AddConfigEnabled));
             OnPropertyChanged(nameof(AddConfigIcon));
+        }
+
+        public void setLoadingState(bool isLoading) {
+            IsBusy = isLoading;
         }
 
         private void updateAllActiveState() {
@@ -150,7 +153,6 @@ namespace PagerBuddy.ViewModels {
                         return AppResources.HomeStatusPage_Error_NoTelegram;
                     default:
                         return "";
-
                 }
             }
         }
@@ -171,7 +173,6 @@ namespace PagerBuddy.ViewModels {
         }
 
         public bool ErrorActive => errorState != ERROR_ACTION.NONE;
-
         public bool WarningActive => warningState != WARNING_ACTION.NONE;
 
 

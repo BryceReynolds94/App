@@ -8,86 +8,88 @@
              Title="{Binding Title}"
              x:Name="BrowseItemsPage">
 
-    <ContentPage.ToolbarItems>
-    </ContentPage.ToolbarItems>
+    <AbsoluteLayout>
+        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <Label x:Name="ErrorActionText" Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="{StaticResource ErrorColor}" TextColor="White" Padding="10">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ErrorAction}" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label x:Name="WarningActionText" Text="{Binding WarningText}" IsVisible="{Binding WarningActive}" BackgroundColor="{StaticResource WarningColor}" TextColor="White" Padding="10">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding WarningAction}"/>
+                </Label.GestureRecognizers>
+            </Label>
 
-    <StackLayout >
-        <Label x:Name="ErrorActionText" Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="{StaticResource ErrorColor}" TextColor="White" Padding="10">
-            <Label.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding ErrorAction}" />
-            </Label.GestureRecognizers>
-        </Label>
-        <Label x:Name="WarningActionText" Text="{Binding WarningText}" IsVisible="{Binding WarningActive}" BackgroundColor="{StaticResource WarningColor}" TextColor="White" Padding="10">
-            <Label.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding WarningAction}"/>
-            </Label.GestureRecognizers>
-        </Label>
-
-        <StackLayout Orientation="Horizontal" HeightRequest="50" Margin="0,5,0,0">
-            <ImageButton Source="{Binding ToggleAllActiveIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+            <StackLayout Orientation="Horizontal" HeightRequest="50" Margin="0,5,0,0">
+                <ImageButton Source="{Binding ToggleAllActiveIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
                          CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllActive}" />
-            <ImageButton Source="{Binding ToggleAllSnoozeIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                <ImageButton Source="{Binding ToggleAllSnoozeIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
                          CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllSnooze}" IsEnabled="{Binding ToggleAllSnoozeEnabled}"/>
-            <ImageButton Source="{Binding AddConfigIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                <ImageButton Source="{Binding AddConfigIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
                          CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding AddConfig}" IsEnabled="{Binding AddConfigEnabled}"/>
-        </StackLayout>
+            </StackLayout>
 
 
-        <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Padding="10,10,10,0">
-                        <Frame x:Name="Backdrop" BackgroundColor="{StaticResource SecondaryColorGrey}"  CornerRadius="10" Padding="10">
-                            <Frame.Triggers>
-                                <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference SwitchIsActive}, Path=IsToggled}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="{StaticResource SecondaryColor}" />
-                                </DataTrigger>
-                            </Frame.Triggers>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="30"/>
-                                </Grid.ColumnDefinitions>
-                                <Switch x:Name="SwitchIsActive" IsToggled="{Binding IsActive}" Grid.Column="3" Grid.ColumnSpan="2" />
-                                <Frame Padding="0" HeightRequest="30" CornerRadius="15" IsClippedToBounds="True">
-                                    <Image Source="{Binding GroupPic}" />
-                                </Frame>
-                                <Label Text="{Binding GroupName}" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="2"/>
+            <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10,10,10,0">
+                            <Frame x:Name="Backdrop" BackgroundColor="{StaticResource SecondaryColorGrey}"  CornerRadius="10" Padding="10">
+                                <Frame.Triggers>
+                                    <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference SwitchIsActive}, Path=IsToggled}" Value="True">
+                                        <Setter Property="BackgroundColor" Value="{StaticResource SecondaryColor}" />
+                                    </DataTrigger>
+                                </Frame.Triggers>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="30"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Switch x:Name="SwitchIsActive" IsToggled="{Binding IsActive}" Grid.Column="3" Grid.ColumnSpan="2" />
+                                    <Frame Padding="0" HeightRequest="30" CornerRadius="15" IsClippedToBounds="True">
+                                        <Image Source="{Binding GroupPic}" />
+                                    </Frame>
+                                    <Label Text="{Binding GroupName}" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="2"/>
 
-                                <Image Source="{Binding TriggerPic}" Grid.Row="1" HeightRequest="30" />
-                                <Label Text="{Binding KeywordText}" Grid.Row="1" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="3"/>
+                                    <Image Source="{Binding TriggerPic}" Grid.Row="1" HeightRequest="30" />
+                                    <Label Text="{Binding KeywordText}" Grid.Row="1" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="3"/>
 
-                                <Image Source="{Binding StatusFieldPic}" Grid.Row="2" HeightRequest="30" />
-                                <Label Text="{Binding StatusFieldText}" Grid.Row="2" Grid.Column="1" VerticalOptions="Center"/>
+                                    <Image Source="{Binding StatusFieldPic}" Grid.Row="2" HeightRequest="30" />
+                                    <Label Text="{Binding StatusFieldText}" Grid.Row="2" Grid.Column="1" VerticalOptions="Center"/>
 
 
-                                <ImageButton Grid.Row="2" Grid.Column="2" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
+                                    <ImageButton Grid.Row="2" Grid.Column="2" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
                                              Source="{Binding SnoozePic}" Command="{Binding SnoozeAlert}" IsEnabled="{Binding SnoozeEnabled}" />
 
-                                <ImageButton Grid.Row="2" Grid.Column="3" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
+                                    <ImageButton Grid.Row="2" Grid.Column="3" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
                                              Source="{Binding EditPic}" Command="{Binding EditAlert}" />
 
-                                <ImageButton Grid.Row="2" Grid.Column="4" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
+                                    <ImageButton Grid.Row="2" Grid.Column="4" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
                                              Source="{Binding DeletePic}" Command="{Binding DeleteAlert}" />
-                            </Grid>
-                        </Frame>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            <CollectionView.Footer>
-                <StackLayout Padding="10,10,10,0" IsVisible="{Binding AddConfigEnabled}">
-                    <ImageButton BackgroundColor="{StaticResource BackgroundColor}" BorderColor="LightGray" BorderWidth="2" Source="{Binding AddConfigTabIcon}"  Command="{Binding AddConfig}"
+                                </Grid>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <StackLayout Padding="10,10,10,0" IsVisible="{Binding AddConfigEnabled}">
+                        <ImageButton BackgroundColor="{StaticResource BackgroundColor}" BorderColor="LightGray" BorderWidth="2" Source="{Binding AddConfigTabIcon}"  Command="{Binding AddConfig}"
                          CornerRadius="10" Padding="10,30"  HeightRequest="110" VerticalOptions="Start"/>
-                </StackLayout>
-            </CollectionView.Footer>
-        </CollectionView>
-    </StackLayout>
+                    </StackLayout>
+                </CollectionView.Footer>
+            </CollectionView>
+        </StackLayout>
+
+        <BoxView IsVisible="{Binding IsBusy}" BackgroundColor="Gray" Opacity="0.2" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="True" HorizontalOptions="Center" VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
+    </AbsoluteLayout>
 </ContentPage>
