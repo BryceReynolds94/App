@@ -187,7 +187,7 @@
     <value>Datenschutzerklärung PagerBuddy</value>
   </data>
   <data name="AboutPage_Developer" xml:space="preserve">
-    <value>Entwickelt von Max Bartunik</value>
+    <value>Von Max Bartunik entwickelt</value>
   </data>
   <data name="AboutPage_DeveloperMode_HideDeveloperModeBtn" xml:space="preserve">
     <value>Entwicklermodus ausblenden</value>
@@ -238,7 +238,7 @@
     <value>Chat auswählen</value>
   </data>
   <data name="ConfigureKeywordPage_Keyword_Hint" xml:space="preserve">
-    <value>Du kannst RegEx verwenden</value>
+    <value>Du kannst Regular Expressions verwenden</value>
   </data>
   <data name="ConfigureKeywordPage_Time_Any" xml:space="preserve">
     <value>Immer</value>
@@ -314,8 +314,5 @@
   </data>
   <data name="MenuPage_Action_Donate" xml:space="preserve">
     <value>Tee spenden</value>
-  </data>
-  <data name="AboutPage_LogLevel_Prefix" xml:space="preserve">
-    <value>Log Level: {0}</value>
   </data>
 </root>

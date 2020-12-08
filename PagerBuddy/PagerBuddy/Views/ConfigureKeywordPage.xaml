@@ -9,108 +9,122 @@
              x:Class="PagerBuddy.Views.ConfigureKeywordPage">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Padding="10" Spacing="0">
-                <Label x:Name="TitleLabel" Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Title}" VerticalOptions="Center" FontSize="Medium" Padding="5,0" />
-                <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Any}" IsChecked="{Binding TriggerTypeAny}" TextColor="Gray" FontSize="Body" GroupName="Trigger"/>
-                <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Server}" IsChecked="{Binding TriggerTypeServer}" TextColor="Gray" FontSize="Body" GroupName="Trigger"/>
-                <RadioButton x:Name="BtnKeyword" Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Keyword}" IsChecked="{Binding TriggerTypeKeyword}" TextColor="Gray" FontSize="Body" GroupName="Trigger"/>
-                
-                <Entry Text="{Binding KeywordText}" Placeholder="{x:Static resources:AppResources.ConfigureKeywordPage_Keyword_Placeholder}" IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}" Margin="30,0,20,0" />
-                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Keyword_Hint}" HorizontalOptions="End" IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}" Margin="30,0,20,0"/>
+        <StackLayout Padding="10">
+            <Label x:Name="TitleLabel" Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Title}" VerticalOptions="Center" FontSize="Medium" Padding="5,0" />
 
-                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Title}" VerticalOptions="Center" FontSize="Medium" Padding="5,10,5,0"/>
-                <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Any}" IsChecked="{Binding TimeTypeAny}" GroupName="Time" TextColor="Gray" FontSize="Body"/>
-                <RadioButton x:Name="BtnTimeSet" Content="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Set}" IsChecked="{Binding TimeTypeSet}" GroupName="Time" TextColor="Gray" FontSize="Body"/>
-
-                <StackLayout Padding="30,10,20,10" Orientation="Horizontal" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}">
-                    <Switch IsToggled="{Binding FlipTime}" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}"/>
-                    <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Flip}" VerticalOptions="Center"/>
-                </StackLayout>
-                
-                <Grid Padding="30,0,20,0" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Monday}" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
-                    <CheckBox Grid.Row="1" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding MondayActive}" >
-                        <CheckBox.Triggers>
-                            <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
-                                <Setter Property="Color" Value="LightGray" />
-                            </DataTrigger>
-                        </CheckBox.Triggers>
-                    </CheckBox>
-                    <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Tuesday}" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
-                    <CheckBox Grid.Row="1" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding TuesdayActive}" >
-                        <CheckBox.Triggers>
-                            <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
-                                <Setter Property="Color" Value="LightGray" />
-                            </DataTrigger>
-                        </CheckBox.Triggers>
-                    </CheckBox>
-                    <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Wednesday}" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
-                    <CheckBox Grid.Row="1" Grid.Column="2" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding WednesdayActive}" >
-                        <CheckBox.Triggers>
-                            <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
-                                <Setter Property="Color" Value="LightGray" />
-                            </DataTrigger>
-                        </CheckBox.Triggers>
-                    </CheckBox>
-                    <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Thursday}" Grid.Column="3" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
-                    <CheckBox Grid.Row="1" Grid.Column="3" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding ThursdayActive}" >
-                        <CheckBox.Triggers>
-                            <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
-                                <Setter Property="Color" Value="LightGray" />
-                            </DataTrigger>
-                        </CheckBox.Triggers>
-                    </CheckBox>
-                    <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Friday}" Grid.Column="4" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
-                    <CheckBox Grid.Row="1" Grid.Column="4" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding FridayActive}" >
-                        <CheckBox.Triggers>
-                            <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
-                                <Setter Property="Color" Value="LightGray" />
-                            </DataTrigger>
-                        </CheckBox.Triggers>
-                    </CheckBox>
-                    <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Saturday}" Grid.Column="5" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
-                    <CheckBox Grid.Row="1" Grid.Column="5" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding SaturdayActive}" >
-                        <CheckBox.Triggers>
-                            <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
-                                <Setter Property="Color" Value="LightGray" />
-                            </DataTrigger>
-                        </CheckBox.Triggers>
-                    </CheckBox>
-                    <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Sunday}" Grid.Column="6" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
-                    <CheckBox Grid.Row="1" Grid.Column="6" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding SundayActive}" >
-                        <CheckBox.Triggers>
-                            <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
-                                <Setter Property="Color" Value="LightGray" />
-                            </DataTrigger>
-                        </CheckBox.Triggers>
-                    </CheckBox>
-                </Grid>
-                <StackLayout Padding="30,0,20,0" Orientation="Horizontal" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" HorizontalOptions="Center">
-                    <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_From}" VerticalOptions="Center" />
-                    <TimePicker HorizontalOptions="Start" Time="{Binding FromTime}" Format="t" TextColor="Gray" FontSize="Body"/>
-                    <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_To}" VerticalOptions="Center" />
-                    <TimePicker  HorizontalOptions="Start" Time="{Binding ToTime}" Format="t" TextColor="Gray" FontSize="Body"/>
-                </StackLayout>
-
-
-
-                <Button Text="{x:Static resources:AppResources.ConfigureKeywordPage_NextBtn}" HorizontalOptions="End" Command="{Binding NextClickedCommand}" Margin="0,20"/>
+            <StackLayout RadioButtonGroup.GroupName="Trigger" >
+                <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Any}" IsChecked="{Binding TriggerTypeAny}" TextColor="Gray" FontSize="Body"/>
+                <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Server}" IsChecked="{Binding TriggerTypeServer}" TextColor="Gray" FontSize="Body"/>
+                <RadioButton x:Name="BtnKeyword" Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Keyword}" IsChecked="{Binding TriggerTypeKeyword}" TextColor="Gray" FontSize="Body"/>
             </StackLayout>
+
+            <Grid x:Name="GridKeyword" IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}" VerticalOptions="Start" Padding="30,0,20,0">
+                <Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Keyword_Hint}" Grid.Row="1" HorizontalOptions="End" VerticalOptions="Center" IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}"/>
+                <Entry Text="{Binding KeywordText}"  Placeholder="{x:Static resources:AppResources.ConfigureKeywordPage_Keyword_Placeholder}"  Grid.ColumnSpan="2" IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}" />
+                
+            </Grid>
+
+            <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Title}" VerticalOptions="Center" FontSize="Medium" Padding="5,0"/>
+            <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Any}" IsChecked="{Binding TimeTypeAny}" GroupName="Time" TextColor="Gray" FontSize="Body"/>
+            <RadioButton x:Name="BtnTimeSet" Content="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Set}" IsChecked="{Binding TimeTypeSet}" GroupName="Time" TextColor="Gray" FontSize="Body"/>
+
+            <StackLayout Padding="30,0,20,0" Orientation="Horizontal" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}">
+                <Switch IsToggled="{Binding FlipTime}" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Flip}" VerticalOptions="Center"/>
+            </StackLayout>
+            <Grid Padding="30,0,20,0" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Monday}" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding MondayActive}" >
+                    <CheckBox.Triggers>
+                        <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
+                            <Setter Property="Color" Value="LightGray" />
+                        </DataTrigger>
+                    </CheckBox.Triggers>
+                </CheckBox>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Tuesday}" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding TuesdayActive}" >
+                    <CheckBox.Triggers>
+                        <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
+                            <Setter Property="Color" Value="LightGray" />
+                        </DataTrigger>
+                    </CheckBox.Triggers>
+                </CheckBox>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Wednesday}" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="2" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding WednesdayActive}" >
+                    <CheckBox.Triggers>
+                        <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
+                            <Setter Property="Color" Value="LightGray" />
+                        </DataTrigger>
+                    </CheckBox.Triggers>
+                </CheckBox>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Thursday}" Grid.Column="3" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="3" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding ThursdayActive}" >
+                    <CheckBox.Triggers>
+                        <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
+                            <Setter Property="Color" Value="LightGray" />
+                        </DataTrigger>
+                    </CheckBox.Triggers>
+                </CheckBox>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Friday}" Grid.Column="4" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="4" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding FridayActive}" >
+                    <CheckBox.Triggers>
+                        <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
+                            <Setter Property="Color" Value="LightGray" />
+                        </DataTrigger>
+                    </CheckBox.Triggers>
+                </CheckBox>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Saturday}" Grid.Column="5" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="5" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding SaturdayActive}" >
+                    <CheckBox.Triggers>
+                        <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
+                            <Setter Property="Color" Value="LightGray" />
+                        </DataTrigger>
+                    </CheckBox.Triggers>
+                </CheckBox>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_Day_Sunday}" Grid.Column="6" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+                <CheckBox Grid.Row="1" Grid.Column="6" VerticalOptions="Start" HorizontalOptions="Center" IsChecked="{Binding SundayActive}" >
+                    <CheckBox.Triggers>
+                        <DataTrigger TargetType="CheckBox" Binding="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" Value="False">
+                            <Setter Property="Color" Value="LightGray" />
+                        </DataTrigger>
+                    </CheckBox.Triggers>
+                </CheckBox>
+            </Grid>
+            <StackLayout Padding="30,0,20,0" Orientation="Horizontal" IsEnabled="{Binding Source={x:Reference BtnTimeSet}, Path=IsChecked}" HorizontalOptions="Center">
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_From}" VerticalOptions="Center" />
+                <TimePicker HorizontalOptions="Start" Time="{Binding FromTime}" Format="t" TextColor="Gray" FontSize="Body"/>
+                <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Time_To}" VerticalOptions="Center" />
+                <TimePicker  HorizontalOptions="Start" Time="{Binding ToTime}" Format="t" TextColor="Gray" FontSize="Body"/>
+            </StackLayout>
+
+
+
+            <Button Text="{x:Static resources:AppResources.ConfigureKeywordPage_NextBtn}" HorizontalOptions="End" Command="{Binding NextClickedCommand}"/>
+        </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

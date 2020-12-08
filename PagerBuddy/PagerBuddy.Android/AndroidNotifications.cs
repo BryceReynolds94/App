@@ -39,7 +39,7 @@ namespace PagerBuddy.Droid {
             alert.notificationID = new Random().Next(); //we need this to cancel notification on UI input
 
             Intent intent = new Intent(Application.Context, typeof(MainActivity))
-                .SetFlags(ActivityFlags.NewTask | ActivityFlags.ExcludeFromRecents)
+                .SetFlags(ActivityFlags.NewTask | ActivityFlags.MultipleTask | ActivityFlags.ExcludeFromRecents)
                 .PutExtra(Alert.EXTRAS.ALERT_FLAG.ToString(), DataService.serialiseObject(alert));
 
             PendingIntent fullScreenIntent = PendingIntent.GetActivity(Application.Context, 0, intent, 0);
@@ -103,7 +103,7 @@ namespace PagerBuddy.Droid {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(Application.Context, STANDARD_CHANNEL_ID)
                 .SetContentTitle(title)
                 .SetContentText(text)
-                .SetSmallIcon(Resource.Drawable.notification_icon)
+                .SetSmallIcon(Resource.Mipmap.ic_launcher)
                 .SetPriority(NotificationCompat.PriorityDefault);
 
             NotificationManager manager = NotificationManager.FromContext(Application.Context);

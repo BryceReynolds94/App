@@ -169,15 +169,6 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log Level: {0}.
-        /// </summary>
-        public static string AboutPage_LogLevel_Prefix {
-            get {
-                return ResourceManager.GetString("AboutPage_LogLevel_Prefix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to All Personal Information you enter while using this App is stored locally on your device. Only necessary information for authentication is passed to Telegram. If an error occurs some log data regarding device statistics and configuration of PagerBuddy may be collected. Links to Telegrams Privacy Policy and the Privacy Policy for PagerBuddy are provided below..
         /// </summary>
         public static string AboutPage_PrivacyPolicy {
@@ -340,7 +331,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can use RegEx.
+        ///   Looks up a localized string similar to You can use regular expressions.
         /// </summary>
         public static string ConfigureKeywordPage_Keyword_Hint {
             get {
