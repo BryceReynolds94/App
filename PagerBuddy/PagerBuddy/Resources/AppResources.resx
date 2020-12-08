@@ -207,7 +207,7 @@
     <value>Select Chat</value>
   </data>
   <data name="ConfigureKeywordPage_Keyword_Hint" xml:space="preserve">
-    <value>You can use regular expressions</value>
+    <value>You can use RegEx</value>
   </data>
   <data name="ConfigureKeywordPage_Keyword_Placeholder" xml:space="preserve">
     <value>Keyword</value>
@@ -435,5 +435,8 @@
   </data>
   <data name="MenuPage_Action_Donate" xml:space="preserve">
     <value>Buy me tea</value>
+  </data>
+  <data name="AboutPage_LogLevel_Prefix" xml:space="preserve">
+    <value>Log Level: {0}</value>
   </data>
 </root>

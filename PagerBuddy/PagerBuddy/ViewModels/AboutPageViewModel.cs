@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -22,6 +23,10 @@ namespace PagerBuddy.ViewModels {
         public Command RestartClient { get; set; }
         public Command TestFCMMessage { get; set; }
         public Command Hyperlink { get; set; }
+        public Command ChangeLogLevel { get; set; }
+
+        private enum LogLevel { DEBUG, INFO, WARN, ERROR }
+        private LogLevel logLevel;
 
         private DateTime developerTapStart = DateTime.MinValue;
         private int developerTapCount = 0;
@@ -29,6 +34,14 @@ namespace PagerBuddy.ViewModels {
         public AboutPageViewModel() {
 
             Title = AppResources.AboutPage_Title;
+
+            try{
+                logLevel = Enum.Parse<LogLevel>(DataService.getConfigValue(DataService.DATA_KEYS.DEVELOPER_LOG_LEVEL, LogLevel.DEBUG.ToString()));
+            }catch(Exception e) {
+                Logger.Error(e, "Exception while parsing saved log level");
+                logLevel = LogLevel.DEBUG;
+            }
+
             DeveloperMode = new Command(() => countDeveloperMode());
             HideDeveloperMode = new Command(() => stopDeveloperMode());
             ShareLog = new Command(() => requestShareLog.Invoke(this, null));
@@ -37,6 +50,7 @@ namespace PagerBuddy.ViewModels {
             RestartClient = new Command(() => requestRestartClient(this, null));
             TestFCMMessage = new Command(() => requestTestFCMMessage(this, null));
             Hyperlink = new Command<string>(async (url) => await Launcher.OpenAsync(url));
+            ChangeLogLevel = new Command(() => rotateLogLevel());
 
             reloadLogLoop();
         }
@@ -53,6 +67,17 @@ namespace PagerBuddy.ViewModels {
                 OnPropertyChanged(nameof(OuterLayout));
                 Task.Delay(5000).ContinueWith((t) => reloadLogLoop());
             }
+        }
+
+        private void rotateLogLevel() {
+            if (logLevel == LogLevel.ERROR) {
+                logLevel = LogLevel.DEBUG;
+            } else {
+                logLevel = logLevel + 1;
+            }
+            DataService.setConfigValue(DataService.DATA_KEYS.DEVELOPER_LOG_LEVEL, logLevel.ToString());
+            OnPropertyChanged(nameof(LogLevelText));
+            OnPropertyChanged(nameof(LogText));
         }
 
         private void countDeveloperMode() {
@@ -84,22 +109,12 @@ namespace PagerBuddy.ViewModels {
             OnPropertyChanged(nameof(NotDeveloperMode));
         }
 
-        //empty Binding for forcing layout update
-        public string OuterLayout => "OuterLayout";
 
-        public string AppVersion {
-            get {
-                return String.Format(AppResources.AboutPage_App_VersionInfo, VersionTracking.CurrentVersion, VersionTracking.CurrentBuild);
-            }
-        }
-
-        public bool IsDeveloperMode {
-            get {
-                return DataService.getConfigValue(DataService.DATA_KEYS.DEVELOPER_MODE, false);
-            }
-        }
-
-        public bool NotDeveloperMode { get => !IsDeveloperMode; }
+        public string OuterLayout => "OuterLayout"; //empty Binding for forcing layout update
+        public string AppVersion => String.Format(AppResources.AboutPage_App_VersionInfo, VersionTracking.CurrentVersion, VersionTracking.CurrentBuild);
+        public bool IsDeveloperMode => DataService.getConfigValue(DataService.DATA_KEYS.DEVELOPER_MODE, false);
+        public bool NotDeveloperMode => !IsDeveloperMode;
+        public string LogLevelText => String.Format(AppResources.AboutPage_LogLevel_Prefix, logLevel.ToString());
 
         public string LogText {
             get {
@@ -107,10 +122,45 @@ namespace PagerBuddy.ViewModels {
                 if (logFile == null) {
                     return AppResources.AboutPage_DeveloperMode_Log_Default;
                 }
-                string[] logArray = File.ReadAllLines(logFile);
+                string[] logArray = applyLogLevel(File.ReadAllLines(logFile));
                 Array.Reverse(logArray);
                 return string.Join(Environment.NewLine, logArray);
             }
+        }
+
+        private string[] applyLogLevel(string[] logArray) {
+            List<string> outArray = new List<string>();
+            foreach (string logEntry in logArray) {
+                if (!checkRemoveLogLine(logEntry)) {
+                    outArray.Add(logEntry);
+                }
+            }
+            return outArray.ToArray();
+        }
+
+        private bool checkRemoveLogLine(string logline) {
+            string[] segments = logline.Split("|");
+            if(segments.Length < 4) {
+                return false;
+            }
+
+            string levelText = segments[1];
+
+            bool remove = false;
+            switch (logLevel) {
+                case LogLevel.ERROR:
+                    remove = remove || Regex.IsMatch(levelText, LogLevel.WARN.ToString(), RegexOptions.IgnoreCase);
+                    goto case LogLevel.WARN;
+                case LogLevel.WARN:
+                    remove = remove || Regex.IsMatch(levelText, LogLevel.INFO.ToString(), RegexOptions.IgnoreCase);
+                    goto case LogLevel.INFO;
+                case LogLevel.INFO:
+                    remove = remove || Regex.IsMatch(levelText, LogLevel.DEBUG.ToString(), RegexOptions.IgnoreCase);
+                    goto case LogLevel.DEBUG;
+                case LogLevel.DEBUG:
+                    break;
+            }
+            return remove;
         }
     }
 }
