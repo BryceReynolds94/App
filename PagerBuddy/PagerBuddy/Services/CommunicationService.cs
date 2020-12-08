@@ -115,19 +115,28 @@ namespace PagerBuddy.Services {
             Task.Delay(5000).ContinueWith(t => reloadConnection());
         }
 
-        private async Task<bool> tryConnect(bool isBackgroundCall, int attempt = 0) {
+        private async Task<bool> connectTimeWatcher() {
+            //In this version of TLSharp library we have a problem with (seldom) infinate loops
+            //Apparently has been solved in newer versions - maybe update TLSharp some day
 
+            bool wasKilled = false;
+            await Task.WhenAny(client.ConnectAsync(), Task.Delay(TimeSpan.FromSeconds(10)).ContinueWith(t => wasKilled = true)); //giving connectasync max. 10s to return
+            return wasKilled;
+        }
+
+        private async Task<bool> tryConnect(bool isBackgroundCall, int attempt = 0) {
+            bool retry = false;
             try {
-                await queue.Enqueue(new Func<Task>(() => client.ConnectAsync()));
+                bool wasKilled = await queue.Enqueue(new Func<Task<bool>>(async () => await connectTimeWatcher()));
+
+                if (wasKilled) {
+                    Logger.Error("Connecting client took too long and was cancelled.");
+                    retry = true;
+                }
             } catch (InvalidOperationException e) {
                 //TODO: Testing - can we recover from this?
                 Logger.Error(e, "Exception during connection attempt.");
-                if (attempt > 2) {
-                    Logger.Error("No success connecting within 3 attempts. Giving up.");
-                    return false;
-                }
-                Logger.Warn("Trying again.");
-                return await tryConnect(isBackgroundCall, ++attempt);
+                retry = true;
             } catch (Exception e) {
                 Logger.Error(e, "Unknown exception during connection attempt");
                 if (isBackgroundCall) {
@@ -140,6 +149,14 @@ namespace PagerBuddy.Services {
                 new MySessionStore(this).Clear();
                 await forceReloadConnection(isBackgroundCall);
                 return false;
+            }
+            if (retry) {
+                if (attempt > 2) {
+                    Logger.Error("No success connecting within 3 attempts. Giving up.");
+                    return false;
+                }
+                Logger.Warn("Trying again.");
+                return await tryConnect(isBackgroundCall, ++attempt);
             }
             return true;
         }
@@ -176,13 +193,13 @@ namespace PagerBuddy.Services {
             };
 
             try {
-                await queue.Enqueue(new Func<Task>(() => client.SendRequestAsync<bool>(unregisterRequest))); //https://core.telegram.org/method/account.unregisterDevice
+                await queue.Enqueue(new Func<Task>(async () => await client.SendRequestAsync<bool>(unregisterRequest))); //https://core.telegram.org/method/account.unregisterDevice
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to unregister device.");
             }
 
             try {
-                await queue.Enqueue(new Func<Task>(() => client.SendRequestAsync<bool>(new TLRequestLogOut()))); //https://core.telegram.org/method/auth.logOut
+                await queue.Enqueue(new Func<Task>(async () => await client.SendRequestAsync<bool>(new TLRequestLogOut()))); //https://core.telegram.org/method/auth.logOut
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to logout user.");
             }
@@ -204,7 +221,7 @@ namespace PagerBuddy.Services {
             };
 
             try {
-                await queue.Enqueue(new Func<Task>(() => client.SendRequestAsync<bool>(request)));
+                await queue.Enqueue(new Func<Task>(async () => await client.SendRequestAsync<bool>(request)));
             } catch (Exception e) {
                 Logger.Error(e, "Subscribing to push notifications failed");
                 await checkConnectionOnError(e);
@@ -220,7 +237,7 @@ namespace PagerBuddy.Services {
 
             TLPassword passwordConfig;
             try {
-                passwordConfig = await queue.Enqueue(new Func<Task<TLPassword>>(() => client.GetPasswordSetting()));
+                passwordConfig = await queue.Enqueue(new Func<Task<TLPassword>>(async () => await client.GetPasswordSetting()));
             } catch (Exception e) {
                 Logger.Error(e, "Exception occured while trying to receive password configuration");
                 await checkConnectionOnError(e);
@@ -229,7 +246,7 @@ namespace PagerBuddy.Services {
 
             TLUser user;
             try {
-                user = await queue.Enqueue(new Func<Task<TLUser>>(() => client.MakeAuthWithPasswordAsync(passwordConfig, password)));
+                user = await queue.Enqueue(new Func<Task<TLUser>>(async () => await client.MakeAuthWithPasswordAsync(passwordConfig, password)));
             } catch (Exception e) {
                 TException exception = getTException(e.Message);
                 switch (exception) {
@@ -257,7 +274,7 @@ namespace PagerBuddy.Services {
 
             string hash;
             try {
-                hash = await queue.Enqueue(new Func<Task<string>>(() => client.SendCodeRequestAsync(phoneNumber)));
+                hash = await queue.Enqueue(new Func<Task<string>>(async () => await client.SendCodeRequestAsync(phoneNumber)));
             } catch (Exception e) {
 
                 TException exception = getTException(e.Message);
@@ -300,7 +317,7 @@ namespace PagerBuddy.Services {
 
             TLUser user;
             try {
-                user = await queue.Enqueue(new Func<Task<TLUser>>(() => client.MakeAuthAsync(clientPhoneNumber, clientRequestCodeHash, code)));
+                user = await queue.Enqueue(new Func<Task<TLUser>>(async () => await client.MakeAuthAsync(clientPhoneNumber, clientRequestCodeHash, code)));
             } catch (CloudPasswordNeededException e) {
                 Logger.Info(e, "Two factor authentication needed.");
                 clientStatus = STATUS.WAIT_PASSWORD;
@@ -375,7 +392,7 @@ namespace PagerBuddy.Services {
 
             TLAbsDialogs dialogs;
             try {
-                dialogs = await queue.Enqueue(new Func<Task<TLAbsDialogs>>(() => client.SendRequestAsync<TLAbsDialogs>(requestDialogList)));
+                dialogs = await queue.Enqueue(new Func<Task<TLAbsDialogs>>(async () => await client.SendRequestAsync<TLAbsDialogs>(requestDialogList)));
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list.");
                 await checkConnectionOnError(e);
@@ -403,7 +420,7 @@ namespace PagerBuddy.Services {
 
             TLFile file;
             try {
-                file = await queue.Enqueue(new Func<Task<TLFile>>(() => client.GetFile(loc, 1024 * 256)));
+                file = await queue.Enqueue(new Func<Task<TLFile>>(async () => await client.GetFile(loc, 1024 * 256)));
             } catch (Exception exception) {
                 Logger.Error(exception, "Exception while trying to fetch profile pic.");
                 await checkConnectionOnError(exception);
@@ -424,7 +441,7 @@ namespace PagerBuddy.Services {
 
             TLUser outUser;
             try {
-                TLVector<TLAbsUser> result = await queue.Enqueue(new Func<Task<TLVector<TLAbsUser>>>(() => client.SendRequestAsync<TLVector<TLAbsUser>>(request)));
+                TLVector<TLAbsUser> result = await queue.Enqueue(new Func<Task<TLVector<TLAbsUser>>>(async () => await client.SendRequestAsync<TLVector<TLAbsUser>>(request)));
                 outUser = result.First() as TLUser;
             } catch (Exception e) {
                 Logger.Error(e, "Exception while fetching user data.");
@@ -448,7 +465,7 @@ namespace PagerBuddy.Services {
 
             TLAbsDialogs dialogs;
             try {
-                dialogs = await queue.Enqueue(new Func<Task<TLAbsDialogs>>(() => client.SendRequestAsync<TLAbsDialogs>(requestDialogList)));
+                dialogs = await queue.Enqueue(new Func<Task<TLAbsDialogs>>(async () => await client.SendRequestAsync<TLAbsDialogs>(requestDialogList)));
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list for message IDs.");
                 await checkConnectionOnError(e);
@@ -484,7 +501,7 @@ namespace PagerBuddy.Services {
 
             TLAbsMessages messages;
             try {
-                messages = await queue.Enqueue(new Func<Task<TLAbsMessages>>(() => client.SendRequestAsync<TLAbsMessages>(request)));
+                messages = await queue.Enqueue(new Func<Task<TLAbsMessages>>(async () => await client.SendRequestAsync<TLAbsMessages>(request)));
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to retrieve messages.");
                 await checkConnectionOnError(e);
@@ -510,7 +527,6 @@ namespace PagerBuddy.Services {
             }
 
             public Session Load(string sessionUserId) {
-                ;
                 if (!File.Exists(file)) {
                     return (Session)null;
                 }
