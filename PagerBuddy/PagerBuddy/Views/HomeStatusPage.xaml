@@ -21,17 +21,17 @@
                 </Label.GestureRecognizers>
             </Label>
 
-            <StackLayout Orientation="Horizontal" HeightRequest="50" Margin="0,5,0,0">
-                <ImageButton Source="{Binding ToggleAllActiveIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
-                         CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllActive}" />
-                <ImageButton Source="{Binding ToggleAllSnoozeIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
-                         CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllSnooze}" IsEnabled="{Binding ToggleAllSnoozeEnabled}"/>
-                <ImageButton Source="{Binding AddConfigIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
-                         CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding AddConfig}" IsEnabled="{Binding AddConfigEnabled}"/>
-            </StackLayout>
-
-
             <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
+                <CollectionView.Header>
+                    <StackLayout Orientation="Horizontal" HeightRequest="50" Padding="0,5,0,0">
+                        <ImageButton Source="{Binding ToggleAllActiveIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllActive}" />
+                        <ImageButton Source="{Binding ToggleAllSnoozeIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllSnooze}" IsEnabled="{Binding ToggleAllSnoozeEnabled}"/>
+                        <ImageButton Source="{Binding AddConfigIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding AddConfig}" IsEnabled="{Binding AddConfigEnabled}"/>
+                    </StackLayout>
+                </CollectionView.Header>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="10,10,10,0">
@@ -81,9 +81,9 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.Footer>
-                    <StackLayout Padding="10,10,10,0" IsVisible="{Binding AddConfigEnabled}">
+                    <StackLayout Padding="10" IsVisible="{Binding AddConfigEnabled}">
                         <ImageButton BackgroundColor="{StaticResource BackgroundColor}" BorderColor="LightGray" BorderWidth="2" Source="{Binding AddConfigTabIcon}"  Command="{Binding AddConfig}"
-                         CornerRadius="10" Padding="10,30"  HeightRequest="110" VerticalOptions="Start"/>
+                                    CornerRadius="10" Padding="10,30"  HeightRequest="110" VerticalOptions="Start"/>
                     </StackLayout>
                 </CollectionView.Footer>
             </CollectionView>
