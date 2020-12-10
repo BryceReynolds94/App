@@ -95,6 +95,8 @@ namespace PagerBuddy.Services {
                 if (messageList.Count < 1) {
                     Logger.Debug("No new messages for AlertConfig " + config.triggerGroup.name);
                     break;
+                } else {
+                    Logger.Debug("{0} new message(s) for AlertConfig " + config.triggerGroup.name, messageList.Count);
                 }
 
                 foreach (TLAbsMessage rawMessage in messageList) {
@@ -115,6 +117,8 @@ namespace PagerBuddy.Services {
                             config.lastTriggered = DateTime.Now;
                             alertMessage(config, msg);
                         }
+                    } else {
+                        Logger.Debug("Message ignored, it did not fulfill the alert criteria.");
                     }
                 }
 

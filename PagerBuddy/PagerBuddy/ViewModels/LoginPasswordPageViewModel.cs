@@ -47,6 +47,8 @@ namespace PagerBuddy.ViewModels {
                 switch (errorStatus) {
                     case TStatus.INVALID_PASSWORD:
                         return AppResources.LoginPasswordPage_Error_InvalidPassword;
+                    case TStatus.OFFLINE:
+                        return AppResources.LoginPasswordPage_Error_Offline;
                     default:
                         return AppResources.LoginPasswordPage_Error_Default;
                 }

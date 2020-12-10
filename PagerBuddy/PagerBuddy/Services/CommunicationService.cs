@@ -22,6 +22,8 @@ using Xamarin.Forms;
 using static PagerBuddy.Services.ClientExceptions;
 
 namespace PagerBuddy.Services {
+
+    //TODO: Later - Try Telega https://github.com/ilyalatt/Telega/blob/master/Telega.Example/Program.cs
     public class CommunicationService {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -95,6 +97,7 @@ namespace PagerBuddy.Services {
                 if (!isBackgroundCall) { //only do this stuff if we are not retrieving alert messages
                     await saveUserData(user);
                     //Update current message index
+                    await subscribePushNotifications(CrossFirebasePushNotification.Current.Token);
                     DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0, true));
                 }
                 clientStatus = STATUS.AUTHORISED;
@@ -214,6 +217,10 @@ namespace PagerBuddy.Services {
                 Logger.Warn("Attempted to subscribe to FCM Messages without authorisation.");
                 return;
             }
+            if(token == null || token.Length < 1) {
+                Logger.Warn("Token invalid. Not (re-)registering push notifications.");
+                return;
+            }
 
             TLRequestRegisterDevice request = new TLRequestRegisterDevice() { //https://core.telegram.org/method/account.registerDevice
                 TokenType = 2, //2 = FCM, use  for APNs
@@ -275,6 +282,14 @@ namespace PagerBuddy.Services {
             string hash;
             try {
                 hash = await queue.Enqueue(new Func<Task<string>>(async () => await client.SendCodeRequestAsync(phoneNumber)));
+            } catch (System.InvalidOperationException e) {
+                Logger.Warn(e, "Exception trying to authenticate user.");
+                //we assume client went offline
+                //TODO: Testing
+                //TODO: Possibly apply simialr procedure to CODE/Password
+                //TODO: Implement user-facing error message for OFFLINE
+                await checkConnectionOnError(e);
+                return TStatus.OFFLINE;
             } catch (Exception e) {
 
                 TException exception = getTException(e.Message);
@@ -340,11 +355,11 @@ namespace PagerBuddy.Services {
             await saveUserData(user);
             clientStatus = STATUS.AUTHORISED;
 
-            string token = await CrossFirebasePushNotification.Current.GetTokenAsync();
-            if (token.Length > 1) {
-                await subscribePushNotifications(token);
-            } else {
+            string token = CrossFirebasePushNotification.Current.Token;
+            if (token == null || token.Length < 1) {
                 Logger.Warn("Could not subscribe to FCM Messages as no token available");
+            } else {
+                await subscribePushNotifications(token);
             }
             //set current message id
             DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0));

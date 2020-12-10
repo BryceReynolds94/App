@@ -772,6 +772,15 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not connect to Telegram. Check your internet connection and try again..
+        /// </summary>
+        public static string LoginCodePage_Error_Offline {
+            get {
+                return ResourceManager.GetString("LoginCodePage_Error_Offline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string LoginCodePage_NextBtn {
@@ -781,7 +790,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Authenticate using the confirmation code sent to your phone number.
+        ///   Looks up a localized string similar to Authenticate using the confirmation code sent to your phone number via Telegram/SMS.
         /// </summary>
         public static string LoginCodePage_Prompt {
             get {
@@ -813,6 +822,15 @@ namespace PagerBuddy.Resources {
         public static string LoginPasswordPage_Error_InvalidPassword {
             get {
                 return ResourceManager.GetString("LoginPasswordPage_Error_InvalidPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not connect to Telegram. Check your internet connection and try again..
+        /// </summary>
+        public static string LoginPasswordPage_Error_Offline {
+            get {
+                return ResourceManager.GetString("LoginPasswordPage_Error_Offline", resourceCulture);
             }
         }
         
@@ -876,6 +894,15 @@ namespace PagerBuddy.Resources {
         public static string LoginPhonePage_Error_NoPhoneNumber {
             get {
                 return ResourceManager.GetString("LoginPhonePage_Error_NoPhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not connect to Telegram. Check your internet connection and try again..
+        /// </summary>
+        public static string LoginPhonePage_Error_Offline {
+            get {
+                return ResourceManager.GetString("LoginPhonePage_Error_Offline", resourceCulture);
             }
         }
         

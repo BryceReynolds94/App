@@ -85,6 +85,8 @@ namespace PagerBuddy.ViewModels {
                         return AppResources.LoginPhonePage_Error_NoPhoneNumber;
                     case TStatus.INVALID_PHONE_NUMBER:
                         return AppResources.LoginPhonePage_Error_InvalidPhoneNumber;
+                    case TStatus.OFFLINE:
+                        return AppResources.LoginCodePage_Error_Offline;
                     default:
                         return AppResources.LoginPhonePage_Error_Default;
                 }

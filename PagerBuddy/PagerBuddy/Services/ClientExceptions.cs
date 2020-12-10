@@ -38,6 +38,7 @@ namespace PagerBuddy.Services
             INVALID_CODE,
             NO_CODE,
             INVALID_PASSWORD,
+            OFFLINE,
             UNKNOWN,
             OK
 
