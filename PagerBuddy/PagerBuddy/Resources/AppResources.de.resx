@@ -283,7 +283,7 @@
     <value>Du hast keinen korrekten Code eingegeben. Ein Authentifizierungscode für Telegram besteht aus fünf Zahlen.</value>
   </data>
   <data name="LoginCodePage_Prompt" xml:space="preserve">
-    <value>Authentifiziere dich mit dem Bestätigungscode der an deine Telefonnummer verschickt wurde</value>
+    <value>Authentifiziere dich mit dem Bestätigungscode der über Telegram/SMS an deine Telefonnummer verschickt wurde</value>
   </data>
   <data name="LoginPasswordPage_Prompt" xml:space="preserve">
     <value>Gib das Passwort für deinen Telegram-Account ein</value>
@@ -317,5 +317,14 @@
   </data>
   <data name="AboutPage_LogLevel_Prefix" xml:space="preserve">
     <value>Log Level: {0}</value>
+  </data>
+  <data name="LoginPhonePage_Error_Offline" xml:space="preserve">
+    <value>Keine Verbindung zu Telegram möglich. Überprüfe deine Internetverbindung und versuche es nochmal.</value>
+  </data>
+  <data name="LoginCodePage_Error_Offline" xml:space="preserve">
+    <value>Keine Verbindung zu Telegram möglich. Überprüfe deine Internetverbindung und versuche es nochmal.</value>
+  </data>
+  <data name="LoginPasswordPage_Error_Offline" xml:space="preserve">
+    <value>Keine Verbindung zu Telegram möglich. Überprüfe deine Internetverbindung und versuche es nochmal.</value>
   </data>
 </root>

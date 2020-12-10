@@ -54,10 +54,12 @@ namespace PagerBuddy.Models
         {
             if (!isActive || snoozeActive) 
             {
+                Logger.Debug("Alert not triggered as AlertConfig is inactive. AlertConfig: " + triggerGroup.name);
                 return false;
             }
             if(timeRestriction && !activeTimeConfig.isActiveTime(time))
             {
+                Logger.Debug("Alert not triggered as time restriction was not fulfilled. AlertConfig: " + triggerGroup.name);
                 return false;
             }
 
@@ -69,9 +71,11 @@ namespace PagerBuddy.Models
                     break;
                 case TRIGGER_TYPE.KEYWORD:
                     result = (!(triggerKeyword == null)) && Regex.IsMatch(message, triggerKeyword);
+                    Logger.Debug("Trigger type is KEYWORD. Result of keyword check: " + result);
                     break;
                 case TRIGGER_TYPE.SERVER:
                     //TODO Later: Invent PagerBuddy-Server syntax
+                    Logger.Warn("Alert cannot be triggered, as the trigger type is set to SERVER. This method is not implemented yet.");
                     break;
             }
 

@@ -355,7 +355,7 @@
     <value>Confirm</value>
   </data>
   <data name="LoginCodePage_Prompt" xml:space="preserve">
-    <value>Authenticate using the confirmation code sent to your phone number</value>
+    <value>Authenticate using the confirmation code sent to your phone number via Telegram/SMS</value>
   </data>
   <data name="LoginCodePage_Title" xml:space="preserve">
     <value>Authenticate</value>
@@ -438,5 +438,14 @@
   </data>
   <data name="AboutPage_LogLevel_Prefix" xml:space="preserve">
     <value>Log Level: {0}</value>
+  </data>
+  <data name="LoginPhonePage_Error_Offline" xml:space="preserve">
+    <value>Could not connect to Telegram. Check your internet connection and try again.</value>
+  </data>
+  <data name="LoginCodePage_Error_Offline" xml:space="preserve">
+    <value>Could not connect to Telegram. Check your internet connection and try again.</value>
+  </data>
+  <data name="LoginPasswordPage_Error_Offline" xml:space="preserve">
+    <value>Could not connect to Telegram. Check your internet connection and try again.</value>
   </data>
 </root>

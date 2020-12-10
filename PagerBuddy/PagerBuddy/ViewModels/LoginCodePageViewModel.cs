@@ -59,6 +59,8 @@ namespace PagerBuddy.ViewModels
                         return AppResources.LoginCodePage_Error_NoCode;
                     case TStatus.INVALID_CODE:
                         return AppResources.LoginCodePage_Error_InvalidCode;
+                    case TStatus.OFFLINE:
+                        return AppResources.LoginCodePage_Error_Offline;
                     default:
                         return AppResources.LoginCodePage_Error_Default;
                 }
