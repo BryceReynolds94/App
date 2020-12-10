@@ -66,10 +66,11 @@ namespace PagerBuddy.Droid
 
         public void quitApplication()
         {
-            Intent intent = new Intent(Intent.ActionMain)
+            Platform.CurrentActivity.FinishAndRemoveTask(); 
+            /*Intent intent = new Intent(Intent.ActionMain)
                 .AddCategory(Intent.CategoryHome)
                 .AddFlags(ActivityFlags.NewTask);
-            Application.Context.StartActivity(intent);
+            Application.Context.StartActivity(intent);*/
         }
 
     }

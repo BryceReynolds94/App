@@ -28,6 +28,8 @@ namespace PagerBuddy.Droid {
             StartActivity(new Intent(Application.Context, typeof(MainActivity)));
         }
 
+        public override void OnBackPressed() { } //avoid back pressed cancelling splash
+
     }
 
 }

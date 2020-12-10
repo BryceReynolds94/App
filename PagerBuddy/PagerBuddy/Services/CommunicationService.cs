@@ -57,10 +57,10 @@ namespace PagerBuddy.Services {
             _ = connectClient(isBackgroundCall);
         }
 
-        public async Task reloadConnection() {
+        public async Task reloadConnection(bool isBackgroundCall = false, int attempt = 0) {
             if (clientStatus == STATUS.OFFLINE) { //Do not reload if we are currently connecting or have successfully connected
                 Logger.Info("Reloading connection.");
-                await connectClient();
+                await connectClient(isBackgroundCall, attempt);
             }
         }
 
@@ -72,33 +72,36 @@ namespace PagerBuddy.Services {
         public event ClientStausEventHandler StatusChanged;
         public delegate void ClientStausEventHandler(object sender, STATUS newStatus);
 
-        private async Task connectClient(bool isBackgroundCall = false) {
+        private async Task connectClient(bool isBackgroundCall = false, int attempt = 0) {
             clientStatus = STATUS.NEW;
             try {
                 client = new TelegramClient(KeyService.checkID(this), KeyService.checkHash(this), new MySessionStore(this));
             } catch (Exception e) {
                 Logger.Error(e, "Initialisation of TelegramClient failed");
                 clientStatus = STATUS.OFFLINE;
-                scheduleRetry(isBackgroundCall);
+                scheduleRetry(isBackgroundCall, attempt);
                 return;
             }
 
             if(! await tryConnect(isBackgroundCall)) {
                 clientStatus = STATUS.OFFLINE;
-                scheduleRetry(isBackgroundCall);
+                scheduleRetry(isBackgroundCall, attempt);
                 return;
             }
 
             clientStatus = STATUS.ONLINE;
 
             if (client.IsUserAuthorized()) {
-                Logger.Debug("User is authorised already.");
-                this.user = await getUserUpdate(this.user);
+                Logger.Debug("User is authorised.");
                 if (!isBackgroundCall) { //only do this stuff if we are not retrieving alert messages
+                    this.user = await getUserUpdate(this.user);
                     await saveUserData(user);
                     //Update current message index
-                    await subscribePushNotifications(CrossFirebasePushNotification.Current.Token);
+                    await subscribePushNotifications(CrossFirebasePushNotification.Current.Token, true);
                     DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0, true));
+                }
+                if (clientStatus != STATUS.ONLINE) { //status may have changed out of scope due to previous call fallbacks
+                    Logger.Info("Connect process completed, but client Status was changed out of scope. Not setting authorised status. CurrentStatus: " + clientStatus.ToString());
                 }
                 clientStatus = STATUS.AUTHORISED;
             } else {
@@ -107,15 +110,15 @@ namespace PagerBuddy.Services {
             }
         }
 
-        private void scheduleRetry(bool isBackgroundCall) {
-            if (isBackgroundCall) {
-                Logger.Warn("Client called in background. Not scheduling another connection attempt.");
+        private void scheduleRetry(bool isBackgroundCall, int attempt = 0) {
+            if (isBackgroundCall && attempt > 2) {
+                Logger.Warn("Client called in background. Not scheduling another connection attempt after 3 tries.");
                 return;
             }
             Logger.Warn("Could not connect client. Will retry in 5 seconds.");
 
             //Retry in 5 seconds
-            Task.Delay(5000).ContinueWith(t => reloadConnection());
+            Task.Delay(5000).ContinueWith(t => reloadConnection(isBackgroundCall, attempt));
         }
 
         private async Task<bool> connectTimeWatcher() {
@@ -134,10 +137,9 @@ namespace PagerBuddy.Services {
 
                 if (wasKilled) {
                     Logger.Error("Connecting client took too long and was cancelled.");
-                    retry = true;
+                    return false;
                 }
             } catch (InvalidOperationException e) {
-                //TODO: Testing - can we recover from this?
                 Logger.Error(e, "Exception during connection attempt.");
                 retry = true;
             } catch (Exception e) {
@@ -165,7 +167,6 @@ namespace PagerBuddy.Services {
         }
 
         private async Task checkConnectionOnError(Exception e = null) {
-            //TODO: Testing
             if(clientStatus > STATUS.OFFLINE) {
                 if (client.IsConnected) {
                     if (clientStatus == STATUS.AUTHORISED && !client.IsUserAuthorized()) {
@@ -212,8 +213,8 @@ namespace PagerBuddy.Services {
             await forceReloadConnection();
         }
 
-        public async Task subscribePushNotifications(string token) {
-            if (clientStatus != STATUS.AUTHORISED) {
+        public async Task subscribePushNotifications(string token, bool isInit = false) {
+            if (clientStatus != STATUS.AUTHORISED && !isInit) {
                 Logger.Warn("Attempted to subscribe to FCM Messages without authorisation.");
                 return;
             }
@@ -254,6 +255,10 @@ namespace PagerBuddy.Services {
             TLUser user;
             try {
                 user = await queue.Enqueue(new Func<Task<TLUser>>(async () => await client.MakeAuthWithPasswordAsync(passwordConfig, password)));
+            } catch (System.InvalidOperationException e) {
+                Logger.Warn(e, "Exception trying to confirm password. Presumably the client went offline.");
+                await checkConnectionOnError(e);
+                return TStatus.OFFLINE;
             } catch (Exception e) {
                 TException exception = getTException(e.Message);
                 switch (exception) {
@@ -283,11 +288,7 @@ namespace PagerBuddy.Services {
             try {
                 hash = await queue.Enqueue(new Func<Task<string>>(async () => await client.SendCodeRequestAsync(phoneNumber)));
             } catch (System.InvalidOperationException e) {
-                Logger.Warn(e, "Exception trying to authenticate user.");
-                //we assume client went offline
-                //TODO: Testing
-                //TODO: Possibly apply simialr procedure to CODE/Password
-                //TODO: Implement user-facing error message for OFFLINE
+                Logger.Warn(e, "Exception trying to authenticate user. Presumably the client went offline.");
                 await checkConnectionOnError(e);
                 return TStatus.OFFLINE;
             } catch (Exception e) {
@@ -340,6 +341,10 @@ namespace PagerBuddy.Services {
             } catch (InvalidPhoneCodeException e) {
                 Logger.Info(e, "Incorrect code entered.");
                 return TStatus.INVALID_CODE;
+            } catch (System.InvalidOperationException e) {
+                Logger.Warn(e, "Exception trying to confirm code. Presumably the client went offline.");
+                await checkConnectionOnError(e);
+                return TStatus.OFFLINE;
             } catch (Exception e) {
                 Logger.Error(e, "Authenticating user code failed.");
                 await checkConnectionOnError(e);
@@ -447,7 +452,7 @@ namespace PagerBuddy.Services {
         private async Task<TLUser> getUserUpdate(TLUser user) {
             if (clientStatus < STATUS.ONLINE) {
                 Logger.Warn("Attempted to retrieve user update without appropriate client status. Current status: " + clientStatus.ToString());
-                return new TLUser();
+                return user;
             }
 
             TLRequestGetUsers request = new TLRequestGetUsers() { //https://core.telegram.org/method/users.getUsers
@@ -461,7 +466,7 @@ namespace PagerBuddy.Services {
             } catch (Exception e) {
                 Logger.Error(e, "Exception while fetching user data.");
                 await checkConnectionOnError(e);
-                return new TLUser();
+                return user;
             }
 
             return outUser;
@@ -502,7 +507,7 @@ namespace PagerBuddy.Services {
             return currentID;
         }
 
-        public async Task<TLAbsMessages> getMessages(int chatID, int lastMessageID) {
+        public async Task<TLAbsMessages> getMessages(int chatID, int lastMessageID, int attempt = 0) {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempting to get messages without user authorisation. Current status: " + clientStatus.ToString());
                 return null;
@@ -520,6 +525,11 @@ namespace PagerBuddy.Services {
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to retrieve messages.");
                 await checkConnectionOnError(e);
+                if(clientStatus == STATUS.AUTHORISED && attempt < 3) {
+                    //As this is critical for alerts retry in case checkConnectionOnError succeded
+                    Logger.Info("Connection was possibly fixed. Retrying message retrieval.");
+                    return await getMessages(chatID, lastMessageID, ++attempt);
+                }
                 return null;
             }
             return messages;

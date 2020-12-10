@@ -448,4 +448,7 @@
   <data name="LoginPasswordPage_Error_Offline" xml:space="preserve">
     <value>Could not connect to Telegram. Check your internet connection and try again.</value>
   </data>
+  <data name="Android_AndroidNotifications_Action_Telegram" xml:space="preserve">
+    <value>Show Chat</value>
+  </data>
 </root>

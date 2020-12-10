@@ -50,7 +50,7 @@ namespace PagerBuddy
                 testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Message, config);
             } else {
                 Logger.Info("No configurations found. Using mock configuration for sample AlertPage.");
-                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Title, AppResources.App_DeveloperMode_AlertPage_Message, "", 0, false, 0);
+                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Title, AppResources.App_DeveloperMode_AlertPage_Message, "", 0, false);
             }
             Logger.Info("Launching AlertPage from Developer Mode");
             MainPage = new AlertPage(testAlert);
