@@ -40,5 +40,17 @@ namespace PagerBuddy.Services
             new AlertService();
         }
 
+        public static void BackgroundFirebaseTokenRefresh(object sender, string token) {
+            Logger.Debug("Firebase token was updated while app is in background.");
+
+            CommunicationService client = new CommunicationService(true);
+            client.StatusChanged += async (sender, status) => {
+                if(status == CommunicationService.STATUS.AUTHORISED) {
+                    await client.subscribePushNotifications(token);
+                }
+            };
+            
+        }
+
     }
 }

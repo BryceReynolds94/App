@@ -42,6 +42,14 @@ namespace PagerBuddy.Droid
 
             };
 
+            CrossFirebasePushNotification.Current.OnTokenRefresh += (s, args) =>
+            {
+                if (!Xamarin.Forms.Forms.IsInitialized) {
+                    Logger.Info("Firebase token was updated, TOKEN: {0}", args.Token);
+                    MessagingService.BackgroundFirebaseTokenRefresh(this, args.Token);
+                }
+            };
+
         }
     }
 

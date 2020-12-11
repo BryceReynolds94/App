@@ -250,6 +250,15 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Chat.
+        /// </summary>
+        public static string Android_AndroidNotifications_Action_Telegram {
+            get {
+                return ResourceManager.GetString("Android_AndroidNotifications_Action_Telegram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alert notifications you configured in PagerBuddy..
         /// </summary>
         public static string Android_AndroidNotifications_AlertChannel_Description {

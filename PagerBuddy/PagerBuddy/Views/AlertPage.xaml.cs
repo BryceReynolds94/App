@@ -21,22 +21,18 @@ namespace PagerBuddy.Views
         AlertPageViewModel viewModel;
 
         private int groupID;
-        private int notificationID;
 
         public AlertPage(Alert alert)
         {
             InitializeComponent();
 
             this.groupID = alert.chatID;
-            this.notificationID = alert.notificationID;
             BindingContext = viewModel = new AlertPageViewModel(alert.title, alert.text, alert.configID, alert.hasPic);
             viewModel.RequestCancel += cancel;
             viewModel.RequestConfirm += confirm;
 
             startAnimation();
         }
-
-
 
         private async void startAnimation() {
             await MainIcon.ScaleTo(1.3, 1010);
@@ -47,7 +43,7 @@ namespace PagerBuddy.Views
         private void cancel(object sender, EventArgs args)
         {
             INotifications notifications = DependencyService.Get<INotifications>();
-            notifications.closeNotification(notificationID);
+            notifications.closeNotification(groupID);
 
             INavigation nav = DependencyService.Get<INavigation>();
             nav.quitApplication(); 
@@ -56,10 +52,15 @@ namespace PagerBuddy.Views
         private void confirm(object sender, EventArgs args)
         {
             INotifications notifications = DependencyService.Get<INotifications>();
-            notifications.closeNotification(notificationID);
+            notifications.closeNotification(groupID);
 
             INavigation nav = DependencyService.Get<INavigation>();
             nav.navigateTelegramChat(groupID);
+        }
+
+        protected override void OnDisappearing() {
+            base.OnDisappearing();
+            cancel(this, null);
         }
     }
 }

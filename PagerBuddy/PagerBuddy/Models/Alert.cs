@@ -13,7 +13,6 @@ namespace PagerBuddy.Models
         public string text;
         public string configID;
         public int chatID;
-        public int notificationID;
         public bool hasPic;
 
         public Alert(string message, AlertConfig config)
@@ -26,14 +25,13 @@ namespace PagerBuddy.Models
         }
 
         [JsonConstructor]
-        public Alert(string title, string text, string configID, int chatID, bool hasPic, int notificationID)
+        public Alert(string title, string text, string configID, int chatID, bool hasPic)
         {
             this.title = title;
             this.text = text;
             this.configID = configID;
             this.chatID = chatID;
             this.hasPic = hasPic;
-            this.notificationID = notificationID;
         }
 
     }

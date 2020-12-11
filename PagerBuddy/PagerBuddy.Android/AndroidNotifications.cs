@@ -36,10 +36,8 @@ namespace PagerBuddy.Droid {
         public void showAlertNotification(Alert alert) {
             prepareAlert();
 
-            alert.notificationID = new Random().Next(); //we need this to cancel notification on UI input
-
             Intent intent = new Intent(Application.Context, typeof(MainActivity))
-                .SetFlags(ActivityFlags.NewTask | ActivityFlags.ExcludeFromRecents)
+                .SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask | ActivityFlags.ExcludeFromRecents)
                 .PutExtra(Alert.EXTRAS.ALERT_FLAG.ToString(), DataService.serialiseObject(alert));
 
             PendingIntent fullScreenIntent = PendingIntent.GetActivity(Application.Context, 0, intent, 0);
@@ -56,22 +54,26 @@ namespace PagerBuddy.Droid {
                 .SetContentText(alert.text)
                 .SetSmallIcon(Resource.Drawable.notification_icon) //use simplified xml vector
                 .SetColor(Resource.Color.colorPrimary) //set app color for small notification icon
-                .SetLargeIcon(largePic) //group pic
-                //TODO: PHY Testing - Possibly revert to Notification.CategoryMessage if does not guarantee persistance
+                .SetLargeIcon(largePic) //group pic 
+                                        //TODO: PHY Testing - Possibly revert to Notification.CategoryMessage if does not guarantee persistance
                 .SetCategory(Notification.CategoryCall) //category for message classification 
                 .SetAutoCancel(true) //cancel notification when tapped
                 .SetFullScreenIntent(fullScreenIntent, true)
                 .SetStyle(new Notification.BigTextStyle().BigText(alert.text)); //extend message on tap
 
+            //TODO: Replace Intent with AlertPage and add ACTION element for Telegram
             if (new AndroidNavigation().isTelegramInstalled()) {
-                builder.SetContentIntent(PendingIntent.GetActivity(Application.Context, 0, AndroidNavigation.getTelegramIntent(alert.chatID), 0));
+                PendingIntent chatIntent = PendingIntent.GetActivity(Application.Context, 0, AndroidNavigation.getTelegramIntent(alert.chatID), 0);
+                builder.SetContentIntent(chatIntent);
+            } else {
+                builder.SetContentIntent(fullScreenIntent);
             }
 
             Notification notification = builder.Build();
             notification.Flags |= NotificationFlags.Insistent; //repeat sound untill acknowledged
 
             NotificationManager manager = NotificationManager.FromContext(Application.Context);
-            manager.Notify(alert.notificationID, notification);
+            manager.Notify(alert.chatID, notification);
         }
 
         public void closeNotification(int notificationID) {
