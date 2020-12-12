@@ -36,7 +36,7 @@ namespace PagerBuddy.Views
 
         public async void keywordConfigureCompleted(object sender, EventArgs e)
         {
-            if (alertConfig.triggerGroup.hasImage)
+            if (alertConfig.triggerGroup.hasImage && alertConfig.triggerGroup.image != null)
             {
                 DataService.saveProfilePic(alertConfig.id, alertConfig.triggerGroup.image);
             }

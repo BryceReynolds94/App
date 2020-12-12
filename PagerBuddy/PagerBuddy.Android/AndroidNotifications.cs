@@ -37,7 +37,7 @@ namespace PagerBuddy.Droid {
             prepareAlert();
 
             Intent intent = new Intent(Application.Context, typeof(MainActivity))
-                .SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask | ActivityFlags.ExcludeFromRecents)
+                .SetFlags(ActivityFlags.NewTask | ActivityFlags.MultipleTask | ActivityFlags.ExcludeFromRecents)
                 .PutExtra(Alert.EXTRAS.ALERT_FLAG.ToString(), DataService.serialiseObject(alert));
 
             PendingIntent fullScreenIntent = PendingIntent.GetActivity(Application.Context, 0, intent, 0);
@@ -61,7 +61,6 @@ namespace PagerBuddy.Droid {
                 .SetFullScreenIntent(fullScreenIntent, true)
                 .SetStyle(new Notification.BigTextStyle().BigText(alert.text)); //extend message on tap
 
-            //TODO: Replace Intent with AlertPage and add ACTION element for Telegram
             if (new AndroidNavigation().isTelegramInstalled()) {
                 PendingIntent chatIntent = PendingIntent.GetActivity(Application.Context, 0, AndroidNavigation.getTelegramIntent(alert.chatID), 0);
                 builder.SetContentIntent(chatIntent);

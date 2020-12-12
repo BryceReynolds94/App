@@ -13,8 +13,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//TODO: Later - Implement animated theme https://medium.com/swlh/splash-screen-in-android-8ab250e40190
-
 namespace PagerBuddy.Droid {
     [Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher", Theme = "@style/SplashTheme", MainLauncher = true, NoHistory = true)]
     public class SplashScreenActivity : AppCompatActivity {
@@ -25,7 +23,9 @@ namespace PagerBuddy.Droid {
 
         protected override void OnResume() {
             base.OnResume();
-            StartActivity(new Intent(Application.Context, typeof(MainActivity)));
+            Intent intent = new Intent(Application.Context, typeof(MainActivity));
+            intent.AddFlags(ActivityFlags.NoAnimation);
+            StartActivity(intent);
         }
 
         public override void OnBackPressed() { } //avoid back pressed cancelling splash

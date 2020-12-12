@@ -16,7 +16,10 @@ using Xamarin.Forms.Xaml;
 namespace PagerBuddy.Views {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ConfigureGroupPage : ContentPage {
-        ConfigureGroupPageViewModel viewModel;
+
+        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+        private ConfigureGroupPageViewModel viewModel;
 
         private AlertConfig alertConfig;
 
@@ -44,6 +47,22 @@ namespace PagerBuddy.Views {
             viewModel.clearGroupList();
 
             TLVector<TLAbsChat> chatList = await client.getChatList();
+
+            if(chatList.Count < 1) {
+                viewModel.IsBusy = false;
+                Logger.Warn("Retrieving chat list returned no result.");
+
+                //check is client still available
+                if(client.clientStatus != CommunicationService.STATUS.AUTHORISED) {
+                    Logger.Info("Client is not authorised. Returning to HomePage. Client status: " + client.clientStatus.ToString());
+                    await Navigation.PopAsync();
+                } else {
+                    viewModel.AreChatsEmpty = true;
+                }
+                completedCallback();
+                return;
+            }
+            viewModel.AreChatsEmpty = false;
 
             foreach (TLChat chat in chatList) {
                 int id = chat.Id;

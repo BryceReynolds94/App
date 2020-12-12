@@ -77,7 +77,7 @@ namespace PagerBuddy.Views
 
         private async void editAlertConfig(AlertConfig alertConfig)
         {
-            await Navigation.PushAsync(new ConfigureGroupPage(client, alertConfig));
+            await Navigation.PushAsync(new ConfigureKeywordPage(alertConfig));
         }
 
         private void deleteAllAlertConfigs() {

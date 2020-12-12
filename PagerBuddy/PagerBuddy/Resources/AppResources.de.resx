@@ -330,4 +330,7 @@
   <data name="Android_AndroidNotifications_Action_Telegram" xml:space="preserve">
     <value>Chat anzeigen</value>
   </data>
+  <data name="ConfigureGroupPage_Warning_NoChats" xml:space="preserve">
+    <value>Es sieht so aus als ob du keine Gruppen-Chats in Telegram hast. Trete zuerst einer Gruppe in Telegram bei oder erstelle eine neue Gruppe um diese anschließend als Auslöser für Alarmbenachrichtigungen auszuwählen.</value>
+  </data>
 </root>

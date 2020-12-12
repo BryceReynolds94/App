@@ -424,6 +424,10 @@ namespace PagerBuddy.Services {
                 return new TLVector<TLAbsChat>();
             }
 
+            //TLDialogs test = dialogs as TLDialogs;
+            //TODO: Accept all users, not just groups
+            //dialohs.dialogs -> Peer (either chatID or userID)
+
             return (dialogs as TLDialogs).Chats;
         }
 

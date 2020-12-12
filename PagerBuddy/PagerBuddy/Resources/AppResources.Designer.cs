@@ -349,6 +349,15 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It appears that you have no group chats in Telegram. First join or create a group in Telegram to add it as an alert trigger..
+        /// </summary>
+        public static string ConfigureGroupPage_Warning_NoChats {
+            get {
+                return ResourceManager.GetString("ConfigureGroupPage_Warning_NoChats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can use RegEx.
         /// </summary>
         public static string ConfigureKeywordPage_Keyword_Hint {

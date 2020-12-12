@@ -21,9 +21,17 @@ namespace PagerBuddy.ViewModels
 
         public ObservableCollection<GroupViewModel> groupList { get; set; }
         public Command LoadItemsCommand { get; set; }
-
         public Command GroupSelectionChangedCommand { get; set; }
         public GroupViewModel SelectedGroup { get; set; }
+
+        private bool chatsEmpty = false;
+        public bool AreChatsEmpty {
+            get => chatsEmpty;
+            set {
+                chatsEmpty = value;
+                OnPropertyChanged(nameof(AreChatsEmpty));
+            }
+        }
 
         public ConfigureGroupPageViewModel()
         {
@@ -56,6 +64,7 @@ namespace PagerBuddy.ViewModels
         public void addGroupToList(Group addGroup)
         {
             GroupViewModel groupViewModel = new GroupViewModel(addGroup);
+            //TODO: PHY Testing Jonathan - Exception occured here in v14 - presumably on image load/refresh
             groupList.Add(groupViewModel);
         }
 

@@ -451,4 +451,7 @@
   <data name="Android_AndroidNotifications_Action_Telegram" xml:space="preserve">
     <value>Show Chat</value>
   </data>
+  <data name="ConfigureGroupPage_Warning_NoChats" xml:space="preserve">
+    <value>It appears that you have no group chats in Telegram. First join or create a group in Telegram to add it as an alert trigger.</value>
+  </data>
 </root>
