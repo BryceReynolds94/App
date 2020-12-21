@@ -64,18 +64,37 @@ namespace PagerBuddy.Views {
             }
             viewModel.AreChatsEmpty = false;
 
-            foreach (TLChat chat in chatList) {
-                int id = chat.Id;
-                string name = chat.Title;
+            foreach (TLAbsChat rawChat in chatList) {
+                int id;
+                string name;
+                TLAbsChatPhoto rawPhoto;
 
-                TLChatPhoto photo = chat.Photo as TLChatPhoto;
+                if(rawChat is TLChat) {
+                    TLChat chat = rawChat as TLChat;
+                    id = chat.Id;
+                    name = chat.Title;
+                    rawPhoto = chat.Photo;
+                }else if(rawChat is TLChannel) {
+                    TLChannel channel = rawChat as TLChannel;
+                    id = channel.Id;
+                    name = channel.Title;
+                    rawPhoto = channel.Photo;
+                }else {
+                    Logger.Warn("Chat was of unexpected type " + rawChat.GetType().ToString() + " and could not be evaluated.");
+                    continue;
+                }
 
                 MemoryStream inputStream = null;
-                if (photo != null) {
-                    TLFile file = await client.getProfilePic(photo.PhotoSmall as TLFileLocation);
-                    inputStream = new MemoryStream(file.Bytes);
-
+                if (rawPhoto is TLChatPhoto) {
+                    TLChatPhoto photo = rawPhoto as TLChatPhoto;
+                    if (photo != null) {
+                        TLFile file = await client.getProfilePic(photo.PhotoSmall as TLFileLocation);
+                        inputStream = new MemoryStream(file.Bytes);
+                    }
+                } else {
+                    Logger.Warn("Chat photo was of unexpected type " + rawPhoto.GetType().ToString() + " and was ignored.");
                 }
+
                 Group addGroup = new Group(name, id);
                 addGroup.image = inputStream;
                 addGroup.hasImage = inputStream != null;

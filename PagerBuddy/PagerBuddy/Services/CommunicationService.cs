@@ -399,7 +399,7 @@ namespace PagerBuddy.Services {
             MessagingCenter.Send(this, MESSAGING_KEYS.USER_DATA_CHANGED.ToString());
         }
 
-        public async Task<TLVector<TLAbsChat>> getChatList() {
+        public async Task<TLVector<TLAbsChat>> getChatList(int attempt = 0) {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to load chat list without appropriate client status. Current status: " + clientStatus.ToString());
                 return new TLVector<TLAbsChat>();
@@ -416,6 +416,12 @@ namespace PagerBuddy.Services {
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list.");
                 await checkConnectionOnError(e);
+                if(clientStatus == STATUS.AUTHORISED && attempt < 3) {
+                    Logger.Info("Connection was possibly fixed. Retrying chat retrieval.");
+                    return await getChatList(++attempt);
+                } else {
+                    Logger.Warn("Finally failed to get chat messages. Returning empty list.");
+                }
                 return new TLVector<TLAbsChat>();
             }
 
@@ -426,7 +432,7 @@ namespace PagerBuddy.Services {
 
             //TLDialogs test = dialogs as TLDialogs;
             //TODO: Accept all users, not just groups
-            //dialohs.dialogs -> Peer (either chatID or userID)
+            //dialogs.dialogs -> Peer (either chatID or userID)
 
             return (dialogs as TLDialogs).Chats;
         }

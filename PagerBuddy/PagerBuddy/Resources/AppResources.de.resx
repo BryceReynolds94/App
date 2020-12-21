@@ -91,7 +91,7 @@
     <value>Keine Internetverbindung</value>
   </data>
   <data name="HomeStatusPage_FlipTime_Prefix" xml:space="preserve">
-    <value>Ausser</value>
+    <value>Außer</value>
   </data>
   <data name="HomeStatusPage_Snooze_Cancel" xml:space="preserve">
     <value>Abbrechen</value>

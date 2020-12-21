@@ -64,7 +64,6 @@ namespace PagerBuddy.ViewModels
         public void addGroupToList(Group addGroup)
         {
             GroupViewModel groupViewModel = new GroupViewModel(addGroup);
-            //TODO: PHY Testing Jonathan - Exception occured here in v14 - presumably on image load/refresh
             groupList.Add(groupViewModel);
         }
 

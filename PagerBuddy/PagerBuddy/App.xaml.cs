@@ -32,6 +32,12 @@ namespace PagerBuddy
             InitializeComponent();
             VersionTracking.Track(); //Initialise global version tracking
 
+            if (VersionTracking.IsFirstLaunchEver) {
+                Logger.Debug("Fresh installation. First run of App with build No. " + VersionTracking.CurrentBuild);
+            }else if (VersionTracking.IsFirstLaunchForCurrentBuild) {
+                Logger.Debug("App updated from build no. " + VersionTracking.PreviousBuild + ". First run of build no. " + VersionTracking.CurrentBuild);
+            }
+
             if (isAlert && alert != null) {
                 MainPage = new AlertPage(alert);
                 return;
