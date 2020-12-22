@@ -10,14 +10,22 @@ namespace PagerBuddy.Models
 {
     public class ActiveTimeConfig
     {
-        public List<DayOfWeek> activeDays;
+        private List<DayOfWeek> activeDays;
 
         public TimeSpan activeStartTime = new TimeSpan(10, 0, 0);
         public TimeSpan activeStopTime = new TimeSpan(22, 0, 0);
 
         public bool flipActiveTime = false;
         
-        public void initDays() {
+        [JsonConstructor]
+        public ActiveTimeConfig(List<DayOfWeek> activeDays, TimeSpan activeStartTime, TimeSpan activeStopTime, bool flipActiveTime) {
+            this.activeDays = activeDays;
+            this.activeStartTime = activeStartTime;
+            this.activeStopTime = activeStopTime;
+            this.flipActiveTime = flipActiveTime;
+        }
+
+        public ActiveTimeConfig() {
             activeDays = new List<DayOfWeek> {
                 DayOfWeek.Monday,
                 DayOfWeek.Tuesday,
