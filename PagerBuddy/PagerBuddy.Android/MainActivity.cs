@@ -23,7 +23,6 @@ namespace PagerBuddy.Droid
     [Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        //TODO: Later Android - Possibly implement quick settings tile https://medium.com/androiddevelopers/quick-settings-tiles-e3c22daf93a8
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         protected override void OnCreate(Bundle savedInstanceState)
