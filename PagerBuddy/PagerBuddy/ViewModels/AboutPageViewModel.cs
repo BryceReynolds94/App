@@ -15,7 +15,6 @@ namespace PagerBuddy.ViewModels {
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public Command DeveloperMode { get; set; }
-
         public Command HideDeveloperMode { get; set; }
         public Command ShareLog { get; set; }
         public Command ShowAlertPage { get; set; }

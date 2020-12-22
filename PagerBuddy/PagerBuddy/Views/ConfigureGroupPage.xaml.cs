@@ -105,21 +105,17 @@ namespace PagerBuddy.Views {
                     continue;
                 }
 
-                MemoryStream inputStream = null;
-                if (detailPeer.photo != null) {
-                    TLFile file = await client.getProfilePic(detailPeer.photo);
+                if (detailPeer.photoLocation != null) {
+                    TLFile file = await client.getProfilePic(detailPeer.photoLocation);
                     if (file != null) {
-                        inputStream = new MemoryStream(file.Bytes);
+                        detailPeer.image = new MemoryStream(file.Bytes);
+                        detailPeer.hasImage = detailPeer.image != null;
                     } else {
                         Logger.Warn("Could not load peer pic.");
                     }
                 }
 
-                Group addGroup = new Group(detailPeer);
-                addGroup.image = inputStream;
-                addGroup.hasImage = inputStream != null;
-
-                viewModel.addGroupToList(addGroup);
+                viewModel.addGroupToList((Group) detailPeer);
             }
 
             completedCallback();

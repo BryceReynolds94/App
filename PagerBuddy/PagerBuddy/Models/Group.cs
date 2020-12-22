@@ -10,24 +10,26 @@ namespace PagerBuddy.Models
     {
         public string name;
         public int id;
-        public MemoryStream image;
+        
+        [JsonIgnore] //do not try to serialise MemoryStream
+        public MemoryStream image = null;
         public bool hasImage = false;
 
         public TelegramPeer.TYPE type;
 
         [JsonConstructor]
-        public Group(string groupName, int groupID, TelegramPeer.TYPE type, bool hasImage)
+        public Group(string name, int id, TelegramPeer.TYPE type, bool hasImage)
         {
-            name = groupName;
-            id = groupID;
+            this.name = name;
+            this.id = id;
             this.type = type;
             this.hasImage = hasImage;
         }
 
-        public Group(TelegramPeer peer) {
-            name = peer.name;
-            id = peer.id;
-            type = peer.type;
+        public Group(string name, int id, TelegramPeer.TYPE type) {
+            this.name = name;
+            this.id = id;
+            this.type = type;
         }
 
     }

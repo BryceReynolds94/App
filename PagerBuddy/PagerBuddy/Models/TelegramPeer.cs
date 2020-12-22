@@ -5,24 +5,15 @@ using System.Text;
 using TeleSharp.TL;
 
 namespace PagerBuddy.Models {
-    public class TelegramPeer {
+    public class TelegramPeer : Group{
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        public enum TYPE {CHANNEL, CHAT, USER };
+        public enum TYPE {CHANNEL, CHAT, USER};
 
-        public TYPE type;
+        public TLFileLocation photoLocation;
 
-        public int id;
-        public string name;
-
-        public TLFileLocation photo;
-        public bool hasPhoto;
-
-        public TelegramPeer(TYPE type, int id, string name, TLFileLocation photo) {
-            this.type = type;
-            this.id = id;
-            this.name = name;
-            this.photo = photo;
+        public TelegramPeer(TYPE type, int id, string name, TLFileLocation photoLocation) : base(name, id, type) {
+            this.photoLocation = photoLocation;
         }
 
         public static Collection<TelegramPeer> getPeerCollection(TLVector<TLAbsChat> chatList, TLVector<TLAbsUser> userList) {
@@ -48,8 +39,12 @@ namespace PagerBuddy.Models {
             foreach(TLAbsUser user in userList) {
                 if(user is TLUser) {
                     TLUser u = user as TLUser;
-                    //TODO: Possibly add more detailed user name handling
-                    peerList.Add(new TelegramPeer(TYPE.USER, u.Id, u.FirstName + " " + u.LastName, getPhotoLocation(u.Photo)));
+
+                    string userName = u.FirstName + " " + u.LastName;
+                    if (userName.Length < 3) {
+                        userName = u.Username;
+                    }
+                    peerList.Add(new TelegramPeer(TYPE.USER, u.Id, userName, getPhotoLocation(u.Photo)));
                 } else {
                     Logger.Warn("User was of unexpected type " + user.GetType().ToString() + " and was not added to the peer list.");
                     continue;

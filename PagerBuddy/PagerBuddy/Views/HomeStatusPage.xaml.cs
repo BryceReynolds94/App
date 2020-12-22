@@ -126,7 +126,6 @@ namespace PagerBuddy.Views
         private async void addConfig(object sender, EventArgs eventArgs)
         {
             AlertConfig alertConfig = new AlertConfig();
-            alertConfig.activeTimeConfig.initDays();
             await Navigation.PushAsync(new ConfigureGroupPage(client, alertConfig));
         }
 

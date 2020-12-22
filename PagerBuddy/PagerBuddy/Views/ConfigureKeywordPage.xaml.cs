@@ -36,15 +36,8 @@ namespace PagerBuddy.Views
 
         public async void keywordConfigureCompleted(object sender, EventArgs e)
         {
-            if (alertConfig.triggerGroup.hasImage && alertConfig.triggerGroup.image != null)
-            {
-                DataService.saveProfilePic(alertConfig.id, alertConfig.triggerGroup.image);
-            }
-            alertConfig.triggerGroup.image = null; //clear because the image cannot be serialised on save
-            alertConfig.saveChanges();
-
+            alertConfig.saveChanges(true);
             MessagingCenter.Send(this, MESSAGING_KEYS.ALERT_CONFIG_SAVED.ToString(), alertConfig);
-
             await Navigation.PopToRootAsync();
         }
 
