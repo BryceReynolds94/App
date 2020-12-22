@@ -18,7 +18,7 @@ namespace PagerBuddy.Models
         public DateTime snoozeTime { get; private set; }
         public string id { get; private set; }
 
-        public Group triggerGroup { get; private set; }
+        public Group triggerGroup;
         public TRIGGER_TYPE triggerType;
         public string triggerKeyword;
 

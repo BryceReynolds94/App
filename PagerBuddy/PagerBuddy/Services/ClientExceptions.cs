@@ -10,14 +10,10 @@ namespace PagerBuddy.Services
          public enum TException
         {
             AUTH_RESTART,
-
             API_ID_INVALID,
             API_ID_PUBLISHED_FLOOD,
-            //BOT_METHOD_INVALID,
-            //INPUT_REQUEST_TOO_LONG,
             NETWORK_MIGRATE_X,
             PHONE_MIGRATE_X,
-            //PHONE_NUMBER_APP_SIGNUP_FORBIDDEN,
             PHONE_NUMBER_BANNED,
             PHONE_NUMBER_FLOOD,
             PHONE_NUMBER_INVALID,
@@ -25,8 +21,7 @@ namespace PagerBuddy.Services
             PHONE_PASSWORD_PROTECTED,
             SMS_CODE_CREATE_FAILED,
             PASSWORD_HASH_INVALID,
-
-            UNKNOWN,
+            UNKNOWN
         }
 
         public enum TStatus
@@ -41,7 +36,6 @@ namespace PagerBuddy.Services
             OFFLINE,
             UNKNOWN,
             OK
-
         }
 
         public static TException getTException(string exceptionString)

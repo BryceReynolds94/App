@@ -5,24 +5,15 @@ using System.Text;
 using TeleSharp.TL;
 
 namespace PagerBuddy.Models {
-    public class TelegramPeer {
+    public class TelegramPeer : Group{
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public enum TYPE {CHANNEL, CHAT, USER};
 
-        public TYPE type;
+        public TLFileLocation photoLocation;
 
-        public int id;
-        public string name;
-
-        public TLFileLocation photo;
-        public bool hasPhoto;
-
-        public TelegramPeer(TYPE type, int id, string name, TLFileLocation photo) {
-            this.type = type;
-            this.id = id;
-            this.name = name;
-            this.photo = photo;
+        public TelegramPeer(TYPE type, int id, string name, TLFileLocation photoLocation) : base(name, id, type) {
+            this.photoLocation = photoLocation;
         }
 
         public static Collection<TelegramPeer> getPeerCollection(TLVector<TLAbsChat> chatList, TLVector<TLAbsUser> userList) {
