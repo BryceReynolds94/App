@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagerBuddy.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,7 +9,7 @@ namespace PagerBuddy.Interfaces
     {
         void navigateNotificationSettings();
         void navigateNotificationPolicyAccess();
-        void navigateTelegramChat(int chatID);
+        void navigateTelegramChat(int chatID, TelegramPeer.TYPE type);
         void quitApplication();
         bool isTelegramInstalled();
     }

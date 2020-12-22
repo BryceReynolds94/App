@@ -21,12 +21,14 @@ namespace PagerBuddy.Views
         AlertPageViewModel viewModel;
 
         private int groupID;
+        private TelegramPeer.TYPE peerType;
 
         public AlertPage(Alert alert)
         {
             InitializeComponent();
 
             this.groupID = alert.chatID;
+            this.peerType = alert.peerType;
             BindingContext = viewModel = new AlertPageViewModel(alert.title, alert.text, alert.configID, alert.hasPic);
             viewModel.RequestCancel += cancel;
             viewModel.RequestConfirm += confirm;
@@ -55,7 +57,7 @@ namespace PagerBuddy.Views
             notifications.closeNotification(groupID);
 
             INavigation nav = DependencyService.Get<INavigation>();
-            nav.navigateTelegramChat(groupID);
+            nav.navigateTelegramChat(groupID, peerType);
         }
 
         protected override void OnDisappearing() {

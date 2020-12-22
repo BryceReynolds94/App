@@ -15,6 +15,8 @@ namespace PagerBuddy.Models
         public int chatID;
         public bool hasPic;
 
+        public TelegramPeer.TYPE peerType;
+
         public Alert(string message, AlertConfig config)
         {
             title = config.triggerGroup.name;
@@ -22,16 +24,19 @@ namespace PagerBuddy.Models
             configID = config.id;
             chatID = config.triggerGroup.id;
             hasPic = config.triggerGroup.hasImage;
+
+            peerType = config.triggerGroup.type;
         }
 
         [JsonConstructor]
-        public Alert(string title, string text, string configID, int chatID, bool hasPic)
+        public Alert(string title, string text, string configID, int chatID, bool hasPic, TelegramPeer.TYPE type)
         {
             this.title = title;
             this.text = text;
             this.configID = configID;
             this.chatID = chatID;
             this.hasPic = hasPic;
+            this.peerType = type;
         }
 
     }

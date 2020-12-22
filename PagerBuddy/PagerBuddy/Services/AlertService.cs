@@ -74,7 +74,20 @@ namespace PagerBuddy.Services {
             int currentMessageID = DataService.getConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, 0);
 
             foreach (AlertConfig config in configList) {
-                TLAbsMessages result = await client.getMessages(config.triggerGroup.id, currentMessageID);
+                TLAbsInputPeer inputPeer;
+                switch (config.triggerGroup.type) {
+                    case TelegramPeer.TYPE.CHANNEL:
+                        inputPeer = new TLInputPeerChannel { ChannelId = config.triggerGroup.id };
+                        break;
+                    case TelegramPeer.TYPE.USER:
+                        inputPeer = new TLInputPeerUser { UserId = config.triggerGroup.id };
+                        break;
+                    default:
+                        inputPeer = new TLInputPeerChat { ChatId = config.triggerGroup.id };
+                        break;
+                }
+
+                TLAbsMessages result = await client.getMessages(inputPeer, currentMessageID);
                 TLVector<TLAbsMessage> messageList;
 
                 if(result == null) {

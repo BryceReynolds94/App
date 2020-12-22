@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TeleSharp.TL;
+using TeleSharp.TL.Messages;
 using TeleSharp.TL.Upload;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -46,14 +47,33 @@ namespace PagerBuddy.Views {
         private async void refreshGroupList(object sender, Action completedCallback) {
             viewModel.clearGroupList();
 
-            TLVector<TLAbsChat> chatList = await client.getChatList();
+            TLAbsDialogs rawChatList = await client.getChatList();
 
-            if(chatList.Count < 1) {
+            TLVector<TLDialog> dialogList;
+            Collection<TelegramPeer> peerCollection;
+
+            if (rawChatList is TLDialogs) {
+                TLDialogs dialogs = rawChatList as TLDialogs;
+                dialogList = dialogs.Dialogs;
+                peerCollection = TelegramPeer.getPeerCollection(dialogs.Chats, dialogs.Users);
+            } else if (rawChatList is TLDialogsSlice) {
+                Logger.Info("Return type was TLDialogsSlice. Presumably user has more than 100 active dialogs.");
+                TLDialogsSlice dialogs = rawChatList as TLDialogsSlice;
+                dialogList = dialogs.Dialogs;
+                peerCollection = TelegramPeer.getPeerCollection(dialogs.Chats, dialogs.Users);
+            } else {
+                Logger.Warn("Unexpected return type while retrieving chatList. Type: " + rawChatList.GetType().ToString());
+                viewModel.IsBusy = false;
+                completedCallback();
+                return;
+            }
+
+            if (dialogList.Count < 1) {
                 viewModel.IsBusy = false;
                 Logger.Warn("Retrieving chat list returned no result.");
 
                 //check is client still available
-                if(client.clientStatus != CommunicationService.STATUS.AUTHORISED) {
+                if (client.clientStatus != CommunicationService.STATUS.AUTHORISED) {
                     Logger.Info("Client is not authorised. Returning to HomePage. Client status: " + client.clientStatus.ToString());
                     await Navigation.PopAsync();
                 } else {
@@ -64,38 +84,38 @@ namespace PagerBuddy.Views {
             }
             viewModel.AreChatsEmpty = false;
 
-            foreach (TLAbsChat rawChat in chatList) {
+            foreach (TLDialog dialog in dialogList) {
+                TLAbsPeer peer = dialog.Peer;
                 int id;
-                string name;
-                TLAbsChatPhoto rawPhoto;
 
-                if(rawChat is TLChat) {
-                    TLChat chat = rawChat as TLChat;
-                    id = chat.Id;
-                    name = chat.Title;
-                    rawPhoto = chat.Photo;
-                }else if(rawChat is TLChannel) {
-                    TLChannel channel = rawChat as TLChannel;
-                    id = channel.Id;
-                    name = channel.Title;
-                    rawPhoto = channel.Photo;
-                }else {
-                    Logger.Warn("Chat was of unexpected type " + rawChat.GetType().ToString() + " and could not be evaluated.");
+                if (peer is TLPeerChannel) {
+                    id = (peer as TLPeerChannel).ChannelId;
+                } else if (peer is TLPeerChat) {
+                    id = (peer as TLPeerChat).ChatId;
+                } else if (peer is TLPeerUser) {
+                    id = (peer as TLPeerUser).UserId;
+                } else {
+                    Logger.Warn("Peer was of unexpected type " + peer.GetType().ToString() + " and will be ignored.");
+                    continue;
+                }
+
+                TelegramPeer detailPeer = peerCollection.FirstOrDefault((TelegramPeer x) => x.id == id);
+                if (detailPeer == null || detailPeer.id != id) {
+                    Logger.Warn("Details for a peer could not be found in peer collection and will be ignored.");
                     continue;
                 }
 
                 MemoryStream inputStream = null;
-                if (rawPhoto is TLChatPhoto) {
-                    TLChatPhoto photo = rawPhoto as TLChatPhoto;
-                    if (photo != null) {
-                        TLFile file = await client.getProfilePic(photo.PhotoSmall as TLFileLocation);
+                if (detailPeer.photo != null) {
+                    TLFile file = await client.getProfilePic(detailPeer.photo);
+                    if (file != null) {
                         inputStream = new MemoryStream(file.Bytes);
+                    } else {
+                        Logger.Warn("Could not load peer pic.");
                     }
-                } else {
-                    Logger.Warn("Chat photo was of unexpected type " + rawPhoto.GetType().ToString() + " and was ignored.");
                 }
 
-                Group addGroup = new Group(name, id);
+                Group addGroup = new Group(detailPeer);
                 addGroup.image = inputStream;
                 addGroup.hasImage = inputStream != null;
 
@@ -111,8 +131,8 @@ namespace PagerBuddy.Views {
 
             if (reloadListOnAppearing) {
                 ItemsCollectionView.SelectedItem = null;
-            } else { 
-                reloadListOnAppearing = true; 
+            } else {
+                reloadListOnAppearing = true;
             }
 
             if (viewModel.groupList.Count == 0) {

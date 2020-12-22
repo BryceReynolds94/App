@@ -62,7 +62,7 @@ namespace PagerBuddy.Droid {
                 .SetStyle(new Notification.BigTextStyle().BigText(alert.text)); //extend message on tap
 
             if (new AndroidNavigation().isTelegramInstalled()) {
-                PendingIntent chatIntent = PendingIntent.GetActivity(Application.Context, 0, AndroidNavigation.getTelegramIntent(alert.chatID), 0);
+                PendingIntent chatIntent = PendingIntent.GetActivity(Application.Context, 0, AndroidNavigation.getTelegramIntent(alert.chatID, alert.peerType), 0);
                 builder.SetContentIntent(chatIntent);
             } else {
                 builder.SetContentIntent(fullScreenIntent);

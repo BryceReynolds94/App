@@ -380,10 +380,14 @@ namespace PagerBuddy.Services {
             bool hasPhoto = false;
             if (photo != null) {
                 TLFile file = await getProfilePic(photo.PhotoBig as TLFileLocation);
-                MemoryStream memoryStream = new MemoryStream(file.Bytes);
+                if (file != null) {
+                    MemoryStream memoryStream = new MemoryStream(file.Bytes);
 
-                DataService.saveProfilePic(DataService.DATA_KEYS.USER_PHOTO.ToString(), memoryStream);
-                hasPhoto = true;
+                    DataService.saveProfilePic(DataService.DATA_KEYS.USER_PHOTO.ToString(), memoryStream);
+                    hasPhoto = true;
+                } else {
+                    Logger.Warn("Could not load profile pic.");
+                }
             }
             DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, hasPhoto);
 
@@ -399,10 +403,10 @@ namespace PagerBuddy.Services {
             MessagingCenter.Send(this, MESSAGING_KEYS.USER_DATA_CHANGED.ToString());
         }
 
-        public async Task<TLVector<TLAbsChat>> getChatList(int attempt = 0) {
+        public async Task<TLAbsDialogs> getChatList(int attempt = 0) {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to load chat list without appropriate client status. Current status: " + clientStatus.ToString());
-                return new TLVector<TLAbsChat>();
+                return new TLDialogs();
             }
 
             TLMethod requestDialogList = new TLRequestGetDialogs() { //https://core.telegram.org/method/messages.getDialogs
@@ -422,25 +426,21 @@ namespace PagerBuddy.Services {
                 } else {
                     Logger.Warn("Finally failed to get chat messages. Returning empty list.");
                 }
-                return new TLVector<TLAbsChat>();
+                return new TLDialogs();
             }
 
-            if (!(dialogs is TLDialogs)) {
+            if (!((dialogs is TLDialogs)||(dialogs is TLDialogsSlice))) {
                 Logger.Error("Unexpected return Type while fetching dialogs. Type: " + dialogs.GetType());
-                return new TLVector<TLAbsChat>();
+                return new TLDialogs();
             }
 
-            //TLDialogs test = dialogs as TLDialogs;
-            //TODO: Accept all users, not just groups
-            //dialogs.dialogs -> Peer (either chatID or userID)
-
-            return (dialogs as TLDialogs).Chats;
+            return dialogs;
         }
 
         public async Task<TLFile> getProfilePic(TLFileLocation location) {
             if (clientStatus < STATUS.ONLINE) {
                 Logger.Warn("Attempted to load profile pic without appropriate client status. Current status: " + clientStatus.ToString());
-                return new TLFile();
+                return null; 
             }
             TLInputFileLocation loc = new TLInputFileLocation() {
                 LocalId = location.LocalId,
@@ -454,7 +454,7 @@ namespace PagerBuddy.Services {
             } catch (Exception exception) {
                 Logger.Error(exception, "Exception while trying to fetch profile pic.");
                 await checkConnectionOnError(exception);
-                return new TLFile();
+                return null;
             }
             return file;
         }
@@ -517,14 +517,14 @@ namespace PagerBuddy.Services {
             return currentID;
         }
 
-        public async Task<TLAbsMessages> getMessages(int chatID, int lastMessageID, int attempt = 0) {
+        public async Task<TLAbsMessages> getMessages(TLAbsInputPeer inputPeer, int lastMessageID, int attempt = 0) {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempting to get messages without user authorisation. Current status: " + clientStatus.ToString());
                 return null;
             }
 
             TLRequestGetHistory request = new TLRequestGetHistory() { //https://core.telegram.org/method/messages.getHistory
-                Peer = new TLInputPeerChat() { ChatId = chatID },
+                Peer = inputPeer,
                 Limit = 100,
                 MinId = lastMessageID
             };
@@ -538,7 +538,7 @@ namespace PagerBuddy.Services {
                 if(clientStatus == STATUS.AUTHORISED && attempt < 3) {
                     //As this is critical for alerts retry in case checkConnectionOnError succeded
                     Logger.Info("Connection was possibly fixed. Retrying message retrieval.");
-                    return await getMessages(chatID, lastMessageID, ++attempt);
+                    return await getMessages(inputPeer, lastMessageID, ++attempt);
                 }
                 return null;
             }

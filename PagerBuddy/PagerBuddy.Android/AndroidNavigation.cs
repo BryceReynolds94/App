@@ -13,6 +13,7 @@ using Android.Provider;
 using Xamarin.Essentials;
 using Android.Content.PM;
 using System.IO;
+using PagerBuddy.Models;
 
 [assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.Droid.AndroidNavigation))] //register for dependency service as platform-specific code
 namespace PagerBuddy.Droid
@@ -35,20 +36,25 @@ namespace PagerBuddy.Droid
             Platform.CurrentActivity.StartActivity(intent);
         }
 
-        public void navigateTelegramChat(int chatID)
+        public void navigateTelegramChat(int chatID, TelegramPeer.TYPE type)
         {
             if (!isTelegramInstalled()) {
                 quitApplication();
                 return;
             }
-            Application.Context.StartActivity(getTelegramIntent(chatID));
+            Application.Context.StartActivity(getTelegramIntent(chatID, type));
         }
 
         //Telegram intent handling:
         //https://github.com/DrKLO/Telegram/blob/5a47056c7b1cb0b7d095ca6e7d1a288c01f8f160/TMessagesProj/src/main/java/org/telegram/ui/LaunchActivity.java#L1101
-        public static Intent getTelegramIntent(int chatID) {
+        public static Intent getTelegramIntent(int peerID, TelegramPeer.TYPE type) {
+            string requestURL = "tg:openmessage/?chat_id=";
+            if(type == TelegramPeer.TYPE.USER) {
+                requestURL = "tg:openmessage/?user_id=";
+            }
+
             Intent intent = new Intent(Intent.ActionView)
-                .SetData(Android.Net.Uri.Parse("tg:openmessage/?chat_id=" + chatID))
+                .SetData(Android.Net.Uri.Parse(requestURL + peerID))
                 .SetPackage("org.telegram.messenger")
                 .AddFlags(ActivityFlags.NewTask);
             return intent;
