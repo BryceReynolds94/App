@@ -52,8 +52,11 @@ namespace PagerBuddy.Models
             this.lockTime = lockTime;
         }
 
-        public void saveChanges()
+        public void saveChanges(bool persistImage = false)
         {
+            if (persistImage && triggerGroup.hasImage && triggerGroup.image != null) {
+                DataService.saveProfilePic(id, triggerGroup.image);
+            }
             DataService.saveAlertConfig(this);
         }
 
