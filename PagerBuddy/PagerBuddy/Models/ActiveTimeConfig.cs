@@ -10,6 +10,7 @@ namespace PagerBuddy.Models
 {
     public class ActiveTimeConfig
     {
+        [JsonProperty]
         private List<DayOfWeek> activeDays;
 
         public TimeSpan activeStartTime = new TimeSpan(10, 0, 0);

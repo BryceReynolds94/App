@@ -26,6 +26,7 @@ namespace PagerBuddy.Models
         public bool timeRestriction;
 
         public DateTime lastTriggered { get; private set; }
+        [JsonProperty]
         private DateTime lockTime;
 
         public AlertConfig() {
