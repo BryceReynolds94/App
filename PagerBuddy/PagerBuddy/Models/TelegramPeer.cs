@@ -48,8 +48,12 @@ namespace PagerBuddy.Models {
             foreach(TLAbsUser user in userList) {
                 if(user is TLUser) {
                     TLUser u = user as TLUser;
-                    //TODO: Possibly add more detailed user name handling
-                    peerList.Add(new TelegramPeer(TYPE.USER, u.Id, u.FirstName + " " + u.LastName, getPhotoLocation(u.Photo)));
+
+                    string userName = u.FirstName + " " + u.LastName;
+                    if (userName.Length < 3) {
+                        userName = u.Username;
+                    }
+                    peerList.Add(new TelegramPeer(TYPE.USER, u.Id, userName, getPhotoLocation(u.Photo)));
                 } else {
                     Logger.Warn("User was of unexpected type " + user.GetType().ToString() + " and was not added to the peer list.");
                     continue;
