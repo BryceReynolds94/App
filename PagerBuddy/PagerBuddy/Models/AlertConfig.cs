@@ -9,25 +9,48 @@ using Xamarin.Forms;
 
 namespace PagerBuddy.Models
 {
-    public class AlertConfig 
-    {
+    public class AlertConfig {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        public enum TRIGGER_TYPE { ANY, SERVER, KEYWORD};
+        public enum TRIGGER_TYPE { ANY, SERVER, KEYWORD };
 
-        public bool isActive = true;
+        public bool isActive { get; private set; }
         public bool snoozeActive => snoozeTime > DateTime.Now;
-        public DateTime snoozeTime = DateTime.MinValue;
-        public string id = Guid.NewGuid().ToString();
+        public DateTime snoozeTime { get; private set; }
+        public string id { get; private set; }
 
-        public Group triggerGroup;
-        public TRIGGER_TYPE triggerType = TRIGGER_TYPE.ANY;
+        public Group triggerGroup { get; private set; }
+        public TRIGGER_TYPE triggerType;
         public string triggerKeyword;
 
-        public ActiveTimeConfig activeTimeConfig = new ActiveTimeConfig();
-        public bool timeRestriction = false;
+        public ActiveTimeConfig activeTimeConfig;
+        public bool timeRestriction;
 
-        public DateTime lastTriggered = DateTime.MinValue;
-        public DateTime lockTime = DateTime.MinValue;
+        public DateTime lastTriggered { get; private set; }
+        private DateTime lockTime;
+
+        public AlertConfig() {
+            isActive = true;
+            snoozeTime = DateTime.MinValue;
+            id = Guid.NewGuid().ToString();
+            triggerType = TRIGGER_TYPE.ANY;
+            triggerKeyword = string.Empty;
+            activeTimeConfig = new ActiveTimeConfig();
+            timeRestriction = false;
+            lastTriggered = lockTime = DateTime.MinValue;
+        }
+
+        [JsonConstructor]
+        public AlertConfig(bool isActive, DateTime snoozeTime, string id, Group triggerGroup, TRIGGER_TYPE triggerType, ActiveTimeConfig activeTimeConfig, bool timeRestriction, DateTime lastTriggered, DateTime lockTime) {
+            this.isActive = isActive;
+            this.snoozeTime = snoozeTime;
+            this.id = id;
+            this.triggerGroup = triggerGroup;
+            this.triggerType = triggerType;
+            this.activeTimeConfig = activeTimeConfig;
+            this.timeRestriction = timeRestriction;
+            this.lastTriggered = lastTriggered;
+            this.lockTime = lockTime;
+        }
 
         public void saveChanges()
         {
@@ -47,6 +70,11 @@ namespace PagerBuddy.Models
         public void setSnoozeTime(DateTime snoozeTime)
         {
             this.snoozeTime = snoozeTime;
+            saveChanges();
+        }
+
+        public void setLastTriggered(DateTime triggerTime) {
+            lastTriggered = triggerTime;
             saveChanges();
         }
         
@@ -85,6 +113,7 @@ namespace PagerBuddy.Models
                     Logger.Info("Suppressed alert as insufficient time has passed since the last qualified alert message.");
                 }
                 lockTime = time.AddMinutes(5); //Require no message that would qualify as alert for 5 minutes before next alert
+                saveChanges();
             }
 
             return result;   

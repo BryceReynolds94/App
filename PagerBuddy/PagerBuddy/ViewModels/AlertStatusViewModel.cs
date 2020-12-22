@@ -58,7 +58,7 @@ namespace PagerBuddy.ViewModels {
         public string KeywordText {
             get {
 
-                string outString = "";
+                string outString = string.Empty;
                 switch (alertConfig.triggerType) {
                     case AlertConfig.TRIGGER_TYPE.ANY:
                         outString = AppResources.AlertStatus_Trigger_Any;

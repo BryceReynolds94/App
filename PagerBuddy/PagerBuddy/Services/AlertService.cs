@@ -127,16 +127,13 @@ namespace PagerBuddy.Services {
                             //discard missed messages older than 10min
                             Logger.Info("An alert was dismissed as it was not detected within 10min of message posting. Message posted at (UTC): " + timestamp.ToShortTimeString());
                         } else {
-                            config.lastTriggered = DateTime.Now;
+                            config.setLastTriggered(DateTime.Now);
                             alertMessage(config, msg);
                         }
                     } else {
                         Logger.Debug("Message ignored, it did not fulfill the alert criteria.");
                     }
                 }
-
-                //persists values to clean up
-                config.saveChanges();
             }
             //update message id index
             DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await client.getLastMessageID(currentMessageID));

@@ -8,7 +8,7 @@ namespace PagerBuddy.Models {
     public class TelegramPeer {
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        public enum TYPE {CHANNEL, CHAT, USER };
+        public enum TYPE {CHANNEL, CHAT, USER};
 
         public TYPE type;
 
