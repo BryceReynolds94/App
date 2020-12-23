@@ -111,9 +111,9 @@ namespace PagerBuddy.Droid {
         }
 
         public void addNotificationChannel(AlertConfig alertConfig) {
-            Logger.Debug("Setting up notification channel for config: " + alertConfig.triggerGroup.name);
+            Logger.Debug("Setting up notification channel for config: " + alertConfig.readableFullName);
 
-            NotificationChannel notificationChannel = new NotificationChannel(alertConfig.id, alertConfig.triggerGroup.name, NotificationImportance.High) {
+            NotificationChannel notificationChannel = new NotificationChannel(alertConfig.id, alertConfig.readableFullName, NotificationImportance.High) {
                 LightColor = Color.Red.ToArgb(),
                 LockscreenVisibility = NotificationVisibility.Public,
                 Group = ALERT_CHANNEL_ID
@@ -134,7 +134,7 @@ namespace PagerBuddy.Droid {
         }
 
         public void removeNotificationChannel(AlertConfig alertConfig) {
-            Logger.Debug("Deleting notification channel for config: " + alertConfig.triggerGroup.name);
+            Logger.Debug("Deleting notification channel for config: " + alertConfig.readableFullName);
 
             NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);
             notificationManager.DeleteNotificationChannel(alertConfig.id);

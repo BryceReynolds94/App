@@ -9,9 +9,10 @@
              x:Class="PagerBuddy.Views.ConfigureGroupPage">
 
     <StackLayout>
-        <RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
+        <RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}" >
 
-            <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding groupList}" SelectionChangedCommand="{Binding GroupSelectionChangedCommand}" SelectionMode="Single" SelectedItem="{Binding SelectedGroup}" >
+            <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding groupList}" SelectionChangedCommand="{Binding GroupSelectionChangedCommand}" 
+                            SelectionMode="Single" SelectedItem="{Binding SelectedGroup}" >
                 <CollectionView.Footer >
                     <Label IsVisible="{Binding AreChatsEmpty}" Text="{x:Static resources:AppResources.ConfigureGroupPage_Warning_NoChats}" Padding="20" HorizontalTextAlignment="Center"/>
                 </CollectionView.Footer>
@@ -42,7 +43,7 @@
                                 <RowDefinition Height="1" />
                             </Grid.RowDefinitions>
                             <Frame Padding="0" CornerRadius="20" IsClippedToBounds="True">
-                                <Image Source="{Binding GroupPic}"/>
+                                <Image Source="{Binding GroupPic}" />
                             </Frame>
                             <Label Text="{Binding Name}" Grid.Column="1" VerticalOptions="Center"/>
                         </Grid>

@@ -86,12 +86,12 @@ namespace PagerBuddy.Models
         {
             if (!isActive || snoozeActive) 
             {
-                Logger.Debug("Alert not triggered as AlertConfig is inactive. AlertConfig: " + triggerGroup.name);
+                Logger.Debug("Alert not triggered as AlertConfig is inactive. AlertConfig: " + readableFullName);
                 return false;
             }
             if(timeRestriction && !activeTimeConfig.isActiveTime(time))
             {
-                Logger.Debug("Alert not triggered as time restriction was not fulfilled. AlertConfig: " + triggerGroup.name);
+                Logger.Debug("Alert not triggered as time restriction was not fulfilled. AlertConfig: " + readableFullName);
                 return false;
             }
 
@@ -121,6 +121,16 @@ namespace PagerBuddy.Models
             }
 
             return result;   
+        }
+
+        public string readableFullName {
+            get {
+                string output = triggerGroup.name;
+                if (triggerType == TRIGGER_TYPE.KEYWORD && triggerKeyword != null && triggerKeyword.Length > 0) {
+                    output = output + " - " + triggerKeyword;
+                }
+                return output;
+            }
         }
         
 

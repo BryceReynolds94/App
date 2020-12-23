@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using Xamarin.Forms;
 using FFImageLoading.Svg.Forms;
+using FFImageLoading.Forms;
 
 namespace PagerBuddy.ViewModels {
     public class GroupViewModel {

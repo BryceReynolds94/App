@@ -106,10 +106,10 @@ namespace PagerBuddy.Services {
 
 
                 if (messageList.Count < 1) {
-                    Logger.Debug("No new messages for AlertConfig " + config.triggerGroup.name);
+                    Logger.Debug("No new messages for AlertConfig " + config.readableFullName);
                     break;
                 } else {
-                    Logger.Debug("{0} new message(s) for AlertConfig " + config.triggerGroup.name, messageList.Count);
+                    Logger.Debug("{0} new message(s) for AlertConfig " + config.readableFullName, messageList.Count);
                 }
 
                 foreach (TLAbsMessage rawMessage in messageList) {
