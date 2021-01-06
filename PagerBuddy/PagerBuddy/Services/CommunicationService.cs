@@ -240,6 +240,9 @@ namespace PagerBuddy.Services {
         public async Task<TStatus> loginWithPassword(string password) {
             if (clientStatus != STATUS.WAIT_PASSWORD) {
                 Logger.Warn("Attempted to perform 2FA without appropriate client status. Current status: " + clientStatus.ToString());
+                if(clientStatus == STATUS.OFFLINE) {
+                    return TStatus.OFFLINE;
+                }
                 return TStatus.WRONG_CLIENT_STATUS;
             }
 
@@ -276,10 +279,14 @@ namespace PagerBuddy.Services {
             return TStatus.OK;
         }
 
-        public async Task<TStatus> requestCode(string phoneNumber) {
+        public async Task<TStatus> requestCode(string phoneNumber, int attempt = 0) {
             if (clientStatus != STATUS.WAIT_PHONE && clientStatus != STATUS.WAIT_CODE && clientStatus != STATUS.WAIT_PASSWORD) {
                 Logger.Warn("Attempted to register phone number without appropriate client status. Current status: " + clientStatus.ToString());
-                return TStatus.WRONG_CLIENT_STATUS;
+                if (clientStatus == STATUS.OFFLINE) {
+                    return TStatus.OFFLINE;
+                } else {
+                    return TStatus.WRONG_CLIENT_STATUS;
+                }
             }
 
             clientPhoneNumber = phoneNumber;
@@ -290,7 +297,23 @@ namespace PagerBuddy.Services {
             } catch (System.InvalidOperationException e) {
                 Logger.Warn(e, "Exception trying to authenticate user. Presumably the client went offline.");
                 await checkConnectionOnError(e);
-                return TStatus.OFFLINE;
+                if (clientStatus > STATUS.ONLINE && attempt < 3) {
+                    Logger.Info("Connection was possibly fixed. Retrying code request.");
+                    return await requestCode(phoneNumber, ++attempt);
+                } else {
+                    Logger.Warn("Finally failed to request code.");
+                    return TStatus.UNKNOWN;
+                }
+            } catch(System.IO.IOException e) {
+                Logger.Warn(e, "Exception trying to authenticate user. Presumably the client went offline.");
+                await checkConnectionOnError(e);
+                if (clientStatus > STATUS.ONLINE && attempt < 3) {
+                    Logger.Info("Connection was possibly fixed. Retrying code request.");
+                    return await requestCode(phoneNumber, ++attempt);
+                } else {
+                    Logger.Warn("Finally failed to request code.");
+                    return TStatus.UNKNOWN;
+                }
             } catch (Exception e) {
 
                 TException exception = getTException(e.Message);
@@ -328,6 +351,9 @@ namespace PagerBuddy.Services {
         public async Task<TStatus> confirmCode(string code) {
             if (clientStatus != STATUS.WAIT_CODE) {
                 Logger.Warn("Attempted to confirm code without appropriate client status. Current status: " + clientStatus.ToString());
+                if(clientStatus == STATUS.OFFLINE) {
+                    return TStatus.OFFLINE;
+                }
                 return TStatus.WRONG_CLIENT_STATUS;
             }
 

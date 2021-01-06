@@ -12,7 +12,7 @@ namespace PagerBuddy.Models {
 
         public TLFileLocation photoLocation;
 
-        public TelegramPeer(TYPE type, int id, string name, TLFileLocation photoLocation) : base(name, id, type) {
+        public TelegramPeer(TYPE type, int id, string name, TLFileLocation photoLocation, long? accessHash = null) : base(name, id, type, accessHash) {
             this.photoLocation = photoLocation;
         }
 
@@ -29,7 +29,7 @@ namespace PagerBuddy.Models {
                     peerList.Add(new TelegramPeer(TYPE.CHAT, c.Id, c.Title, getPhotoLocation(c.Photo)));
                 }else if(chat is TLChannel) {
                     TLChannel c = chat as TLChannel;
-                    peerList.Add(new TelegramPeer(TYPE.CHANNEL, c.Id, c.Title, getPhotoLocation(c.Photo)));
+                    peerList.Add(new TelegramPeer(TYPE.CHANNEL, c.Id, c.Title, getPhotoLocation(c.Photo), c.AccessHash));
                 } else {
                     Logger.Warn("Chat was of unexpected type " + chat.GetType().ToString() + " and was not added to the peer list.");
                     continue;
@@ -44,7 +44,7 @@ namespace PagerBuddy.Models {
                     if (userName.Length < 3) {
                         userName = u.Username;
                     }
-                    peerList.Add(new TelegramPeer(TYPE.USER, u.Id, userName, getPhotoLocation(u.Photo)));
+                    peerList.Add(new TelegramPeer(TYPE.USER, u.Id, userName, getPhotoLocation(u.Photo), u.AccessHash));
                 } else {
                     Logger.Warn("User was of unexpected type " + user.GetType().ToString() + " and was not added to the peer list.");
                     continue;

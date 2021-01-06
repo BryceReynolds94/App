@@ -123,6 +123,7 @@ namespace PagerBuddy.Models
             return result;   
         }
 
+        [JsonIgnore]
         public string readableFullName {
             get {
                 string output = triggerGroup.name;

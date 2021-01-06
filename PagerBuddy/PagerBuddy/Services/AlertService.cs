@@ -77,10 +77,16 @@ namespace PagerBuddy.Services {
                 TLAbsInputPeer inputPeer;
                 switch (config.triggerGroup.type) {
                     case TelegramPeer.TYPE.CHANNEL:
-                        inputPeer = new TLInputPeerChannel { ChannelId = config.triggerGroup.id };
+                        inputPeer = new TLInputPeerChannel {
+                            ChannelId = config.triggerGroup.id,
+                            AccessHash = config.triggerGroup.accessHash
+                        };
                         break;
                     case TelegramPeer.TYPE.USER:
-                        inputPeer = new TLInputPeerUser { UserId = config.triggerGroup.id };
+                        inputPeer = new TLInputPeerUser {
+                            UserId = config.triggerGroup.id,
+                            AccessHash = config.triggerGroup.accessHash
+                        };
                         break;
                     default:
                         inputPeer = new TLInputPeerChat { ChatId = config.triggerGroup.id };
