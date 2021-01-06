@@ -13,9 +13,9 @@
 
             <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding groupList}" SelectionChangedCommand="{Binding GroupSelectionChangedCommand}" 
                             SelectionMode="Single" SelectedItem="{Binding SelectedGroup}" >
-                <CollectionView.Footer >
-                    <Label IsVisible="{Binding AreChatsEmpty}" Text="{x:Static resources:AppResources.ConfigureGroupPage_Warning_NoChats}" Padding="20" HorizontalTextAlignment="Center"/>
-                </CollectionView.Footer>
+                <CollectionView.Header >
+                    <Label Text="{x:Static resources:AppResources.ConfigureGroupPage_Warning_NoChats}" Padding="20" HorizontalTextAlignment="Center" HeightRequest="{Binding HeaderHeight}"/>
+                </CollectionView.Header>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="10,10,10,0" >

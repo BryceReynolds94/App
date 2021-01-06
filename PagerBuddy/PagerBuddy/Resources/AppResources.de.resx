@@ -229,7 +229,7 @@
     <value>BENACHRICHTIGUNGSTEST</value>
   </data>
   <data name="App_DeveloperMode_AlertPage_Title" xml:space="preserve">
-    <value>Test Gruppentitel</value>
+    <value>Test Chattitel</value>
   </data>
   <data name="App_Share_Message" xml:space="preserve">
     <value>Hol dir PagerBuddy und verpasse nie wieder eine dringende Benachrichtigung. PagerBuddy gibt es aktuell für Android und bald auch für iOS.</value>
@@ -331,6 +331,6 @@
     <value>Chat anzeigen</value>
   </data>
   <data name="ConfigureGroupPage_Warning_NoChats" xml:space="preserve">
-    <value>Es sieht so aus als ob du keine Gruppen-Chats in Telegram hast. Trete zuerst einer Gruppe in Telegram bei oder erstelle eine neue Gruppe um diese anschließend als Auslöser für Alarmbenachrichtigungen auszuwählen.</value>
+    <value>Es sieht so aus als ob du keine aktive Chats in Telegram hast. Trete zuerst einer Gruppe in Telegram bei oder starte eine Konversation um diese anschließend als Auslöser für Alarmbenachrichtigungen auszuwählen.</value>
   </data>
 </root>

@@ -313,7 +313,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test Alert Group Title.
+        ///   Looks up a localized string similar to Test Alert Chat Title.
         /// </summary>
         public static string App_DeveloperMode_AlertPage_Title {
             get {
@@ -349,7 +349,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to It appears that you have no group chats in Telegram. First join or create a group in Telegram to add it as an alert trigger..
+        ///   Looks up a localized string similar to It appears that you have no active chats in Telegram. First join a group or start a chat in Telegram to add it as an alert trigger..
         /// </summary>
         public static string ConfigureGroupPage_Warning_NoChats {
             get {

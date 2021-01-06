@@ -29,9 +29,11 @@ namespace PagerBuddy.ViewModels
             get => chatsEmpty;
             set {
                 chatsEmpty = value;
-                OnPropertyChanged(nameof(AreChatsEmpty));
+                OnPropertyChanged(nameof(HeaderHeight));
             }
         }
+
+        public string HeaderHeight => chatsEmpty ? "Auto" : "0"; 
 
         public ConfigureGroupPageViewModel()
         {
