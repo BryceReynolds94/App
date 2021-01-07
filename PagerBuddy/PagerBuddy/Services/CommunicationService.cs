@@ -20,6 +20,7 @@ using TeleSharp.TL.Users;
 using TLSharp.Core;
 using Xamarin.Forms; 
 using static PagerBuddy.Services.ClientExceptions;
+using TLSharp.Core.Network;
 
 namespace PagerBuddy.Services {
 
@@ -477,6 +478,10 @@ namespace PagerBuddy.Services {
             TLFile file;
             try {
                 file = await queue.Enqueue(new Func<Task<TLFile>>(async () => await client.GetFile(loc, 1024 * 256)));
+            }catch(FloodException e) {
+                //FloodPrevention is regularly triggered for highly frequented profiles (Telegram, BotFather...)
+                Logger.Info(e, "Flood prevention triggered trying to retrieve profile pic.");
+                return null;
             } catch (Exception exception) {
                 Logger.Error(exception, "Exception while trying to fetch profile pic.");
                 await checkConnectionOnError(exception);

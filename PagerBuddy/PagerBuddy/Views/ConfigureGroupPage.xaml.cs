@@ -101,7 +101,7 @@ namespace PagerBuddy.Views {
 
                 TelegramPeer detailPeer = peerCollection.FirstOrDefault((TelegramPeer x) => x.id == id);
                 if (detailPeer == null || detailPeer.id != id) {
-                    Logger.Warn("Details for a peer could not be found in peer collection and will be ignored.");
+                    Logger.Info("Details for a peer could not be found in peer collection and will be ignored.");
                     continue;
                 }
 
@@ -111,7 +111,7 @@ namespace PagerBuddy.Views {
                         detailPeer.image = new MemoryStream(file.Bytes);
                         detailPeer.hasImage = detailPeer.image != null;
                     } else {
-                        Logger.Warn("Could not load peer pic.");
+                        Logger.Info("Could not load peer pic.");
                     }
                 }
 

@@ -57,14 +57,11 @@
   <data name="ConfigureKeywordPage_Time_Day_Wednesday" xml:space="preserve">
     <value>Mi</value>
   </data>
-  <data name="ConfigureKeywordPage_Time_Flip" xml:space="preserve">
-    <value>Auswahl invertieren</value>
-  </data>
   <data name="ConfigureKeywordPage_Time_From" xml:space="preserve">
     <value>von</value>
   </data>
   <data name="ConfigureKeywordPage_Time_Set" xml:space="preserve">
-    <value>Konfigurieren</value>
+    <value>Nur zu angegebenen Zeiten</value>
   </data>
   <data name="ConfigureKeywordPage_Time_Title" xml:space="preserve">
     <value>Zeit</value>
@@ -332,5 +329,8 @@
   </data>
   <data name="ConfigureGroupPage_Warning_NoChats" xml:space="preserve">
     <value>Es sieht so aus als ob du keine aktive Chats in Telegram hast. Trete zuerst einer Gruppe in Telegram bei oder starte eine Konversation um diese anschließend als Auslöser für Alarmbenachrichtigungen auszuwählen.</value>
+  </data>
+  <data name="ConfigureKeywordPage_Time_Invert" xml:space="preserve">
+    <value>Immer, außer zu angegebenen Zeiten</value>
   </data>
 </root>

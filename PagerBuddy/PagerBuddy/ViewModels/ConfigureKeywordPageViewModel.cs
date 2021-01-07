@@ -63,11 +63,6 @@ namespace PagerBuddy.ViewModels
             }
         }
 
-        public bool FlipTime {
-            get => alertConfig.activeTimeConfig.flipActiveTime;
-            set => alertConfig.activeTimeConfig.flipActiveTime = value;
-
-        }
 
         public string KeywordText {
             get => alertConfig.triggerKeyword;
@@ -77,12 +72,39 @@ namespace PagerBuddy.ViewModels
 
         public bool TimeTypeAny {
             get => !alertConfig.timeRestriction;
-            set => alertConfig.timeRestriction = !value;
+            set {
+                if (value) {
+                    alertConfig.timeRestriction = false;
+                    alertConfig.activeTimeConfig.flipActiveTime = false;
+                    OnPropertyChanged(nameof(TimeConfigurationActive));
+                }
+            }
         }
+
+        public bool TimeConfigurationActive => !TimeTypeAny;
         public bool TimeTypeSet {
-            get => alertConfig.timeRestriction;
-            set => alertConfig.timeRestriction = value;
+            get => alertConfig.timeRestriction && !alertConfig.activeTimeConfig.flipActiveTime;
+            set {
+                if (value) {
+                    alertConfig.timeRestriction = true;
+                    alertConfig.activeTimeConfig.flipActiveTime = false;
+                    OnPropertyChanged(nameof(TimeConfigurationActive));
+                }
+            }
         }
+
+        public bool TimeTypeInvert {
+            get => alertConfig.timeRestriction && alertConfig.activeTimeConfig.flipActiveTime;
+            set {
+                if (value) {
+                    alertConfig.timeRestriction = true;
+                    alertConfig.activeTimeConfig.flipActiveTime = true;
+                    OnPropertyChanged(nameof(TimeConfigurationActive));
+                }
+            }
+
+        }
+
         public bool MondayActive {
             get => alertConfig.activeTimeConfig.checkDay(DayOfWeek.Monday);
             set => alertConfig.activeTimeConfig.setDay(DayOfWeek.Monday, value);

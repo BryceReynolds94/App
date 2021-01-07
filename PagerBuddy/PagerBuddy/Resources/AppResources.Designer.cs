@@ -457,15 +457,6 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invert selection.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_Flip {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_Flip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to from.
         /// </summary>
         public static string ConfigureKeywordPage_Time_From {
@@ -475,7 +466,16 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configure.
+        ///   Looks up a localized string similar to Allways, except at given times.
+        /// </summary>
+        public static string ConfigureKeywordPage_Time_Invert {
+            get {
+                return ResourceManager.GetString("ConfigureKeywordPage_Time_Invert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only at given times.
         /// </summary>
         public static string ConfigureKeywordPage_Time_Set {
             get {
