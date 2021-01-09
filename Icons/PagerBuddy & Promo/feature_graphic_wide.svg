@@ -17,7 +17,7 @@
    version="1.1"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
    sodipodi:docname="feature_graphic_wide.svg"
-   inkscape:export-filename="C:\Users\maxba\Downloads\feature_praphic.png"
+   inkscape:export-filename="D:\OneDrive\Dokumente\Xamarin\Icons\PagerBuddy &amp; Promo\feature_praphic_wide.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96">
   <defs
@@ -86,9 +86,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35355339"
-     inkscape:cx="1406.1376"
-     inkscape:cy="231.55007"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="1282.6603"
+     inkscape:cy="352.43781"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
      showgrid="false"
@@ -98,7 +98,21 @@
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      units="px"
-     showguides="false" />
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <sodipodi:guide
+       position="976,669"
+       orientation="1,0"
+       id="guide836"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="2088,612.35447"
+       orientation="1,0"
+       id="guide838"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,0,255)" />
+  </sodipodi:namedview>
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -107,7 +121,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
