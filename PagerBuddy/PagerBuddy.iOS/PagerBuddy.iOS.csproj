@@ -65,6 +65,12 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <AppExtensionDebugBundleId />
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>PagerBuddy.iOS.Application</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="iOSNavigation.cs" />
     <Compile Include="iOSNotification.cs" />
@@ -170,4 +176,9 @@
       <Name>PagerBuddy</Name>
     </ProjectReference>
   </ItemGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties TriggeredFromHotReload="False" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
