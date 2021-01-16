@@ -6,6 +6,8 @@ using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using Xamarin.Forms;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace PagerBuddy.Models
 {
@@ -106,8 +108,8 @@ namespace PagerBuddy.Models
                     Logger.Debug("Trigger type is KEYWORD. Result of keyword check: " + result);
                     break;
                 case TRIGGER_TYPE.SERVER:
-                    //TODO Later: Invent PagerBuddy-Server syntax
-                    Logger.Warn("Alert cannot be triggered, as the trigger type is set to SERVER. This method is not implemented yet.");
+                    result = hasPagerBuddyPayload(message);
+                    Logger.Debug("Trigger type is SERVER. Result of Payload check: " + result);
                     break;
             }
 
@@ -131,6 +133,40 @@ namespace PagerBuddy.Models
                     output = output + " - " + triggerKeyword;
                 }
                 return output;
+            }
+        }
+
+        private bool hasPagerBuddyPayload(string message) {
+            //PagerBuddy-Server syntax:
+            //Encode alert in <html/> tag as part of URL
+            //Alerts should contain url "*/pagerbuddy?#<base64><title/>*<date and time/>*<optional message/></base64>#"
+            Match match = extractPagerBuddyPayload(message);
+            return match.Success;
+        }
+
+        private Match extractPagerBuddyPayload(string rawMessage) {
+            return Regex.Match(rawMessage, "/pagerbuddy\\?#[-A-Za-z0-9+/]*={0,3}#"); //Regex: Match "/pagerbuddy?# <valid base 64 characters (A-Z, a-z, 0-9, +, /; followed by 0-3 "=")> #"
+        }
+
+        public string getAlertMessage(string rawMessage) {
+            if(triggerType != TRIGGER_TYPE.SERVER) {
+                //Server trigger not used - simply return rawMessage
+                return rawMessage;
+            } else {
+                Match match = extractPagerBuddyPayload(rawMessage);
+                if (!match.Success) {
+                    Logger.Warn("Could not match server RegEx in apparent PagerBuddy-Server message. Returning rawMessage.");
+                    return rawMessage;
+                }
+                try {
+                    string encodedMessage = match.Value.Split("#")[1]; //We want the stuff between the two #
+                    string decodedMessage = Encoding.UTF8.GetString(Convert.FromBase64String(encodedMessage)); //decode base64, message info in the format title*date time*optional message
+
+                    return decodedMessage.Replace("*", "\r\n"); //put line breaks between the info sections
+                }catch(Exception e) {
+                    Logger.Error(e, "An exception occured trying to parse the PagerBuddy-Server string. Returning rawMessage instead.");
+                    return rawMessage;
+                }
             }
         }
         
