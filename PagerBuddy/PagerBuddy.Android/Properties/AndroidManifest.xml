@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="22" android:versionName="1.0.5" package="de.bartunik.pagerbuddy" android:installLocation="preferExternal">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="23" android:versionName="1.0.6" package="de.bartunik.pagerbuddy" android:installLocation="preferExternal">
 	<uses-sdk android:minSdkVersion="26" android:targetSdkVersion="29" />
 	<application android:label="@string/app_name"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

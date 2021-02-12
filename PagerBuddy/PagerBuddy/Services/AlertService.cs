@@ -98,7 +98,7 @@ namespace PagerBuddy.Services {
 
                 if(result == null) {
                     Logger.Error("Retrieving messages returned null.");
-                    break;
+                    continue;
                 }
 
                     if (result is TLMessages) {
@@ -107,20 +107,20 @@ namespace PagerBuddy.Services {
                         messageList = (result as TLMessagesSlice).Messages;
                     } else {
                         Logger.Warn("Retrieving Messages from Telegram did not yield a valid message type.");
-                        break; //we did not get valid result 
+                        continue; //we did not get valid result 
                     }
 
 
                 if (messageList.Count < 1) {
                     Logger.Debug("No new messages for AlertConfig " + config.readableFullName);
-                    break;
+                    continue;
                 } else {
                     Logger.Debug("{0} new message(s) for AlertConfig " + config.readableFullName, messageList.Count);
                 }
 
                 foreach (TLAbsMessage rawMessage in messageList) {
                     if (!(rawMessage is TLMessage)) {
-                        break;
+                        continue;
                     }
                     TLMessage msg = rawMessage as TLMessage;
 
