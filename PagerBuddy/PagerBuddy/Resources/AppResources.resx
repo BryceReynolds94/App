@@ -216,7 +216,7 @@
     <value>Save</value>
   </data>
   <data name="ConfigureKeywordPage_Time_Any" xml:space="preserve">
-    <value>Allways</value>
+    <value>Always</value>
   </data>
   <data name="ConfigureKeywordPage_Time_Day_Friday" xml:space="preserve">
     <value>Fr</value>
@@ -452,6 +452,9 @@
     <value>It appears that you have no active chats in Telegram. First join a group or start a chat in Telegram to add it as an alert trigger.</value>
   </data>
   <data name="ConfigureKeywordPage_Time_Invert" xml:space="preserve">
-    <value>Allways, except at given times</value>
+    <value>Always, except at given times</value>
+  </data>
+  <data name="ConfigureKeywordPage_Trigger_Server_IgnoreTest" xml:space="preserve">
+    <value>Ignore test alerts</value>
   </data>
 </root>

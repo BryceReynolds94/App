@@ -51,8 +51,15 @@ namespace PagerBuddy.ViewModels
                 {
                     alertConfig.triggerType = AlertConfig.TRIGGER_TYPE.SERVER;
                 }
+                OnPropertyChanged(nameof(TriggerTypeServer)); 
             }
         }
+
+        public bool IgnoreTestAlert {
+            get => alertConfig.ignoreTestAlerts;
+            set => alertConfig.ignoreTestAlerts = value;
+        }
+
         public bool TriggerTypeKeyword {
             get => alertConfig.triggerType == AlertConfig.TRIGGER_TYPE.KEYWORD;
             set {

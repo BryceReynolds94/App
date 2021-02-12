@@ -333,4 +333,7 @@
   <data name="ConfigureKeywordPage_Time_Invert" xml:space="preserve">
     <value>Immer, außer zu angegebenen Zeiten</value>
   </data>
+  <data name="ConfigureKeywordPage_Trigger_Server_IgnoreTest" xml:space="preserve">
+    <value>Probealarme ignorieren</value>
+  </data>
 </root>

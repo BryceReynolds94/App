@@ -40,8 +40,8 @@ namespace PagerBuddy.Services {
             }
             private set {
                 status = value;
-                StatusChanged?.Invoke(this, value);
                 Logger.Info("Status of CommunicationService changed to " + value.ToString());
+                StatusChanged?.Invoke(this, value);
             }
         }
 

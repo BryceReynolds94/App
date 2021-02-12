@@ -13,6 +13,18 @@
                 <Label x:Name="TitleLabel" Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Title}" VerticalOptions="Center" FontSize="Medium" Padding="5,0" />
                 <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Any}" IsChecked="{Binding TriggerTypeAny}" TextColor="Gray" FontSize="Body" GroupName="Trigger"/>
                 <RadioButton Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Server}" IsChecked="{Binding TriggerTypeServer}" TextColor="Gray" FontSize="Body" GroupName="Trigger"/>
+
+                <StackLayout Orientation="Horizontal" Margin="30,0,20,0">
+                    <CheckBox IsChecked="{Binding IgnoreTestAlert}" IsEnabled="{Binding TriggerTypeServer}">
+                        <CheckBox.Triggers>
+                            <DataTrigger TargetType="CheckBox" Binding="{Binding TriggerTypeServer}" Value="False">
+                                <Setter Property="Color" Value="LightGray" />
+                            </DataTrigger>
+                        </CheckBox.Triggers>
+                    </CheckBox>
+                    <Label Text="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Server_IgnoreTest}"  VerticalTextAlignment="Center" />
+                </StackLayout>
+
                 <RadioButton x:Name="BtnKeyword" Content="{x:Static resources:AppResources.ConfigureKeywordPage_Trigger_Keyword}" IsChecked="{Binding TriggerTypeKeyword}" TextColor="Gray" FontSize="Body" GroupName="Trigger"/>
                 
                 <Entry Text="{Binding KeywordText}" Placeholder="{x:Static resources:AppResources.ConfigureKeywordPage_Keyword_Placeholder}" IsEnabled="{Binding Source={x:Reference BtnKeyword}, Path=IsChecked}" Margin="30,0,20,0" />

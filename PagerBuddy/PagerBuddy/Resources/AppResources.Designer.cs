@@ -385,7 +385,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allways.
+        ///   Looks up a localized string similar to Always.
         /// </summary>
         public static string ConfigureKeywordPage_Time_Any {
             get {
@@ -466,7 +466,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allways, except at given times.
+        ///   Looks up a localized string similar to Always, except at given times.
         /// </summary>
         public static string ConfigureKeywordPage_Time_Invert {
             get {
@@ -534,6 +534,15 @@ namespace PagerBuddy.Resources {
         public static string ConfigureKeywordPage_Trigger_Server {
             get {
                 return ResourceManager.GetString("ConfigureKeywordPage_Trigger_Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignore test alerts.
+        /// </summary>
+        public static string ConfigureKeywordPage_Trigger_Server_IgnoreTest {
+            get {
+                return ResourceManager.GetString("ConfigureKeywordPage_Trigger_Server_IgnoreTest", resourceCulture);
             }
         }
         
