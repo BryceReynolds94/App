@@ -16,6 +16,10 @@ namespace PagerBuddy.Services {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public AlertService(CommunicationService client) {
+            if (checkLockTime(DateTime.Now)) {
+                return;
+            }
+
             checkNewMessages(client);
         }
 
@@ -57,6 +61,7 @@ namespace PagerBuddy.Services {
             return false;
         }
 
+        int currentMessageID = DataService.getConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, 0);
 
         private async void checkNewMessages(CommunicationService client) {
             Logger.Info("Checking for new messages.");
@@ -67,11 +72,9 @@ namespace PagerBuddy.Services {
                 configList.Add(DataService.getAlertConfig(id));
             }
 
-            if(configList.Count < 1) {
+            if (configList.Count < 1) {
                 Logger.Debug("Configuration list is empty. Will not check messages, but update message ID pointer.");
             }
-
-            int currentMessageID = DataService.getConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, 0);
 
             foreach (AlertConfig config in configList) {
                 TLAbsInputPeer inputPeer;
@@ -96,19 +99,19 @@ namespace PagerBuddy.Services {
                 TLAbsMessages result = await client.getMessages(inputPeer, currentMessageID);
                 TLVector<TLAbsMessage> messageList;
 
-                if(result == null) {
+                if (result == null) {
                     Logger.Error("Retrieving messages returned null.");
                     continue;
                 }
 
-                    if (result is TLMessages) {
-                        messageList = (result as TLMessages).Messages;
-                    } else if (result is TLMessagesSlice) {
-                        messageList = (result as TLMessagesSlice).Messages;
-                    } else {
-                        Logger.Warn("Retrieving Messages from Telegram did not yield a valid message type.");
-                        continue; //we did not get valid result 
-                    }
+                if (result is TLMessages) {
+                    messageList = (result as TLMessages).Messages;
+                } else if (result is TLMessagesSlice) {
+                    messageList = (result as TLMessagesSlice).Messages;
+                } else {
+                    Logger.Warn("Retrieving Messages from Telegram did not yield a valid message type.");
+                    continue; //we did not get valid result 
+                }
 
 
                 if (messageList.Count < 1) {
@@ -124,7 +127,7 @@ namespace PagerBuddy.Services {
                     }
                     TLMessage msg = rawMessage as TLMessage;
 
-                    DateTime timestamp = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(msg.Date).ToLocalTime();  //Unix base time -- we need locacl time for alert time comparison
+                    DateTime timestamp = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(msg.Date).ToLocalTime();  //Unix base time -- we need local time for alert time comparison
 
                     if (config.isAlert(msg.Message, timestamp, msg.Entities)) {
                         DateTime referenceTime = DateTime.Now.Subtract(new TimeSpan(0, 10, 0)); //grace period of 10min
