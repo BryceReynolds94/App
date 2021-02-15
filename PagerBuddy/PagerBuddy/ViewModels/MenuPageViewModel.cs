@@ -14,7 +14,7 @@ namespace PagerBuddy.ViewModels {
         public Command NotificationSettings { get; set; }
         public Command Logout { get; set; }
         public Command Profile { get; set; }
-        public Command Donate { get; set; }
+        public Command Website { get; set; }
 
         public MenuPageViewModel() {
 
@@ -23,7 +23,7 @@ namespace PagerBuddy.ViewModels {
             Share = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.Share));
             Logout = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.LogoutUser));
             Profile = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.Login));
-            Donate = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.Donate));
+            Website = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.Website));
 
             MessagingCenter.Subscribe<CommunicationService>(this, CommunicationService.MESSAGING_KEYS.USER_DATA_CHANGED.ToString(), (_) => userDataChanged());
             MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => userDataChanged());
@@ -53,7 +53,7 @@ namespace PagerBuddy.ViewModels {
 
         public ImageSource NotificationConfigPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert.svg");
         public ImageSource SharePic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_share.svg");
-        public ImageSource DonatePic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_coffee.svg");
+        public ImageSource WebsitePic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_coffee.svg");
         public ImageSource AboutPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_about.svg");
         public ImageSource LogoutPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_logout.svg");
     }

@@ -430,8 +430,8 @@
   <data name="LoginPhonePage_InstallTelegram" xml:space="preserve">
     <value>Install Telegram App</value>
   </data>
-  <data name="MenuPage_Action_Donate" xml:space="preserve">
-    <value>Buy me tea</value>
+  <data name="MenuPage_Action_Website" xml:space="preserve">
+    <value>Support PagerBuddy</value>
   </data>
   <data name="AboutPage_LogLevel_Prefix" xml:space="preserve">
     <value>Log Level: {0}</value>

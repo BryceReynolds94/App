@@ -979,15 +979,6 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Buy me tea.
-        /// </summary>
-        public static string MenuPage_Action_Donate {
-            get {
-                return ResourceManager.GetString("MenuPage_Action_Donate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Logout.
         /// </summary>
         public static string MenuPage_Action_Logout {
@@ -1011,6 +1002,15 @@ namespace PagerBuddy.Resources {
         public static string MenuPage_Action_Share {
             get {
                 return ResourceManager.GetString("MenuPage_Action_Share", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support PagerBuddy.
+        /// </summary>
+        public static string MenuPage_Action_Website {
+            get {
+                return ResourceManager.GetString("MenuPage_Action_Website", resourceCulture);
             }
         }
         

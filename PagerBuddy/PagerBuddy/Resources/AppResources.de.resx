@@ -309,8 +309,8 @@
   <data name="AboutPage_PrivacyPolicy" xml:space="preserve">
     <value>Persönliche Informationen, die während der Verwendung der App gesammelt werden, werden ausschließlich lokal auf deinen Gerät gespeichert. Nur notwendige Daten zur Authentifizierung werden an Telegram weitergegeben. Im Falle eines Fehlers können Daten zum Gerätezustand und der Konfiguration von PagerBuddy gesammelt werden. Links zu den Datenschutzerklärungen von Telegram und PagerBuddy sind unten angegeben.</value>
   </data>
-  <data name="MenuPage_Action_Donate" xml:space="preserve">
-    <value>Tee spenden</value>
+  <data name="MenuPage_Action_Website" xml:space="preserve">
+    <value>PagerBuddy unterstützen</value>
   </data>
   <data name="AboutPage_LogLevel_Prefix" xml:space="preserve">
     <value>Log Level: {0}</value>

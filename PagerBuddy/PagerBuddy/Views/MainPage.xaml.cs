@@ -47,8 +47,8 @@ namespace PagerBuddy.Views {
                 case MenuPage.MENU_PAGE.Login:
                     await LoginUser();
                     break;
-                case MenuPage.MENU_PAGE.Donate:
-                    await requestDonate();
+                case MenuPage.MENU_PAGE.Website:
+                    await requestWebsite();
                     break;
                 default:
                     break;
@@ -100,8 +100,8 @@ namespace PagerBuddy.Views {
             IsPresented = false;
         }
 
-        private async Task requestDonate() {
-            await Launcher.OpenAsync("https://www.buymeacoffee.com/maxbartunik");
+        private async Task requestWebsite() {
+            await Launcher.OpenAsync("http://www.bartunik.de");
             IsPresented = false;
         }
     }

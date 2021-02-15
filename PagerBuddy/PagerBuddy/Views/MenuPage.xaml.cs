@@ -17,7 +17,7 @@ namespace PagerBuddy.Views
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         MainPage RootPage { get => Application.Current.MainPage as MainPage; }
 
-        public enum MENU_PAGE { AboutPage, LogoutUser, NotificationSettings, Share, Login, Donate};
+        public enum MENU_PAGE { AboutPage, LogoutUser, NotificationSettings, Share, Login, Website};
 
         MenuPageViewModel viewModel;
         public MenuPage()
