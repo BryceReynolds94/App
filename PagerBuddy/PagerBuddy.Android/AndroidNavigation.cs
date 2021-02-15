@@ -38,11 +38,9 @@ namespace PagerBuddy.Droid
 
         public void navigateTelegramChat(int chatID, TelegramPeer.TYPE type)
         {
-            if (!isTelegramInstalled()) {
-                quitApplication();
-                return;
+            if (isTelegramInstalled()) {
+                Application.Context.StartActivity(getTelegramIntent(chatID, type));
             }
-            Application.Context.StartActivity(getTelegramIntent(chatID, type));
         }
 
         //Telegram intent handling:

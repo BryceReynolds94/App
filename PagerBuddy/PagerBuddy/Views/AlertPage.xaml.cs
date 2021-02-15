@@ -58,6 +58,7 @@ namespace PagerBuddy.Views
 
             INavigation nav = DependencyService.Get<INavigation>();
             nav.navigateTelegramChat(groupID, peerType);
+            nav.quitApplication();
         }
 
         protected override void OnDisappearing() {
