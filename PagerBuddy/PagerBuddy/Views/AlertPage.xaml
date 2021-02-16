@@ -14,7 +14,7 @@
             <ScrollView Padding="20">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -22,11 +22,11 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Frame Padding="0" CornerRadius="20" IsClippedToBounds="True">
+                    <Frame Padding="0" CornerRadius="20" IsClippedToBounds="True" HeightRequest="40" VerticalOptions="Start" >
                         <Image Source="{Binding GroupPic}"/>
                     </Frame>
 
-                    <Label Text="{Binding AlertTitle}"  Grid.Column="1" TextColor="{StaticResource PrimaryTextColor}" FontSize="Title" Margin="10,0,0,0"/>
+                    <Label Text="{Binding AlertTitle}"  Grid.Column="1" TextColor="{StaticResource PrimaryTextColor}" FontSize="Title" Margin="10,0,0,0" VerticalOptions="Center"/>
                     <Label Text="{Binding AlertText}" TextColor="{StaticResource PrimaryTextColor}" Grid.Column="1" Grid.Row="1" Margin="10,0,0,0"/>
                     <!--Label Text="Vehicle Accident - Sampleroad 123, Sampletown. Immediate RESPONSE required." TextColor="{StaticResource PrimaryTextColor}" Grid.Column="1" Grid.Row="1" Margin="10,0,0,0"/-->
                 </Grid>
