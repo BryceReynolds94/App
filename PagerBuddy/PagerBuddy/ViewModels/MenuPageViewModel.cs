@@ -53,7 +53,7 @@ namespace PagerBuddy.ViewModels {
 
         public ImageSource NotificationConfigPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert.svg");
         public ImageSource SharePic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_share.svg");
-        public ImageSource WebsitePic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_coffee.svg");
+        public ImageSource WebsitePic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_facebook.svg");
         public ImageSource AboutPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_about.svg");
         public ImageSource LogoutPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_logout.svg");
     }

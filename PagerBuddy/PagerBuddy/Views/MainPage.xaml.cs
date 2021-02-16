@@ -101,7 +101,7 @@ namespace PagerBuddy.Views {
         }
 
         private async Task requestWebsite() {
-            await Launcher.OpenAsync("http://www.bartunik.de");
+            await Launcher.OpenAsync("https://www.facebook.com/pagerbuddy");
             IsPresented = false;
         }
     }

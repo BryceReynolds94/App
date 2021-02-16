@@ -22,9 +22,9 @@
     <None Remove="Resources\Images\icon_alert_snooze_inactive.svg" />
     <None Remove="Resources\Images\icon_alert_snooze_off.svg" />
     <None Remove="Resources\Images\icon_clear.svg" />
-    <None Remove="Resources\Images\icon_coffee.svg" />
     <None Remove="Resources\Images\icon_confirm.svg" />
     <None Remove="Resources\Images\icon_delete.svg" />
+    <None Remove="Resources\Images\icon_facebook.svg" />
     <None Remove="Resources\Images\icon_history.svg" />
     <None Remove="Resources\Images\icon_key.svg" />
     <None Remove="Resources\Images\icon_lock.svg" />
@@ -50,9 +50,9 @@
     <EmbeddedResource Include="Resources\Images\icon_alert_snooze_inactive.svg" />
     <EmbeddedResource Include="Resources\Images\icon_alert_snooze_off.svg" />
     <EmbeddedResource Include="Resources\Images\icon_clear.svg" />
-    <EmbeddedResource Include="Resources\Images\icon_coffee.svg" />
     <EmbeddedResource Include="Resources\Images\icon_confirm.svg" />
     <EmbeddedResource Include="Resources\Images\icon_delete.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_facebook.svg" />
     <EmbeddedResource Include="Resources\Images\icon_history.svg" />
     <EmbeddedResource Include="Resources\Images\icon_key.svg" />
     <EmbeddedResource Include="Resources\Images\icon_lock.svg" />

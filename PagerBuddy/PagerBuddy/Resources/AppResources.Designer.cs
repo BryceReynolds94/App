@@ -187,7 +187,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PagerBuddy is neither affiliated nor endorsed by Telegram..
+        ///   Looks up a localized string similar to PagerBuddy is neither affiliated to nor endorsed by Telegram..
         /// </summary>
         public static string AboutPage_Telegram {
             get {
