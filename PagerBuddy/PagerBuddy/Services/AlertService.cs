@@ -108,8 +108,10 @@ namespace PagerBuddy.Services {
                     messageList = (result as TLMessages).Messages;
                 } else if (result is TLMessagesSlice) {
                     messageList = (result as TLMessagesSlice).Messages;
+                }else if(result is TLChannelMessages) {
+                    messageList = (result as TLChannelMessages).Messages;
                 } else {
-                    Logger.Warn("Retrieving Messages from Telegram did not yield a valid message type.");
+                    Logger.Info("Retrieving Messages from Telegram did not yield a valid message type or no new messages were received.");
                     continue; //we did not get valid result 
                 }
 
