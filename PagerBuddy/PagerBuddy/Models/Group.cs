@@ -28,14 +28,10 @@ namespace PagerBuddy.Models
             this.hasImage = hasImage;
         }
 
-        public Group(string name, int id, TelegramPeer.TYPE type, long? accessHash = null) {
-            if(accessHash == null) {
-                accessHash = 0;
-            }
-
+        public Group(string name, int id, TelegramPeer.TYPE type, long accessHash = 0) {
             this.name = name;
             this.id = id;
-            this.accessHash = (long) accessHash;
+            this.accessHash = accessHash;
             this.type = type;
         }
 

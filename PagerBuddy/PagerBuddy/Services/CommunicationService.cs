@@ -10,17 +10,12 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TeleSharp.TL;
-using TeleSharp.TL.Account;
-using TeleSharp.TL.Auth;
-using TeleSharp.TL.Messages;
-using TeleSharp.TL.Updates;
-using TeleSharp.TL.Upload;
-using TeleSharp.TL.Users;
-using TLSharp.Core;
 using Xamarin.Forms; 
 using static PagerBuddy.Services.ClientExceptions;
-using TLSharp.Core.Network;
+using Telega;
+using Functions = Telega.Rpc.Dto.Functions;
+using Types = Telega.Rpc.Dto.Types;
+using LanguageExt;
 
 namespace PagerBuddy.Services {
 
@@ -29,7 +24,7 @@ namespace PagerBuddy.Services {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private TelegramClient client;
-        private TLUser user;
+        private Types.User user;
 
         private CommunicationServiceQueue queue;
 
@@ -76,7 +71,7 @@ namespace PagerBuddy.Services {
         private async Task connectClient(bool isBackgroundCall = false, int attempt = 0) {
             clientStatus = STATUS.NEW;
             try {
-                client = new TelegramClient(KeyService.checkID(this), KeyService.checkHash(this), new MySessionStore(this));
+                client = await TelegramClient.Connect(KeyService.checkID(this));
             } catch (Exception e) {
                 Logger.Error(e, "Initialisation of TelegramClient failed");
                 clientStatus = STATUS.OFFLINE;
@@ -84,22 +79,15 @@ namespace PagerBuddy.Services {
                 return;
             }
 
-            if(! await tryConnect(isBackgroundCall)) {
-                clientStatus = STATUS.OFFLINE;
-                scheduleRetry(isBackgroundCall, attempt);
-                return;
-            }
-
             clientStatus = STATUS.ONLINE;
 
-            if (client.IsUserAuthorized()) {
+            if (client.Auth.IsAuthorized) {
                 Logger.Debug("User is authorised.");
                 if (!isBackgroundCall) { //only do this stuff if we are not retrieving alert messages
-                    this.user = await getUserUpdate(this.user);
+                    this.user = await getUserUpdate();
                     await saveUserData(user);
                     //Update current message index
                     await subscribePushNotifications(CrossFirebasePushNotification.Current.Token, true);
-                    DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0, true));
                 }
                 if (clientStatus != STATUS.ONLINE) { //status may have changed out of scope due to previous call fallbacks
                     Logger.Info("Connect process completed, but client Status was changed out of scope. Not setting authorised status. CurrentStatus: " + clientStatus.ToString());
@@ -122,55 +110,11 @@ namespace PagerBuddy.Services {
             Task.Delay(5000).ContinueWith(t => reloadConnection(isBackgroundCall, attempt));
         }
 
-        private async Task<bool> connectTimeWatcher() {
-            //In this version of TLSharp library we have a problem with (seldom) infinate loops
-            //Apparently has been solved in newer versions - maybe update TLSharp some day
-
-            bool wasKilled = false;
-            await Task.WhenAny(client.ConnectAsync(), Task.Delay(TimeSpan.FromSeconds(10)).ContinueWith(t => wasKilled = true)); //giving connectasync max. 10s to return
-            return wasKilled;
-        }
-
-        private async Task<bool> tryConnect(bool isBackgroundCall, int attempt = 0) {
-            bool retry = false;
-            try {
-                bool wasKilled = await queue.Enqueue(new Func<Task<bool>>(async () => await connectTimeWatcher()));
-
-                if (wasKilled) {
-                    Logger.Error("Connecting client took too long and was cancelled.");
-                    return false;
-                }
-            } catch (InvalidOperationException e) {
-                Logger.Error(e, "Exception during connection attempt.");
-                retry = true;
-            } catch (Exception e) {
-                Logger.Error(e, "Unknown exception during connection attempt");
-                if (isBackgroundCall) {
-                    Logger.Warn("Stoppig client initialisation after fatal error while called in background.");
-                    return false;
-                }
-
-                Logger.Error("Fatal Problem with client. Clearing session store and starting again.");
-                clientStatus = STATUS.NEW;
-                new MySessionStore(this).Clear();
-                await forceReloadConnection(isBackgroundCall);
-                return false;
-            }
-            if (retry) {
-                if (attempt > 2) {
-                    Logger.Error("No success connecting within 3 attempts. Giving up.");
-                    return false;
-                }
-                Logger.Warn("Trying again.");
-                return await tryConnect(isBackgroundCall, ++attempt);
-            }
-            return true;
-        }
-
         private async Task checkConnectionOnError(Exception e = null) {
             if(clientStatus > STATUS.OFFLINE) {
-                if (client.IsConnected) {
-                    if (clientStatus == STATUS.AUTHORISED && !client.IsUserAuthorized()) {
+                //TODO: Implement this
+                if (true) {
+                    if (clientStatus == STATUS.AUTHORISED && !client.Auth.IsAuthorized) {
                         //Something went very wrong - set offline as a recovery solution
                         Logger.Warn("Status set to authorised but user is not authorised. Force setting offline status.");
                         clientStatus = STATUS.OFFLINE;
@@ -192,25 +136,25 @@ namespace PagerBuddy.Services {
 
             string token = CrossFirebasePushNotification.Current.Token;
 
-            TLRequestUnregisterDevice unregisterRequest = new TLRequestUnregisterDevice() {
-                TokenType = 2,
-                Token = token
-            };
+            Functions.Account.UnregisterDevice unregisterRequest = new Functions.Account.UnregisterDevice(
+                    tokenType: 2,
+                    token: token,
+                    new LanguageExt.Arr<int>()
+                );
 
             try {
-                await queue.Enqueue(new Func<Task>(async () => await client.SendRequestAsync<bool>(unregisterRequest))); //https://core.telegram.org/method/account.unregisterDevice
+                await client.Call(unregisterRequest); //https://core.telegram.org/method/account.unregisterDevice
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to unregister device.");
             }
 
             try {
-                await queue.Enqueue(new Func<Task>(async () => await client.SendRequestAsync<bool>(new TLRequestLogOut()))); //https://core.telegram.org/method/auth.logOut
+                await client.Call(new Functions.Auth.LogOut()); //https://core.telegram.org/method/auth.logOut
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to logout user.");
             }
 
             clientStatus = STATUS.NEW;
-            new MySessionStore(this).Clear();
             await forceReloadConnection();
         }
 
@@ -224,13 +168,20 @@ namespace PagerBuddy.Services {
                 return;
             }
 
-            TLRequestRegisterDevice request = new TLRequestRegisterDevice() { //https://core.telegram.org/method/account.registerDevice
-                TokenType = 2, //2 = FCM, use  for APNs
-                Token = token
-            };
+            byte[] aesSecret = new byte[256];
+            new Random().NextBytes(aesSecret);
+            DataService.setConfigValue(DataService.DATA_KEYS.AES_AUTH_KEY, aesSecret);
+
+            Functions.Account.RegisterDevice request = new Functions.Account.RegisterDevice(
+                    noMuted: false,
+                    tokenType: 2,
+                    token: token,
+                    appSandbox: false,
+                    secret: Telega.Rpc.Dto.BytesExtensions.ToBytes(aesSecret),
+                    otherUids: new LanguageExt.Arr<int>());  //https://core.telegram.org/method/account.registerDevice
 
             try {
-                await queue.Enqueue(new Func<Task>(async () => await client.SendRequestAsync<bool>(request)));
+                await client.Call(request);
             } catch (Exception e) {
                 Logger.Error(e, "Subscribing to push notifications failed");
                 await checkConnectionOnError(e);
@@ -247,18 +198,18 @@ namespace PagerBuddy.Services {
                 return TStatus.WRONG_CLIENT_STATUS;
             }
 
-            TLPassword passwordConfig;
+            Types.Account.Password passwordConfig;
             try {
-                passwordConfig = await queue.Enqueue(new Func<Task<TLPassword>>(async () => await client.GetPasswordSetting()));
+                passwordConfig = await client.Auth.GetPasswordInfo();
             } catch (Exception e) {
                 Logger.Error(e, "Exception occured while trying to receive password configuration");
                 await checkConnectionOnError(e);
                 return TStatus.UNKNOWN;
             }
 
-            TLUser user;
+            Types.User user;
             try {
-                user = await queue.Enqueue(new Func<Task<TLUser>>(async () => await client.MakeAuthWithPasswordAsync(passwordConfig, password)));
+                user = await client.Auth.CheckPassword(passwordConfig, password);
             } catch (System.InvalidOperationException e) {
                 Logger.Warn(e, "Exception trying to confirm password. Presumably the client went offline.");
                 await checkConnectionOnError(e);
@@ -294,7 +245,7 @@ namespace PagerBuddy.Services {
 
             string hash;
             try {
-                hash = await queue.Enqueue(new Func<Task<string>>(async () => await client.SendCodeRequestAsync(phoneNumber)));
+                hash = await client.Auth.SendCode(KeyService.checkHash(this), clientPhoneNumber);
             } catch (System.InvalidOperationException e) {
                 Logger.Warn(e, "Exception trying to authenticate user. Presumably the client went offline.");
                 await checkConnectionOnError(e);
@@ -305,7 +256,7 @@ namespace PagerBuddy.Services {
                     Logger.Warn("Finally failed to request code.");
                     return TStatus.UNKNOWN;
                 }
-            } catch(System.IO.IOException e) {
+            } catch (System.IO.IOException e) {
                 Logger.Warn(e, "Exception trying to authenticate user. Presumably the client went offline.");
                 await checkConnectionOnError(e);
                 if (clientStatus > STATUS.ONLINE && attempt < 3) {
@@ -315,6 +266,7 @@ namespace PagerBuddy.Services {
                     Logger.Warn("Finally failed to request code.");
                     return TStatus.UNKNOWN;
                 }
+            
             } catch (Exception e) {
 
                 TException exception = getTException(e.Message);
@@ -358,15 +310,15 @@ namespace PagerBuddy.Services {
                 return TStatus.WRONG_CLIENT_STATUS;
             }
 
-            TLUser user;
+            Types.User user;
             try {
-                user = await queue.Enqueue(new Func<Task<TLUser>>(async () => await client.MakeAuthAsync(clientPhoneNumber, clientRequestCodeHash, code)));
-            } catch (CloudPasswordNeededException e) {
-                Logger.Info(e, "Two factor authentication needed.");
+                user = await client.Auth.SignIn(clientPhoneNumber, clientRequestCodeHash, code);
+            } catch (TgPasswordNeededException) {
+                Logger.Info("Two factor authentication needed.");
                 clientStatus = STATUS.WAIT_PASSWORD;
                 return TStatus.PASSWORD_REQUIRED;
-            } catch (InvalidPhoneCodeException e) {
-                Logger.Info(e, "Incorrect code entered.");
+            } catch (TgInvalidPhoneCodeException) {
+                Logger.Info("Incorrect code entered.");
                 return TStatus.INVALID_CODE;
             } catch (System.InvalidOperationException e) {
                 Logger.Warn(e, "Exception trying to confirm code. Presumably the client went offline.");
@@ -382,7 +334,7 @@ namespace PagerBuddy.Services {
             return TStatus.OK;
         }
 
-        private async Task loginCompleted(TLUser user) {
+        private async Task loginCompleted(Types.User user) {
             this.user = user;
             await saveUserData(user);
             clientStatus = STATUS.AUTHORISED;
@@ -393,36 +345,35 @@ namespace PagerBuddy.Services {
             } else {
                 await subscribePushNotifications(token);
             }
-            //set current message id
-            DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await getLastMessageID(0));
         }
 
-        private async Task saveUserData(TLUser user) {
-            if (user == null) {
-                Logger.Error("Attempting to save null user.");
+        private async Task saveUserData(Types.User user) {
+            if (user.AsTag().IsNone) {
+                Logger.Error("Attempting to save empty user.");
                 return;
             }
 
-            TLUserProfilePhoto photo = (user.Photo as TLUserProfilePhoto);
-            bool hasPhoto = false;
-            if (photo != null) {
-                TLFile file = await getProfilePic(photo.PhotoBig as TLFileLocation);
-                if (file != null) {
-                    MemoryStream memoryStream = new MemoryStream(file.Bytes);
+            Types.User.Tag userTag = user.AsTag().Single();
 
+            bool hasPhoto = userTag.Photo.IsSome;
+            if (hasPhoto) {
+                Types.FileLocation fileLocation = userTag.Photo.Single().AsTag().Single().PhotoBig;
+
+                /*MemoryStream file = await getProfilePic(fileLocation);
+                if (file != null) {
                     DataService.saveProfilePic(DataService.DATA_KEYS.USER_PHOTO.ToString(), memoryStream);
                     hasPhoto = true;
                 } else {
                     Logger.Warn("Could not load profile pic.");
-                }
+                }*/
             }
             DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, hasPhoto);
 
-            string userName = user.FirstName + " " + user.LastName;
+            string userName = userTag.FirstName + " " + userTag.LastName;
             if (userName.Length < 3) {
-                userName = user.Username;
+                userName = (string) userTag.Username;
             }
-            string userPhone = "+" + user.Phone;
+            string userPhone = "+" + userTag.Phone;
 
             DataService.setConfigValue(DataService.DATA_KEYS.USER_NAME, userName);
             DataService.setConfigValue(DataService.DATA_KEYS.USER_PHONE, userPhone);
@@ -430,20 +381,15 @@ namespace PagerBuddy.Services {
             MessagingCenter.Send(this, MESSAGING_KEYS.USER_DATA_CHANGED.ToString());
         }
 
-        public async Task<TLAbsDialogs> getChatList(int attempt = 0) {
+        public async Task<Types.Messages.Dialogs> getChatList(int attempt = 0) {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to load chat list without appropriate client status. Current status: " + clientStatus.ToString());
-                return new TLDialogs();
+                return default;
             }
 
-            TLMethod requestDialogList = new TLRequestGetDialogs() { //https://core.telegram.org/method/messages.getDialogs
-                OffsetPeer = new TLInputPeerSelf(),
-                Limit = 100
-            };
-
-            TLAbsDialogs dialogs;
+            Types.Messages.Dialogs dialogs;
             try {
-                dialogs = await queue.Enqueue(new Func<Task<TLAbsDialogs>>(async () => await client.SendRequestAsync<TLAbsDialogs>(requestDialogList)));
+                dialogs = await client.Messages.GetDialogs();
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list.");
                 await checkConnectionOnError(e);
@@ -453,57 +399,62 @@ namespace PagerBuddy.Services {
                 } else {
                     Logger.Warn("Finally failed to get chat messages. Returning empty list.");
                 }
-                return new TLDialogs();
-            }
-
-            if (!((dialogs is TLDialogs)||(dialogs is TLDialogsSlice))) {
-                Logger.Error("Unexpected return Type while fetching dialogs. Type: " + dialogs.GetType());
-                return new TLDialogs();
+                return default;
             }
 
             return dialogs;
         }
 
-        public async Task<TLFile> getProfilePic(TLFileLocation location) {
+        public async Task<MemoryStream> getProfilePic(Types.Photo photo) {
             if (clientStatus < STATUS.ONLINE) {
                 Logger.Warn("Attempted to load profile pic without appropriate client status. Current status: " + clientStatus.ToString());
                 return null; 
             }
-            TLInputFileLocation loc = new TLInputFileLocation() {
-                LocalId = location.LocalId,
-                Secret = location.Secret,
-                VolumeId = location.VolumeId
-            };
 
-            TLFile file;
+            if (photo.AsTag().IsNone) {
+                Logger.Warn("Tried to retrieve Photo without Info.");
+                return null;
+            }
+
+            Types.Photo.Tag photoTag = photo.AsTag().Single();
+
+            Types.InputFileLocation loc = new Types.InputFileLocation.PhotoTag(
+                id: photoTag.Id,
+                accessHash: photoTag.AccessHash,
+                fileReference: photoTag.FileReference,
+                thumbSize: photoTag.Sizes.Choose(Types.PhotoSize.AsTag).OrderByDescending(x => x.Size).First().Type
+            );
+
+
+            MemoryStream fileStream = new MemoryStream();
             try {
-                file = await queue.Enqueue(new Func<Task<TLFile>>(async () => await client.GetFile(loc, 1024 * 256)));
-            }catch(FloodException e) {
+                await client.Upload.DownloadFile(fileStream, loc);
+            }catch(TgFloodException) {
                 //FloodPrevention is regularly triggered for highly frequented profiles (Telegram, BotFather...)
-                Logger.Info(e, "Flood prevention triggered trying to retrieve profile pic.");
+                Logger.Info("Flood prevention triggered trying to retrieve profile pic.");
                 return null;
             } catch (Exception exception) {
                 Logger.Error(exception, "Exception while trying to fetch profile pic.");
                 await checkConnectionOnError(exception);
                 return null;
             }
-            return file;
+            return fileStream;
         }
 
-        private async Task<TLUser> getUserUpdate(TLUser user) {
+        private async Task<Types.User> getUserUpdate() {
             if (clientStatus < STATUS.ONLINE) {
                 Logger.Warn("Attempted to retrieve user update without appropriate client status. Current status: " + clientStatus.ToString());
                 return user;
-            }
+            }          
 
-            TLRequestGetUsers request = new TLRequestGetUsers() { //https://core.telegram.org/method/users.getUsers
-                Id = new TLVector<TLAbsInputUser> { new TLInputUser() { UserId = user.Id, AccessHash = (long)user.AccessHash } }
-            };
-
-            TLUser outUser;
+            Types.User outUser;
             try {
-                TLVector<TLAbsUser> result = await queue.Enqueue(new Func<Task<TLVector<TLAbsUser>>>(async () => await client.SendRequestAsync<TLVector<TLAbsUser>>(request)));
-                outUser = result.First() as TLUser;
+                Types.InputUser inUser = new Types.InputUser.SelfTag();
+                Arr<Types.InputUser> inArr = new Arr<Types.InputUser>();
+                inArr.Add(inUser);
+
+                Arr<Types.User> outList = await client.Call(new Functions.Users.GetUsers(inArr)); //https://core.telegram.org/method/users.getUsers
+                outUser = outList.First();
             } catch (Exception e) {
                 Logger.Error(e, "Exception while fetching user data.");
                 await checkConnectionOnError(e);
@@ -512,105 +463,6 @@ namespace PagerBuddy.Services {
 
             return outUser;
         }
-
-        public async Task<int> getLastMessageID(int currentID, bool init = false) {
-            if ((clientStatus != STATUS.AUTHORISED && !init) || clientStatus < STATUS.ONLINE) {
-                Logger.Warn("Attempted to get last message ID with inappropriate client status. Current status: " + clientStatus.ToString());
-                return currentID;
-            }
-
-            TLMethod requestDialogList = new TLRequestGetDialogs() { //https://core.telegram.org/method/messages.getDialogs
-                OffsetPeer = new TLInputPeerSelf(),
-                Limit = 100
-            };
-
-            TLAbsDialogs dialogs;
-            try {
-                dialogs = await queue.Enqueue(new Func<Task<TLAbsDialogs>>(async () => await client.SendRequestAsync<TLAbsDialogs>(requestDialogList)));
-            } catch (Exception e) {
-                Logger.Error(e, "Exception while trying to fetch chat list for message IDs.");
-                await checkConnectionOnError(e);
-                return currentID;
-            }
-
-            if (!(dialogs is TLDialogs)) {
-                Logger.Error("Unexpected return Type while fetching dialogs. Type: " + dialogs.GetType());
-                return currentID;
-            }
-
-            //first dialog has highest message id
-            TLAbsMessage msg = (dialogs as TLDialogs).Messages[0];
-            if (msg is TLMessage) {
-                currentID = Math.Max((msg as TLMessage).Id, currentID);
-            } else if (msg is TLMessageService) {
-                currentID = Math.Max((msg as TLMessageService).Id, currentID);
-            }
-            return currentID;
-        }
-
-        public async Task<TLAbsMessages> getMessages(TLAbsInputPeer inputPeer, int lastMessageID, int attempt = 0) {
-            if (clientStatus != STATUS.AUTHORISED) {
-                Logger.Warn("Attempting to get messages without user authorisation. Current status: " + clientStatus.ToString());
-                return null;
-            }
-
-            TLRequestGetHistory request = new TLRequestGetHistory() { //https://core.telegram.org/method/messages.getHistory
-                Peer = inputPeer,
-                Limit = 100,
-                MinId = lastMessageID
-            };
-
-            TLAbsMessages messages;
-            try {
-                messages = await queue.Enqueue(new Func<Task<TLAbsMessages>>(async () => await client.SendRequestAsync<TLAbsMessages>(request)));
-            } catch (Exception e) {
-                Logger.Error(e, "Exception while trying to retrieve messages.");
-                await checkConnectionOnError(e);
-                if(clientStatus == STATUS.AUTHORISED && attempt < 3) {
-                    //As this is critical for alerts retry in case checkConnectionOnError succeded
-                    Logger.Info("Connection was possibly fixed. Retrying message retrieval.");
-                    return await getMessages(inputPeer, lastMessageID, ++attempt);
-                }
-                return null;
-            }
-            return messages;
-        }
-
-        public class MySessionStore : ISessionStore {
-
-            private CommunicationService client;
-            public MySessionStore(CommunicationService client) {
-                this.client = client;
-            }
-
-            public static string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "CommunicationServiceSession");
-            public void Save(Session session) {
-
-                using (FileStream fileStream = new FileStream(file, FileMode.OpenOrCreate)) {
-                    byte[] bytes = session.ToBytes();
-                    fileStream.Write(bytes, 0, bytes.Length);
-                }
-            }
-
-            public Session Load(string sessionUserId) {
-                if (!File.Exists(file)) {
-                    return (Session)null;
-                }
-
-                var buffer = File.ReadAllBytes(file);
-                Session session = Session.FromBytes(buffer, this, sessionUserId);
-
-                client.user = session.TLUser;
-                return session;
-            }
-
-            public void Clear() {
-                if (File.Exists(file)) {
-                    File.Delete(file);
-                }
-            }
-        }
-
 
     }
 }

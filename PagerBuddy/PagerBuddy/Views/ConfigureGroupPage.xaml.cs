@@ -1,4 +1,5 @@
-﻿using PagerBuddy.Models;
+﻿using LanguageExt;
+using PagerBuddy.Models;
 using PagerBuddy.Services;
 using PagerBuddy.ViewModels;
 using System;
@@ -8,11 +9,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TeleSharp.TL;
-using TeleSharp.TL.Messages;
-using TeleSharp.TL.Upload;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Types = Telega.Rpc.Dto.Types;
 
 namespace PagerBuddy.Views {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -47,22 +47,23 @@ namespace PagerBuddy.Views {
         private async void refreshGroupList(object sender, Action completedCallback) {
             viewModel.clearGroupList();
 
-            TLAbsDialogs rawChatList = await client.getChatList();
+            Types.Messages.Dialogs rawChatList = await client.getChatList();
 
-            TLVector<TLDialog> dialogList;
+            Arr<Types.Dialog> dialogList;
             Collection<TelegramPeer> peerCollection;
 
-            if (rawChatList is TLDialogs) {
-                TLDialogs dialogs = rawChatList as TLDialogs;
-                dialogList = dialogs.Dialogs;
-                peerCollection = TelegramPeer.getPeerCollection(dialogs.Chats, dialogs.Users);
-            } else if (rawChatList is TLDialogsSlice) {
+
+            if (rawChatList.AsTag().IsSome) {
+                Types.Messages.Dialogs.Tag dialogsTag = rawChatList.AsTag().Single();
+                dialogList = dialogsTag.Dialogs;
+                peerCollection = TelegramPeer.getPeerCollection(dialogsTag.Chats, dialogsTag.Users);
+            } else if (rawChatList.AsSliceTag().IsSome) {
                 Logger.Info("Return type was TLDialogsSlice. Presumably user has more than 100 active dialogs.");
-                TLDialogsSlice dialogs = rawChatList as TLDialogsSlice;
-                dialogList = dialogs.Dialogs;
-                peerCollection = TelegramPeer.getPeerCollection(dialogs.Chats, dialogs.Users);
+                Types.Messages.Dialogs.SliceTag dialogsTag = rawChatList.AsSliceTag().Single();
+                dialogList = dialogsTag.Dialogs;
+                peerCollection = TelegramPeer.getPeerCollection(dialogsTag.Chats, dialogsTag.Users);
             } else {
-                Logger.Warn("Unexpected return type while retrieving chatList. Type: " + rawChatList.GetType().ToString());
+                Logger.Warn("Chat list is empty");
                 viewModel.IsBusy = false;
                 completedCallback();
                 return;
@@ -84,18 +85,23 @@ namespace PagerBuddy.Views {
             }
             viewModel.AreChatsEmpty = false;
 
-            foreach (TLDialog dialog in dialogList) {
-                TLAbsPeer peer = dialog.Peer;
+            foreach (Types.Dialog dialog in dialogList) {
+                if (dialog.AsTag().IsNone) {
+                    Logger.Info("Dialog list contained empty member.");
+                    continue;
+                }
+
+                Types.Peer peer = dialog.AsTag().Single().Peer;
                 int id;
 
-                if (peer is TLPeerChannel) {
-                    id = (peer as TLPeerChannel).ChannelId;
-                } else if (peer is TLPeerChat) {
-                    id = (peer as TLPeerChat).ChatId;
-                } else if (peer is TLPeerUser) {
-                    id = (peer as TLPeerUser).UserId;
+                if (peer.AsChannelTag().IsSome) {
+                    id = peer.AsChannelTag().Single().ChannelId;
+                } else if (peer.AsChatTag().IsSome) {
+                    id = peer.AsChatTag().Single().ChatId;
+                } else if (peer.AsUserTag().IsSome) {
+                    id = peer.AsUserTag().Single().UserId;
                 } else {
-                    Logger.Warn("Peer was of unexpected type " + peer.GetType().ToString() + " and will be ignored.");
+                    Logger.Warn("Peer type was not found and will be ignored.");
                     continue;
                 }
 
@@ -106,13 +112,14 @@ namespace PagerBuddy.Views {
                 }
 
                 if (detailPeer.photoLocation != null) {
-                    TLFile file = await client.getProfilePic(detailPeer.photoLocation);
+                    /*TLFile file = await client.getProfilePic(detailPeer.photoLocation);
                     if (file != null) {
                         detailPeer.image = new MemoryStream(file.Bytes);
                         detailPeer.hasImage = detailPeer.image != null;
                     } else {
                         Logger.Info("Could not load peer pic.");
-                    }
+                    }*/
+                    //TODO: Implement this
                 }
 
                 viewModel.addGroupToList((Group) detailPeer);

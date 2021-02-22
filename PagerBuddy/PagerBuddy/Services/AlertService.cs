@@ -96,7 +96,7 @@ namespace PagerBuddy.Services {
                         break;
                 }
 
-                TLAbsMessages result = await client.getMessages(inputPeer, currentMessageID);
+                /*TLAbsMessages result = await client.getMessages(inputPeer, currentMessageID);
                 TLVector<TLAbsMessage> messageList;
 
                 if (result == null) {
@@ -144,10 +144,10 @@ namespace PagerBuddy.Services {
                     } else {
                         Logger.Debug("Message ignored, it did not fulfill the alert criteria.");
                     }
-                }
+                }*/
             }
             //update message id index
-            DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await client.getLastMessageID(currentMessageID));
+            //DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await client.getLastMessageID(currentMessageID));
         }
 
         private void alertMessage(Alert alert) {

@@ -34,7 +34,8 @@ namespace PagerBuddy.Services
             HAS_PROMPTED_DND_PERMISSION, //Whether the user has been asked to grant DND Permission in Android
             HAS_PROMPTED_WELCOME, //Wether the first-use welcome screen has been shown
             FCM_TOKEN, //Token for FCM messages
-            LAST_MESSAGE_ID
+            LAST_MESSAGE_ID,
+            AES_AUTH_KEY //Encryption key used for FCM payloads
         }; 
 
 
@@ -135,6 +136,13 @@ namespace PagerBuddy.Services
             }
             return Preferences.Get(key.ToString(), defaultValue);
         }
+        public static byte[] getConfigValue(DATA_KEYS key, byte[] defaultValue) {
+            if (!Preferences.ContainsKey(key.ToString())) {
+                Logger.Debug("Could not find DATA_KEY " + key);
+                return defaultValue;
+            }
+            return deserialiseObject<byte[]>(Preferences.Get(key.ToString(), serialiseObject(defaultValue)));
+        }
 
         public static void setConfigValue(DATA_KEYS key, bool value){
             Preferences.Set(key.ToString(), value);
@@ -147,6 +155,10 @@ namespace PagerBuddy.Services
         }
         public static void setConfigValue(DATA_KEYS key, DateTime value) {
             Preferences.Set(key.ToString(), value);
+        }
+
+        public static void setConfigValue(DATA_KEYS key, byte[] value) {
+            Preferences.Set(key.ToString(), serialiseObject(value));
         }
 
         public static string serialiseObject(object obj)
