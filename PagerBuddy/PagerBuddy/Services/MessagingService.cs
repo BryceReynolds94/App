@@ -32,6 +32,7 @@ namespace PagerBuddy.Services
             //foreground notification listener
             CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
                 {
+                    
                     Logger.Debug("A firebase message was received while app is active.");
                     inspectPayload(p);
                 };
@@ -130,9 +131,58 @@ namespace PagerBuddy.Services
             string loc_key = "";
             if (jsonPayload.ContainsKey("loc_key")) {
                 loc_key = (string) jsonPayload.GetValue("loc_key");
+                Logger.Debug("Update is of type " + loc_key);
+            } else {
+                Logger.Info("Payload does not contain loc_key. Will not further process update.");
+                return;
+            }
+
+            string message = "";
+            if (jsonPayload.ContainsKey("loc_args")) {
+                IEnumerable<JToken> token = jsonPayload.GetValue("loc_args").Children();
+                Logger.Debug("Payload contains " + token.Length() + " loc_args.");
+
+                if(token.Length() > 1) {
+                    message = (string) token.ElementAt(1);
+                }
+            }
+
+            int senderID;
+            if (jsonPayload.ContainsKey("custom")) {
+                JObject custom = (JObject) jsonPayload.GetValue("custom");
+
+                string rawID;
+                if (custom.ContainsKey("channel_id")) {
+                    rawID = (string) custom.GetValue("channel_id");
+                    senderID = -int.Parse(rawID);
+                }else if (custom.ContainsKey("chat_id")) {
+                    rawID = (string) custom.GetValue("channel_id");
+                    senderID = -int.Parse(rawID);
+                }else if (custom.ContainsKey("from_id")) {
+                    rawID = (string) custom.GetValue("channel_id");
+                    senderID = int.Parse(rawID);
+                } else {
+                    Logger.Info("Could not get sender id from payload. Not processing update further.");
+                    return;
+                }
+            } else {
+                Logger.Info("Payload does not contain 'custom' key. Will not process update further.");
+                return;
             }
 
             switch (loc_key) {
+                case "CHAT_TITLE_EDITED":
+                    //TODO: Implement title update. This should set title value of associated config.
+                    return;
+
+                case "CHAT_PHOTO_EDITED":
+                    //TODO: Implement photo update. Reload chat photo and persist.
+                    return;
+
+                case "CHAT_DELETE_YOU":
+                    //TODO: Think about handling. Possibly delete config all together.
+                    return;
+
                 case "MESSAGE_TEXT":
                 case "MESSAGE_NOTEXT":
                 case "MESSAGE_PHOTO":
@@ -160,8 +210,6 @@ namespace PagerBuddy.Services
                 case "MESSAGE_DOCS":
                 case "MESSAGES":
 
-                    break;
-
                 case "CHANNEL_MESSAGE_TEXT":
                 case "CHANNEL_MESSAGE_NOTEXT":
                 case "CHANNEL_MESSAGE_GAME_SCORE":
@@ -184,8 +232,6 @@ namespace PagerBuddy.Services
                 case "CHANNEL_MESSAGE_PLAYLIST":
                 case "CHANNEL_MESSAGE_DOCS":
                 case "CHANNEL_MESSAGES":
-
-                    break;
 
                 case "CHAT_MESSAGE_TEXT":
                 case "CHAT_MESSAGE_NOTEXT":
@@ -211,12 +257,14 @@ namespace PagerBuddy.Services
                 case "CHAT_MESSAGE_DOCS":
                 case "CHAT_MESSAGES":
 
+                case "ENCRYPTED_MESSAGE":
+                    //TODO: RBF
+                    new AlertService(message, senderID, 0);
                     break;
 
 
-                case "CHAT_TITLE_EDITED":
-                case "CHAT_PHOTO_EDITED":
-                case "CHAT_DELETE_YOU":
+                case "READ_HISTORY":
+                case "MESSAGE_DELETED":
                 case "CHAT_ADD_MEMBER":
                 case "CHAT_VOICECHAT_START":
                 case "CHAT_VOICECHAT_INVITE":
@@ -245,7 +293,6 @@ namespace PagerBuddy.Services
                 case "PINNED_GAME_SCORE":
                 case "PINNED_INVOICE":
                 case "PINNED_GIF":
-                case "ENCRYPTED_MESSAGE":
                 case "CONTACT_JOINED":
                 case "AUTH_UNKNOWN":
                 case "AUTH_REGION":
@@ -256,7 +303,7 @@ namespace PagerBuddy.Services
                 case "MESSAGE_MUTED":
                 case "PHONE_CALL_MISSED":
                 default:
-                    break;
+                    return;
 
                     }
 

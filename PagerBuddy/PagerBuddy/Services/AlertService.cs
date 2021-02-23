@@ -15,8 +15,8 @@ namespace PagerBuddy.Services {
     public class AlertService {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public AlertService(string message, int senderID, long timestamp) {
-            checkMessage(message, senderID, timestamp);
+        public AlertService(string message, int senderID, long timestampTicks) {
+            checkMessage(message, senderID, timestampTicks);
         }
 
 
