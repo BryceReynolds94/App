@@ -33,8 +33,7 @@ namespace PagerBuddy.Services
             CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
                 {
                     Logger.Debug("A firebase message was received while app is active.");
-                    //new AlertService(client);
-                    decodePayload(p);
+                    inspectPayload(p);
                 };
         }
 
@@ -43,8 +42,7 @@ namespace PagerBuddy.Services
         public static void BackgroundFirebaseMessage(object sender, FirebasePushNotificationDataEventArgs args)
         {
             Logger.Debug("A firebase message was received while app is in background.");
-            //new AlertService();
-            decodePayload(args);
+            inspectPayload(args);
         }
 
         public static void BackgroundFirebaseTokenRefresh(object sender, string token) {
@@ -59,15 +57,15 @@ namespace PagerBuddy.Services
             
         }
 
-        private static void decodePayload(FirebasePushNotificationDataEventArgs args) {
+        private static void inspectPayload(FirebasePushNotificationDataEventArgs args) {
+            //https://github.com/DrKLO/Telegram/blob/master/TMessagesProj/src/main/java/org/telegram/messenger/GcmPushListenerService.java
             IDictionary<string, object> data = args.Data;
 
             object rawPayload;
             bool success = data.TryGetValue("p", out rawPayload);
 
             if(!success || !(rawPayload is string)) {
-                //No FCM payload
-                //TODO: Log this. Is this possibly even an error?
+                Logger.Warn("FCM message did not contain payload.");
                 return;
             }
 
@@ -93,22 +91,17 @@ namespace PagerBuddy.Services
             MemoryStream stream = new MemoryStream(bytes);
 
             byte[] authKey = DataService.getConfigValue(DataService.DATA_KEYS.AES_AUTH_KEY, new byte[0]);
-            if (authKey.Length < 1) {
-                //AuthKey not set - cannot decode
-                //TODO: Log this
+            byte[] authKeyID = DataService.getConfigValue(DataService.DATA_KEYS.AES_AUTH_KEY_ID, new byte[0]);
+            if (authKey.Length < 1 || authKeyID.Length < 8) {
+                Logger.Info("Auth key and ID not set. Ignoring FCM message as we cannot decode it.");
                 return;
             }
-
-
-            byte[] authKeyHash = new SHA1Managed().ComputeHash(authKey);
-            byte[] authKeyID = authKeyHash[(authKeyHash.Length-8)..]; //last 8 bytes of hash are ID
 
             Span<byte> payloadAuthKeyID = new Span<byte>(new byte[8]);
             stream.Read(payloadAuthKeyID);
 
             if(!Enumerable.SequenceEqual(authKeyID, payloadAuthKeyID.ToArray())) {
-                //ID does not match
-                //TODO: Log this
+                Logger.Warn("The FCM payload auth key ID did not match. Ignoring package.");
                 return;
             }
 
@@ -116,27 +109,164 @@ namespace PagerBuddy.Services
             stream.Read(messageKey);
 
             (byte[] aesKey, byte[] aesIv) = getKeyData(authKey, messageKey.ToArray());
+            byte[] decrypted = AESIGEDecrypt(bytes[24..], aesKey, aesIv); //start decryption at byte 24
 
-            Memory<byte> decrypted = AesIGEEncrypt.Decrypt(bytes[24..], aesKey, aesIv); //start decryption at byte 24
-            MemoryStream decryptedStream = new MemoryStream(decrypted.ToArray());
-            
+            int length = BitConverter.ToInt32(decrypted, 0); //first 4 bytes contain number representing message length
+            byte[] strBytes = decrypted[4..(length + 4)];
 
-            int length;
-            using (BinaryReader reader = new BinaryReader(decryptedStream)) {
-                length = reader.ReadInt32();
+            JObject json;
+            try {
+                json = JObject.Parse(Encoding.UTF8.GetString(strBytes));
+            }catch(Exception e) {
+                Logger.Error(e, "Exception parsing the FCM payload.");
+                return;
             }
 
-            string stringRaw = Encoding.UTF8.GetString(decrypted.ToArray()[4..]);
+            handleUpdate(json);
+        }
 
-            //byte[] strBytes = new byte[length];
-            //decryptedStream.Read(new Span<byte>(strBytes));
+        private static void handleUpdate(JObject jsonPayload) {
 
-            //JObject json = JObject.Parse(Encoding.UTF8.GetString(strBytes));
-            return;
+            string loc_key = "";
+            if (jsonPayload.ContainsKey("loc_key")) {
+                loc_key = (string) jsonPayload.GetValue("loc_key");
+            }
+
+            switch (loc_key) {
+                case "MESSAGE_TEXT":
+                case "MESSAGE_NOTEXT":
+                case "MESSAGE_PHOTO":
+                case "MESSAGE_PHOTO_SECRET":
+                case "MESSAGE_VIDEO":
+                case "MESSAGE_VIDEO_SECRET":
+                case "MESSAGE_SCREENSHOT":
+                case "MESSAGE_ROUND":
+                case "MESSAGE_DOC":
+                case "MESSAGE_STICKER":
+                case "MESSAGE_AUDIO":
+                case "MESSAGE_CONTACT":
+                case "MESSAGE_QUIZ":
+                case "MESSAGE_POLL":
+                case "MESSAGE_GEO":
+                case "MESSAGE_GEOLIVE":
+                case "MESSAGE_GIF":
+                case "MESSAGE_GAME":
+                case "MESSAGE_GAME_SCORE":
+                case "MESSAGE_INVOICE":
+                case "MESSAGE_FWDS":
+                case "MESSAGE_PHOTOS":
+                case "MESSAGE_VIDEOS":
+                case "MESSAGE_PLAYLIST":
+                case "MESSAGE_DOCS":
+                case "MESSAGES":
+
+                    break;
+
+                case "CHANNEL_MESSAGE_TEXT":
+                case "CHANNEL_MESSAGE_NOTEXT":
+                case "CHANNEL_MESSAGE_GAME_SCORE":
+                case "CHANNEL_MESSAGE_PHOTO":
+                case "CHANNEL_MESSAGE_VIDEO":
+                case "CHANNEL_MESSAGE_ROUND":
+                case "CHANNEL_MESSAGE_DOC":
+                case "CHANNEL_MESSAGE_STICKER":
+                case "CHANNEL_MESSAGE_AUDIO":
+                case "CHANNEL_MESSAGE_CONTACT":
+                case "CHANNEL_MESSAGE_QUIZ":
+                case "CHANNEL_MESSAGE_POLL":
+                case "CHANNEL_MESSAGE_GEO":
+                case "CHANNEL_MESSAGE_GEOLIVE":
+                case "CHANNEL_MESSAGE_GIF":
+                case "CHANNEL_MESSAGE_GAME":
+                case "CHANNEL_MESSAGE_FWDS":
+                case "CHANNEL_MESSAGE_PHOTOS":
+                case "CHANNEL_MESSAGE_VIDEOS":
+                case "CHANNEL_MESSAGE_PLAYLIST":
+                case "CHANNEL_MESSAGE_DOCS":
+                case "CHANNEL_MESSAGES":
+
+                    break;
+
+                case "CHAT_MESSAGE_TEXT":
+                case "CHAT_MESSAGE_NOTEXT":
+                case "CHAT_MESSAGE_PHOTO":
+                case "CHAT_MESSAGE_VIDEO":
+                case "CHAT_MESSAGE_ROUND":
+                case "CHAT_MESSAGE_DOC":
+                case "CHAT_MESSAGE_STICKER":
+                case "CHAT_MESSAGE_AUDIO":
+                case "CHAT_MESSAGE_CONTACT":
+                case "CHAT_MESSAGE_QUIZ":
+                case "CHAT_MESSAGE_POLL":
+                case "CHAT_MESSAGE_GEO":
+                case "CHAT_MESSAGE_GEOLIVE":
+                case "CHAT_MESSAGE_GIF":
+                case "CHAT_MESSAGE_GAME":
+                case "CHAT_MESSAGE_GAME_SCORE":
+                case "CHAT_MESSAGE_INVOICE":
+                case "CHAT_MESSAGE_FWDS":
+                case "CHAT_MESSAGE_PHOTOS":
+                case "CHAT_MESSAGE_VIDEOS":
+                case "CHAT_MESSAGE_PLAYLIST":
+                case "CHAT_MESSAGE_DOCS":
+                case "CHAT_MESSAGES":
+
+                    break;
+
+
+                case "CHAT_TITLE_EDITED":
+                case "CHAT_PHOTO_EDITED":
+                case "CHAT_DELETE_YOU":
+                case "CHAT_ADD_MEMBER":
+                case "CHAT_VOICECHAT_START":
+                case "CHAT_VOICECHAT_INVITE":
+                case "CHAT_VOICECHAT_END":
+                case "CHAT_VOICECHAT_INVITE_YOU":
+                case "CHAT_DELETE_MEMBER":
+                case "CHAT_CREATED":
+                case "CHAT_ADD_YOU":
+                case "CHAT_LEFT":
+                case "CHAT_RETURNED":
+                case "CHAT_JOINED":
+                case "PINNED_TEXT":
+                case "PINNED_NOTEXT": 
+                case "PINNED_PHOTO": 
+                case "PINNED_VIDEO":
+                case "PINNED_ROUND":
+                case "PINNED_DOC":
+                case "PINNED_STICKER":
+                case "PINNED_AUDIO":
+                case "PINNED_CONTACT":
+                case "PINNED_QUIZ":
+                case "PINNED_POLL":
+                case "PINNED_GEO":
+                case "PINNED_GEOLIVE":
+                case "PINNED_GAME":
+                case "PINNED_GAME_SCORE":
+                case "PINNED_INVOICE":
+                case "PINNED_GIF":
+                case "ENCRYPTED_MESSAGE":
+                case "CONTACT_JOINED":
+                case "AUTH_UNKNOWN":
+                case "AUTH_REGION":
+                case "LOCKED_MESSAGE":
+                case "ENCRYPTION_REQUEST":
+                case "ENCRYPTION_ACCEPT":
+                case "PHONE_CALL_REQUEST":
+                case "MESSAGE_MUTED":
+                case "PHONE_CALL_MISSED":
+                default:
+                    break;
+
+                    }
+
+
+            //TODO: RBF
+            //TODO: Implement this
         }
 
         private static (byte[] aesKey, byte[] aesIv) getKeyData(byte[] authKey, byte[] messageKey) {
-
+            //https://github.com/DrKLO/Telegram/blob/3480f19272fbe7679172dc51473e19fcf184501c/TMessagesProj/src/main/java/org/telegram/messenger/MessageKeyData.java#L18
             MemoryStream streamA = new MemoryStream();
             streamA.Write(messageKey, 0, 16);
             streamA.Write(authKey, 8, 36);
@@ -166,11 +296,9 @@ namespace PagerBuddy.Services
             return (aesKey, aesIv);
         }
 
-    }
-
-    public class AesIGEEncrypt {
-
-        public static Memory<byte> Decrypt(Span<byte> bytes, byte[] key, byte[] iv) {
+        private static byte[] AESIGEDecrypt(Span<byte> bytes, byte[] key, byte[] iv) {
+            //https://mgp25.com/AESIGE/
+            //https://stackoverflow.com/questions/58996069/aes-igeinfinite-garble-extension-mode-in-net-core
             AesManaged aes = new AesManaged {
                 Mode = CipherMode.ECB,
                 Padding = PaddingMode.None
@@ -193,7 +321,7 @@ namespace PagerBuddy.Services
                 c.CopyTo(decryptedData, i);
                 m = block.ToArray();
             }
-            return decryptedData.AsMemory();
+            return decryptedData;
         }
 
         private static byte[] XOR(Span<byte> a, Span<byte> b) {
@@ -203,5 +331,6 @@ namespace PagerBuddy.Services
             }
             return c;
         }
+
     }
 }

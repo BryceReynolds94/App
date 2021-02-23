@@ -15,56 +15,13 @@ namespace PagerBuddy.Services {
     public class AlertService {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public AlertService(CommunicationService client) {
-            if (checkLockTime(DateTime.Now)) {
-                return;
-            }
-
-            checkNewMessages(client);
+        public AlertService(string message, int senderID, long timestamp) {
+            checkMessage(message, senderID, timestamp);
         }
 
-        public AlertService() {
-            if (checkLockTime(DateTime.Now)) {
-                return;
-            }
 
-            CommunicationService client = new CommunicationService(true); //only perform small client init and do not retry on fatal errors
-            client.StatusChanged += (sender, newStatus) => {
-                if (newStatus == CommunicationService.STATUS.AUTHORISED) {
-                    checkNewMessages(client);
-                }
-            };
-        }
-
-        private bool checkLockTime(DateTime currentTime) {
-            DateTime lockTime = DataService.getConfigValue(DataService.DATA_KEYS.REFRESH_LOCK_TIME, DateTime.MinValue);
-            DateTime lastRefreshTime = DataService.getConfigValue(DataService.DATA_KEYS.LAST_REFRESH_TIME, DateTime.MinValue);
-
-            int lockDuration = 2000; //milliseconds
-
-            if (lockTime > currentTime) {
-                return true; //we are in time lock - do nothing
-            } else if (lastRefreshTime.AddMilliseconds(lockDuration) > currentTime) {
-                //short succession updates
-                //set 2s lock time and snooze 2s
-                DataService.setConfigValue(DataService.DATA_KEYS.REFRESH_LOCK_TIME, currentTime.AddMilliseconds(lockDuration));
-                DataService.setConfigValue(DataService.DATA_KEYS.LAST_REFRESH_TIME, currentTime.AddMilliseconds(lockDuration));
-
-                Logger.Debug("Quick succession updates. Setting lock time for 2s.");
-
-                Task.Delay(lockDuration).Wait();
-                Logger.Debug("Lock time over.");
-                return false;
-            }
-            //continue as planned
-            DataService.setConfigValue(DataService.DATA_KEYS.LAST_REFRESH_TIME, currentTime);
-            return false;
-        }
-
-        int currentMessageID = DataService.getConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, 0);
-
-        private async void checkNewMessages(CommunicationService client) {
-            Logger.Info("Checking for new messages.");
+        private void checkMessage(string message, int senderID, long timestampTicks) {
+            Logger.Info("Checking incoming message for alert.");
 
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
             Collection<string> configIDs = DataService.getConfigList();
@@ -73,65 +30,16 @@ namespace PagerBuddy.Services {
             }
 
             if (configList.Count < 1) {
-                Logger.Debug("Configuration list is empty. Will not check messages, but update message ID pointer.");
+                Logger.Debug("Configuration list is empty.");
+                return;
             }
 
             foreach (AlertConfig config in configList) {
-                TLAbsInputPeer inputPeer;
-                switch (config.triggerGroup.type) {
-                    case TelegramPeer.TYPE.CHANNEL:
-                        inputPeer = new TLInputPeerChannel {
-                            ChannelId = config.triggerGroup.id,
-                            AccessHash = config.triggerGroup.accessHash
-                        };
-                        break;
-                    case TelegramPeer.TYPE.USER:
-                        inputPeer = new TLInputPeerUser {
-                            UserId = config.triggerGroup.id,
-                            AccessHash = config.triggerGroup.accessHash
-                        };
-                        break;
-                    default:
-                        inputPeer = new TLInputPeerChat { ChatId = config.triggerGroup.id };
-                        break;
-                }
+                if(config.triggerGroup.id == senderID) {
+                    Logger.Debug("New message for alert config " + config.readableFullName);
 
-                /*TLAbsMessages result = await client.getMessages(inputPeer, currentMessageID);
-                TLVector<TLAbsMessage> messageList;
-
-                if (result == null) {
-                    Logger.Error("Retrieving messages returned null.");
-                    continue;
-                }
-
-                if (result is TLMessages) {
-                    messageList = (result as TLMessages).Messages;
-                } else if (result is TLMessagesSlice) {
-                    messageList = (result as TLMessagesSlice).Messages;
-                }else if(result is TLChannelMessages) {
-                    messageList = (result as TLChannelMessages).Messages;
-                } else {
-                    Logger.Info("Retrieving Messages from Telegram did not yield a valid message type or no new messages were received.");
-                    continue; //we did not get valid result 
-                }
-
-
-                if (messageList.Count < 1) {
-                    Logger.Debug("No new messages for AlertConfig " + config.readableFullName);
-                    continue;
-                } else {
-                    Logger.Debug("{0} new message(s) for AlertConfig " + config.readableFullName, messageList.Count);
-                }
-
-                foreach (TLAbsMessage rawMessage in messageList) {
-                    if (!(rawMessage is TLMessage)) {
-                        continue;
-                    }
-                    TLMessage msg = rawMessage as TLMessage;
-
-                    DateTime timestamp = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(msg.Date).ToLocalTime();  //Unix base time -- we need local time for alert time comparison
-
-                    if (config.isAlert(msg.Message, timestamp, msg.Entities)) {
+                    DateTime timestamp = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timestampTicks).ToLocalTime();  //Unix base time -- we need local time for alert time comparison
+                    if (config.isAlert(message, timestamp, msg.Entities)) {
                         DateTime referenceTime = DateTime.Now.Subtract(new TimeSpan(0, 10, 0)); //grace period of 10min
                         if (timestamp < referenceTime) //timestamp is older than referenceTime
                         {
@@ -139,15 +47,13 @@ namespace PagerBuddy.Services {
                             Logger.Info("An alert was dismissed as it was not detected within 10min of message posting. Message posted at (UTC): " + timestamp.ToShortTimeString());
                         } else {
                             config.setLastTriggered(DateTime.Now);
-                            alertMessage(new Alert(config.getAlertMessage(msg.Message, msg.Entities), config));
+                            alertMessage(new Alert(config.getAlertMessage(message, msg.Entities), config));
                         }
                     } else {
                         Logger.Debug("Message ignored, it did not fulfill the alert criteria.");
                     }
-                }*/
+                }
             }
-            //update message id index
-            //DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, await client.getLastMessageID(currentMessageID));
         }
 
         private void alertMessage(Alert alert) {

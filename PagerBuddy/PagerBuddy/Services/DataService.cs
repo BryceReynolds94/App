@@ -35,7 +35,8 @@ namespace PagerBuddy.Services
             HAS_PROMPTED_WELCOME, //Wether the first-use welcome screen has been shown
             FCM_TOKEN, //Token for FCM messages
             LAST_MESSAGE_ID,
-            AES_AUTH_KEY //Encryption key used for FCM payloads
+            AES_AUTH_KEY, //Encryption key used for FCM payloads
+            AES_AUTH_KEY_ID
         }; 
 
 

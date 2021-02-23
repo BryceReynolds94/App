@@ -16,6 +16,7 @@ using Telega;
 using Functions = Telega.Rpc.Dto.Functions;
 using Types = Telega.Rpc.Dto.Types;
 using LanguageExt;
+using System.Security.Cryptography;
 
 namespace PagerBuddy.Services {
 
@@ -170,7 +171,12 @@ namespace PagerBuddy.Services {
 
             byte[] aesSecret = new byte[256];
             new Random().NextBytes(aesSecret);
+
+            byte[] aesSecretHash = new SHA1Managed().ComputeHash(aesSecret);
+            byte[] aesID = aesSecretHash[(aesSecretHash.Length - 8)..]; //last 8 bytes of hash are ID
+
             DataService.setConfigValue(DataService.DATA_KEYS.AES_AUTH_KEY, aesSecret);
+            DataService.setConfigValue(DataService.DATA_KEYS.AES_AUTH_KEY_ID, aesID);
 
             Functions.Account.RegisterDevice request = new Functions.Account.RegisterDevice(
                     noMuted: false,
