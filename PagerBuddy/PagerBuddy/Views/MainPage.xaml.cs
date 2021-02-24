@@ -7,7 +7,6 @@ using Xamarin.Forms.Xaml;
 
 using PagerBuddy.Models;
 using PagerBuddy.Services;
-using TeleSharp.TL;
 using PagerBuddy.Resources;
 using Xamarin.Essentials;
 

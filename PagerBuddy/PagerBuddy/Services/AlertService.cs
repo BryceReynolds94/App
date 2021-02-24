@@ -5,10 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
-using TeleSharp.TL;
-using TeleSharp.TL.Messages;
 using Xamarin.Forms;
 
 namespace PagerBuddy.Services {

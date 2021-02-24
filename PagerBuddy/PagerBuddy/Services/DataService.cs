@@ -8,6 +8,7 @@ using System.IO;
 using System.Text;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using System.Threading.Tasks;
 
 namespace PagerBuddy.Services
 {

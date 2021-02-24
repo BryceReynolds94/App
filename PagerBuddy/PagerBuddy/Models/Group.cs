@@ -12,7 +12,7 @@ namespace PagerBuddy.Models
         public int id;
         public long accessHash;
         
-        [JsonIgnore] //do not try to serialise MemoryStream
+        [JsonIgnore] //do not try to serialise Stream
         public MemoryStream image = null;
         public bool hasImage = false;
 

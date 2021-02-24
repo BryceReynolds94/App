@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using TLSharp.Core.MTProto.Crypto;
 using Xamarin.Forms;
 
 namespace PagerBuddy.Services
@@ -156,10 +155,10 @@ namespace PagerBuddy.Services
                     rawID = (string) custom.GetValue("channel_id");
                     senderID = -int.Parse(rawID);
                 }else if (custom.ContainsKey("chat_id")) {
-                    rawID = (string) custom.GetValue("channel_id");
+                    rawID = (string) custom.GetValue("chat_id");
                     senderID = -int.Parse(rawID);
                 }else if (custom.ContainsKey("from_id")) {
-                    rawID = (string) custom.GetValue("channel_id");
+                    rawID = (string) custom.GetValue("from_id");
                     senderID = int.Parse(rawID);
                 } else {
                     Logger.Info("Could not get sender id from payload. Not processing update further.");
@@ -208,6 +207,7 @@ namespace PagerBuddy.Services
                 case "MESSAGE_VIDEOS":
                 case "MESSAGE_PLAYLIST":
                 case "MESSAGE_DOCS":
+                case "MESSAGE_MUTED":
                 case "MESSAGES":
 
                 case "CHANNEL_MESSAGE_TEXT":
@@ -300,7 +300,6 @@ namespace PagerBuddy.Services
                 case "ENCRYPTION_REQUEST":
                 case "ENCRYPTION_ACCEPT":
                 case "PHONE_CALL_REQUEST":
-                case "MESSAGE_MUTED":
                 case "PHONE_CALL_MISSED":
                 default:
                     return;

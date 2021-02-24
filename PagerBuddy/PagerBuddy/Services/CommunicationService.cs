@@ -365,7 +365,6 @@ namespace PagerBuddy.Services {
                 MemoryStream file = await getProfilePic(fileLocation);
                 if (file != null) {
                     DataService.saveProfilePic(DataService.DATA_KEYS.USER_PHOTO.ToString(), file);
-                    hasPhoto = true;
                 } else {
                     Logger.Warn("Could not load profile pic.");
                 }
@@ -413,7 +412,6 @@ namespace PagerBuddy.Services {
                 Logger.Warn("Attempted to load profile pic without appropriate client status. Current status: " + clientStatus.ToString());
                 return null;
             }
-
 
             MemoryStream fileStream = new MemoryStream();
             try {

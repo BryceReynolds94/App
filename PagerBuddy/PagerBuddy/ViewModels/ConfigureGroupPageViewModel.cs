@@ -8,8 +8,6 @@ using Xamarin.Forms;
 using PagerBuddy.Models;
 using PagerBuddy.Views;
 using PagerBuddy.Services;
-using TeleSharp.TL;
-using TeleSharp.TL.Upload;
 using System.IO;
 using PagerBuddy.Resources;
 

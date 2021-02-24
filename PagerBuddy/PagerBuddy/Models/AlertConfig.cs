@@ -8,7 +8,8 @@ using System.Text.RegularExpressions;
 using Xamarin.Forms;
 using System.Text;
 using System.Security.Cryptography;
-using TeleSharp.TL;
+using Types = Telega.Rpc.Dto.Types;
+using System.Threading.Tasks;
 
 namespace PagerBuddy.Models
 {
@@ -89,7 +90,8 @@ namespace PagerBuddy.Models
             saveChanges();
         }
         
-        public bool isAlert(string message, DateTime time, TLVector<TLAbsMessageEntity> entities)
+        //TODO: Possibly fix entities
+        public bool isAlert(string message, DateTime time, Types.MessageEntity entities)
         {
             if (!isActive || snoozeActive) 
             {
@@ -145,17 +147,22 @@ namespace PagerBuddy.Models
             }
         }
 
-        private bool hasPagerBuddyPayload(string message, TLVector<TLAbsMessageEntity> entities) {
+        private bool hasPagerBuddyPayload(string message, Types.MessageEntity entities) {
             //PagerBuddy-Server syntax:
             //Encode alert in <html/> tag as part of URL
             //Alerts should contain url "*/pagerbuddy?#<base64><title/>*<date and time/>*<optional message/>*<is test alert/></base64>#"
-            Match match = extractPagerBuddyPayload(message, entities); 
-            return match.Success;
+
+
+            //TODO: RBF
+            //Match match = extractPagerBuddyPayload(message, entities); 
+            //return match.Success;
+            return false;
         }
 
-        private bool isPagerBuddyTestAlert(string  message, TLVector<TLAbsMessageEntity> entities) {
+        private bool isPagerBuddyTestAlert(string  message, Types.MessageEntity entities) {
             //Last segment of payload contains 1 or 0 signifying if this is a test alert
-            foreach (TLAbsMessageEntity entity in entities) {
+            //TODO: RBF
+            /*foreach (TLAbsMessageEntity entity in entities) {
                 if (entity is TLMessageEntityTextUrl) {
                     String urlString = (entity as TLMessageEntityTextUrl).Url;
                     Match match = Regex.Match(urlString, "(?<=/pagerbuddy\\?#[-A-Za-z0-9+/]*={0,3}#)(0|1)(?=#)");
@@ -164,11 +171,12 @@ namespace PagerBuddy.Models
                     }
 
                 }
-            }
+            }*/
             return false; 
         }
 
-        private Match extractPagerBuddyPayload(string rawMessage, TLVector<TLAbsMessageEntity> entities) {
+        private Match extractPagerBuddyPayload(string rawMessage, Types.MessageEntity entities) {
+            /*
             foreach (TLAbsMessageEntity entity in entities) {
                 if (entity is TLMessageEntityTextUrl) {
                     String urlString = (entity as TLMessageEntityTextUrl).Url;
@@ -178,11 +186,12 @@ namespace PagerBuddy.Models
                     }
 
                 }
-            }
+            }*/
+            //TODO: RBF
             return Match.Empty;
         }
 
-        public string getAlertMessage(string rawMessage, TLVector<TLAbsMessageEntity> entities) {
+        public string getAlertMessage(string rawMessage, Types.MessageEntity entities) {
             if(triggerType != TRIGGER_TYPE.SERVER) {
                 //Server trigger not used - simply return rawMessage
                 return rawMessage;

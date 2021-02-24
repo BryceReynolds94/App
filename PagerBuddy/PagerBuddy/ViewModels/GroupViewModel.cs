@@ -19,7 +19,7 @@ namespace PagerBuddy.ViewModels {
         public ImageSource GroupPic {
             get {
                 if (group.hasImage) {
-                    return ImageSource.FromStream(() => group.image);
+                    return ImageSource.FromStream(() => new MemoryStream(group.image.ToArray()));
                 } else {
                     return SvgImageSource.FromResource("PagerBuddy.Resources.Images.group_default.svg");
                 }
