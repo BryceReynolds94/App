@@ -13,7 +13,7 @@ namespace PagerBuddy.ViewModels
         public Command Confirm { get; set; }
 
         private bool hasPic;
-        private string picFile;
+        private readonly string picFile;
 
         public AlertPageViewModel(string alertTitle, string alertText, string alertID, bool hasPic)
         {

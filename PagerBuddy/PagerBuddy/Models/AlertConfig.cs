@@ -13,7 +13,7 @@ using TeleSharp.TL;
 namespace PagerBuddy.Models
 {
     public class AlertConfig {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public enum TRIGGER_TYPE { ANY, SERVER, KEYWORD };
 
         public bool isActive { get; private set; }
@@ -153,7 +153,7 @@ namespace PagerBuddy.Models
             return match.Success;
         }
 
-        private bool isPagerBuddyTestAlert(string message, TLVector<TLAbsMessageEntity> entities) {
+        private bool isPagerBuddyTestAlert(string  message, TLVector<TLAbsMessageEntity> entities) {
             //Last segment of payload contains 1 or 0 signifying if this is a test alert
             foreach (TLAbsMessageEntity entity in entities) {
                 if (entity is TLMessageEntityTextUrl) {

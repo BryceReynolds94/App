@@ -39,7 +39,7 @@ namespace PagerBuddy.Services {
                     Logger.Debug("New message for alert config " + config.readableFullName);
 
                     DateTime timestamp = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timestampTicks).ToLocalTime();  //Unix base time -- we need local time for alert time comparison
-                    if (config.isAlert(message, timestamp, msg.Entities)) {
+                    if (config.isAlert(message, timestamp, null)) {
                         DateTime referenceTime = DateTime.Now.Subtract(new TimeSpan(0, 10, 0)); //grace period of 10min
                         if (timestamp < referenceTime) //timestamp is older than referenceTime
                         {
@@ -47,7 +47,7 @@ namespace PagerBuddy.Services {
                             Logger.Info("An alert was dismissed as it was not detected within 10min of message posting. Message posted at (UTC): " + timestamp.ToShortTimeString());
                         } else {
                             config.setLastTriggered(DateTime.Now);
-                            alertMessage(new Alert(config.getAlertMessage(message, msg.Entities), config));
+                            alertMessage(new Alert(config.getAlertMessage(message, null), config));
                         }
                     } else {
                         Logger.Debug("Message ignored, it did not fulfill the alert criteria.");

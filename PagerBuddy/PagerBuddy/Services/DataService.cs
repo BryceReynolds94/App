@@ -14,9 +14,9 @@ namespace PagerBuddy.Services
     public class DataService
     {
 
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private static string saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        private static readonly string saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
         public enum DATA_KEYS
         { //Changes will break Updates!

@@ -112,14 +112,13 @@ namespace PagerBuddy.Views {
                 }
 
                 if (detailPeer.photoLocation != null) {
-                    /*TLFile file = await client.getProfilePic(detailPeer.photoLocation);
+                    MemoryStream file = await client.getProfilePic(detailPeer.photoLocation);
                     if (file != null) {
-                        detailPeer.image = new MemoryStream(file.Bytes);
+                        detailPeer.image = file;
                         detailPeer.hasImage = detailPeer.image != null;
                     } else {
                         Logger.Info("Could not load peer pic.");
-                    }*/
-                    //TODO: Implement this
+                    }
                 }
 
                 viewModel.addGroupToList((Group) detailPeer);

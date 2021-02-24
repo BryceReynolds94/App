@@ -20,14 +20,11 @@ using System.Security.Cryptography;
 
 namespace PagerBuddy.Services {
 
-    //TODO: Later - Try Telega https://github.com/ilyalatt/Telega/blob/master/Telega.Example/Program.cs
     public class CommunicationService {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private TelegramClient client;
         private Types.User user;
-
-        private CommunicationServiceQueue queue;
 
         private STATUS status;
         public STATUS clientStatus {
@@ -50,7 +47,6 @@ namespace PagerBuddy.Services {
 
         public CommunicationService(bool isBackgroundCall = false) {
             Logger.Debug("Initialising CommunicationService. Is background call: " + isBackgroundCall);
-            queue = new CommunicationServiceQueue();
             _ = connectClient(isBackgroundCall);
         }
 
@@ -72,7 +68,7 @@ namespace PagerBuddy.Services {
         private async Task connectClient(bool isBackgroundCall = false, int attempt = 0) {
             clientStatus = STATUS.NEW;
             try {
-                client = await TelegramClient.Connect(KeyService.checkID(this));
+                client = await TelegramClient.Connect(KeyService.checkID(this)); //TODO: Implement session store
             } catch (Exception e) {
                 Logger.Error(e, "Initialisation of TelegramClient failed");
                 clientStatus = STATUS.OFFLINE;
@@ -363,15 +359,16 @@ namespace PagerBuddy.Services {
 
             bool hasPhoto = userTag.Photo.IsSome;
             if (hasPhoto) {
-                Types.FileLocation fileLocation = userTag.Photo.Single().AsTag().Single().PhotoBig;
+                Types.FileLocation profilePhoto = userTag.Photo.Single().AsTag().Single().PhotoBig;
+                Types.InputFileLocation fileLocation = new Types.InputFileLocation.PeerPhotoTag(true, new Types.InputPeer.SelfTag(), profilePhoto.VolumeId, profilePhoto.LocalId);
 
-                /*MemoryStream file = await getProfilePic(fileLocation);
+                MemoryStream file = await getProfilePic(fileLocation);
                 if (file != null) {
-                    DataService.saveProfilePic(DataService.DATA_KEYS.USER_PHOTO.ToString(), memoryStream);
+                    DataService.saveProfilePic(DataService.DATA_KEYS.USER_PHOTO.ToString(), file);
                     hasPhoto = true;
                 } else {
                     Logger.Warn("Could not load profile pic.");
-                }*/
+                }
             }
             DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, hasPhoto);
 
@@ -411,30 +408,16 @@ namespace PagerBuddy.Services {
             return dialogs;
         }
 
-        public async Task<MemoryStream> getProfilePic(Types.Photo photo) {
+        public async Task<MemoryStream> getProfilePic(Types.InputFileLocation photo) {
             if (clientStatus < STATUS.ONLINE) {
                 Logger.Warn("Attempted to load profile pic without appropriate client status. Current status: " + clientStatus.ToString());
                 return null; 
             }
 
-            if (photo.AsTag().IsNone) {
-                Logger.Warn("Tried to retrieve Photo without Info.");
-                return null;
-            }
-
-            Types.Photo.Tag photoTag = photo.AsTag().Single();
-
-            Types.InputFileLocation loc = new Types.InputFileLocation.PhotoTag(
-                id: photoTag.Id,
-                accessHash: photoTag.AccessHash,
-                fileReference: photoTag.FileReference,
-                thumbSize: photoTag.Sizes.Choose(Types.PhotoSize.AsTag).OrderByDescending(x => x.Size).First().Type
-            );
-
 
             MemoryStream fileStream = new MemoryStream();
             try {
-                await client.Upload.DownloadFile(fileStream, loc);
+                await client.Upload.DownloadFile(fileStream, photo);
             }catch(TgFloodException) {
                 //FloodPrevention is regularly triggered for highly frequented profiles (Telegram, BotFather...)
                 Logger.Info("Flood prevention triggered trying to retrieve profile pic.");

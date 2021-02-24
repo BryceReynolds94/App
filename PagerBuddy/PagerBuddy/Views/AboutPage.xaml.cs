@@ -73,7 +73,8 @@ namespace PagerBuddy.Views {
 
         private void testFCMMessage(object sender, EventArgs args) {
             Logger.Info("Launching FCM Message Handling as if an external update was received in background.");
-            new AlertService();
+            //TODO: Change this debug button
+            //new AlertService();
         }
 
         private void testNotification(object sender, EventArgs args) {

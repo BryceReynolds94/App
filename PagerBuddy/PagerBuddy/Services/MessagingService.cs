@@ -15,7 +15,7 @@ namespace PagerBuddy.Services
 {
     public class MessagingService
     {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public void SetupListeners(CommunicationService client)
         {
@@ -306,10 +306,6 @@ namespace PagerBuddy.Services
                     return;
 
                     }
-
-
-            //TODO: RBF
-            //TODO: Implement this
         }
 
         private static (byte[] aesKey, byte[] aesIv) getKeyData(byte[] authKey, byte[] messageKey) {
