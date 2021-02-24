@@ -10,7 +10,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Xamarin.Forms; 
+using Xamarin.Forms;
 using static PagerBuddy.Services.ClientExceptions;
 using Telega;
 using Functions = Telega.Rpc.Dto.Functions;
@@ -68,7 +68,7 @@ namespace PagerBuddy.Services {
         private async Task connectClient(bool isBackgroundCall = false, int attempt = 0) {
             clientStatus = STATUS.NEW;
             try {
-                client = await TelegramClient.Connect(KeyService.checkID(this)); //TODO: Implement session store
+                client = await TelegramClient.Connect(KeyService.checkID(this), store: new MySessionStore());
             } catch (Exception e) {
                 Logger.Error(e, "Initialisation of TelegramClient failed");
                 clientStatus = STATUS.OFFLINE;
@@ -108,7 +108,7 @@ namespace PagerBuddy.Services {
         }
 
         private async Task checkConnectionOnError(Exception e = null) {
-            if(clientStatus > STATUS.OFFLINE) {
+            if (clientStatus > STATUS.OFFLINE) {
                 //TODO: Implement this
                 if (true) {
                     if (clientStatus == STATUS.AUTHORISED && !client.Auth.IsAuthorized) {
@@ -160,7 +160,7 @@ namespace PagerBuddy.Services {
                 Logger.Warn("Attempted to subscribe to FCM Messages without authorisation.");
                 return;
             }
-            if(token == null || token.Length < 1) {
+            if (token == null || token.Length < 1) {
                 Logger.Warn("Token invalid. Not (re-)registering push notifications.");
                 return;
             }
@@ -194,7 +194,7 @@ namespace PagerBuddy.Services {
         public async Task<TStatus> loginWithPassword(string password) {
             if (clientStatus != STATUS.WAIT_PASSWORD) {
                 Logger.Warn("Attempted to perform 2FA without appropriate client status. Current status: " + clientStatus.ToString());
-                if(clientStatus == STATUS.OFFLINE) {
+                if (clientStatus == STATUS.OFFLINE) {
                     return TStatus.OFFLINE;
                 }
                 return TStatus.WRONG_CLIENT_STATUS;
@@ -268,7 +268,7 @@ namespace PagerBuddy.Services {
                     Logger.Warn("Finally failed to request code.");
                     return TStatus.UNKNOWN;
                 }
-            
+
             } catch (Exception e) {
 
                 TException exception = getTException(e.Message);
@@ -306,7 +306,7 @@ namespace PagerBuddy.Services {
         public async Task<TStatus> confirmCode(string code) {
             if (clientStatus != STATUS.WAIT_CODE) {
                 Logger.Warn("Attempted to confirm code without appropriate client status. Current status: " + clientStatus.ToString());
-                if(clientStatus == STATUS.OFFLINE) {
+                if (clientStatus == STATUS.OFFLINE) {
                     return TStatus.OFFLINE;
                 }
                 return TStatus.WRONG_CLIENT_STATUS;
@@ -372,11 +372,11 @@ namespace PagerBuddy.Services {
             }
             DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, hasPhoto);
 
-            string userName = userTag.FirstName + " " + userTag.LastName;
+            string userName = userTag.FirstName.IfNone("") + " " + userTag.LastName.IfNone("");
             if (userName.Length < 3) {
-                userName = (string) userTag.Username;
+                userName = userTag.Username.IfNone("Empty Username");
             }
-            string userPhone = "+" + userTag.Phone;
+            string userPhone = "+" + userTag.Phone.IfNone("");
 
             DataService.setConfigValue(DataService.DATA_KEYS.USER_NAME, userName);
             DataService.setConfigValue(DataService.DATA_KEYS.USER_PHONE, userPhone);
@@ -396,7 +396,7 @@ namespace PagerBuddy.Services {
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list.");
                 await checkConnectionOnError(e);
-                if(clientStatus == STATUS.AUTHORISED && attempt < 3) {
+                if (clientStatus == STATUS.AUTHORISED && attempt < 3) {
                     Logger.Info("Connection was possibly fixed. Retrying chat retrieval.");
                     return await getChatList(++attempt);
                 } else {
@@ -411,14 +411,14 @@ namespace PagerBuddy.Services {
         public async Task<MemoryStream> getProfilePic(Types.InputFileLocation photo) {
             if (clientStatus < STATUS.ONLINE) {
                 Logger.Warn("Attempted to load profile pic without appropriate client status. Current status: " + clientStatus.ToString());
-                return null; 
+                return null;
             }
 
 
             MemoryStream fileStream = new MemoryStream();
             try {
                 await client.Upload.DownloadFile(fileStream, photo);
-            }catch(TgFloodException) {
+            } catch (TgFloodException) {
                 //FloodPrevention is regularly triggered for highly frequented profiles (Telegram, BotFather...)
                 Logger.Info("Flood prevention triggered trying to retrieve profile pic.");
                 return null;
@@ -434,15 +434,14 @@ namespace PagerBuddy.Services {
             if (clientStatus < STATUS.ONLINE) {
                 Logger.Warn("Attempted to retrieve user update without appropriate client status. Current status: " + clientStatus.ToString());
                 return user;
-            }          
+            }
 
             Types.User outUser;
             try {
                 Types.InputUser inUser = new Types.InputUser.SelfTag();
                 Arr<Types.InputUser> inArr = new Arr<Types.InputUser>();
-                inArr.Add(inUser);
 
-                Arr<Types.User> outList = await client.Call(new Functions.Users.GetUsers(inArr)); //https://core.telegram.org/method/users.getUsers
+                Arr<Types.User> outList = await client.Call(new Functions.Users.GetUsers(inArr.Add(inUser))); //https://core.telegram.org/method/users.getUsers
                 outUser = outList.First();
             } catch (Exception e) {
                 Logger.Error(e, "Exception while fetching user data.");
@@ -452,6 +451,43 @@ namespace PagerBuddy.Services {
 
             return outUser;
         }
+    }
 
+    public class MySessionStore : ISessionStore {
+
+        public static string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "CommunicationServiceSession");
+
+        public void Clear() {
+            if (File.Exists(file)) {
+                File.Delete(file);
+            }
+        }
+
+        public async Task<Option<Session>> Load() {
+            if (!File.Exists(file)) {
+                return (Session) null;
+            }
+
+            using(FileStream fileStream = new FileStream(file, FileMode.Open)) {
+                return await Task.Run<Session>(() => {
+                    BinaryReader binaryReader = new BinaryReader(fileStream);
+                    return Session.Deserialize(binaryReader);
+                });
+            }
+        }
+
+        public async Task Save(Some<Session> someSession) {
+            if (someSession.IsNone) {
+                return;
+            }
+
+
+            using (FileStream fileStream = new FileStream(file, FileMode.OpenOrCreate)) {
+                await Task.Run(() => {
+                    BinaryWriter binaryWriter = new BinaryWriter(fileStream);
+                    someSession.Single().Serialize(binaryWriter);
+                });
+            }
+        }
     }
 }

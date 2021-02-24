@@ -44,9 +44,9 @@ namespace PagerBuddy.Models {
                 if(user.AsTag().IsSome) {
                     Types.User.Tag u = (Types.User.Tag) user.AsTag();
 
-                    string userName = u.FirstName + " " + u.LastName;
+                    string userName = u.FirstName.IfNone("") + " " + u.LastName.IfNone("");
                     if (userName.Length < 3) {
-                        userName = (string) u.Username;
+                        userName = (string) u.Username.IfNone("");
                     }
                     Types.InputPeer peer = new Types.InputPeer.UserTag(u.Id, u.AccessHash.IfNone(0));
                     peerList.Add(new TelegramPeer(TYPE.USER, u.Id, userName, getPhotoLocation(peer, u.Photo.IfNoneUnsafe(() => null)), u.AccessHash.IfNone(0)));
