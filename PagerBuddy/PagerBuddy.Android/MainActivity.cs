@@ -8,7 +8,6 @@ using Android.Widget;
 using Android.OS;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
-using Plugin.FirebasePushNotification;
 using Firebase.Messaging;
 using System.Drawing;
 using Android.Content;
@@ -38,8 +37,6 @@ namespace PagerBuddy.Droid
             CachedImageRenderer.Init(true); //Addded to enable FFImageLoading
             CachedImageRenderer.InitImageViewHandler();
             var ignore = typeof(SvgCachedImage); //Added to enable SVG FFImageLoading
-
-            FirebasePushNotificationManager.ProcessIntent(this, Intent); //Added to enable FirebasePushNotificationPlugin
 
             WakeScreenAlertPage(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()));
             LoadApplication(new App(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()), GetAlertFromIntent(Intent)));

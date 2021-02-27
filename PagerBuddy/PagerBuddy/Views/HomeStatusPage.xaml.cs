@@ -15,7 +15,6 @@ using PagerBuddy.Interfaces;
 using FFImageLoading.Svg.Forms;
 using System.Xml;
 using System.Collections.ObjectModel;
-using Plugin.FirebasePushNotification;
 using PagerBuddy.Resources;
 using Xamarin.Essentials;
 

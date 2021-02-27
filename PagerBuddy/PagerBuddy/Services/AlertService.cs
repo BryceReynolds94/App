@@ -1,6 +1,5 @@
 ﻿using PagerBuddy.Interfaces;
 using PagerBuddy.Models;
-using Plugin.FirebasePushNotification;
 using System;
 using System.Collections;
 using System.Collections.Generic;

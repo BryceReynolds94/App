@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
 using PagerBuddy.Interfaces;
 using PagerBuddy.Models;
-using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace PagerBuddy.Services
@@ -16,61 +16,52 @@ namespace PagerBuddy.Services
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public void SetupListeners(CommunicationService client)
-        {
-            //subscribe to token changes
-            CrossFirebasePushNotification.Current.OnTokenRefresh += async (s, args) =>
-                {
-                    Logger.Info("Firebase token was updated, TOKEN: {0}", args.Token);
+        private CommunicationService client;
+        private static MessagingService instance;
 
-                    if (client.clientStatus == CommunicationService.STATUS.AUTHORISED) {
-                        await client.subscribePushNotifications(args.Token);
-                    }
-                };
-
-            //foreground notification listener
-            CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
-                {
-                    
-                    Logger.Debug("A firebase message was received while app is active.");
-                    inspectPayload(p);
-                };
+        public MessagingService(CommunicationService client) {
+            this.client = client;
         }
 
 
         //This is called when FCM Messages are received after app is killed
-        public static void BackgroundFirebaseMessage(object sender, FirebasePushNotificationDataEventArgs args)
+        public static void FirebaseMessage(object sender, IDictionary<string,string> data, long timestamp)
         {
-            Logger.Debug("A firebase message was received while app is in background.");
-            inspectPayload(args);
+            Logger.Debug("A firebase message was received.");
+            inspectPayload(data, timestamp);
         }
 
-        public static void BackgroundFirebaseTokenRefresh(object sender, string token) {
-            Logger.Debug("Firebase token was updated while app is in background.");
+        public static async Task FirebaseTokenRefresh(object sender, string token) {
+            Logger.Info("Firebase token was updated, TOKEN: {0}", token);
+            DataService.setConfigValue(DataService.DATA_KEYS.FCM_TOKEN, token);
 
-            CommunicationService client = new CommunicationService(true);
-            client.StatusChanged += async (sender, status) => {
-                if(status == CommunicationService.STATUS.AUTHORISED) {
-                    await client.subscribePushNotifications(token);
+            if (instance != null) {
+                if (instance.client.clientStatus == CommunicationService.STATUS.AUTHORISED) {
+                    await instance.client.subscribePushNotifications(token);
                 }
-            };
-            
+            } else {
+                CommunicationService client = new CommunicationService(true);
+                client.StatusChanged += async (sender, status) => {
+                    if (status == CommunicationService.STATUS.AUTHORISED) {
+                        await client.subscribePushNotifications(token);
+                    }
+                };
+            }  
         }
 
-        private static void inspectPayload(FirebasePushNotificationDataEventArgs args) {
+        private static void inspectPayload(IDictionary<string,string> data, long timestamp) {
             //https://github.com/DrKLO/Telegram/blob/master/TMessagesProj/src/main/java/org/telegram/messenger/GcmPushListenerService.java
-            IDictionary<string, object> data = args.Data;
 
-            object rawPayload;
+            string rawPayload;
             bool success = data.TryGetValue("p", out rawPayload);
 
-            if(!success || !(rawPayload is string)) {
+            if(!success) {
                 Logger.Warn("FCM message did not contain payload.");
                 return;
             }
 
             //Payload is bas64 URL encoded - we have to get standard base64
-            string stringPayload = (rawPayload as string).Replace("-", "+").Replace("_", "/");
+            string stringPayload = rawPayload.Replace("-", "+").Replace("_", "/");
             switch(stringPayload.Length % 4) {
                 case 2:
                     stringPayload += "==";
@@ -127,7 +118,7 @@ namespace PagerBuddy.Services
 
         private static void handleUpdate(JObject jsonPayload) {
 
-            string loc_key = "";
+            string loc_key;
             if (jsonPayload.ContainsKey("loc_key")) {
                 loc_key = (string) jsonPayload.GetValue("loc_key");
                 Logger.Debug("Update is of type " + loc_key);

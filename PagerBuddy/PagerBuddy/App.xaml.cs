@@ -5,7 +5,6 @@ using PagerBuddy.Services;
 using PagerBuddy.Views;
 using System.Collections;
 using PagerBuddy.ViewModels;
-using Plugin.FirebasePushNotification;
 using PagerBuddy.Interfaces;
 using System.Threading.Tasks;
 using PagerBuddy.Models;
@@ -45,7 +44,7 @@ namespace PagerBuddy
 
             MessagingCenter.Subscribe<AboutPage>(this, AboutPage.MESSAGING_KEYS.SHOW_ALERT_PAGE.ToString(), (sender) => showAlertPage());
             MainPage = new MainPage();
-            new MessagingService().SetupListeners(((MainPage)Current.MainPage).client);
+            new MessagingService(((MainPage)Current.MainPage).client);
         }
 
         private void showAlertPage() {

@@ -1,6 +1,5 @@
 ﻿using PagerBuddy.Models;
 using Newtonsoft.Json.Linq;
-using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -84,7 +83,7 @@ namespace PagerBuddy.Services {
                     this.user = await getUserUpdate();
                     await saveUserData(user);
                     //Update current message index
-                    await subscribePushNotifications(CrossFirebasePushNotification.Current.Token, true);
+                    await subscribePushNotifications(DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, ""), true);
                 }
                 if (clientStatus != STATUS.ONLINE) { //status may have changed out of scope due to previous call fallbacks
                     Logger.Info("Connect process completed, but client Status was changed out of scope. Not setting authorised status. CurrentStatus: " + clientStatus.ToString());
@@ -131,18 +130,20 @@ namespace PagerBuddy.Services {
             }
             Logger.Debug("Logging out user.");
 
-            string token = CrossFirebasePushNotification.Current.Token;
+            string token = DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, "");
 
-            Functions.Account.UnregisterDevice unregisterRequest = new Functions.Account.UnregisterDevice(
-                    tokenType: 2,
-                    token: token,
-                    new LanguageExt.Arr<int>()
-                );
+            if (token.Length > 0) {
+                Functions.Account.UnregisterDevice unregisterRequest = new Functions.Account.UnregisterDevice(
+                        tokenType: 2,
+                        token: token,
+                        new LanguageExt.Arr<int>()
+                    );
 
-            try {
-                await client.Call(unregisterRequest); //https://core.telegram.org/method/account.unregisterDevice
-            } catch (Exception e) {
-                Logger.Error(e, "Exception while trying to unregister device.");
+                try {
+                    await client.Call(unregisterRequest); //https://core.telegram.org/method/account.unregisterDevice
+                } catch (Exception e) {
+                    Logger.Error(e, "Exception while trying to unregister device.");
+                }
             }
 
             try {
@@ -160,7 +161,7 @@ namespace PagerBuddy.Services {
                 Logger.Warn("Attempted to subscribe to FCM Messages without authorisation.");
                 return;
             }
-            if (token == null || token.Length < 1) {
+            if (token.Length < 1) {
                 Logger.Warn("Token invalid. Not (re-)registering push notifications.");
                 return;
             }
@@ -341,8 +342,8 @@ namespace PagerBuddy.Services {
             await saveUserData(user);
             clientStatus = STATUS.AUTHORISED;
 
-            string token = CrossFirebasePushNotification.Current.Token;
-            if (token == null || token.Length < 1) {
+            string token = DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, "");
+            if (token.Length < 1) {
                 Logger.Warn("Could not subscribe to FCM Messages as no token available");
             } else {
                 await subscribePushNotifications(token);
