@@ -13,7 +13,7 @@ using Xamarin.Forms;
 namespace PagerBuddy.ViewModels {
     public class AboutPageViewModel : BaseViewModel {
 
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public Command DeveloperMode { get; set; }
         public Command HideDeveloperMode { get; set; }
         public Command ShareLog { get; set; }
@@ -35,10 +35,10 @@ namespace PagerBuddy.ViewModels {
             Title = AppResources.AboutPage_Title;
 
             try{
-                logLevel = Enum.Parse<LogLevel>(DataService.getConfigValue(DataService.DATA_KEYS.DEVELOPER_LOG_LEVEL, LogLevel.DEBUG.ToString()));
+                logLevel = Enum.Parse<LogLevel>(DataService.getConfigValue(DataService.DATA_KEYS.DEVELOPER_LOG_LEVEL, LogLevel.WARN.ToString()));
             }catch(Exception e) {
                 Logger.Error(e, "Exception while parsing saved log level");
-                logLevel = LogLevel.DEBUG;
+                logLevel = LogLevel.WARN;
             }
 
             DeveloperMode = new Command(() => countDeveloperMode());
@@ -72,7 +72,7 @@ namespace PagerBuddy.ViewModels {
             if (logLevel == LogLevel.ERROR) {
                 logLevel = LogLevel.DEBUG;
             } else {
-                logLevel = logLevel + 1;
+                logLevel += 1;
             }
             DataService.setConfigValue(DataService.DATA_KEYS.DEVELOPER_LOG_LEVEL, logLevel.ToString());
             OnPropertyChanged(nameof(LogLevelText));
@@ -110,10 +110,10 @@ namespace PagerBuddy.ViewModels {
 
 
         public string OuterLayout => "OuterLayout"; //empty Binding for forcing layout update
-        public string AppVersion => String.Format(AppResources.AboutPage_App_VersionInfo, VersionTracking.CurrentVersion, VersionTracking.CurrentBuild);
+        public string AppVersion => string.Format(AppResources.AboutPage_App_VersionInfo, VersionTracking.CurrentVersion, VersionTracking.CurrentBuild);
         public bool IsDeveloperMode => DataService.getConfigValue(DataService.DATA_KEYS.DEVELOPER_MODE, false);
         public bool NotDeveloperMode => !IsDeveloperMode;
-        public string LogLevelText => String.Format(AppResources.AboutPage_LogLevel_Prefix, logLevel.ToString());
+        public string LogLevelText => string.Format(AppResources.AboutPage_LogLevel_Prefix, logLevel.ToString());
 
         public string LogText {
             get {
