@@ -148,10 +148,10 @@ namespace PagerBuddy.Services
                 string rawID;
                 if (custom.ContainsKey("channel_id")) {
                     rawID = (string) custom.GetValue("channel_id");
-                    senderID = -int.Parse(rawID);
+                    senderID = int.Parse(rawID);
                 }else if (custom.ContainsKey("chat_id")) {
                     rawID = (string) custom.GetValue("chat_id");
-                    senderID = -int.Parse(rawID);
+                    senderID = int.Parse(rawID);
                 }else if (custom.ContainsKey("from_id")) {
                     rawID = (string) custom.GetValue("from_id");
                     senderID = int.Parse(rawID);

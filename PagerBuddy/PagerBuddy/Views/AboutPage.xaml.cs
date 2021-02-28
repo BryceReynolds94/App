@@ -53,6 +53,8 @@ namespace PagerBuddy.Views {
         private async void shareLog(object sender, EventArgs args) {
             Logger.Info("Launched Log sharing");
 
+            //TODO: Dump permission settings to log before sharing
+
             string logFile = getLogFileLocation();
             if (logFile != null) {
                 await Share.RequestAsync(new ShareFileRequest(new ShareFile(logFile)));
