@@ -1,8 +1,11 @@
 ﻿using LanguageExt;
+using PagerBuddy.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Types = Telega.Rpc.Dto.Types;
 
 namespace PagerBuddy.Models {
@@ -15,6 +18,18 @@ namespace PagerBuddy.Models {
 
         public TelegramPeer(TYPE type, int id, string name, Types.InputFileLocation photo, long accessHash = 0) : base(name, id, type, accessHash) {
             this.photoLocation = photo;
+        }
+
+        public async Task loadImage(CommunicationService client) {
+            MemoryStream file = await client.getProfilePic(photoLocation);
+            if (file != null) {
+                image = file;
+                hasImage = image != null;
+
+                imageLoaded.Invoke(this, null);
+            } else {
+                Logger.Info("Could not load peer pic.");
+            }
         }
 
         public static Collection<TelegramPeer> getPeerCollection(Arr<Types.Chat> chatList, Arr<Types.User> userList) {

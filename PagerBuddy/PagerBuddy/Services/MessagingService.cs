@@ -11,27 +11,27 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace PagerBuddy.Services
-{
+{ 
     public class MessagingService
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private CommunicationService client;
+        private readonly CommunicationService client;
         private static MessagingService instance;
 
         public MessagingService(CommunicationService client) {
             this.client = client;
+            instance = this;
         }
 
 
-        //This is called when FCM Messages are received after app is killed
-        public static void FirebaseMessage(object sender, IDictionary<string,string> data, long timestamp)
+        //This is called when FCM Messages are received
+        public static void FirebaseMessage(IDictionary<string,string> data, DateTime timestamp)
         {
-            Logger.Debug("A firebase message was received.");
             inspectPayload(data, timestamp);
         }
 
-        public static async Task FirebaseTokenRefresh(object sender, string token) {
+        public static async Task FirebaseTokenRefresh(string token) {
             Logger.Info("Firebase token was updated, TOKEN: {0}", token);
             DataService.setConfigValue(DataService.DATA_KEYS.FCM_TOKEN, token);
 
@@ -49,13 +49,12 @@ namespace PagerBuddy.Services
             }  
         }
 
-        private static void inspectPayload(IDictionary<string,string> data, long timestamp) {
+        private static void inspectPayload(IDictionary<string,string> data, DateTime timestamp) {
             //https://github.com/DrKLO/Telegram/blob/master/TMessagesProj/src/main/java/org/telegram/messenger/GcmPushListenerService.java
 
-            string rawPayload;
-            bool success = data.TryGetValue("p", out rawPayload);
+            bool success = data.TryGetValue("p", out string rawPayload);
 
-            if(!success) {
+            if (!success) {
                 Logger.Warn("FCM message did not contain payload.");
                 return;
             }
@@ -113,10 +112,10 @@ namespace PagerBuddy.Services
                 return;
             }
 
-            handleUpdate(json);
+            handleUpdate(json, timestamp);
         }
 
-        private static void handleUpdate(JObject jsonPayload) {
+        private static void handleUpdate(JObject jsonPayload, DateTime timestamp) {
 
             string loc_key;
             if (jsonPayload.ContainsKey("loc_key")) {
@@ -132,14 +131,19 @@ namespace PagerBuddy.Services
                 IEnumerable<JToken> token = jsonPayload.GetValue("loc_args").Children();
                 Logger.Debug("Payload contains " + token.Length() + " loc_args.");
 
-                if(token.Length() > 1) {
-                    message = (string) token.ElementAt(1);
+                if(token.Length() > 0) {
+                    message = (string) token.ElementAt(token.Length()-1);
                 }
             }
 
             int senderID;
+            int fromID = 0;
             if (jsonPayload.ContainsKey("custom")) {
                 JObject custom = (JObject) jsonPayload.GetValue("custom");
+
+                if (custom.ContainsKey("chat_from_id")) {
+                    fromID = int.Parse((string) custom.GetValue("chat_from_id"));
+                }
 
                 string rawID;
                 if (custom.ContainsKey("channel_id")) {
@@ -151,6 +155,7 @@ namespace PagerBuddy.Services
                 }else if (custom.ContainsKey("from_id")) {
                     rawID = (string) custom.GetValue("from_id");
                     senderID = int.Parse(rawID);
+                    fromID = senderID;
                 } else {
                     Logger.Info("Could not get sender id from payload. Not processing update further.");
                     return;
@@ -250,7 +255,7 @@ namespace PagerBuddy.Services
 
                 case "ENCRYPTED_MESSAGE":
                     //TODO: RBF
-                    new AlertService(message, senderID, 0);
+                    AlertService.checkMessage(message, senderID, timestamp, fromID);
                     break;
 
 

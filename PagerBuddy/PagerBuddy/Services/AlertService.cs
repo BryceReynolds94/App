@@ -9,14 +9,9 @@ using Xamarin.Forms;
 
 namespace PagerBuddy.Services {
     public class AlertService {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public AlertService(string message, int senderID, long timestampTicks) {
-            checkMessage(message, senderID, timestampTicks);
-        }
-
-
-        private void checkMessage(string message, int senderID, long timestampTicks) {
+        public static void checkMessage(string message, int senderID, DateTime timestamp, int fromID) {
             Logger.Info("Checking incoming message for alert.");
 
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
@@ -34,8 +29,7 @@ namespace PagerBuddy.Services {
                 if(config.triggerGroup.id == senderID) {
                     Logger.Debug("New message for alert config " + config.readableFullName);
 
-                    DateTime timestamp = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timestampTicks).ToLocalTime();  //Unix base time -- we need local time for alert time comparison
-                    if (config.isAlert(message, timestamp, null)) {
+                    if (config.isAlert(message, timestamp, fromID)) {
                         DateTime referenceTime = DateTime.Now.Subtract(new TimeSpan(0, 10, 0)); //grace period of 10min
                         if (timestamp < referenceTime) //timestamp is older than referenceTime
                         {
@@ -43,7 +37,7 @@ namespace PagerBuddy.Services {
                             Logger.Info("An alert was dismissed as it was not detected within 10min of message posting. Message posted at (UTC): " + timestamp.ToShortTimeString());
                         } else {
                             config.setLastTriggered(DateTime.Now);
-                            alertMessage(new Alert(config.getAlertMessage(message, null), config));
+                            alertMessage(new Alert(message, config));
                         }
                     } else {
                         Logger.Debug("Message ignored, it did not fulfill the alert criteria.");
@@ -52,7 +46,7 @@ namespace PagerBuddy.Services {
             }
         }
 
-        private void alertMessage(Alert alert) {
+        private static void alertMessage(Alert alert) {
             Logger.Info("Alert was detected. Posting it to notifications.");
 
             INotifications notifications = DependencyService.Get<INotifications>();

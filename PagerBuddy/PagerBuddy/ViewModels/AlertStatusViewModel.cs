@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace PagerBuddy.ViewModels {
     public class AlertStatusViewModel : BaseViewModel {
-        private AlertConfig alertConfig;
+        private readonly AlertConfig alertConfig;
 
         public Command SnoozeAlert { get; set; }
         public Command EditAlert { get; set; }

@@ -18,13 +18,11 @@ namespace PagerBuddy.Views {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ConfigureGroupPage : ContentPage {
 
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private ConfigureGroupPageViewModel viewModel;
-
-        private AlertConfig alertConfig;
-
-        private CommunicationService client;
+        private readonly ConfigureGroupPageViewModel viewModel;
+        private readonly AlertConfig alertConfig;
+        private readonly CommunicationService client;
 
         private bool reloadListOnAppearing = false;
 
@@ -112,13 +110,7 @@ namespace PagerBuddy.Views {
                 }
 
                 if (detailPeer.photoLocation != null) {
-                    MemoryStream file = await client.getProfilePic(detailPeer.photoLocation);
-                    if (file != null) {
-                        detailPeer.image = file;
-                        detailPeer.hasImage = detailPeer.image != null;
-                    } else {
-                        Logger.Info("Could not load peer pic.");
-                    }
+                    _ = detailPeer.loadImage(client); //Do not wait for image laoding to avoid blocking
                 }
 
                 viewModel.addGroupToList((Group) detailPeer);

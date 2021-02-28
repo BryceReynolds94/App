@@ -24,7 +24,7 @@ namespace PagerBuddy
 
     public partial class App : Application
     {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public App(bool isAlert = false, Alert alert = null)
         {
             Logger.Debug("Starting App.");

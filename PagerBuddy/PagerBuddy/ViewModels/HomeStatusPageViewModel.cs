@@ -145,14 +145,11 @@ namespace PagerBuddy.ViewModels {
 
         public string ErrorText {
             get {
-                switch (errorState) {
-                    case ERROR_ACTION.NO_INTERNET:
-                        return AppResources.HomeStatusPage_Error_NoInternet;
-                    case ERROR_ACTION.NO_TELEGRAM:
-                        return AppResources.HomeStatusPage_Error_NoTelegram;
-                    default:
-                        return "";
-                }
+                return errorState switch {
+                    ERROR_ACTION.NO_INTERNET => AppResources.HomeStatusPage_Error_NoInternet,
+                    ERROR_ACTION.NO_TELEGRAM => AppResources.HomeStatusPage_Error_NoTelegram,
+                    _ => "",
+                };
             }
         }
 
@@ -187,14 +184,11 @@ namespace PagerBuddy.ViewModels {
         public bool ToggleAllSnoozeEnabled => warningState != WARNING_ACTION.DEACTIVATED;
         public ImageSource ToggleAllSnoozeIcon {
             get {
-                switch (warningState) {
-                    case WARNING_ACTION.SNOOZE_SET:
-                        return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze_off.svg");
-                    case WARNING_ACTION.DEACTIVATED:
-                        return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze_inactive.svg");
-                    default:
-                        return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze.svg");
-                }
+                return warningState switch {
+                    WARNING_ACTION.SNOOZE_SET => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze_off.svg"),
+                    WARNING_ACTION.DEACTIVATED => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze_inactive.svg"),
+                    _ => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze.svg"),
+                };
             }
         }
 

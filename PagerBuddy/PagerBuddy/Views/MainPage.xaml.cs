@@ -13,7 +13,7 @@ using Xamarin.Essentials;
 namespace PagerBuddy.Views {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : FlyoutPage {
-        private NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public CommunicationService client;
 
@@ -93,8 +93,9 @@ namespace PagerBuddy.Views {
 
         private async Task requestShare() {
             //https://docs.microsoft.com/en-us/xamarin/essentials/share?context=xamarin%2Fios&tabs=android
-            ShareTextRequest request = new ShareTextRequest(AppResources.App_Share_Message);
-            request.Uri = "http://www.bartunik.de/pagerbuddy";
+            ShareTextRequest request = new ShareTextRequest(AppResources.App_Share_Message) {
+                Uri = "http://www.bartunik.de/pagerbuddy"
+            };
             await Share.RequestAsync(request);
             IsPresented = false;
         }

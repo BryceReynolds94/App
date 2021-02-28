@@ -20,7 +20,7 @@ namespace PagerBuddy.Droid
 {
     class AndroidNavigation : INavigation
     {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public void navigateNotificationSettings()
         {

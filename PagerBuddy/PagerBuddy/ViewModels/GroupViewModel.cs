@@ -8,13 +8,18 @@ using FFImageLoading.Svg.Forms;
 using FFImageLoading.Forms;
 
 namespace PagerBuddy.ViewModels {
-    public class GroupViewModel {
+    public class GroupViewModel : BaseViewModel{
         public Group group;
 
         public GroupViewModel(Group group) {
             this.group = group;
+            group.imageLoaded += ImageUpdated;
         }
         public string Name => group.name;
+
+        private void ImageUpdated(object sender, EventArgs args) {
+            OnPropertyChanged(nameof(GroupPic));
+        }
 
         public ImageSource GroupPic {
             get {

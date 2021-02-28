@@ -13,12 +13,11 @@ namespace PagerBuddy.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MenuPage : ContentPage
     {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         MainPage RootPage { get => Application.Current.MainPage as MainPage; }
 
         public enum MENU_PAGE { AboutPage, LogoutUser, NotificationSettings, Share, Login, Website};
 
-        MenuPageViewModel viewModel;
+        private readonly MenuPageViewModel viewModel;
         public MenuPage()
         {
             InitializeComponent();

@@ -18,9 +18,9 @@ namespace PagerBuddy.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ConfigureKeywordPage : ContentPage
     {
-        private AlertConfig alertConfig;
+        private readonly AlertConfig alertConfig;
 
-        private ConfigureKeywordPageViewModel viewModel;
+        private readonly ConfigureKeywordPageViewModel viewModel;
 
         public enum MESSAGING_KEYS { ALERT_CONFIG_SAVED};
 

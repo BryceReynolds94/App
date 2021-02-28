@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using PagerBuddy.Services;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace PagerBuddy.Models
@@ -34,6 +36,8 @@ namespace PagerBuddy.Models
             this.accessHash = accessHash;
             this.type = type;
         }
+
+        public EventHandler imageLoaded;
 
     }
 }

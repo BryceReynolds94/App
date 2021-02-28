@@ -19,9 +19,9 @@ namespace PagerBuddy.Views {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AboutPage : ContentPage {
 
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private AboutPageViewModel viewModel;
+        private readonly AboutPageViewModel viewModel;
 
         public enum MESSAGING_KEYS { SHOW_ALERT_PAGE, RESTART_CLIENT }
         public AboutPage() {

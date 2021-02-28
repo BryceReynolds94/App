@@ -18,10 +18,10 @@ namespace PagerBuddy.Views
     public partial class AlertPage : ContentPage
     {      
 
-        AlertPageViewModel viewModel;
+        private readonly AlertPageViewModel viewModel;
 
-        private int groupID;
-        private TelegramPeer.TYPE peerType;
+        private readonly int groupID;
+        private readonly TelegramPeer.TYPE peerType;
 
         public AlertPage(Alert alert)
         {

@@ -15,7 +15,7 @@ namespace PagerBuddy.ViewModels
 {
     public class ConfigureGroupPageViewModel : BaseViewModel
     {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public ObservableCollection<GroupViewModel> groupList { get; set; }
         public Command LoadItemsCommand { get; set; }

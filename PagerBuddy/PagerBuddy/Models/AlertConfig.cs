@@ -11,10 +11,10 @@ using System.Security.Cryptography;
 using Types = Telega.Rpc.Dto.Types;
 using System.Threading.Tasks;
 
-namespace PagerBuddy.Models
-{
+namespace PagerBuddy.Models {
     public class AlertConfig {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private const int PAGERBUDDY_ID = 1700123456; //TODO: RBF
         public enum TRIGGER_TYPE { ANY, SERVER, KEYWORD };
 
         public bool isActive { get; private set; }
@@ -61,26 +61,22 @@ namespace PagerBuddy.Models
             this.ignoreTestAlerts = ignoreTestAlerts;
         }
 
-        public void saveChanges(bool persistImage = false)
-        {
+        public void saveChanges(bool persistImage = false) {
             if (persistImage && triggerGroup.hasImage && triggerGroup.image != null) {
                 DataService.saveProfilePic(id, triggerGroup.image);
             }
             DataService.saveAlertConfig(this);
         }
 
-        public void setActiveState(bool active)
-        {
+        public void setActiveState(bool active) {
             isActive = active;
-            if (!active)
-            {
+            if (!active) {
                 snoozeTime = DateTime.MinValue; //clear Snooze Time
             }
             saveChanges();
         }
 
-        public void setSnoozeTime(DateTime snoozeTime)
-        {
+        public void setSnoozeTime(DateTime snoozeTime) {
             this.snoozeTime = snoozeTime;
             saveChanges();
         }
@@ -89,24 +85,19 @@ namespace PagerBuddy.Models
             lastTriggered = triggerTime;
             saveChanges();
         }
-        
-        //TODO: Possibly fix entities
-        public bool isAlert(string message, DateTime time, Types.MessageEntity entities)
-        {
-            if (!isActive || snoozeActive) 
-            {
+
+        public bool isAlert(string message, DateTime time, int fromID) {
+            if (!isActive || snoozeActive) {
                 Logger.Debug("Alert not triggered as AlertConfig is inactive. AlertConfig: " + readableFullName);
                 return false;
             }
-            if(timeRestriction && !activeTimeConfig.isActiveTime(time))
-            {
+            if (timeRestriction && !activeTimeConfig.isActiveTime(time)) {
                 Logger.Debug("Alert not triggered as time restriction was not fulfilled. AlertConfig: " + readableFullName);
                 return false;
             }
 
             bool result = false;
-            switch (triggerType)
-            {
+            switch (triggerType) {
                 case TRIGGER_TYPE.ANY:
                     result = true;
                     break;
@@ -115,17 +106,20 @@ namespace PagerBuddy.Models
                     Logger.Debug("Trigger type is KEYWORD. Result of keyword check: " + result);
                     break;
                 case TRIGGER_TYPE.SERVER:
-                    result = hasPagerBuddyPayload(message, entities);
-                    if(result && ignoreTestAlerts) {
-                        result = !isPagerBuddyTestAlert(message, entities);
-                        Logger.Debug("Alert is test alert and will be ignored.");
+                    result = isPagerBuddyMessage(fromID);
+                    if (result && ignoreTestAlerts) {
+                        result = !isPagerBuddyTestAlert(message);
+
+                        if (!result) {
+                            Logger.Debug("Alert is test alert and will be ignored.");
+                        }
                     }
-                    Logger.Debug("Trigger type is SERVER. Result of Payload check: " + result);
+                    Logger.Debug("Trigger type is SERVER. Result of sender check: " + result);
                     break;
             }
 
             if (result) {
-                if(lockTime > time) {
+                if (lockTime > time) {
                     result = false;
                     Logger.Info("Suppressed alert as insufficient time has passed since the last qualified alert message.");
                 }
@@ -133,7 +127,7 @@ namespace PagerBuddy.Models
                 saveChanges();
             }
 
-            return result;   
+            return result;
         }
 
         [JsonIgnore]
@@ -147,71 +141,33 @@ namespace PagerBuddy.Models
             }
         }
 
-        private bool hasPagerBuddyPayload(string message, Types.MessageEntity entities) {
-            //PagerBuddy-Server syntax:
-            //Encode alert in <html/> tag as part of URL
-            //Alerts should contain url "*/pagerbuddy?#<base64><title/>*<date and time/>*<optional message/>*<is test alert/></base64>#"
-
-
-            //TODO: RBF
-            //Match match = extractPagerBuddyPayload(message, entities); 
-            //return match.Success;
-            return false;
+        private static bool isPagerBuddyMessage(int fromID) {
+            return fromID == PAGERBUDDY_ID;
         }
 
-        private bool isPagerBuddyTestAlert(string  message, Types.MessageEntity entities) {
-            //Last segment of payload contains 1 or 0 signifying if this is a test alert
-            //TODO: RBF
-            /*foreach (TLAbsMessageEntity entity in entities) {
-                if (entity is TLMessageEntityTextUrl) {
-                    String urlString = (entity as TLMessageEntityTextUrl).Url;
-                    Match match = Regex.Match(urlString, "(?<=/pagerbuddy\\?#[-A-Za-z0-9+/]*={0,3}#)(0|1)(?=#)");
-                    if (match.Success) {
-                        return match.Value == "1";
-                    }
-
-                }
-            }*/
-            return false; 
-        }
-
-        private Match extractPagerBuddyPayload(string rawMessage, Types.MessageEntity entities) {
-            /*
-            foreach (TLAbsMessageEntity entity in entities) {
-                if (entity is TLMessageEntityTextUrl) {
-                    String urlString = (entity as TLMessageEntityTextUrl).Url;
-                    Match match = Regex.Match(urlString, "(?<=/pagerbuddy\\?#)[-A-Za-z0-9+/]*={0,3}(?=#)"); //Regex: Match "/pagerbuddy?# <valid base 64 characters (A-Z, a-z, 0-9, +, /; followed by 0-3 "=")> #"
-                    if (match.Success) {
-                        return match;
-                    }
-
-                }
-            }*/
-            //TODO: RBF
-            return Match.Empty;
-        }
-
-        public string getAlertMessage(string rawMessage, Types.MessageEntity entities) {
-            if(triggerType != TRIGGER_TYPE.SERVER) {
-                //Server trigger not used - simply return rawMessage
-                return rawMessage;
-            } else {
-                Match match = extractPagerBuddyPayload(rawMessage, entities);
-                if (!match.Success) {
-                    Logger.Warn("Could not match server RegEx in apparent PagerBuddy-Server message. Returning rawMessage.");
-                    return rawMessage;
-                }
-                try {
-                    string decodedMessage = Encoding.UTF8.GetString(Convert.FromBase64String(match.Value)); //decode base64, message info in the format title*date time*optional message*is test alert
-
-                    return decodedMessage.Replace("*", "\r\n"); //put line breaks between the info sections
-                }catch(Exception e) {
-                    Logger.Error(e, "An exception occured trying to parse the PagerBuddy-Server string. Returning rawMessage instead.");
-                    return rawMessage;
-                }
+        private static bool isPagerBuddyTestAlert(string message) {
+            //Last digit of payload contains 1 or 0 signifying if this is a test alert
+            Match match = Regex.Match(message, "(?<=PagerBuddy\\s#)[-A-Za-z0-9+/]*={0,3}(?=#)"); //Regex: Match "/pagerbuddy?# <valid base 64 characters (A-Z, a-z, 0-9, +, /; followed by 0-3 "=")> #"
+            if (!match.Success) {
+                return false;
             }
+
+            string[] segments;
+            try {
+                string decodedMessage = Encoding.UTF8.GetString(Convert.FromBase64String(match.Value)); //decode base64, message info in the format zvei*is test alert
+                segments = decodedMessage.Split("*");
+            } catch (Exception e) {
+                Logger.Error(e, "An exception occured trying to parse the PagerBuddy-Server string.");
+                return false;
+            }
+
+            if (segments.Length < 2) {
+                return false;
+            }
+
+            return segments[1].Equals("1");
+
         }
-        
 
     }
 }

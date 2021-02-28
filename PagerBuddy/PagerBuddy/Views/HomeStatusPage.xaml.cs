@@ -24,9 +24,9 @@ namespace PagerBuddy.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomeStatusPage : ContentPage
     {
-        HomeStatusPageViewModel viewModel;
+        private readonly HomeStatusPageViewModel viewModel;
 
-        private CommunicationService client;
+        private readonly CommunicationService client;
 
         private Collection<AlertConfig> alertList;
 
@@ -211,21 +211,21 @@ namespace PagerBuddy.Views
         private async Task<DateTime> getSnoozeTime(object sender, string title)
         {
             string cancelText = AppResources.HomeStatusPage_Snooze_Cancel;
-            Dictionary<string, TimeSpan> timeDict = new Dictionary<string, TimeSpan>();
-            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Hours, 3), new TimeSpan(3, 0, 0));
-            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Hours, 8), new TimeSpan(8, 0, 0));
-            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Hours, 12), new TimeSpan(12, 0, 0));
-            timeDict.Add(AppResources.HomeStatusPage_Snooze_Day, new TimeSpan(1, 0, 0, 0));
-            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Days, 2), new TimeSpan(2, 0, 0, 0));
-            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Days, 3), new TimeSpan(3, 0, 0, 0));
-            timeDict.Add(AppResources.HomeStatusPage_Snooze_Week, new TimeSpan(7, 0, 0, 0));
-            timeDict.Add(string.Format(AppResources.HomeStatusPage_Snooze_Weeks, 2), new TimeSpan(14, 0, 0, 0));
-            timeDict.Add(AppResources.HomeStatusPage_Snooze_Month, new TimeSpan(30, 0, 0, 0));
+            Dictionary<string, TimeSpan> timeDict = new Dictionary<string, TimeSpan> {
+                { string.Format(AppResources.HomeStatusPage_Snooze_Hours, 3), new TimeSpan(3, 0, 0) },
+                { string.Format(AppResources.HomeStatusPage_Snooze_Hours, 8), new TimeSpan(8, 0, 0) },
+                { string.Format(AppResources.HomeStatusPage_Snooze_Hours, 12), new TimeSpan(12, 0, 0) },
+                { AppResources.HomeStatusPage_Snooze_Day, new TimeSpan(1, 0, 0, 0) },
+                { string.Format(AppResources.HomeStatusPage_Snooze_Days, 2), new TimeSpan(2, 0, 0, 0) },
+                { string.Format(AppResources.HomeStatusPage_Snooze_Days, 3), new TimeSpan(3, 0, 0, 0) },
+                { AppResources.HomeStatusPage_Snooze_Week, new TimeSpan(7, 0, 0, 0) },
+                { string.Format(AppResources.HomeStatusPage_Snooze_Weeks, 2), new TimeSpan(14, 0, 0, 0) },
+                { AppResources.HomeStatusPage_Snooze_Month, new TimeSpan(30, 0, 0, 0) }
+            };
 
             string result = await DisplayActionSheet(title, cancelText, null, timeDict.Keys.ToArray());
 
-            TimeSpan selection;
-            if (!timeDict.TryGetValue(result, out selection))
+            if (!timeDict.TryGetValue(result, out TimeSpan selection))
             {
                 return DateTime.MinValue;
             }

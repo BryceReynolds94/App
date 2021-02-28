@@ -27,7 +27,7 @@ using System.IO;
 namespace PagerBuddy.Droid {
     public class AndroidNotifications : INotifications {
 
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static readonly string ALERT_CHANNEL_ID = "de.bartunik.pagerbuddy.alert";
         public static readonly string STANDARD_CHANNEL_ID = "de.bartunik.pagerbuddy.standard";

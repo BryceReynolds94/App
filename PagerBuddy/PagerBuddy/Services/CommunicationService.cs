@@ -58,6 +58,9 @@ namespace PagerBuddy.Services {
 
         public async Task forceReloadConnection(bool isBackgroundCall = false) {
             client.Dispose();
+            client = null;
+            MySessionStore.Clear();
+
             await connectClient(isBackgroundCall);
         }
 
@@ -110,7 +113,7 @@ namespace PagerBuddy.Services {
             if (clientStatus > STATUS.OFFLINE) {
                 //TODO: Implement this
                 if (true) {
-                    if (clientStatus == STATUS.AUTHORISED && !client.Auth.IsAuthorized) {
+                    if ((clientStatus == STATUS.AUTHORISED && !client.Auth.IsAuthorized)|| e is TgNotAuthenticatedException) {
                         //Something went very wrong - set offline as a recovery solution
                         Logger.Warn("Status set to authorised but user is not authorised. Force setting offline status.");
                         clientStatus = STATUS.OFFLINE;
@@ -456,7 +459,7 @@ namespace PagerBuddy.Services {
 
         public static string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "CommunicationServiceSession");
 
-        public void Clear() {
+        public static void Clear() {
             if (File.Exists(file)) {
                 File.Delete(file);
             }
@@ -464,15 +467,15 @@ namespace PagerBuddy.Services {
 
         public async Task<Option<Session>> Load() {
             if (!File.Exists(file)) {
-                return (Session) null;
+                return default(Session);
+
             }
 
-            using(FileStream fileStream = new FileStream(file, FileMode.Open)) {
-                return await Task.Run<Session>(() => {
-                    BinaryReader binaryReader = new BinaryReader(fileStream);
-                    return Session.Deserialize(binaryReader);
-                });
-            }
+            using FileStream fileStream = new FileStream(file, FileMode.Open);
+            return await Task.Run<Session>(() => {
+                BinaryReader binaryReader = new BinaryReader(fileStream);
+                return Session.Deserialize(binaryReader);
+            });
         }
 
         public async Task Save(Some<Session> someSession) {
@@ -481,12 +484,11 @@ namespace PagerBuddy.Services {
             }
 
 
-            using (FileStream fileStream = new FileStream(file, FileMode.OpenOrCreate)) {
-                await Task.Run(() => {
-                    BinaryWriter binaryWriter = new BinaryWriter(fileStream);
-                    someSession.Single().Serialize(binaryWriter);
-                });
-            }
+            using FileStream fileStream = new FileStream(file, FileMode.OpenOrCreate);
+            await Task.Run(() => {
+                BinaryWriter binaryWriter = new BinaryWriter(fileStream);
+                someSession.Single().Serialize(binaryWriter);
+            });
         }
     }
 }
