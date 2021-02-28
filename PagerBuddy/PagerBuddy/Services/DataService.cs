@@ -30,12 +30,9 @@ namespace PagerBuddy.Services
             USER_PHOTO,
             DEVELOPER_MODE,
             DEVELOPER_LOG_LEVEL, //LogLevel set vor DeveloperView (AboutPage)
-            REFRESH_LOCK_TIME, //Time untill incoming FCM messages should be ignored
-            LAST_REFRESH_TIME, //Last time new messages were collected from Telegram
             HAS_PROMPTED_DND_PERMISSION, //Whether the user has been asked to grant DND Permission in Android
             HAS_PROMPTED_WELCOME, //Wether the first-use welcome screen has been shown
             FCM_TOKEN, //Token for FCM messages
-            LAST_MESSAGE_ID,
             AES_AUTH_KEY, //Encryption key used for FCM payloads
             AES_AUTH_KEY_ID
         }; 
@@ -73,6 +70,17 @@ namespace PagerBuddy.Services
                 Preferences.Remove(alertConfig.id);
             }
 
+            setConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, serialiseObject(configList));
+        }
+
+        public static void deleteAllAlertConfigs() {
+            Collection<string> configList = getConfigList();
+            foreach (string id in configList) {
+                if (Preferences.ContainsKey(id)) {
+                    Preferences.Remove(id);
+                }
+            }
+            configList.Clear();
             setConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, serialiseObject(configList));
         }
 

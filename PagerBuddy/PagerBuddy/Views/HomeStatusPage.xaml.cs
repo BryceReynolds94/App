@@ -54,7 +54,7 @@ namespace PagerBuddy.Views
 
             MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => deleteAllAlertConfigs());
 
-            if (VersionTracking.IsFirstLaunchEver && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, false)) {
+            if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, false)) {
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, true);
                 _ = showWelcomePrompt();
             }
@@ -159,6 +159,10 @@ namespace PagerBuddy.Views
 
             if(Device.RuntimePlatform == Device.Android && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, false))
             {
+                //TODO: URGENT Prompt user to exempt app
+                //TODO: Also prompt on first run after update
+                //https://developer.android.com/training/monitoring-device-state/doze-standby#exemption-cases
+
                 await showDNDPermissionPrompt();
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
             }

@@ -35,6 +35,7 @@ namespace PagerBuddy
                 Logger.Debug("Fresh installation. First run of App with build No. " + VersionTracking.CurrentBuild);
             }else if (VersionTracking.IsFirstLaunchForCurrentBuild) {
                 Logger.Debug("App updated from build no. " + VersionTracking.PreviousBuild + ". First run of build no. " + VersionTracking.CurrentBuild);
+                UpdaterService.checkUpdate(VersionTracking.PreviousBuild, VersionTracking.CurrentBuild);
             }
 
             if (isAlert && alert != null) {

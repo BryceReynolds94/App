@@ -73,7 +73,6 @@ namespace PagerBuddy.Views {
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_NAME, AppResources.MenuPage_UserName_Default);
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_PHONE, AppResources.MenuPage_UserPhone_Default);
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, false);
-                DataService.setConfigValue(DataService.DATA_KEYS.LAST_MESSAGE_ID, 0);
 
                 MessagingCenter.Send(this, MESSAGING_KEYS.LOGOUT_USER.ToString());
                 IsPresented = false;
