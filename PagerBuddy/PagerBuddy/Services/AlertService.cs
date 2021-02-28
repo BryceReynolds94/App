@@ -12,6 +12,18 @@ namespace PagerBuddy.Services {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static void checkMessage(string message, int senderID, DateTime timestamp, int fromID) {
+            if(DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_DEACTIVATE_ALL, false)) {
+                Logger.Info("All alerts are deactivated. Ignoring incoming message.");
+                return;
+            }
+            if(DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue) > DateTime.Now) {
+                Logger.Info("All alerts are snoozed. Ifnoring incoming message.");
+                return;
+            }
+
+
+            //TODO: Ignore if all disabled
+
             Logger.Info("Checking incoming message for alert.");
 
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
