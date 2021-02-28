@@ -47,37 +47,32 @@ namespace PagerBuddy.Views {
 
             Types.Messages.Dialogs rawChatList = await client.getChatList();
 
-            Arr<Types.Dialog> dialogList;
-            Collection<TelegramPeer> peerCollection;
+            Arr<Types.Dialog> dialogList = new Arr<Types.Dialog>();
+            Collection<TelegramPeer> peerCollection = new Collection<TelegramPeer>();
 
-
-            if (rawChatList.AsTag().IsSome) {
+            if (rawChatList == null) {
+                viewModel.IsBusy = false;
+                Logger.Warn("Retrieving chat list returned null. Returning to HomePage.");
+                await Navigation.PopAsync();
+                completedCallback();
+                return;
+            } else if (rawChatList.AsTag().IsSome) {
                 Types.Messages.Dialogs.Tag dialogsTag = rawChatList.AsTag().Single();
                 dialogList = dialogsTag.Dialogs;
                 peerCollection = TelegramPeer.getPeerCollection(dialogsTag.Chats, dialogsTag.Users);
             } else if (rawChatList.AsSliceTag().IsSome) {
-                Logger.Info("Return type was TLDialogsSlice. Presumably user has more than 100 active dialogs.");
+                Logger.Info("Return type was DialogsSlice. Presumably user has more than 100 active dialogs.");
                 Types.Messages.Dialogs.SliceTag dialogsTag = rawChatList.AsSliceTag().Single();
                 dialogList = dialogsTag.Dialogs;
                 peerCollection = TelegramPeer.getPeerCollection(dialogsTag.Chats, dialogsTag.Users);
-            } else {
-                Logger.Warn("Chat list is empty");
-                viewModel.IsBusy = false;
-                completedCallback();
-                return;
+            } else if (rawChatList.AsNotModifiedTag().IsSome) {
+                Logger.Warn("Return type was DialogsNotModified. This case is not implemented and will be treated as empty chat list.");
             }
 
             if (dialogList.Count < 1) {
                 viewModel.IsBusy = false;
-                Logger.Warn("Retrieving chat list returned no result.");
-
-                //check is client still available
-                if (client.clientStatus != CommunicationService.STATUS.AUTHORISED) {
-                    Logger.Info("Client is not authorised. Returning to HomePage. Client status: " + client.clientStatus.ToString());
-                    await Navigation.PopAsync();
-                } else {
-                    viewModel.AreChatsEmpty = true;
-                }
+                Logger.Warn("Chat list was empty.");
+                viewModel.AreChatsEmpty = true;
                 completedCallback();
                 return;
             }
@@ -113,7 +108,7 @@ namespace PagerBuddy.Views {
                     _ = detailPeer.loadImage(client); //Do not wait for image laoding to avoid blocking
                 }
 
-                viewModel.addGroupToList((Group) detailPeer);
+                viewModel.addGroupToList((Group)detailPeer);
             }
 
             completedCallback();

@@ -37,6 +37,7 @@ namespace PagerBuddy.Models
             this.type = type;
         }
 
+        [JsonIgnore]
         public EventHandler imageLoaded;
 
     }

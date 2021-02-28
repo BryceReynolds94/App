@@ -23,8 +23,6 @@ namespace PagerBuddy.Services {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private TelegramClient client;
-        private Types.User user;
-
         private STATUS status;
         public STATUS clientStatus {
             get {
@@ -83,8 +81,10 @@ namespace PagerBuddy.Services {
             if (client.Auth.IsAuthorized) {
                 Logger.Debug("User is authorised.");
                 if (!isBackgroundCall) { //only do this stuff if we are not retrieving alert messages
-                    this.user = await getUserUpdate();
-                    await saveUserData(user);
+                    Types.User user = await getUserUpdate();
+                    if (user != null) {
+                        await saveUserData(user);
+                    }
                     //Update current message index
                     await subscribePushNotifications(DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, ""), true);
                 }
@@ -111,14 +111,11 @@ namespace PagerBuddy.Services {
 
         private async Task checkConnectionOnError(Exception e = null) {
             if (clientStatus > STATUS.OFFLINE) {
-                //TODO: Implement this
-                if (true) {
-                    if ((clientStatus == STATUS.AUTHORISED && !client.Auth.IsAuthorized)|| e is TgNotAuthenticatedException) {
-                        //Something went very wrong - set offline as a recovery solution
-                        Logger.Warn("Status set to authorised but user is not authorised. Force setting offline status.");
-                        clientStatus = STATUS.OFFLINE;
-                        await reloadConnection();
-                    }
+                if (clientStatus == STATUS.AUTHORISED && (!client.Auth.IsAuthorized || e is TgNotAuthenticatedException)) {
+                    //Something went very wrong - set offline as a recovery solution
+                    Logger.Warn("Status set to authorised but user is not authorised. Force setting offline status.");
+                    clientStatus = STATUS.OFFLINE;
+                    await reloadConnection();
                 } else {
                     Logger.Warn("Client is not connected. Force setting offline status.");
                     clientStatus = STATUS.OFFLINE;
@@ -164,7 +161,7 @@ namespace PagerBuddy.Services {
                 Logger.Warn("Attempted to subscribe to FCM Messages without authorisation.");
                 return;
             }
-            if (token.Length < 1) {
+            if (token == null || token.Length < 1) {
                 Logger.Warn("Token invalid. Not (re-)registering push notifications.");
                 return;
             }
@@ -341,7 +338,6 @@ namespace PagerBuddy.Services {
         }
 
         private async Task loginCompleted(Types.User user) {
-            this.user = user;
             await saveUserData(user);
             clientStatus = STATUS.AUTHORISED;
 
@@ -354,7 +350,7 @@ namespace PagerBuddy.Services {
         }
 
         private async Task saveUserData(Types.User user) {
-            if (user.AsTag().IsNone) {
+            if (user == null || user.AsTag().IsNone) {
                 Logger.Error("Attempting to save empty user.");
                 return;
             }
@@ -390,7 +386,7 @@ namespace PagerBuddy.Services {
         public async Task<Types.Messages.Dialogs> getChatList(int attempt = 0) {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to load chat list without appropriate client status. Current status: " + clientStatus.ToString());
-                return default;
+                return null;
             }
 
             Types.Messages.Dialogs dialogs;
@@ -405,7 +401,7 @@ namespace PagerBuddy.Services {
                 } else {
                     Logger.Warn("Finally failed to get chat messages. Returning empty list.");
                 }
-                return default;
+                return null;
             }
 
             return dialogs;
@@ -435,7 +431,7 @@ namespace PagerBuddy.Services {
         private async Task<Types.User> getUserUpdate() {
             if (clientStatus < STATUS.ONLINE) {
                 Logger.Warn("Attempted to retrieve user update without appropriate client status. Current status: " + clientStatus.ToString());
-                return user;
+                return null;
             }
 
             Types.User outUser;
@@ -448,7 +444,7 @@ namespace PagerBuddy.Services {
             } catch (Exception e) {
                 Logger.Error(e, "Exception while fetching user data.");
                 await checkConnectionOnError(e);
-                return user;
+                return null;
             }
 
             return outUser;
