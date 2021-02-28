@@ -5,7 +5,6 @@ using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
 using Foundation;
 using PagerBuddy.Services;
-using Plugin.FirebasePushNotification;
 using UIKit;
 
 namespace PagerBuddy.iOS
@@ -32,18 +31,18 @@ namespace PagerBuddy.iOS
             var ignore = typeof(SvgCachedImage); //Added to enable SVG FFImageLoading
 
             LoadApplication(new App());
-            FirebasePushNotificationManager.Initialize(options, true); //Init FirebasePushNotification Plugin
+            //FirebasePushNotificationManager.Initialize(options, true); //Init FirebasePushNotification Plugin
 
             return base.FinishedLaunching(app, options);
         }
 
         //Callbacks for FirebasePushNotification Plugin
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken) {
-            FirebasePushNotificationManager.DidRegisterRemoteNotifications(deviceToken);
+            //FirebasePushNotificationManager.DidRegisterRemoteNotifications(deviceToken);
         }
 
         public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error) {
-            FirebasePushNotificationManager.RemoteNotificationRegistrationFailed(error);
+            //FirebasePushNotificationManager.RemoteNotificationRegistrationFailed(error);
 
         }
         // To receive notifications in foregroung on iOS 9 and below.
@@ -55,7 +54,7 @@ namespace PagerBuddy.iOS
             // If you disable method swizzling, you'll need to call this method. 
             // This lets FCM track message delivery and analytics, which is performed
             // automatically with method swizzling enabled.
-            FirebasePushNotificationManager.DidReceiveMessage(userInfo);
+            //FirebasePushNotificationManager.DidReceiveMessage(userInfo);
             // Do your magic to handle the notification data
 
             if (!Xamarin.Forms.Forms.IsInitialized) //TODO: iOS Testing
