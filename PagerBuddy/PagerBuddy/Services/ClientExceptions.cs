@@ -40,9 +40,7 @@ namespace PagerBuddy.Services
 
         public static TException getTException(string exceptionString)
         {
-            TException parsedException;
-            if(!Enum.TryParse(exceptionString, out parsedException))
-            {
+            if (!Enum.TryParse(exceptionString, out TException parsedException)) {
                 parsedException = TException.UNKNOWN;
             }
             return parsedException;

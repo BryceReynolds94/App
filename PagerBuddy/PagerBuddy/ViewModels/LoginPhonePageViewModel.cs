@@ -9,10 +9,10 @@ using static PagerBuddy.Services.ClientExceptions;
 
 namespace PagerBuddy.ViewModels {
     public class LoginPhonePageViewModel : BaseViewModel {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private string regionCode;
-        private PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
+        private readonly string regionCode;
+        private readonly PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
 
         private TStatus errorStatus = TStatus.OK;
         public Command Next { get; set; }
@@ -27,7 +27,7 @@ namespace PagerBuddy.ViewModels {
             Hyperlink = new Command(() => RequestTelegramLink.Invoke(this, null));
 
             string cultureName = CultureInfo.CurrentCulture.Name;
-            regionCode = cultureName.Substring(cultureName.Length - 2);
+            regionCode = cultureName[^2..];
         }
 
         public EventHandler RequestTelegramLink;
@@ -80,17 +80,12 @@ namespace PagerBuddy.ViewModels {
 
         public string ErrorText {
             get {
-                switch (errorStatus) {
-                    case TStatus.NO_PHONE_NUMBER:
-                        return AppResources.LoginPhonePage_Error_NoPhoneNumber;
-                    case TStatus.INVALID_PHONE_NUMBER:
-                        return AppResources.LoginPhonePage_Error_InvalidPhoneNumber;
-                    case TStatus.OFFLINE:
-                        return AppResources.LoginPhonePage_Error_Offline;
-                    default:
-                        return AppResources.LoginPhonePage_Error_Default;
-                }
-
+                return errorStatus switch {
+                    TStatus.NO_PHONE_NUMBER => AppResources.LoginPhonePage_Error_NoPhoneNumber,
+                    TStatus.INVALID_PHONE_NUMBER => AppResources.LoginPhonePage_Error_InvalidPhoneNumber,
+                    TStatus.OFFLINE => AppResources.LoginPhonePage_Error_Offline,
+                    _ => AppResources.LoginPhonePage_Error_Default,
+                };
             }
         }
 

@@ -53,18 +53,12 @@ namespace PagerBuddy.ViewModels
         public string CodeText { get; set; }
         public string ErrorText {
             get {
-                switch (errorStatus)
-                {
-                    case TStatus.NO_CODE:
-                        return AppResources.LoginCodePage_Error_NoCode;
-                    case TStatus.INVALID_CODE:
-                        return AppResources.LoginCodePage_Error_InvalidCode;
-                    case TStatus.OFFLINE:
-                        return AppResources.LoginCodePage_Error_Offline;
-                    default:
-                        return AppResources.LoginCodePage_Error_Default;
-                }
-
+                return errorStatus switch {
+                    TStatus.NO_CODE => AppResources.LoginCodePage_Error_NoCode,
+                    TStatus.INVALID_CODE => AppResources.LoginCodePage_Error_InvalidCode,
+                    TStatus.OFFLINE => AppResources.LoginCodePage_Error_Offline,
+                    _ => AppResources.LoginCodePage_Error_Default,
+                };
             }
         }
 

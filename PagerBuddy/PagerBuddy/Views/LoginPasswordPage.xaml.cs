@@ -13,8 +13,8 @@ namespace PagerBuddy.ViewModels {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPasswordPage : ContentPage {
 
-        private LoginPasswordPageViewModel viewModel;
-        private CommunicationService client;
+        private readonly LoginPasswordPageViewModel viewModel;
+        private readonly CommunicationService client;
         public LoginPasswordPage(CommunicationService client) {
             InitializeComponent();
 

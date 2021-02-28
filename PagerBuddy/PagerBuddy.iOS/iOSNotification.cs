@@ -13,7 +13,7 @@ using UserNotifications;
 namespace PagerBuddy.iOS {
     public class iOSNotification : INotifications{
 
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public void addNotificationChannel(AlertConfig config) {
             //TODO: IOS Implementation
 

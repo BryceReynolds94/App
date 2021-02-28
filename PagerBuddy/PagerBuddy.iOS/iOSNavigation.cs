@@ -11,7 +11,7 @@ using UIKit;
 namespace PagerBuddy.iOS {
     class iOSNavigation : INavigation {
 
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public bool isTelegramInstalled() {
             //TODO: IOS Implementation
             //https://stackoverflow.com/questions/41545283/how-to-check-app-is-installed-or-not-in-phone

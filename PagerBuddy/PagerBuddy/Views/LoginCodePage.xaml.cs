@@ -15,9 +15,8 @@ namespace PagerBuddy.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginCodePage : ContentPage
     {
-        private CommunicationService client;
-
-        private LoginCodePageViewModel viewModel;
+        private readonly CommunicationService client;
+        private readonly LoginCodePageViewModel viewModel;
         public LoginCodePage(CommunicationService client)
         {
             InitializeComponent();

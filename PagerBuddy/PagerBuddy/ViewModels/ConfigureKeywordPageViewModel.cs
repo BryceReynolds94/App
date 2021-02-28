@@ -9,8 +9,7 @@ namespace PagerBuddy.ViewModels
 {
     public class ConfigureKeywordPageViewModel : BaseViewModel
     {
-        private AlertConfig alertConfig;
-
+        private readonly AlertConfig alertConfig;
         public Command NextClickedCommand { get; set; }
 
         public ConfigureKeywordPageViewModel(AlertConfig alertConfig)

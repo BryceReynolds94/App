@@ -61,7 +61,7 @@ namespace PagerBuddy.iOS
             if (!Xamarin.Forms.Forms.IsInitialized) //TODO: iOS Testing
                 {
                 Xamarin.Forms.Forms.Init(); //We need to make sure Xamarin.Forms is initialised when notifications are received in killed state
-                MessagingService.BackgroundFirebaseMessage(this, null);
+                MessagingService.FirebaseMessage(null, DateTime.Now);
             }
 
             completionHandler(UIBackgroundFetchResult.NewData);
