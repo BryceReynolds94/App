@@ -72,9 +72,16 @@ namespace PagerBuddy.Views {
         }
 
         private void testFCMMessage(object sender, EventArgs args) {
-            Logger.Info("Launching FCM Message Handling as if an external update was received in background.");
-            //TODO: Change this debug button
-            //new AlertService();
+            Logger.Info("Launching FCM Message Handling as if an external update was received.");
+
+            Collection<string> configs = DataService.getConfigList();
+            if (configs.Count > 0) {
+                Logger.Info("Sending alert test message");
+                AlertConfig config = DataService.getAlertConfig(configs.First());
+                AlertService.checkMessage(AppResources.AboutPage_DeveloperMode_TestNotification_Message, config.triggerGroup.id, DateTime.Now, 0);
+            } else {
+                Logger.Warn("Could not send alert test message as no alerts are configured.");
+            }
         }
 
         private void testNotification(object sender, EventArgs args) {

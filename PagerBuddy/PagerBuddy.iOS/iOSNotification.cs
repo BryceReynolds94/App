@@ -17,7 +17,7 @@ namespace PagerBuddy.iOS {
         public void addNotificationChannel(AlertConfig config) {
             //TODO: IOS Implementation
 
-            //TODO: RBF
+            //TODO: IOS RBF
             requestNotificationAuthorisation().Wait();
         }
 
@@ -50,7 +50,7 @@ namespace PagerBuddy.iOS {
 
             if(result.Item2 != null) {
                 Logger.Error(result.Item2.DebugDescription, "Error while requesting notification authorisation.");
-                //TODO: Handle this scenario
+                //TODO: IOS Handle this scenario
             }
 
             Logger.Debug("Result of authorisation request: " + result.Item1);

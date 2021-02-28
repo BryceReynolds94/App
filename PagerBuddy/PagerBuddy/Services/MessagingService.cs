@@ -254,7 +254,6 @@ namespace PagerBuddy.Services
                 case "CHAT_MESSAGES":
 
                 case "ENCRYPTED_MESSAGE":
-                    //TODO: RBF
                     AlertService.checkMessage(message, senderID, timestamp, fromID);
                     break;
 

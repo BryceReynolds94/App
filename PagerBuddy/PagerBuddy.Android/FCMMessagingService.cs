@@ -20,6 +20,8 @@ namespace PagerBuddy.Droid {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public override void OnMessageReceived(RemoteMessage p0) {
+            //Caution: If called in background while dozing the app will have max. 10s to react to message!
+
             if (!Xamarin.Forms.Forms.IsInitialized) //If Forms is initalised we do not have to handle notification here
             {
                 Logger.Debug("Notification received in background. Initialising Platform.");

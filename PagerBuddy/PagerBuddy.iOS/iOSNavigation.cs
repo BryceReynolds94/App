@@ -20,7 +20,7 @@ namespace PagerBuddy.iOS {
 
         public void navigateNotificationPolicyAccess() {
             //This is only used in android
-            //TODO: Check if equivalent call for iOS necessary (https://developer.apple.com/documentation/usernotifications/asking_permission_to_use_notifications)
+            //TODO: IOS Check if equivalent call for iOS necessary (https://developer.apple.com/documentation/usernotifications/asking_permission_to_use_notifications)
             Logger.Error("NavigateNotificationPolicyAccess called on iOS. This should never happen.");
             throw new NotImplementedException();
         }
@@ -37,7 +37,7 @@ namespace PagerBuddy.iOS {
 
         public void quitApplication() {
             //This cannot be done in iOS - only Home button is valid to close app
-            //TODO: Check other implementation of closing alert (probably no alert screen at all with iOS)
+            //TODO: IOS Check other implementation of closing alert (probably no alert screen at all with iOS)
         }
     }
 } 
