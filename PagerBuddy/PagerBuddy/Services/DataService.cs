@@ -31,7 +31,8 @@ namespace PagerBuddy.Services
             DEVELOPER_MODE,
             DEVELOPER_LOG_LEVEL, //LogLevel set vor DeveloperView (AboutPage)
             HAS_PROMPTED_DND_PERMISSION, //Whether the user has been asked to grant DND Permission in Android
-            HAS_PROMPTED_WELCOME, //Wether the first-use welcome screen has been shown
+            HAS_PROMPTED_WELCOME, //Whether the first-use welcome screen has been shown
+            HAS_PROMPTED_DOZE_EXEMPT, //Whether the user has been asked to grant ignore battery optimization permission in Android
             FCM_TOKEN, //Token for FCM messages
             AES_AUTH_KEY, //Encryption key used for FCM payloads
             AES_AUTH_KEY_ID

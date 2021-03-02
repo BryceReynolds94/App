@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace PagerBuddy.Services
 {
@@ -40,7 +41,11 @@ namespace PagerBuddy.Services
 
         public static TException getTException(string exceptionString)
         {
-            if (!Enum.TryParse(exceptionString, out TException parsedException)) {
+            //exception string from Telega contains "Unknown rpc error ({errorCode}, '{errorMessage}')."
+
+            Match match = Regex.Match(exceptionString, "(?<= ')[A-Z_]*(?=')");
+
+            if (!match.Success || !Enum.TryParse(match.Value, out TException parsedException)) {
                 parsedException = TException.UNKNOWN;
             }
             return parsedException;

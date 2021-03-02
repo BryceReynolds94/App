@@ -36,6 +36,12 @@ namespace PagerBuddy.Droid
             Platform.CurrentActivity.StartActivity(intent);
         }
 
+        public void navigateDozeExempt() {
+            Intent intent = new Intent(Settings.ActionRequestIgnoreBatteryOptimizations);
+            intent.SetData(Android.Net.Uri.Parse("package:" + Application.Context.PackageName));
+            Platform.CurrentActivity.StartActivity(intent);
+        }
+
         public void navigateTelegramChat(int chatID, TelegramPeer.TYPE type)
         {
             if (isTelegramInstalled()) {

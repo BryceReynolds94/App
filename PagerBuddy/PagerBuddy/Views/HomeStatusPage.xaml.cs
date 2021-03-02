@@ -157,12 +157,13 @@ namespace PagerBuddy.Views
             }
             viewModel.fillAlertList(alertList);
 
-            if(Device.RuntimePlatform == Device.Android && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, false))
-            {
-                //TODO: URGENT Prompt user to exempt app
-                //TODO: Also prompt on first run after update
-                //https://developer.android.com/training/monitoring-device-state/doze-standby#exemption-cases
+            if (Device.RuntimePlatform == Device.Android && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, false)) {
+                showDozeExemptPrompt();
+                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, true);
+            }
 
+            if (Device.RuntimePlatform == Device.Android && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, false))
+            {
                 await showDNDPermissionPrompt();
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
             }
@@ -181,6 +182,12 @@ namespace PagerBuddy.Views
 
             Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
             navigation.navigateNotificationPolicyAccess();
+        }
+
+        private void showDozeExemptPrompt() {
+            //https://developer.android.com/training/monitoring-device-state/doze-standby#exemption-cases
+            Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
+            navigation.navigateDozeExempt();
         }
 
         private async Task showWelcomePrompt() {

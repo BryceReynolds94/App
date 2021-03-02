@@ -9,6 +9,7 @@ namespace PagerBuddy.Interfaces
     {
         void navigateNotificationSettings();
         void navigateNotificationPolicyAccess();
+        void navigateDozeExempt();
         void navigateTelegramChat(int chatID, TelegramPeer.TYPE type);
         void quitApplication();
         bool isTelegramInstalled();

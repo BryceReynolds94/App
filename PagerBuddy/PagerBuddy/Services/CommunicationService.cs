@@ -117,7 +117,7 @@ namespace PagerBuddy.Services {
                     clientStatus = STATUS.OFFLINE;
                     await reloadConnection();
                 } else {
-                    Logger.Warn("Client is not connected. Force setting offline status.");
+                    Logger.Warn(e, "Client is possibly disconnected. Force setting offline status.");
                     clientStatus = STATUS.OFFLINE;
                     await reloadConnection();
                 }
