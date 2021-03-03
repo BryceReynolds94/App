@@ -100,11 +100,18 @@ namespace PagerBuddy.Droid {
         }
 
         public void showStandardNotification(string title, string text) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(Application.Context, STANDARD_CHANNEL_ID)
+            Intent intent = new Intent(Application.Context, typeof(MainActivity));
+            PendingIntent pendingIntent = PendingIntent.GetActivity(Application.Context, 0, intent, 0);
+
+            Notification.Builder builder = new Notification.Builder(Application.Context, STANDARD_CHANNEL_ID)
                 .SetContentTitle(title)
                 .SetContentText(text)
                 .SetSmallIcon(Resource.Drawable.notification_icon)
-                .SetPriority(NotificationCompat.PriorityDefault);
+                .SetCategory(Notification.CategoryStatus)
+                .SetColor(Resource.Color.colorPrimary) //set app color for small notification icon
+                .SetStyle(new Notification.BigTextStyle().BigText(text))//extend message on tap
+                .SetContentIntent(pendingIntent);
+
 
             NotificationManager manager = NotificationManager.FromContext(Application.Context);
             manager.Notify(new Random().Next(), builder.Build()); //Currently no need to access notification later - so set ID random and forget
