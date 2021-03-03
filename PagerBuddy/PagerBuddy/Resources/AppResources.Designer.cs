@@ -1067,5 +1067,23 @@ namespace PagerBuddy.Resources {
                 return ResourceManager.GetString("MenuPage_UserPhone_Default", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PagerBuddy was updated to the newest version. Some major changes have been made to how the app works and your settings could not be retained. Head to the app now and reconfigure your settings..
+        /// </summary>
+        public static string Notification_BreakingUpdate_Message {
+            get {
+                return ResourceManager.GetString("Notification_BreakingUpdate_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PagerBuddy updated.
+        /// </summary>
+        public static string Notification_BreakingUpdate_Title {
+            get {
+                return ResourceManager.GetString("Notification_BreakingUpdate_Title", resourceCulture);
+            }
+        }
     }
 }

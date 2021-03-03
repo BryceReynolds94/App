@@ -23,6 +23,22 @@ namespace PagerBuddy.Services {
             }
         }
 
+        public static bool checkNotification(string previousBuild, string currentBuild) {
+
+            bool parsePrevOK = int.TryParse(previousBuild, out int previousVersion);
+            bool parseCurrOK = int.TryParse(currentBuild, out int currentVersion);
+
+            if (!parsePrevOK || !parseCurrOK) {
+                Logger.Warn("Could not parse build strings to check for update notification.");
+                return false;
+            }
+
+            if (previousVersion < 27 && currentVersion >= 27) {
+                return true;
+            }
+            return false;
+        }
+
         private static void ToV27() {
             //Android v27 (1.1.0) was first release with Telega and possibly changed object serialisation
             //We have to clear Telegram session file (before first client init) and all persisted configs

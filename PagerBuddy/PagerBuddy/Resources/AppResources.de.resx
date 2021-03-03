@@ -336,4 +336,10 @@
   <data name="ConfigureKeywordPage_Trigger_Server_IgnoreTest" xml:space="preserve">
     <value>Probealarme ignorieren</value>
   </data>
+  <data name="Notification_BreakingUpdate_Title" xml:space="preserve">
+    <value>PagerBuddy aktualisiert</value>
+  </data>
+  <data name="Notification_BreakingUpdate_Message" xml:space="preserve">
+    <value>PagerBuddy wurde auf die neueste Version aktualisiert. Bedingt durch einige größere Änderungen konnten deine Einstellungen nicht übernommen werden. Richte jetzt die App neu ein.</value>
+  </data>
 </root>

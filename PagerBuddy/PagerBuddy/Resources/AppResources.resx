@@ -457,4 +457,10 @@
   <data name="ConfigureKeywordPage_Trigger_Server_IgnoreTest" xml:space="preserve">
     <value>Ignore test alerts</value>
   </data>
+  <data name="Notification_BreakingUpdate_Title" xml:space="preserve">
+    <value>PagerBuddy updated</value>
+  </data>
+  <data name="Notification_BreakingUpdate_Message" xml:space="preserve">
+    <value>PagerBuddy was updated to the newest version. Some major changes have been made to how the app works and your settings could not be retained. Head to the app now and reconfigure your settings.</value>
+  </data>
 </root>

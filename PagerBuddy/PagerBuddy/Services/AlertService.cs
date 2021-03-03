@@ -17,12 +17,9 @@ namespace PagerBuddy.Services {
                 return;
             }
             if(DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue) > DateTime.Now) {
-                Logger.Info("All alerts are snoozed. Ifnoring incoming message.");
+                Logger.Info("All alerts are snoozed. Ignoring incoming message.");
                 return;
             }
-
-
-            //TODO: Ignore if all disabled
 
             Logger.Info("Checking incoming message for alert.");
 
