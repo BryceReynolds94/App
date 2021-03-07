@@ -77,10 +77,15 @@ namespace PagerBuddy.Droid
         public void quitApplication()
         {
             Platform.CurrentActivity.FinishAndRemoveTask(); 
-            /*Intent intent = new Intent(Intent.ActionMain)
-                .AddCategory(Intent.CategoryHome)
-                .AddFlags(ActivityFlags.NewTask);
-            Application.Context.StartActivity(intent);*/
+        }
+
+        public void logPermissionSettings() {
+            NotificationManager manager = NotificationManager.FromContext(Application.Context);
+            Logger.Debug("Status of DND policy access: " + manager.IsNotificationPolicyAccessGranted);
+
+            PowerManager powerManager = PowerManager.FromContext(Application.Context);
+            Logger.Debug("Status of doze exemption: " + powerManager.IsIgnoringBatteryOptimizations(Application.Context.PackageName));
+
         }
 
     }

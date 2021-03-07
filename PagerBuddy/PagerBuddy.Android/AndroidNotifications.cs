@@ -149,7 +149,6 @@ namespace PagerBuddy.Droid {
         }
 
         public void SetupNotificationChannels() {
-            //TODO: Handle default notification channel for FCM
 
             NotificationChannelGroup channelGroup = new NotificationChannelGroup(ALERT_CHANNEL_ID, Resources.AppResources.Android_AndroidNotifications_AlertChannel_Title);
 
@@ -175,7 +174,7 @@ namespace PagerBuddy.Droid {
 
             //Clear possibly remaining old channels
             foreach (NotificationChannel channel in notificationManager.NotificationChannels) {
-                if (channel.Group.Equals(ALERT_CHANNEL_ID) && !configList.Contains(channel.Id)) {
+                if (channel.Group != null && channel.Group.Equals(ALERT_CHANNEL_ID) && !configList.Contains(channel.Id)) {
                     notificationManager.DeleteNotificationChannel(channel.Id);
                 }
             }

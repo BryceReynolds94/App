@@ -53,7 +53,12 @@ namespace PagerBuddy.Views {
         private async void shareLog(object sender, EventArgs args) {
             Logger.Info("Launched Log sharing");
 
-            //TODO: Dump permission settings to log before sharing
+            Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
+            navigation.logPermissionSettings();
+
+            Logger.Debug("App build version: " + VersionTracking.CurrentBuild);
+            Logger.Debug("Device: " + DeviceInfo.Manufacturer + ", " + DeviceInfo.Model);
+            Logger.Debug("OS: " + DeviceInfo.Platform + " " + DeviceInfo.VersionString);
 
             string logFile = getLogFileLocation();
             if (logFile != null) {

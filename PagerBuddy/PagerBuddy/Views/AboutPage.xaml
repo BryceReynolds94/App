@@ -29,7 +29,7 @@
                     </Grid>
 
                     <StackLayout Margin="20" IsVisible="{Binding NotDeveloperMode}" VerticalOptions="FillAndExpand">
-                        <Label Text="{x:Static resources:AppResources.AboutPage_Developer}" HorizontalOptions="Center" VerticalOptions="EndAndExpand" FontSize="Large"/>
+                        <Label Text="{x:Static resources:AppResources.AboutPage_Developer}" HorizontalOptions="Center" VerticalOptions="EndAndExpand" FontSize="Large" HorizontalTextAlignment="Center"/>
 
                         <Label Text="{x:Static resources:AppResources.AboutPage_PrivacyPolicy}" VerticalOptions="EndAndExpand"/>
                         <Label Text="{x:Static resources:AppResources.AboutPage_AppPP_Link}" TextDecorations="Underline" HorizontalOptions="Center" >

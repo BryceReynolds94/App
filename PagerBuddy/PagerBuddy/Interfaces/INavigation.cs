@@ -13,5 +13,7 @@ namespace PagerBuddy.Interfaces
         void navigateTelegramChat(int chatID, TelegramPeer.TYPE type);
         void quitApplication();
         bool isTelegramInstalled();
+
+        void logPermissionSettings();
     }
 }
