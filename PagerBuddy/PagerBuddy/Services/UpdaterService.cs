@@ -18,9 +18,13 @@ namespace PagerBuddy.Services {
                 return;
             }
 
-            if (previousVersion < 27 && currentVersion >= 27) {
+            int updateBuildStatus = DataService.getConfigValue(DataService.DATA_KEYS.BUILD_UPDATE_COMPLETE, 0);
+
+            if (previousVersion < 27 && currentVersion >= 27 && updateBuildStatus < 27) {
                 ToV27();
             }
+
+            DataService.setConfigValue(DataService.DATA_KEYS.BUILD_UPDATE_COMPLETE, currentVersion);
         }
 
         public static bool checkNotification(string previousBuild, string currentBuild) {

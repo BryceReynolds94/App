@@ -93,6 +93,7 @@ namespace PagerBuddy.Droid {
             {
                 try {
                     audioManager.SetStreamVolume(Android.Media.Stream.Notification, audioManager.GetStreamMaxVolume(Android.Media.Stream.Notification), 0);
+                    audioManager.SetStreamVolume(Android.Media.Stream.Ring, audioManager.GetStreamMaxVolume(Android.Media.Stream.Ring), 0); //also have to set ringer high for Samsung devices
                 } catch (Exception e) {
                     Logger.Warn(e, "Could not set volume. Probably due to insufficient permissions");
                 }
@@ -171,8 +172,14 @@ namespace PagerBuddy.Droid {
             foreach(string config in configList) {
                 addNotificationChannel(DataService.getAlertConfig(config));
             }
-        }
 
+            //Clear possibly remaining old channels
+            foreach (NotificationChannel channel in notificationManager.NotificationChannels) {
+                if (channel.Group.Equals(ALERT_CHANNEL_ID) && !configList.Contains(channel.Id)) {
+                    notificationManager.DeleteNotificationChannel(channel.Id);
+                }
+            }
+        }
 
 
     }
