@@ -122,35 +122,40 @@ namespace PagerBuddy.Services
         public static string getConfigValue(DATA_KEYS key, string defaultValue)
         {
             if (!Preferences.ContainsKey(key.ToString())) {
-                Logger.Debug("Could not find DATA_KEY " + key);
+                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
+                setConfigValue(key, defaultValue);
                 return defaultValue;
             }
             return Preferences.Get(key.ToString(), defaultValue);
         }
         public static bool getConfigValue(DATA_KEYS key, bool defaultValue) {
             if (!Preferences.ContainsKey(key.ToString())) {
-                Logger.Debug("Could not find DATA_KEY " + key);
+                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
+                setConfigValue(key, defaultValue);
                 return defaultValue;
             }
             return Preferences.Get(key.ToString(), defaultValue);
         }
         public static int getConfigValue(DATA_KEYS key, int defaultValue) {
             if (!Preferences.ContainsKey(key.ToString())) {
-                Logger.Debug("Could not find DATA_KEY " + key);
+                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
+                setConfigValue(key, defaultValue);
                 return defaultValue;
             }
             return Preferences.Get(key.ToString(), defaultValue);
         }
         public static DateTime getConfigValue(DATA_KEYS key, DateTime defaultValue) {
             if (!Preferences.ContainsKey(key.ToString())) {
-                Logger.Debug("Could not find DATA_KEY " + key);
+                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
+                setConfigValue(key, defaultValue);
                 return defaultValue;
             }
             return Preferences.Get(key.ToString(), defaultValue);
         }
         public static byte[] getConfigValue(DATA_KEYS key, byte[] defaultValue) {
             if (!Preferences.ContainsKey(key.ToString())) {
-                Logger.Debug("Could not find DATA_KEY " + key);
+                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
+                setConfigValue(key, defaultValue);
                 return defaultValue;
             }
             return deserialiseObject<byte[]>(Preferences.Get(key.ToString(), serialiseObject(defaultValue)));

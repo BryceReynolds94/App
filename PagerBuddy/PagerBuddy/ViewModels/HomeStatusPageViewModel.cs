@@ -157,7 +157,7 @@ namespace PagerBuddy.ViewModels {
             get {
                 switch (warningState) {
                     case WARNING_ACTION.SNOOZE_SET:
-                        DateTime snoozeTime = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.Now);
+                        DateTime snoozeTime = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue);
                         return string.Format(AppResources.HomeStatusPage_Warning_Snooze, snoozeTime);
                     case WARNING_ACTION.DEACTIVATED:
                         return AppResources.HomeStatusPage_Warning_Deactivated;
