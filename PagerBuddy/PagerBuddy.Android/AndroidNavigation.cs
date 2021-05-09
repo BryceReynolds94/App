@@ -42,6 +42,11 @@ namespace PagerBuddy.Droid
             Platform.CurrentActivity.StartActivity(intent);
         }
 
+        public void navigateHuaweiPowerException() {
+            //TODO: Implement this
+            //TODO: RBF
+        }
+
         public void navigateTelegramChat(int chatID, TelegramPeer.TYPE type)
         {
             if (isTelegramInstalled()) {

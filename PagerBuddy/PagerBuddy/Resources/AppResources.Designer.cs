@@ -637,6 +637,42 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string HomeStatusPage_HuaweiPrompt_Cancel {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_HuaweiPrompt_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Take me there.
+        /// </summary>
+        public static string HomeStatusPage_HuaweiPrompt_Confirm {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_HuaweiPrompt_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Devices runing EMUI (Huawei) place further restrictions on background app activity. To ensure you receive alerts deactivate all restrictions for PagerBuddy in your system settings..
+        /// </summary>
+        public static string HomeStatusPage_HuaweiPrompt_Message {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_HuaweiPrompt_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nearly done....
+        /// </summary>
+        public static string HomeStatusPage_HuaweiPrompt_Title {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_HuaweiPrompt_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deactivate for.
         /// </summary>
         public static string HomeStatusPage_IndividualSnooze_Prompt {

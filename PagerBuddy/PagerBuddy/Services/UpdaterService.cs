@@ -20,10 +20,6 @@ namespace PagerBuddy.Services {
 
             int updateBuildStatus = DataService.getConfigValue(DataService.DATA_KEYS.BUILD_UPDATE_COMPLETE, 0);
 
-            if (previousVersion < 27 && currentVersion >= 27 && updateBuildStatus < 27) {
-                ToV27();
-            }
-
             DataService.setConfigValue(DataService.DATA_KEYS.BUILD_UPDATE_COMPLETE, currentVersion);
         }
 
@@ -37,33 +33,10 @@ namespace PagerBuddy.Services {
                 return false;
             }
 
-            if (previousVersion < 27 && currentVersion >= 27) {
+            if (false) { //Would set Update check here
                 return true;
             }
             return false;
-        }
-
-        private static void ToV27() {
-            //Android v27 (1.1.0) was first release with Telega and possibly changed object serialisation
-            //We have to clear Telegram session file (before first client init) and all persisted configs
-            //User will have to perform a fresh login and setup, DND permission is still persisted
-
-            Logger.Info("Detected update across V27 threshold. Clearing client session and all associated data.");
-
-            //Delete session file
-            MySessionStore.Clear();
-
-            //Delete user display data
-            DataService.setConfigValue(DataService.DATA_KEYS.USER_NAME, AppResources.MenuPage_UserName_Default);
-            DataService.setConfigValue(DataService.DATA_KEYS.USER_PHONE, AppResources.MenuPage_UserPhone_Default);
-            DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, false);
-
-            //Delete alert configs
-            DataService.deleteAllAlertConfigs();
-
-            //Clear welcome flag to reprompt login
-            DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, false);
-
         }
 
     }

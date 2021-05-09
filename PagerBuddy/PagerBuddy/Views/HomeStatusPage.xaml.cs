@@ -167,6 +167,11 @@ namespace PagerBuddy.Views
                 await showDNDPermissionPrompt();
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
             }
+
+            if(Device.RuntimePlatform == Device.Android && DeviceInfo.Manufacturer.Contains("Huawei") && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, false)) {
+                await showHuaweiPrompt();
+                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, true);
+            }
         }
 
         private async Task showDNDPermissionPrompt()
@@ -190,6 +195,19 @@ namespace PagerBuddy.Views
             navigation.navigateDozeExempt();
         }
 
+        private async Task showHuaweiPrompt() {
+            bool confirmed = await DisplayAlert(AppResources.HomeStatusPage_HuaweiPrompt_Title,
+                AppResources.HomeStatusPage_HuaweiPrompt_Message,
+                AppResources.HomeStatusPage_HuaweiPrompt_Confirm,
+                AppResources.HomeStatusPage_HuaweiPrompt_Cancel);
+
+            if (!confirmed) {
+                return;
+            }
+            Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
+            navigation.navigateHuaweiPowerException();
+        }
+
         private async Task showWelcomePrompt() {
             bool confirmed = await DisplayAlert(AppResources.HomeStatusPage_WelcomePrompt_Title,
                 AppResources.HomeStatusPage_WelcomePrompt_Message,
@@ -202,6 +220,8 @@ namespace PagerBuddy.Views
             login(this, null);
         }
 
+
+         
         private Collection<AlertConfig> getAlertConfigs()
         {
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
