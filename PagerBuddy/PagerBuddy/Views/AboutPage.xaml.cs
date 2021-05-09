@@ -31,8 +31,12 @@ namespace PagerBuddy.Views {
             viewModel.requestRestartClient += restartClient;
             viewModel.requestShareLog += shareLog;
             viewModel.requestShowAlertPage += showAlertPage;
+
+            //TODO: Make test alert available to public
             viewModel.requestTestFCMMessage += testFCMMessage;
             viewModel.requestTestNotification += testNotification;
+            viewModel.requestClearData += clearData;
+            viewModel.requestCheckPermissions += checkPermissions;
         }
 
         public static string getLogFileLocation() {
@@ -65,6 +69,35 @@ namespace PagerBuddy.Views {
                 await Share.RequestAsync(new ShareFileRequest(new ShareFile(logFile)));
             } else {
                 Logger.Warn("Could not share log file as no file was found.");
+            }
+        }
+
+        private void clearData(object sender, EventArgs args) {
+            DataService.clearData(true);
+            MySessionStore.Clear();
+
+            Logger.Info("Cleared all set preferences and the client session file.");
+        }
+
+        private async void checkPermissions(object sender, EventArgs args) {
+            Logger.Info("User requested permissions check.");
+
+            if (Device.RuntimePlatform == Device.Android) {
+
+                Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
+                navigation.navigateDozeExempt();
+                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, true);
+
+
+                bool confirmed = await DisplayAlert(AppResources.HomeStatusPage_DNDPermissionPrompt_Title,
+                    AppResources.HomeStatusPage_DNDPermissionPrompt_Message,
+                    AppResources.HomeStatusPage_DNDPermissionPrompt_Confirm,
+                    AppResources.HomeStatusPage_DNDPermissionPrompt_Cancel);
+
+                if (confirmed) {
+                    navigation.navigateNotificationPolicyAccess();
+                    DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
+                }
             }
         }
 

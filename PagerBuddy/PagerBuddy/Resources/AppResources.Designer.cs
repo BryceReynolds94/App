@@ -97,6 +97,24 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check Permissions.
+        /// </summary>
+        public static string AboutPage_DeveloperMode_CheckPermissions {
+            get {
+                return ResourceManager.GetString("AboutPage_DeveloperMode_CheckPermissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Data.
+        /// </summary>
+        public static string AboutPage_DeveloperMode_ClearData {
+            get {
+                return ResourceManager.GetString("AboutPage_DeveloperMode_ClearData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide Developer Mode.
         /// </summary>
         public static string AboutPage_DeveloperMode_HideDeveloperModeBtn {

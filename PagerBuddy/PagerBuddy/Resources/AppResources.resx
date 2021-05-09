@@ -463,4 +463,10 @@
   <data name="Notification_BreakingUpdate_Message" xml:space="preserve">
     <value>PagerBuddy was updated to the newest version. Some major changes have been made to how the app works and your settings could not be retained. Head to the app now and reconfigure your settings.</value>
   </data>
+  <data name="AboutPage_DeveloperMode_ClearData" xml:space="preserve">
+    <value>Clear Data</value>
+  </data>
+  <data name="AboutPage_DeveloperMode_CheckPermissions" xml:space="preserve">
+    <value>Check Permissions</value>
+  </data>
 </root>

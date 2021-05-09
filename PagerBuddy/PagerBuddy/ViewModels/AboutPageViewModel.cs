@@ -23,6 +23,8 @@ namespace PagerBuddy.ViewModels {
         public Command TestFCMMessage { get; set; }
         public Command Hyperlink { get; set; }
         public Command ChangeLogLevel { get; set; }
+        public Command CheckPermissions { get; set; }
+        public Command ClearData { get; set; }
 
         private enum LogLevel { DEBUG, INFO, WARN, ERROR }
         private LogLevel logLevel;
@@ -50,6 +52,8 @@ namespace PagerBuddy.ViewModels {
             TestFCMMessage = new Command(() => requestTestFCMMessage(this, null));
             Hyperlink = new Command<string>(async (url) => await Launcher.OpenAsync(url));
             ChangeLogLevel = new Command(() => rotateLogLevel());
+            CheckPermissions = new Command(() => requestCheckPermissions(this, null));
+            ClearData = new Command(() => requestClearData(this, null));
 
             reloadLogLoop();
         }
@@ -59,6 +63,8 @@ namespace PagerBuddy.ViewModels {
         public EventHandler requestTestNotification;
         public EventHandler requestRestartClient;
         public EventHandler requestTestFCMMessage;
+        public EventHandler requestClearData;
+        public EventHandler requestCheckPermissions;
 
         private void reloadLogLoop() {
             if (IsDeveloperMode) {
@@ -121,7 +127,16 @@ namespace PagerBuddy.ViewModels {
                 if (logFile == null) {
                     return AppResources.AboutPage_DeveloperMode_Log_Default;
                 }
-                string[] logArray = applyLogLevel(File.ReadAllLines(logFile));
+
+                string[] inArray = File.ReadAllLines(logFile);
+                
+                //Shorten if Log is very long 
+                if(inArray.Length > 100) {
+                    inArray = inArray[(inArray.Length - 100)..];
+                }
+
+
+                string[] logArray = applyLogLevel(inArray);
                 Array.Reverse(logArray);
                 return string.Join(Environment.NewLine, logArray);
             }

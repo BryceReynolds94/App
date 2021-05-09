@@ -71,6 +71,12 @@ namespace PagerBuddy.Services {
                 client = await TelegramClient.Connect(KeyService.checkID(this), store: new MySessionStore());
             } catch (Exception e) {
                 Logger.Error(e, "Initialisation of TelegramClient failed");
+
+                if(e is TgException && e.Message.Contains("Invalid session file")) { //Handle corrupt session files. (Trautner Bug)
+                    Logger.Warn("Session file was corrupted. Clearing session file.");
+                    MySessionStore.Clear();
+                }
+
                 clientStatus = STATUS.OFFLINE;
                 scheduleRetry(isBackgroundCall, attempt);
                 return;
@@ -85,7 +91,6 @@ namespace PagerBuddy.Services {
                     if (user != null) {
                         await saveUserData(user);
                     }
-                    //Update current message index
                     await subscribePushNotifications(DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, ""), true);
                 }
                 if (clientStatus != STATUS.ONLINE) { //status may have changed out of scope due to previous call fallbacks

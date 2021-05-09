@@ -167,6 +167,7 @@ namespace PagerBuddy.Services
 
             switch (loc_key) {
                 case "CHAT_TITLE_EDITED":
+                    
                     //TODO: Implement title update. This should set title value of associated config.
                     return;
 

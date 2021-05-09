@@ -39,6 +39,14 @@ namespace PagerBuddy.Services
             BUILD_UPDATE_COMPLETE //Build ID to avoid performing double updates (mostly Samsung)
         }; 
 
+        public static void clearData(bool developerMode = true) //Caution! Use with care
+        {
+            Preferences.Clear();
+            setConfigValue(DATA_KEYS.DEVELOPER_MODE, developerMode);
+            setConfigValue(DATA_KEYS.HAS_PROMPTED_WELCOME, true);
+            setConfigValue(DATA_KEYS.BUILD_UPDATE_COMPLETE, VersionTracking.CurrentBuild);
+        }
+
 
         public static AlertConfig getAlertConfig(string id)
         {

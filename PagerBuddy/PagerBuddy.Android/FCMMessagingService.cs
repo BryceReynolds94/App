@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Gms.Tasks;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -33,6 +34,11 @@ namespace PagerBuddy.Droid {
 
             Logger.Debug(string.Format("Got FCM message with prio {0} (sent as {1}) at {2} (sent at {3}).", p0.Priority, p0.OriginalPriority, DateTime.Now.ToString("HH:mm:ss"), sentTime.ToString("HH:mm:ss")));
             MessagingService.FirebaseMessage(p0.Data, sentTime);
+
+            if (!p0.Data.ContainsKey("p")) {
+                Logger.Warn("FCM message did not contain payload. Requesting Token refresh.");
+                FirebaseMessaging.Instance.GetToken().AddOnCompleteListener(new OnCompleteListener(OnNewToken));
+            }
         }
 
         public override void OnNewToken(string p0) {
@@ -44,5 +50,27 @@ namespace PagerBuddy.Droid {
             }
             MessagingService.FirebaseTokenRefresh(p0).Wait();
         }
+
+        public class OnCompleteListener : Java.Lang.Object, IOnCompleteListener {
+
+            private Action<string> callback;
+
+            public OnCompleteListener(Action<string> callback) {
+                this.callback = callback;
+            }
+
+            public void OnComplete(Task task) {
+                if (!task.IsSuccessful) {
+                    Logger.Warn(task.Exception, "Refreshing FCM token failed.");
+                    return;
+                }
+
+                Logger.Info("Got new FCM token.");
+                string token = (string)task.Result;
+                callback(token);
+            }
+        }
+
     }
+
 }
