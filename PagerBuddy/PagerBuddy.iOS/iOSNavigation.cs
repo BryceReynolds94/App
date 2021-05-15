@@ -39,5 +39,17 @@ namespace PagerBuddy.iOS {
             //This cannot be done in iOS - only Home button is valid to close app
             //TODO: IOS Check other implementation of closing alert (probably no alert screen at all with iOS)
         }
+
+        void INavigation.logPermissionSettings() {
+            throw new NotImplementedException();
+        }
+
+        void INavigation.navigateDozeExempt() {
+            throw new NotImplementedException();
+        }
+
+        void INavigation.navigateHuaweiPowerException() {
+            throw new NotImplementedException();
+        }
     }
 } 
