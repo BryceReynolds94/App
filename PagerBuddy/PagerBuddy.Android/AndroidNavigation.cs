@@ -43,8 +43,25 @@ namespace PagerBuddy.Droid
         }
 
         public void navigateHuaweiPowerException() {
-            //TODO: Implement this
-            //TODO: RBF
+            //TODO: Testing
+            //TODO: Possibly extend with package description to simplify handling.
+
+            Intent Huawei1 = new Intent().SetComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
+            Intent Huawei2 = new Intent().SetComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"));
+
+            try {
+                if (Application.Context.PackageManager.ResolveActivity(Huawei1, PackageInfoFlags.MatchDefaultOnly) != null) {
+                    Logger.Debug("Starting HuaweiPowerException-Activity 1.");
+                    Platform.CurrentActivity.StartActivity(Huawei1);
+                }
+                if (Application.Context.PackageManager.ResolveActivity(Huawei2, PackageInfoFlags.MatchDefaultOnly) != null) {
+                    Logger.Debug("Starting HuaweiPowerException-Activity 2.");
+                    Platform.CurrentActivity.StartActivity(Huawei2);
+                }
+            }catch(Exception e) {
+                Logger.Error(e, "Exception trying to open Huawei power exception activities.");
+            }
+
         }
 
         public void navigateTelegramChat(int chatID, TelegramPeer.TYPE type)

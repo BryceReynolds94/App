@@ -98,6 +98,18 @@ namespace PagerBuddy.Views {
                     navigation.navigateNotificationPolicyAccess();
                     DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
                 }
+
+                if (DeviceInfo.Manufacturer.Contains("Huawei")) {
+                    bool confirmedHuawei = await DisplayAlert(AppResources.HomeStatusPage_HuaweiPrompt_Title,
+                            AppResources.HomeStatusPage_HuaweiPrompt_Message,
+                            AppResources.HomeStatusPage_HuaweiPrompt_Confirm,
+                            AppResources.HomeStatusPage_HuaweiPrompt_Cancel);
+
+                    if (confirmedHuawei) {
+                        navigation.navigateHuaweiPowerException();
+                        DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, true);
+                    }  
+                }
             }
         }
 
