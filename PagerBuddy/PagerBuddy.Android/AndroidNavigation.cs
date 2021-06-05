@@ -43,22 +43,27 @@ namespace PagerBuddy.Droid
         }
 
         public void navigateHuaweiPowerException() {
-            //TODO: Testing
-            //TODO: Possibly extend with package description to simplify handling.
-
-            Intent Huawei1 = new Intent().SetComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
-            Intent Huawei2 = new Intent().SetComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"));
+            Intent Huawei1 = new Intent().SetComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity"));
+            Intent Huawei2 = new Intent().SetComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
+            Intent Huawei3 = new Intent().SetComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"));
 
             try {
                 if (Application.Context.PackageManager.ResolveActivity(Huawei1, PackageInfoFlags.MatchDefaultOnly) != null) {
                     Logger.Debug("Starting HuaweiPowerException-Activity 1.");
                     Platform.CurrentActivity.StartActivity(Huawei1);
+                    return;
                 }
                 if (Application.Context.PackageManager.ResolveActivity(Huawei2, PackageInfoFlags.MatchDefaultOnly) != null) {
                     Logger.Debug("Starting HuaweiPowerException-Activity 2.");
                     Platform.CurrentActivity.StartActivity(Huawei2);
+                    return;
                 }
-            }catch(Exception e) {
+                if (Application.Context.PackageManager.ResolveActivity(Huawei3, PackageInfoFlags.MatchDefaultOnly) != null) {
+                    Logger.Debug("Starting HuaweiPowerException-Activity 3.");
+                    Platform.CurrentActivity.StartActivity(Huawei3);
+                    return;
+                }
+            } catch(Exception e) {
                 Logger.Error(e, "Exception trying to open Huawei power exception activities.");
             }
 

@@ -17,6 +17,8 @@ using PagerBuddy.Services;
 using PagerBuddy.Resources;
 using Android.Gms.Common;
 
+//TODO: Possibly uninstall Xamarin.AndroidX.RecyclerView when Firebase.Messaging (v 121.1.0) reference is fixed in future update
+
 namespace PagerBuddy.Droid
 {
     [Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]

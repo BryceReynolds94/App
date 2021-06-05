@@ -473,7 +473,7 @@
     <value>Nearly done...</value>
   </data>
   <data name="HomeStatusPage_HuaweiPrompt_Message" xml:space="preserve">
-    <value>Devices runing EMUI (Huawei) place further restrictions on background app activity. To ensure you receive alerts deactivate all restrictions for PagerBuddy in your system settings.</value>
+    <value>Devices runing EMUI (Huawei) place further restrictions on background app activity. Deactivate all restrictions for PagerBuddy in your system settings to ensure you receive alerts.</value>
   </data>
   <data name="HomeStatusPage_HuaweiPrompt_Confirm" xml:space="preserve">
     <value>Take me there</value>

@@ -12884,28 +12884,34 @@ namespace PagerBuddy.Droid
 			public const int view_offset_helper = 2131231035;
 			
 			// aapt resource value: 0x7F08013C
-			public const int view_tree_saved_state_registry_owner = 2131231036;
+			public const int view_tree_lifecycle_owner = 2131231036;
 			
 			// aapt resource value: 0x7F08013D
-			public const int visible = 2131231037;
+			public const int view_tree_saved_state_registry_owner = 2131231037;
 			
 			// aapt resource value: 0x7F08013E
-			public const int visible_removing_fragment_view_tag = 2131231038;
+			public const int view_tree_view_model_store_owner = 2131231038;
 			
 			// aapt resource value: 0x7F08013F
-			public const int wide = 2131231039;
-			
-			// aapt resource value: 0x7F080141
-			public const int withinBounds = 2131231041;
+			public const int visible = 2131231039;
 			
 			// aapt resource value: 0x7F080140
-			public const int withText = 2131231040;
+			public const int visible_removing_fragment_view_tag = 2131231040;
 			
-			// aapt resource value: 0x7F080142
-			public const int wrap_content = 2131231042;
+			// aapt resource value: 0x7F080141
+			public const int wide = 2131231041;
 			
 			// aapt resource value: 0x7F080143
-			public const int zero_corner_chip = 2131231043;
+			public const int withinBounds = 2131231043;
+			
+			// aapt resource value: 0x7F080142
+			public const int withText = 2131231042;
+			
+			// aapt resource value: 0x7F080144
+			public const int wrap_content = 2131231044;
+			
+			// aapt resource value: 0x7F080145
+			public const int zero_corner_chip = 2131231045;
 			
 			static Id()
 			{

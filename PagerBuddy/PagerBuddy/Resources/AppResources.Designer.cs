@@ -655,7 +655,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Devices runing EMUI (Huawei) place further restrictions on background app activity. To ensure you receive alerts deactivate all restrictions for PagerBuddy in your system settings..
+        ///   Looks up a localized string similar to Devices runing EMUI (Huawei) place further restrictions on background app activity. Deactivate all restrictions for PagerBuddy in your system settings to ensure you receive alerts..
         /// </summary>
         public static string HomeStatusPage_HuaweiPrompt_Message {
             get {

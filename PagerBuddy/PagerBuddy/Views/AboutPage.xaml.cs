@@ -89,6 +89,8 @@ namespace PagerBuddy.Views {
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, true);
 
 
+
+
                 bool confirmed = await DisplayAlert(AppResources.HomeStatusPage_DNDPermissionPrompt_Title,
                     AppResources.HomeStatusPage_DNDPermissionPrompt_Message,
                     AppResources.HomeStatusPage_DNDPermissionPrompt_Confirm,
@@ -99,7 +101,7 @@ namespace PagerBuddy.Views {
                     DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
                 }
 
-                if (DeviceInfo.Manufacturer.Contains("Huawei")) {
+                if (DeviceInfo.Manufacturer.Contains("HUAWEI", StringComparison.OrdinalIgnoreCase)) {
                     bool confirmedHuawei = await DisplayAlert(AppResources.HomeStatusPage_HuaweiPrompt_Title,
                             AppResources.HomeStatusPage_HuaweiPrompt_Message,
                             AppResources.HomeStatusPage_HuaweiPrompt_Confirm,

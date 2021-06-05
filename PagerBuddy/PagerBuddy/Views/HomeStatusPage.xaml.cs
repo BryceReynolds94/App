@@ -168,7 +168,7 @@ namespace PagerBuddy.Views
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
             }
 
-            if(Device.RuntimePlatform == Device.Android && DeviceInfo.Manufacturer.Contains("Huawei") && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, false)) {
+            if(Device.RuntimePlatform == Device.Android && DeviceInfo.Manufacturer.Contains("HUAWEI", StringComparison.OrdinalIgnoreCase) && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, false)) {
                 await showHuaweiPrompt();
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, true);
             }
