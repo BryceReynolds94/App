@@ -37,12 +37,12 @@ namespace PagerBuddy.Models {
 
 
             foreach(Types.Chat chat in chatList) {
-                if (chat.AsChannelTag().IsSome) {
-                    Types.Chat.ChannelTag c = (Types.Chat.ChannelTag) chat.AsChannelTag();
+                if (chat.Channel != null) {
+                    Types.Chat.ChannelTag c = chat.Channel;
                     Types.InputPeer peer = new Types.InputPeer.ChannelTag(c.Id, c.AccessHash.IfNone(0));
                     peerList.Add(new TelegramPeer(TYPE.CHANNEL, c.Id, c.Title, getPhotoLocation(peer, c.Photo), c.AccessHash.IfNone(0)));
-                }else if (chat.AsTag().IsSome) { 
-                    Types.Chat.Tag c = (Types.Chat.Tag) chat.AsTag();
+                }else if (chat.Default != null) { 
+                    Types.Chat.DefaultTag c = chat.Default;
                     if (c.MigratedTo != null) {
                         //ignore chats that have migrated to channels as they will have double occurances
                         continue;
@@ -56,8 +56,8 @@ namespace PagerBuddy.Models {
             }
 
             foreach(Types.User user in userList) {
-                if(user.AsTag().IsSome) {
-                    Types.User.Tag u = (Types.User.Tag) user.AsTag();
+                if(user.Default != null) {
+                    Types.User.DefaultTag u = user.Default;
 
                     string userName = u.FirstName.IfNone("") + " " + u.LastName.IfNone("");
                     if (userName.Length < 3) {
@@ -74,8 +74,8 @@ namespace PagerBuddy.Models {
         }
 
         private static Types.InputFileLocation getPhotoLocation(Types.InputPeer peer, Types.ChatPhoto photo) {
-            if (photo.AsTag().IsSome) {
-                Types.FileLocation loc = photo.AsTag().IfNoneUnsafe(() => null).PhotoSmall;
+            if (photo.Default != null) {
+                Types.FileLocation loc = photo.Default.PhotoSmall;
                 return new Types.InputFileLocation.PeerPhotoTag(false, peer, loc.VolumeId, loc.LocalId);
             }
             return null;
@@ -83,8 +83,8 @@ namespace PagerBuddy.Models {
         }
 
         private static Types.InputFileLocation getPhotoLocation(Types.InputPeer peer, Types.UserProfilePhoto photo) {
-            if (photo != null && photo.AsTag().IsSome) {
-                Types.FileLocation loc = photo.AsTag().IfNoneUnsafe(() => null).PhotoSmall;
+            if (photo != null && photo.Default != null) {
+                Types.FileLocation loc = photo.Default.PhotoSmall;
                 return new Types.InputFileLocation.PeerPhotoTag(false, peer, loc.VolumeId, loc.LocalId);
             }
             return null;

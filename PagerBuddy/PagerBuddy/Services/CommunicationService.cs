@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using static PagerBuddy.Services.ClientExceptions;
 using Telega;
+using Telega.Client;
 using Functions = Telega.Rpc.Dto.Functions;
 using Types = Telega.Rpc.Dto.Types;
 using LanguageExt;
@@ -206,18 +207,9 @@ namespace PagerBuddy.Services {
                 return TStatus.WRONG_CLIENT_STATUS;
             }
 
-            Types.Account.Password passwordConfig;
-            try {
-                passwordConfig = await client.Auth.GetPasswordInfo();
-            } catch (Exception e) {
-                Logger.Error(e, "Exception occured while trying to receive password configuration");
-                await checkConnectionOnError(e);
-                return TStatus.UNKNOWN;
-            }
-
             Types.User user;
             try {
-                user = await client.Auth.CheckPassword(passwordConfig, password);
+                user = await client.Auth.CheckPassword(password);
             } catch (System.InvalidOperationException e) {
                 Logger.Warn(e, "Exception trying to confirm password. Presumably the client went offline.");
                 await checkConnectionOnError(e);
@@ -355,16 +347,17 @@ namespace PagerBuddy.Services {
         }
 
         private async Task saveUserData(Types.User user) {
-            if (user == null || user.AsTag().IsNone) {
+            if (user == null || user.Default == null) {
                 Logger.Error("Attempting to save empty user.");
                 return;
             }
 
-            Types.User.Tag userTag = user.AsTag().Single();
+            Types.User.DefaultTag userTag = user.Default;
 
             bool hasPhoto = userTag.Photo.IsSome;
             if (hasPhoto) {
-                Types.FileLocation profilePhoto = userTag.Photo.Single().AsTag().Single().PhotoBig;
+
+                Types.FileLocation profilePhoto = userTag.Photo.Single().Default.PhotoBig;
                 Types.InputFileLocation fileLocation = new Types.InputFileLocation.PeerPhotoTag(true, new Types.InputPeer.SelfTag(), profilePhoto.VolumeId, profilePhoto.LocalId);
 
                 MemoryStream file = await getProfilePic(fileLocation);

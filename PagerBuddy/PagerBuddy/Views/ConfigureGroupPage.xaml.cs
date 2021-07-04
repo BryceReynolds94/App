@@ -56,16 +56,16 @@ namespace PagerBuddy.Views {
                 await Navigation.PopAsync();
                 completedCallback();
                 return;
-            } else if (rawChatList.AsTag().IsSome) {
-                Types.Messages.Dialogs.Tag dialogsTag = rawChatList.AsTag().Single();
+            } else if (rawChatList.Default != null) {
+                Types.Messages.Dialogs.DefaultTag dialogsTag = rawChatList.Default;
                 dialogList = dialogsTag.Dialogs;
                 peerCollection = TelegramPeer.getPeerCollection(dialogsTag.Chats, dialogsTag.Users);
-            } else if (rawChatList.AsSliceTag().IsSome) {
+            } else if (rawChatList.Slice != null) {
                 Logger.Info("Return type was DialogsSlice. Presumably user has more than 100 active dialogs.");
-                Types.Messages.Dialogs.SliceTag dialogsTag = rawChatList.AsSliceTag().Single();
+                Types.Messages.Dialogs.SliceTag dialogsTag = rawChatList.Slice;
                 dialogList = dialogsTag.Dialogs;
                 peerCollection = TelegramPeer.getPeerCollection(dialogsTag.Chats, dialogsTag.Users);
-            } else if (rawChatList.AsNotModifiedTag().IsSome) {
+            } else if (rawChatList.NotModified != null) {
                 Logger.Warn("Return type was DialogsNotModified. This case is not implemented and will be treated as empty chat list.");
             }
 
@@ -79,20 +79,20 @@ namespace PagerBuddy.Views {
             viewModel.AreChatsEmpty = false;
 
             foreach (Types.Dialog dialog in dialogList) {
-                if (dialog.AsTag().IsNone) {
+                if (dialog.Default == null) {
                     Logger.Info("Dialog list contained empty member.");
                     continue;
                 }
 
-                Types.Peer peer = dialog.AsTag().Single().Peer;
+                Types.Peer peer = dialog.Default.Peer;
                 int id;
 
-                if (peer.AsChannelTag().IsSome) {
-                    id = peer.AsChannelTag().Single().ChannelId;
-                } else if (peer.AsChatTag().IsSome) {
-                    id = peer.AsChatTag().Single().ChatId;
-                } else if (peer.AsUserTag().IsSome) {
-                    id = peer.AsUserTag().Single().UserId;
+                if (peer.Channel != null) {
+                    id = peer.Channel.ChannelId;
+                } else if (peer.Chat != null) {
+                    id = peer.Chat.ChatId;
+                } else if (peer.User != null) {
+                    id = peer.User.UserId;
                 } else {
                     Logger.Warn("Peer type was not found and will be ignored.");
                     continue;
