@@ -9,7 +9,13 @@
              Title="Menu">
 
     <StackLayout Spacing="0">
-        <StackLayout Orientation="Horizontal" Padding="10,20" BackgroundColor="{StaticResource PrimaryColor}">
+        <StackLayout Orientation="Horizontal" BackgroundColor="{StaticResource PrimaryColor}">
+            <StackLayout.Padding>
+                <OnPlatform x:TypeArguments="Thickness">
+                    <On Platform="iOS" Value="10,50,10,20" />
+                    <On Platform="Android" Value="10,20" />
+                </OnPlatform>
+            </StackLayout.Padding>
             <Frame Padding="0" WidthRequest="60" HeightRequest="60" CornerRadius="30" IsClippedToBounds="True" VerticalOptions="Center" >
                 <Image Source="{Binding UserPic}" />
             </Frame>
@@ -49,7 +55,13 @@
                 <Label Text="{x:Static resources:AppResources.MenuPage_Action_About}" FontSize="Medium" VerticalOptions="Center"/>
             </StackLayout>
         </Grid>
-        <Grid VerticalOptions="End" Padding="0,10">
+        <Grid VerticalOptions="End">
+            <Grid.Padding>
+                <OnPlatform x:TypeArguments="Thickness">
+                    <On Platform="iOS" Value="0,10,0,30" />
+                    <On Platform="Android" Value="0,10" />
+                </OnPlatform>
+            </Grid.Padding>
             <ImageButton BackgroundColor="{StaticResource BackgroundColor}" CornerRadius="0" Command="{Binding Logout}" />
             <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5">
                 <Image Margin="5" Source="{Binding LogoutPic}" HeightRequest="30" WidthRequest="30"/>

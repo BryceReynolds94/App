@@ -129,10 +129,10 @@ namespace PagerBuddy.Services
             string message = "";
             if (jsonPayload.ContainsKey("loc_args")) {
                 IEnumerable<JToken> token = jsonPayload.GetValue("loc_args").Children();
-                Logger.Debug("Payload contains " + token.Length() + " loc_args.");
+                Logger.Debug("Payload contains " + token.Count() + " loc_args.");
 
-                if(token.Length() > 0) {
-                    message = (string) token.ElementAt(token.Length()-1);
+                if(token.Count() > 0) {
+                    message = (string) token.ElementAt(token.Count()-1);
                 }
             }
 

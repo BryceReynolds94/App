@@ -1,5 +1,4 @@
-﻿using LanguageExt;
-using PagerBuddy.Models;
+﻿using PagerBuddy.Models;
 using PagerBuddy.Services;
 using PagerBuddy.ViewModels;
 using System;
@@ -47,7 +46,7 @@ namespace PagerBuddy.Views {
 
             Types.Messages.Dialogs rawChatList = await client.getChatList();
 
-            Arr<Types.Dialog> dialogList = new Arr<Types.Dialog>();
+            IReadOnlyList<Types.Dialog> dialogList = new List<Types.Dialog>();
             Collection<TelegramPeer> peerCollection = new Collection<TelegramPeer>();
 
             if (rawChatList == null) {

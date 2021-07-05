@@ -15,7 +15,6 @@ using Telega;
 using Telega.Client;
 using Functions = Telega.Rpc.Dto.Functions;
 using Types = Telega.Rpc.Dto.Types;
-using LanguageExt;
 using System.Security.Cryptography;
 
 namespace PagerBuddy.Services {
@@ -56,8 +55,10 @@ namespace PagerBuddy.Services {
         }
 
         public async Task forceReloadConnection(bool isBackgroundCall = false) {
-            client.Dispose();
-            client = null;
+            if (client != null) {
+                client.Dispose();
+                client = null;
+            }
             MySessionStore.Clear();
 
             await connectClient(isBackgroundCall);
@@ -142,7 +143,7 @@ namespace PagerBuddy.Services {
                 Functions.Account.UnregisterDevice unregisterRequest = new Functions.Account.UnregisterDevice(
                         tokenType: 2,
                         token: token,
-                        new LanguageExt.Arr<int>()
+                        new List<int>()
                     );
 
                 try {
@@ -187,7 +188,7 @@ namespace PagerBuddy.Services {
                     token: token,
                     appSandbox: false,
                     secret: Telega.Rpc.Dto.BytesExtensions.ToBytes(aesSecret),
-                    otherUids: new LanguageExt.Arr<int>());  //https://core.telegram.org/method/account.registerDevice
+                    otherUids: new List<int>());  //https://core.telegram.org/method/account.registerDevice
 
             try {
                 await client.Call(request);
@@ -354,10 +355,10 @@ namespace PagerBuddy.Services {
 
             Types.User.DefaultTag userTag = user.Default;
 
-            bool hasPhoto = userTag.Photo.IsSome;
+            bool hasPhoto = userTag.Photo.Default != null;
             if (hasPhoto) {
 
-                Types.FileLocation profilePhoto = userTag.Photo.Single().Default.PhotoBig;
+                Types.FileLocation profilePhoto = userTag.Photo.Default.PhotoBig;
                 Types.InputFileLocation fileLocation = new Types.InputFileLocation.PeerPhotoTag(true, new Types.InputPeer.SelfTag(), profilePhoto.VolumeId, profilePhoto.LocalId);
 
                 MemoryStream file = await getProfilePic(fileLocation);
@@ -369,11 +370,11 @@ namespace PagerBuddy.Services {
             }
             DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, hasPhoto);
 
-            string userName = userTag.FirstName.IfNone("") + " " + userTag.LastName.IfNone("");
+            string userName = userTag.FirstName + " " + userTag.LastName;
             if (userName.Length < 3) {
-                userName = userTag.Username.IfNone("Empty Username");
+                userName = userTag.Username;
             }
-            string userPhone = "+" + userTag.Phone.IfNone("");
+            string userPhone = "+" + userTag.Phone;
 
             DataService.setConfigValue(DataService.DATA_KEYS.USER_NAME, userName);
             DataService.setConfigValue(DataService.DATA_KEYS.USER_PHONE, userPhone);
@@ -435,9 +436,10 @@ namespace PagerBuddy.Services {
             Types.User outUser;
             try {
                 Types.InputUser inUser = new Types.InputUser.SelfTag();
-                Arr<Types.InputUser> inArr = new Arr<Types.InputUser>();
+                List<Types.InputUser> inArr = new List<Types.InputUser>();
+                inArr.Add(inUser);
 
-                Arr<Types.User> outList = await client.Call(new Functions.Users.GetUsers(inArr.Add(inUser))); //https://core.telegram.org/method/users.getUsers
+                IReadOnlyList<Types.User> outList = await client.Call(new Functions.Users.GetUsers(inArr)); //https://core.telegram.org/method/users.getUsers
                 outUser = outList.First();
             } catch (Exception e) {
                 Logger.Error(e, "Exception while fetching user data.");
@@ -459,7 +461,7 @@ namespace PagerBuddy.Services {
             }
         }
 
-        public async Task<Option<Session>> Load() {
+        public async Task<Session> Load() {
             if (!File.Exists(file)) {
                 return default(Session);
 
@@ -472,8 +474,8 @@ namespace PagerBuddy.Services {
             });
         }
 
-        public async Task Save(Some<Session> someSession) {
-            if (someSession.IsNone) {
+        public async Task Save(Session someSession) {
+            if (someSession == null) {
                 return;
             }
 
@@ -481,7 +483,7 @@ namespace PagerBuddy.Services {
             using FileStream fileStream = new FileStream(file, FileMode.OpenOrCreate);
             await Task.Run(() => {
                 BinaryWriter binaryWriter = new BinaryWriter(fileStream);
-                someSession.Single().Serialize(binaryWriter);
+                someSession.Serialize(binaryWriter);
             });
         }
     }

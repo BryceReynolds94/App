@@ -15,23 +15,24 @@ namespace PagerBuddy.iOS {
         public bool isTelegramInstalled() {
             //TODO: IOS Implementation
             //https://stackoverflow.com/questions/41545283/how-to-check-app-is-installed-or-not-in-phone
-            throw new NotImplementedException();
+            return false;
         }
 
         public void navigateNotificationPolicyAccess() {
             //This is only used in android
             //TODO: IOS Check if equivalent call for iOS necessary (https://developer.apple.com/documentation/usernotifications/asking_permission_to_use_notifications)
             Logger.Error("NavigateNotificationPolicyAccess called on iOS. This should never happen.");
-            throw new NotImplementedException();
         }
 
         public void navigateNotificationSettings() {
             //TODO: IOS Implementation
+            Logger.Error("not implemented");
             throw new NotImplementedException();
         }
 
         public void navigateTelegramChat(int chatID, TelegramPeer.TYPE type) {
             //TODO: IOS Implementation 
+            Logger.Error("not implemented");
             throw new NotImplementedException();
         }
 
@@ -41,15 +42,18 @@ namespace PagerBuddy.iOS {
         }
 
         void INavigation.logPermissionSettings() {
+            Logger.Error("not implemented");
             throw new NotImplementedException();
         }
 
         void INavigation.navigateDozeExempt() {
+            Logger.Error("not implemented");
             throw new NotImplementedException();
         }
 
         void INavigation.navigateHuaweiPowerException() {
-            throw new NotImplementedException();
+            //This is only used in android
+            Logger.Error("NavigateHuaweiPowerException called on iOS. This should never happen.");
         }
     }
 } 

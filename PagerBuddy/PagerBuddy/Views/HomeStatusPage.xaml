@@ -24,12 +24,12 @@
             <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
                 <CollectionView.Header>
                     <StackLayout Orientation="Horizontal" HeightRequest="50" Padding="0,5,0,0">
-                        <ImageButton Source="{Binding ToggleAllActiveIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
-                         CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllActive}" />
-                        <ImageButton Source="{Binding ToggleAllSnoozeIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
-                         CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllSnooze}" IsEnabled="{Binding ToggleAllSnoozeEnabled}"/>
-                        <ImageButton Source="{Binding AddConfigIcon}" WidthRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
-                         CornerRadius="50" HorizontalOptions="CenterAndExpand" Command="{Binding AddConfig}" IsEnabled="{Binding AddConfigEnabled}"/>
+                        <ImageButton Source="{Binding ToggleAllActiveIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllActive}" />
+                        <ImageButton Source="{Binding ToggleAllSnoozeIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllSnooze}" IsEnabled="{Binding ToggleAllSnoozeEnabled}"/>
+                        <ImageButton Source="{Binding AddConfigIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding AddConfig}" IsEnabled="{Binding AddConfigEnabled}"/>
                     </StackLayout>
                 </CollectionView.Header>
                 <CollectionView.ItemTemplate>
