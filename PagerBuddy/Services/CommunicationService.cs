@@ -24,6 +24,8 @@ namespace PagerBuddy.Services {
 
         private TelegramClient client;
         private STATUS status;
+
+        private static readonly string PAGERBUDDY_SERVER_BOT = "@pagerbuddyserverbot"; //TODO: Add actual ID
         public STATUS clientStatus {
             get {
                 return status;
@@ -89,7 +91,7 @@ namespace PagerBuddy.Services {
             if (client.Auth.IsAuthorized) {
                 Logger.Debug("User is authorised.");
                 if (!isBackgroundCall) { //only do this stuff if we are not retrieving alert messages
-                    Types.User user = await getUserUpdate();
+                    Types.User user = await getUser(new Types.InputUser.SelfTag());
                     if (user != null) {
                         await saveUserData(user);
                     }
@@ -427,15 +429,14 @@ namespace PagerBuddy.Services {
             return fileStream;
         }
 
-        private async Task<Types.User> getUserUpdate() {
+        private async Task<Types.User> getUser(Types.InputUser inUser) {
             if (clientStatus < STATUS.ONLINE) {
-                Logger.Warn("Attempted to retrieve user update without appropriate client status. Current status: " + clientStatus.ToString());
+                Logger.Warn("Attempted to retrieve user without appropriate client status. Current status: " + clientStatus.ToString());
                 return null;
             }
 
             Types.User outUser;
             try {
-                Types.InputUser inUser = new Types.InputUser.SelfTag();
                 List<Types.InputUser> inArr = new List<Types.InputUser>();
                 inArr.Add(inUser);
 
@@ -448,6 +449,41 @@ namespace PagerBuddy.Services {
             }
 
             return outUser;
+        }
+
+        private async Task<bool> sendServerRequest(string jsonRequest) {
+            if(clientStatus < STATUS.ONLINE) {
+                Logger.Warn("Attempted to send request to server without appropriate client status. Current status: " + clientStatus.ToString());
+                return false;
+            }
+
+            Types.InputPeer botPeer;
+            try {
+                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(PAGERBUDDY_SERVER_BOT);
+                Types.User.DefaultTag resolvedUser = resolvedPeer.Users.First().Default;
+
+                if(resolvedUser != null) {
+                    botPeer = new Types.InputPeer.UserTag(resolvedUser.Id, resolvedUser.AccessHash.GetValueOrDefault());
+                } else {
+                    Logger.Info("PagerBuddy-Server peer could not be resolved.");
+                    return false;
+                }
+            }catch(Exception e) {
+                Logger.Error(e, "Exception while resolving PagerBuddy-Server username.");
+                await checkConnectionOnError(e);
+                return false;
+            }
+
+            try {
+                Functions.Messages.SendMessage sendMessage = new Functions.Messages.SendMessage(true, true, true, true, botPeer, null, jsonRequest, new Random().Next(), null, null, null);
+                Types.UpdatesType update = await client.Call(sendMessage); //https://core.telegram.org/method/messages.sendMessage
+            }catch(Exception e) {
+                Logger.Error(e, "Exception while sending request to PagerBuddy-Server.");
+                await checkConnectionOnError(e);
+                return false;
+            }
+
+            return true;
         }
     }
 
