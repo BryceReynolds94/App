@@ -18,12 +18,16 @@ using System.Collections.ObjectModel;
 using PagerBuddy.Resources;
 using Xamarin.Essentials;
 
+using Types = Telega.Rpc.Dto.Types;
+
 namespace PagerBuddy.Views
 {
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomeStatusPage : ContentPage
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly HomeStatusPageViewModel viewModel;
 
         private readonly CommunicationService client;
@@ -42,14 +46,10 @@ namespace PagerBuddy.Views
             viewModel.RequestSnoozeTime += getSnoozeTime;
             viewModel.AllDeactivatedStateChanged += saveDeactivatedState;
             viewModel.AllSnoozeStateChanged += saveSnoozeState;
-            viewModel.AddConfigurationRequest += addConfig;
+            viewModel.RefreshConfigurationRequest += ;
             viewModel.RequestLogin += login;
             viewModel.RequestRefresh += refreshClient;
-
-            MessagingCenter.Subscribe<ConfigureKeywordPage, AlertConfig>(this, ConfigureKeywordPage.MESSAGING_KEYS.ALERT_CONFIG_SAVED.ToString(), (obj, alertConfig) => alertConfigSaved(alertConfig));
             
-            MessagingCenter.Subscribe<AlertStatusViewModel, AlertConfig>(this, AlertStatusViewModel.MESSAGING_KEYS.EDIT_ALERT_CONFIG.ToString(), (obj, alertConfig) => editAlertConfig(alertConfig));
-            MessagingCenter.Subscribe<AlertStatusViewModel, AlertConfig>(this, AlertStatusViewModel.MESSAGING_KEYS.DELETE_ALERT_CONFIG.ToString(), (obj, alertConfig) => deleteAlertConfig(alertConfig));
             MessagingCenter.Subscribe<AlertStatusViewModel, Action<DateTime>>(this, AlertStatusViewModel.MESSAGING_KEYS.REQUEST_SNOOZE_TIME.ToString(), (obj, callback) => snoozeTimeRequest(obj, callback));
 
             MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => deleteAllAlertConfigs());
@@ -74,10 +74,6 @@ namespace PagerBuddy.Views
             viewModel.fillAlertList(alertList);
         }
 
-        private async void editAlertConfig(AlertConfig alertConfig)
-        {
-            await Navigation.PushAsync(new ConfigureKeywordPage(alertConfig));
-        }
 
         private void deleteAllAlertConfigs() {
             Collection<AlertConfig> configs = getAlertConfigs();
@@ -122,11 +118,6 @@ namespace PagerBuddy.Views
             await client.reloadConnection();
         }
 
-        private async void addConfig(object sender, EventArgs eventArgs)
-        {
-            AlertConfig alertConfig = new AlertConfig();
-            await Navigation.PushAsync(new ConfigureGroupPage(client, alertConfig));
-        }
 
         private void saveDeactivatedState(object sender, bool state)
         {
@@ -231,6 +222,77 @@ namespace PagerBuddy.Views
                 configList.Add(DataService.getAlertConfig(id));
             }
             return configList;
+        }
+
+        private async Task refreshAlertConfigs() {
+            Types.Messages.Dialogs rawChatList = await client.getChatList();
+
+            IReadOnlyList<Types.Dialog> dialogList = new List<Types.Dialog>();
+            Collection<TelegramPeer> peerCollection = new Collection<TelegramPeer>();
+
+            if (rawChatList == null) {
+                Logger.Warn("Retrieving chat list returned null.");
+                //TODO: Handle user-facing output in this case
+                return;
+            } else if (rawChatList.Default != null) {
+                Types.Messages.Dialogs.DefaultTag dialogsTag = rawChatList.Default;
+                dialogList = dialogsTag.Dialogs;
+                peerCollection = TelegramPeer.getPeerCollection(dialogsTag.Chats);
+            } else if (rawChatList.Slice != null) {
+                Logger.Info("Return type was DialogsSlice. Presumably user has more than 100 active dialogs.");
+                Types.Messages.Dialogs.SliceTag dialogsTag = rawChatList.Slice;
+                dialogList = dialogsTag.Dialogs;
+                peerCollection = TelegramPeer.getPeerCollection(dialogsTag.Chats);
+            } else if (rawChatList.NotModified != null) {
+                Logger.Warn("Return type was DialogsNotModified. This case is not implemented and will be treated as empty chat list.");
+            }
+
+            if (dialogList.Count < 1) {
+                Logger.Warn("Chat list was empty.");
+                //TODO: Handle user-facing output in this case
+                return;
+            }
+
+            Collection<AlertConfig> configList = new Collection<AlertConfig>();
+
+            foreach (Types.Dialog dialog in dialogList) {
+                if (dialog.Default == null) {
+                    Logger.Info("Dialog list contained empty member.");
+                    continue;
+                }
+
+                Types.Peer peer = dialog.Default.Peer;
+
+                int id;
+                if (peer.Channel != null) {
+                    id = peer.Channel.ChannelId;
+                } else if (peer.Chat != null) {
+                    id = peer.Chat.ChatId;
+                } else if (peer.User != null) {
+                    id = peer.User.UserId;
+                } else {
+                    Logger.Warn("Peer type was not found and will be ignored.");
+                    continue;
+                }
+
+                TelegramPeer detailPeer = peerCollection.FirstOrDefault((TelegramPeer x) => x.id == id);
+                if (detailPeer == null || detailPeer.id != id) {
+                    Logger.Info("Details for a peer could not be found in peer collection and will be ignored.");
+                    continue;
+                }
+
+                if (detailPeer.photoLocation != null) {
+                    _ = detailPeer.loadImage(client); //Do not wait for image loading to avoid blocking
+                }
+
+                AlertConfig alertConfig = AlertConfig.findExistingConfig(detailPeer.id);
+                if (alertConfig == null) {
+                    alertConfig = new AlertConfig(detailPeer);
+                }
+                configList.Add(alertConfig);
+            }
+
+            viewModel.fillAlertList(configList);
         }
 
         private async void snoozeTimeRequest(object sender, Action<DateTime> callback)

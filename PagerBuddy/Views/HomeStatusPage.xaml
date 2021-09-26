@@ -45,36 +45,20 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="30"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="30"/>
-                                        <ColumnDefinition Width="30"/>
-                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="60"/>
                                     </Grid.ColumnDefinitions>
-                                    <Switch x:Name="SwitchIsActive" IsToggled="{Binding IsActive}" Grid.Column="3" Grid.ColumnSpan="2" VerticalOptions="Start"/>
+                                    <Switch x:Name="SwitchIsActive" IsToggled="{Binding IsActive}" Grid.Column="2" VerticalOptions="Start"/>
                                     <Frame Padding="0" HeightRequest="30" CornerRadius="15" IsClippedToBounds="True" VerticalOptions="Center">
                                         <Image Source="{Binding GroupPic}" />
                                     </Frame>
-                                    <Label Text="{Binding GroupName}" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="2"/>
+                                    <Label Text="{Binding GroupName}" Grid.Column="1" VerticalOptions="Center"/>
 
-                                    <Image Source="{Binding TriggerPic}" Grid.Row="1" HeightRequest="30" VerticalOptions="Center" />
-                                    <Label Text="{Binding KeywordText}" Grid.Row="1" Grid.Column="1" VerticalOptions="Center" Grid.ColumnSpan="3"/>
-
-                                    <Image Source="{Binding StatusFieldPic}" Grid.Row="2" HeightRequest="30" VerticalOptions="Center"/>
-                                    <Label Text="{Binding StatusFieldText}" Grid.Row="2" Grid.Column="1" VerticalOptions="Center"/>
-
-
-                                    <ImageButton Grid.Row="2" Grid.Column="2" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
-                                             Source="{Binding SnoozePic}" Command="{Binding SnoozeAlert}" IsEnabled="{Binding SnoozeEnabled}" VerticalOptions="End"/>
-
-                                    <ImageButton Grid.Row="2" Grid.Column="3" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
-                                             Source="{Binding EditPic}" Command="{Binding EditAlert}" VerticalOptions="End"/>
-
-                                    <ImageButton Grid.Row="2" Grid.Column="4" HeightRequest="30" CornerRadius="15" BackgroundColor="{Binding Source={x:Reference Backdrop}, Path=BackgroundColor}" 
-                                             Source="{Binding DeletePic}" Command="{Binding DeleteAlert}" VerticalOptions="End"/>
+                                    <Image Source="{Binding StatusFieldPic}" Grid.Row="1" HeightRequest="30" VerticalOptions="Center"/>
+                                    <Label Text="{Binding StatusFieldText}" Grid.Row="1" Grid.Column="1" VerticalOptions="Center"/>
                                 </Grid>
                             </Frame>
                         </StackLayout>

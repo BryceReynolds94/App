@@ -392,7 +392,7 @@ namespace PagerBuddy.Services {
 
             Types.Messages.Dialogs dialogs;
             try {
-                dialogs = await client.Messages.GetDialogs();
+                dialogs = await client.Messages.GetDialogs(); //TODO: Possibly replace with getpeerdialogs //https://core.telegram.org/method/messages.getPeerDialogs
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list.");
                 await checkConnectionOnError(e);

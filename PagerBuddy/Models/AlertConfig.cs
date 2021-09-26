@@ -10,55 +10,50 @@ using System.Text;
 using System.Security.Cryptography;
 using Types = Telega.Rpc.Dto.Types;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace PagerBuddy.Models {
     public class AlertConfig {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private const int PAGERBUDDY_ID = 1600415343;
-        public enum TRIGGER_TYPE { ANY, SERVER, KEYWORD };
 
         public bool isActive { get; private set; }
-        public bool snoozeActive => snoozeTime > DateTime.Now;
-        public DateTime snoozeTime { get; private set; }
+
         public string id { get; private set; }
 
         public Group triggerGroup;
-        public TRIGGER_TYPE triggerType;
-        public string triggerKeyword;
-
-        public ActiveTimeConfig activeTimeConfig;
-        public bool timeRestriction;
-
-        public bool ignoreTestAlerts;
 
         public DateTime lastTriggered { get; private set; }
         [JsonProperty]
         private DateTime lockTime;
 
-        public AlertConfig() {
-            isActive = true;
-            snoozeTime = DateTime.MinValue;
+        public AlertConfig(Group triggerGroup) {
             id = Guid.NewGuid().ToString();
-            triggerType = TRIGGER_TYPE.ANY;
-            triggerKeyword = string.Empty;
-            activeTimeConfig = new ActiveTimeConfig();
-            timeRestriction = false;
-            ignoreTestAlerts = true;
+            this.triggerGroup = triggerGroup;
+
+
+            isActive = true;
             lastTriggered = lockTime = DateTime.MinValue;
         }
 
         [JsonConstructor]
-        public AlertConfig(bool isActive, DateTime snoozeTime, string id, Group triggerGroup, TRIGGER_TYPE triggerType, ActiveTimeConfig activeTimeConfig, bool timeRestriction, DateTime lastTriggered, DateTime lockTime, bool ignoreTestAlerts = false) {
+        public AlertConfig(bool isActive, string id, Group triggerGroup, DateTime lastTriggered, DateTime lockTime) {
             this.isActive = isActive;
-            this.snoozeTime = snoozeTime;
             this.id = id;
             this.triggerGroup = triggerGroup;
-            this.triggerType = triggerType;
-            this.activeTimeConfig = activeTimeConfig;
-            this.timeRestriction = timeRestriction;
             this.lastTriggered = lastTriggered;
             this.lockTime = lockTime;
-            this.ignoreTestAlerts = ignoreTestAlerts;
+        }
+
+        public static AlertConfig findExistingConfig(int triggerGroupID) {
+            Collection<string> configList = DataService.getConfigList();
+            foreach(string config in configList) {
+                AlertConfig alertConfig = DataService.getAlertConfig(config);
+                if (alertConfig != null && alertConfig.triggerGroup.id == triggerGroupID) {
+                    return alertConfig;
+                }
+            }
+            return null;
         }
 
         public void saveChanges(bool persistImage = false) {
@@ -70,16 +65,9 @@ namespace PagerBuddy.Models {
 
         public void setActiveState(bool active) {
             isActive = active;
-            if (!active) {
-                snoozeTime = DateTime.MinValue; //clear Snooze Time
-            }
             saveChanges();
         }
 
-        public void setSnoozeTime(DateTime snoozeTime) {
-            this.snoozeTime = snoozeTime;
-            saveChanges();
-        }
 
         public void setLastTriggered(DateTime triggerTime) {
             lastTriggered = triggerTime;
@@ -87,36 +75,16 @@ namespace PagerBuddy.Models {
         }
 
         public bool isAlert(string message, DateTime time, int fromID) {
-            if (!isActive || snoozeActive) {
+            if (!isActive) {
                 Logger.Debug("Alert not triggered as AlertConfig is inactive. AlertConfig: " + readableFullName);
                 return false;
             }
-            if (timeRestriction && !activeTimeConfig.isActiveTime(time)) {
-                Logger.Debug("Alert not triggered as time restriction was not fulfilled. AlertConfig: " + readableFullName);
-                return false;
-            }
 
-            bool result = false;
-            switch (triggerType) {
-                case TRIGGER_TYPE.ANY:
-                    result = true;
-                    break;
-                case TRIGGER_TYPE.KEYWORD:
-                    result = (!(triggerKeyword == null)) && Regex.IsMatch(message, triggerKeyword);
-                    Logger.Debug("Trigger type is KEYWORD. Result of keyword check: " + result);
-                    break;
-                case TRIGGER_TYPE.SERVER:
-                    result = isPagerBuddyMessage(fromID);
-                    if (result && ignoreTestAlerts) {
-                        result = !isPagerBuddyTestAlert(message);
-
-                        if (!result) {
-                            Logger.Debug("Alert is test alert and will be ignored.");
-                        }
-                    }
-                    Logger.Debug("Trigger type is SERVER. Result of sender check: " + result);
-                    break;
-            }
+            bool result = isPagerBuddyMessage(fromID);
+            /*if (result) {
+                result = !isPagerBuddyTestAlert(message);
+            }*/ //TODO: Implement test alert changes
+            Logger.Debug("Result of sender check: " + result);
 
             if (result) {
                 if (lockTime > time) {
@@ -131,15 +99,7 @@ namespace PagerBuddy.Models {
         }
 
         [JsonIgnore]
-        public string readableFullName {
-            get {
-                string output = triggerGroup.name;
-                if (triggerType == TRIGGER_TYPE.KEYWORD && triggerKeyword != null && triggerKeyword.Length > 0) {
-                    output = output + " - " + triggerKeyword;
-                }
-                return output;
-            }
-        }
+        public string readableFullName => triggerGroup.name;
 
         private static bool isPagerBuddyMessage(int fromID) {
             return fromID == PAGERBUDDY_ID;

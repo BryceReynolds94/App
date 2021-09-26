@@ -24,11 +24,11 @@ namespace PagerBuddy.ViewModels {
         private WARNING_ACTION warningState = WARNING_ACTION.NONE;
         public Command ToggleAllActive { get; set; }
         public Command ToggleAllSnooze { get; set; }
-        public Command AddConfig { get; set; }
+        public Command RefreshConfig { get; set; } //TODO: Add this to UI
         public Command ErrorAction { get; set; }
         public Command WarningAction { get; set; }
 
-        public EventHandler AddConfigurationRequest;
+        public EventHandler RefreshConfigurationRequest;
         public UpdateStatusEventHandler AllDeactivatedStateChanged;
         public UpdateSnoozeEventHandler AllSnoozeStateChanged;
         public HomeStatusPage.SnoozeTimeHandler RequestSnoozeTime;
@@ -44,7 +44,7 @@ namespace PagerBuddy.ViewModels {
 
             ToggleAllActive = new Command(() => updateAllActiveState());
             ToggleAllSnooze = new Command(() => updateAllSnoozeState());
-            AddConfig = new Command(() => AddConfigurationRequest.Invoke(this, null));
+            RefreshConfig = new Command(() => RefreshConfigurationRequest.Invoke(this, null));
 
             ErrorAction = new Command(() => ErrorActionClicked());
             WarningAction = new Command(() => WarningActionClicked());

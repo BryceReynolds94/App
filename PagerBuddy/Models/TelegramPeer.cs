@@ -31,14 +31,17 @@ namespace PagerBuddy.Models {
             }
         }
 
-        public static Collection<TelegramPeer> getPeerCollection(IReadOnlyList<Types.Chat> chatList, IReadOnlyList<Types.User> userList) {
+        public static Collection<TelegramPeer> getPeerCollection(IReadOnlyList<Types.Chat> chatList) {
             Collection<TelegramPeer> peerList = new Collection<TelegramPeer>();
 
+            //TODO: Filter this list by chats containing PagerBuddyServerBot
 
             foreach(Types.Chat chat in chatList) {
                 if (chat.Channel != null) {
                     Types.Chat.ChannelTag c = chat.Channel;
                     Types.InputPeer peer = new Types.InputPeer.ChannelTag(c.Id, c.AccessHash.GetValueOrDefault());
+                    
+
                     peerList.Add(new TelegramPeer(TYPE.CHANNEL, c.Id, c.Title, getPhotoLocation(peer, c.Photo), c.AccessHash.GetValueOrDefault()));
                 }else if (chat.Default != null) { 
                     Types.Chat.DefaultTag c = chat.Default;
@@ -46,6 +49,7 @@ namespace PagerBuddy.Models {
                         //ignore chats that have migrated to channels as they will have double occurances
                         continue;
                     }
+
                     Types.InputPeer peer = new Types.InputPeer.ChatTag(c.Id);
                     peerList.Add(new TelegramPeer(TYPE.CHAT, c.Id, c.Title, getPhotoLocation(peer, c.Photo)));
                 } else {
@@ -54,21 +58,6 @@ namespace PagerBuddy.Models {
                 }
             }
 
-            foreach(Types.User user in userList) {
-                if(user.Default != null) {
-                    Types.User.DefaultTag u = user.Default;
-
-                    string userName = u.FirstName + " " + u.LastName;
-                    if (userName.Length < 3) {
-                        userName = (string) u.Username;
-                    }
-                    Types.InputPeer peer = new Types.InputPeer.UserTag(u.Id, u.AccessHash.GetValueOrDefault());
-                    peerList.Add(new TelegramPeer(TYPE.USER, u.Id, userName, getPhotoLocation(peer, u.Photo)));
-                } else {
-                    Logger.Warn("User was of unexpected type " + user.GetType().ToString() + " and was not added to the peer list.");
-                    continue;
-                }
-            }
             return peerList;
         }
 
