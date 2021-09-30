@@ -148,6 +148,22 @@ namespace PagerBuddy.Droid {
             notificationManager.DeleteNotificationChannel(alertConfig.id);
         }
 
+        public void UpdateNotificationChannels(Collection<AlertConfig> configList) {
+            Collection<string> idList = new Collection<string>();
+            foreach(AlertConfig config in configList) {
+                addNotificationChannel(config);
+                idList.Add(config.id);
+            }
+
+            //Clear possibly remaining old channels
+            NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);
+            foreach (NotificationChannel channel in notificationManager.NotificationChannels) {
+                if (channel.Group != null && channel.Group.Equals(ALERT_CHANNEL_ID) && !idList.Contains(channel.Id)) {
+                    notificationManager.DeleteNotificationChannel(channel.Id);
+                }
+            }
+        }
+
         public void SetupNotificationChannels() {
 
             NotificationChannelGroup channelGroup = new NotificationChannelGroup(ALERT_CHANNEL_ID, Resources.AppResources.Android_AndroidNotifications_AlertChannel_Title);
@@ -167,17 +183,16 @@ namespace PagerBuddy.Droid {
             notificationManager.CreateNotificationChannel(standardChannel);
             notificationManager.CreateNotificationChannelGroup(channelGroup);
 
-            Collection<string> configList = DataService.getConfigList(); 
-            foreach(string config in configList) {
-                addNotificationChannel(DataService.getAlertConfig(config));
-            }
-
-            //Clear possibly remaining old channels
-            foreach (NotificationChannel channel in notificationManager.NotificationChannels) {
-                if (channel.Group != null && channel.Group.Equals(ALERT_CHANNEL_ID) && !configList.Contains(channel.Id)) {
-                    notificationManager.DeleteNotificationChannel(channel.Id);
+            Collection<string> configIDList = DataService.getConfigList();
+            Collection<AlertConfig> configList = new Collection<AlertConfig>();
+            foreach(string config in configIDList) {
+                AlertConfig alertConfig = DataService.getAlertConfig(config, null);
+                if (alertConfig != null) {
+                    configList.Add(alertConfig);
                 }
             }
+
+            UpdateNotificationChannels(configList);
         }
 
 

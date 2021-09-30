@@ -136,7 +136,11 @@ namespace PagerBuddy.Views {
             Collection<string> configs = DataService.getConfigList();
             if (configs.Count > 0) {
                 Logger.Info("Sending alert test message");
-                AlertConfig config = DataService.getAlertConfig(configs.First());
+                AlertConfig config = DataService.getAlertConfig(configs.First(), null);
+                if(config == null) {
+                    Logger.Error("Retrieving known alert returned null. Will stop here.");
+                    return;
+                }
                 AlertService.checkMessage(AppResources.AboutPage_DeveloperMode_TestNotification_Message, config.triggerGroup.id, DateTime.Now, 0);
             } else {
                 Logger.Warn("Could not send alert test message as no alerts are configured.");
@@ -147,8 +151,11 @@ namespace PagerBuddy.Views {
             Collection<string> configs = DataService.getConfigList();
             if (configs.Count > 0) {
                 Logger.Info("Sending notification test message in 5s.");
-                AlertConfig config = DataService.getAlertConfig(configs.First());
-
+                AlertConfig config = DataService.getAlertConfig(configs.First(), null);
+                if(config == null) {
+                    Logger.Error("Retrieving known alert returned null. Will stop here.");
+                    return;
+                }
                 Interfaces.INotifications notifications = DependencyService.Get<Interfaces.INotifications>();
 
                 Task.Delay(5000).ContinueWith((t) => {

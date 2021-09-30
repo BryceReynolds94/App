@@ -11,7 +11,7 @@ namespace PagerBuddy.ViewModels {
     public class AlertStatusViewModel : BaseViewModel {
         private readonly AlertConfig alertConfig;
 
-        public enum MESSAGING_KEYS { EDIT_ALERT_CONFIG, DELETE_ALERT_CONFIG, REQUEST_SNOOZE_TIME };
+        public enum MESSAGING_KEYS { ALERT_CONFIG_CHANGED}
 
         public AlertStatusViewModel(AlertConfig alertConfig) {
             this.alertConfig = alertConfig;
@@ -21,6 +21,7 @@ namespace PagerBuddy.ViewModels {
             get => alertConfig.isActive;
             set {
                 alertConfig.setActiveState(value);
+                MessagingCenter.Send(this, MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString());
             }
         }
 

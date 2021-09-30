@@ -28,6 +28,7 @@
     <None Remove="Resources\Images\icon_history.svg" />
     <None Remove="Resources\Images\icon_key.svg" />
     <None Remove="Resources\Images\icon_lock.svg" />
+    <None Remove="Resources\Images\icon_login.svg" />
     <None Remove="Resources\Images\icon_logout.svg" />
     <None Remove="Resources\Images\icon_phone.svg" />
     <None Remove="Resources\Images\icon_settings.svg" />
@@ -57,6 +58,7 @@
     <EmbeddedResource Include="Resources\Images\icon_key.svg" />
     <EmbeddedResource Include="Resources\Images\icon_lock.svg" />
     <EmbeddedResource Include="Resources\Images\icon_logout.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_login.svg" />
     <EmbeddedResource Include="Resources\Images\icon_phone.svg" />
     <EmbeddedResource Include="Resources\Images\icon_settings.svg" />
     <EmbeddedResource Include="Resources\Images\icon_share.svg" />
@@ -170,5 +172,8 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon1201.png">
       <Visible>false</Visible>
     </ImageAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\icon_login.svg" />
   </ItemGroup>
 </Project>

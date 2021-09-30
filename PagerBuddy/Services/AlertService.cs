@@ -26,7 +26,10 @@ namespace PagerBuddy.Services {
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
             Collection<string> configIDs = DataService.getConfigList();
             foreach (string id in configIDs) {
-                configList.Add(DataService.getAlertConfig(id));
+                AlertConfig config = DataService.getAlertConfig(id, null);
+                if (config != null) {
+                    configList.Add(config);
+                }
             }
 
             if (configList.Count < 1) {

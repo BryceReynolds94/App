@@ -74,6 +74,8 @@ namespace PagerBuddy.Views {
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_PHONE, AppResources.MenuPage_UserPhone_Default);
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, false);
 
+                DataService.deleteAllAlertConfigs();
+
                 MessagingCenter.Send(this, MESSAGING_KEYS.LOGOUT_USER.ToString());
                 IsPresented = false;
             }

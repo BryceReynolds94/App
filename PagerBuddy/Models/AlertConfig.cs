@@ -48,7 +48,7 @@ namespace PagerBuddy.Models {
         public static AlertConfig findExistingConfig(int triggerGroupID) {
             Collection<string> configList = DataService.getConfigList();
             foreach(string config in configList) {
-                AlertConfig alertConfig = DataService.getAlertConfig(config);
+                AlertConfig alertConfig = DataService.getAlertConfig(config, null);
                 if (alertConfig != null && alertConfig.triggerGroup.id == triggerGroupID) {
                     return alertConfig;
                 }

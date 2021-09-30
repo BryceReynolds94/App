@@ -54,7 +54,11 @@ namespace PagerBuddy
             Collection<string> configs = DataService.getConfigList();
             Alert testAlert;
             if(configs.Count > 0) {
-                AlertConfig config = DataService.getAlertConfig(configs[0]);
+                AlertConfig config = DataService.getAlertConfig(configs[0], null);
+                if(config == null) {
+                    Logger.Error("Loading a known alert config returned null. Stopping here.");
+                    return;
+                }
                 testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Message, config);
             } else {
                 Logger.Info("No configurations found. Using mock configuration for sample AlertPage.");

@@ -49,15 +49,21 @@ namespace PagerBuddy.Services
         }
 
 
-        public static AlertConfig getAlertConfig(string id)
+        public static AlertConfig getAlertConfig(string id, AlertConfig defaultValue)
         {
-            string confString = serialiseObject(new AlertConfig());
             if (!Preferences.ContainsKey(id)) {
                 Logger.Debug("Could not find AlertConfig with ID " + id);
+                deleteAlertConfig(id);
+                return defaultValue;
             } else {
-                confString = Preferences.Get(id, confString);
+                string confString = Preferences.Get(id, null);
+                if(confString == null) {
+                    deleteAlertConfig(id);
+                    return defaultValue;
+                }
+                return deserialiseObject<AlertConfig>(confString);
             }
-            return deserialiseObject<AlertConfig>(confString);
+            
         }
 
         public static void saveAlertConfig(AlertConfig alertConfig)
@@ -73,12 +79,16 @@ namespace PagerBuddy.Services
 
         public static void deleteAlertConfig(AlertConfig alertConfig)
         {
-            Collection<string> configList = getConfigList();
-            configList.Remove(alertConfig.id);
-            removeProfilePic(alertConfig.id);
+            deleteAlertConfig(alertConfig.id);
+        }
 
-            if (Preferences.ContainsKey(alertConfig.id)) {
-                Preferences.Remove(alertConfig.id);
+        private static void deleteAlertConfig(string id) {
+            Collection<string> configList = getConfigList();
+            configList.Remove(id);
+            removeProfilePic(id);
+
+            if (Preferences.ContainsKey(id)) {
+                Preferences.Remove(id);
             }
 
             setConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, serialiseObject(configList));
@@ -94,6 +104,7 @@ namespace PagerBuddy.Services
             configList.Clear();
             setConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, serialiseObject(configList));
         }
+
 
         public static void updateAlertConfig(AlertConfig alertConfig)
         {

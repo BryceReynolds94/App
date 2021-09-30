@@ -24,8 +24,6 @@ namespace PagerBuddy.Models {
             if (file != null) {
                 image = file;
                 hasImage = image != null;
-
-                imageLoaded.Invoke(this, null);
             } else {
                 Logger.Info("Could not load peer pic.");
             }
@@ -34,15 +32,12 @@ namespace PagerBuddy.Models {
         public static Collection<TelegramPeer> getPeerCollection(IReadOnlyList<Types.Chat> chatList) {
             Collection<TelegramPeer> peerList = new Collection<TelegramPeer>();
 
-            //TODO: Filter this list by chats containing PagerBuddyServerBot
-
             foreach(Types.Chat chat in chatList) {
                 if (chat.Channel != null) {
                     Types.Chat.ChannelTag c = chat.Channel;
                     Types.InputPeer peer = new Types.InputPeer.ChannelTag(c.Id, c.AccessHash.GetValueOrDefault());
-                    
-
                     peerList.Add(new TelegramPeer(TYPE.CHANNEL, c.Id, c.Title, getPhotoLocation(peer, c.Photo), c.AccessHash.GetValueOrDefault()));
+
                 }else if (chat.Default != null) { 
                     Types.Chat.DefaultTag c = chat.Default;
                     if (c.MigratedTo != null) {
@@ -63,15 +58,6 @@ namespace PagerBuddy.Models {
 
         private static Types.InputFileLocation getPhotoLocation(Types.InputPeer peer, Types.ChatPhoto photo) {
             if (photo.Default != null) {
-                Types.FileLocation loc = photo.Default.PhotoSmall;
-                return new Types.InputFileLocation.PeerPhotoTag(false, peer, loc.VolumeId, loc.LocalId);
-            }
-            return null;
-
-        }
-
-        private static Types.InputFileLocation getPhotoLocation(Types.InputPeer peer, Types.UserProfilePhoto photo) {
-            if (photo != null && photo.Default != null) {
                 Types.FileLocation loc = photo.Default.PhotoSmall;
                 return new Types.InputFileLocation.PeerPhotoTag(false, peer, loc.VolumeId, loc.LocalId);
             }

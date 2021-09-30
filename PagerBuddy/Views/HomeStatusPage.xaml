@@ -9,27 +9,17 @@
              x:Name="BrowseItemsPage">
 
     <AbsoluteLayout>
-        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
-            <Label x:Name="ErrorActionText" Text="{Binding ErrorText}" IsVisible="{Binding ErrorActive}" BackgroundColor="{StaticResource ErrorColor}" TextColor="White" Padding="10">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ErrorAction}" />
-                </Label.GestureRecognizers>
-            </Label>
-            <Label x:Name="WarningActionText" Text="{Binding WarningText}" IsVisible="{Binding WarningActive}" BackgroundColor="{StaticResource WarningColor}" TextColor="White" Padding="10">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding WarningAction}"/>
-                </Label.GestureRecognizers>
-            </Label>
+        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" IsVisible="{Binding ConfigActive}">
 
             <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
                 <CollectionView.Header>
                     <StackLayout Orientation="Horizontal" HeightRequest="50" Padding="0,5,0,0">
-                        <ImageButton Source="{Binding ToggleAllActiveIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
-                         CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllActive}" />
-                        <ImageButton Source="{Binding ToggleAllSnoozeIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
-                         CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding ToggleAllSnooze}" IsEnabled="{Binding ToggleAllSnoozeEnabled}"/>
-                        <ImageButton Source="{Binding AddConfigIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
-                         CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding AddConfig}" IsEnabled="{Binding AddConfigEnabled}"/>
+                        <ImageButton Source="{Binding AllDeactivateIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding DeactivateAll}" />
+                        <ImageButton Source="{Binding AllSnoozeIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding SnoozeAll}"/>
+                        <ImageButton Source="{Binding ReloadConfigIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding ReloadConfig}" IsEnabled="{Binding ReloadConfigEnabled}"/>
                     </StackLayout>
                 </CollectionView.Header>
                 <CollectionView.ItemTemplate>
@@ -65,9 +55,10 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.Footer>
-                    <StackLayout Padding="10" IsVisible="{Binding AddConfigEnabled}">
-                        <ImageButton BackgroundColor="{StaticResource BackgroundColor}" BorderColor="LightGray" BorderWidth="2" Source="{Binding AddConfigTabIcon}"  Command="{Binding AddConfig}"
+                    <StackLayout Padding="10" IsVisible="{Binding EmptyList}">
+                        <ImageButton BackgroundColor="{StaticResource BackgroundColor}" BorderColor="LightGray" BorderWidth="2" Source="{Binding EmptyTabIcon}"  Command="{Binding ReloadConfig}"
                                     CornerRadius="10" Padding="10,30"  HeightRequest="110" VerticalOptions="Start"/>
+                        <Label Text="It seems like you have no alert groups"/>
                     </StackLayout>
                 </CollectionView.Footer>
             </CollectionView>
@@ -75,5 +66,42 @@
 
         <BoxView IsVisible="{Binding IsBusy}" BackgroundColor="Gray" Opacity="0.2" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="True" HorizontalOptions="Center" VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
+
+        <!-- Not connected to Telegram-->
+        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" IsVisible="{Binding ErrorLogin}">
+            <ImageButton  Opacity="1" BorderColor="Gray" BorderWidth="2" BackgroundColor="{StaticResource BackgroundColor}" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="150" WidthRequest="150"
+                         CornerRadius="20" Source="{Binding LoginIcon}" Command="{Binding Login}" Padding="20"/>
+            <Label Text="Login to Telegram and get started with PagerBuddy." HorizontalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center" Padding="20,0"/>
+        </StackLayout>
+        <!-- All alerts deactivated-->
+        <Grid AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" VerticalOptions="Fill" HorizontalOptions="Fill" IsVisible="{Binding WarningDeactivate}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <BoxView BackgroundColor="Gray" Opacity="0.5" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
+            <Image Opacity="1"  VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="150" WidthRequest="150" Grid.Row="1" Source="{Binding WarningDeactivateIcon}"/>
+            <Label Text="All deactivated." HorizontalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0"/>
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding DeactivateAllOff}"/>
+            </Grid.GestureRecognizers>
+        </Grid>
+        <!-- All alerts snoozed-->
+        <Grid AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" VerticalOptions="Fill" HorizontalOptions="Fill" IsVisible="{Binding WarningSnooze}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <BoxView BackgroundColor="Gray" Opacity="0.5" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
+            <Image  Opacity="1" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="150" WidthRequest="150" Grid.Row="1" Source="{Binding WarningSnoozeIcon}" />
+            <Label Text="All snoozed." HorizontalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0"/>
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding SnoozeAllOff}"/>
+            </Grid.GestureRecognizers>
+        </Grid>
     </AbsoluteLayout>
 </ContentPage>

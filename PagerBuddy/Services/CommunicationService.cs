@@ -16,6 +16,7 @@ using Telega.Client;
 using Functions = Telega.Rpc.Dto.Functions;
 using Types = Telega.Rpc.Dto.Types;
 using System.Security.Cryptography;
+using Newtonsoft.Json;
 
 namespace PagerBuddy.Services {
 
@@ -25,7 +26,7 @@ namespace PagerBuddy.Services {
         private TelegramClient client;
         private STATUS status;
 
-        private static readonly string PAGERBUDDY_SERVER_BOT = "@pagerbuddyserverbot"; //TODO: Add actual ID
+        private static readonly string PAGERBUDDY_SERVER_BOT = "pagerbuddyserverbot"; //TODO: Add actual ID
         public STATUS clientStatus {
             get {
                 return status;
@@ -99,6 +100,7 @@ namespace PagerBuddy.Services {
                 }
                 if (clientStatus != STATUS.ONLINE) { //status may have changed out of scope due to previous call fallbacks
                     Logger.Info("Connect process completed, but client Status was changed out of scope. Not setting authorised status. CurrentStatus: " + clientStatus.ToString());
+                    return;
                 }
                 clientStatus = STATUS.AUTHORISED;
             } else {
@@ -166,39 +168,6 @@ namespace PagerBuddy.Services {
         }
 
         public async Task subscribePushNotifications(string token, bool isInit = false) {
-            if (clientStatus != STATUS.AUTHORISED && !isInit) {
-                Logger.Warn("Attempted to subscribe to FCM Messages without authorisation.");
-                return;
-            }
-            if (token == null || token.Length < 1) {
-                Logger.Warn("Token invalid. Not (re-)registering push notifications.");
-                return;
-            }
-
-            byte[] aesSecret = new byte[256];
-            new Random().NextBytes(aesSecret);
-
-            byte[] aesSecretHash = new SHA1Managed().ComputeHash(aesSecret);
-            byte[] aesID = aesSecretHash[(aesSecretHash.Length - 8)..]; //last 8 bytes of hash are ID
-
-            DataService.setConfigValue(DataService.DATA_KEYS.AES_AUTH_KEY, aesSecret);
-            DataService.setConfigValue(DataService.DATA_KEYS.AES_AUTH_KEY_ID, aesID);
-
-            Functions.Account.RegisterDevice request = new Functions.Account.RegisterDevice(
-                    noMuted: false,
-                    tokenType: 2,
-                    token: token,
-                    appSandbox: false,
-                    secret: Telega.Rpc.Dto.BytesExtensions.ToBytes(aesSecret),
-                    otherUids: new List<int>());  //https://core.telegram.org/method/account.registerDevice
-
-            try {
-                await client.Call(request);
-            } catch (Exception e) {
-                Logger.Error(e, "Subscribing to push notifications failed");
-                await checkConnectionOnError(e);
-            }
-
         }
 
         public async Task<TStatus> loginWithPassword(string password) {
@@ -384,15 +353,33 @@ namespace PagerBuddy.Services {
             MessagingCenter.Send(this, MESSAGING_KEYS.USER_DATA_CHANGED.ToString());
         }
 
-        public async Task<Types.Messages.Dialogs> getChatList(int attempt = 0) {
+        public async Task<Types.Messages.Chats> getChatList(int attempt = 0) {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to load chat list without appropriate client status. Current status: " + clientStatus.ToString());
                 return null;
             }
 
-            Types.Messages.Dialogs dialogs;
+            Types.InputUser botUser;
             try {
-                dialogs = await client.Messages.GetDialogs(); //TODO: Possibly replace with getpeerdialogs //https://core.telegram.org/method/messages.getPeerDialogs
+                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(PAGERBUDDY_SERVER_BOT); //TODO Later: Add possibility for different server peers
+                Types.User.DefaultTag resolvedUser = resolvedPeer.Users.First().Default;
+
+                if (resolvedUser != null) {
+                    botUser = new Types.InputUser.DefaultTag(resolvedUser.Id, resolvedUser.AccessHash.GetValueOrDefault(0));
+                } else {
+                    Logger.Info("PagerBuddy-Server peer could not be resolved.");
+                    return null;
+                }
+            } catch (Exception e) {
+                Logger.Error(e, "Exception while resolving PagerBuddy-Server username.");
+                await checkConnectionOnError(e);
+                return null;
+            }
+
+            Types.Messages.Chats chats;
+            try {
+                Functions.Messages.GetCommonChats func = new Functions.Messages.GetCommonChats(botUser, 100, 100);
+                chats = await client.Call(func);
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list.");
                 await checkConnectionOnError(e);
@@ -405,7 +392,7 @@ namespace PagerBuddy.Services {
                 return null;
             }
 
-            return dialogs;
+            return chats;
         }
 
         public async Task<MemoryStream> getProfilePic(Types.InputFileLocation photo) {
@@ -451,19 +438,21 @@ namespace PagerBuddy.Services {
             return outUser;
         }
 
-        private async Task<bool> sendServerRequest(string jsonRequest) {
-            if(clientStatus < STATUS.ONLINE) {
+        public async Task<bool> sendServerRequest(Collection<AlertConfig> configList) {
+            if(clientStatus < STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to send request to server without appropriate client status. Current status: " + clientStatus.ToString());
                 return false;
             }
 
             Types.InputPeer botPeer;
+            Types.InputUser botUser;
             try {
                 Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(PAGERBUDDY_SERVER_BOT);
                 Types.User.DefaultTag resolvedUser = resolvedPeer.Users.First().Default;
 
                 if(resolvedUser != null) {
-                    botPeer = new Types.InputPeer.UserTag(resolvedUser.Id, resolvedUser.AccessHash.GetValueOrDefault());
+                    botPeer = new Types.InputPeer.UserTag(resolvedUser.Id, resolvedUser.AccessHash.GetValueOrDefault(0));
+                    botUser = new Types.InputUser.DefaultTag(resolvedUser.Id, resolvedUser.AccessHash.GetValueOrDefault(0));
                 } else {
                     Logger.Info("PagerBuddy-Server peer could not be resolved.");
                     return false;
@@ -474,9 +463,19 @@ namespace PagerBuddy.Services {
                 return false;
             }
 
+            ServerRequest request = ServerRequest.getServerRequest(configList);
+            if(request == null) {
+                return false;
+            }
+
+            string jsonRequest = JsonConvert.SerializeObject(request);
+
+            Logger.Debug("Sending update to server: " + jsonRequest);
             try {
-                Functions.Messages.SendMessage sendMessage = new Functions.Messages.SendMessage(true, true, true, true, botPeer, null, jsonRequest, new Random().Next(), null, null, null);
-                Types.UpdatesType update = await client.Call(sendMessage); //https://core.telegram.org/method/messages.sendMessage
+                Functions.Messages.GetInlineBotResults msg = new Functions.Messages.GetInlineBotResults(botUser, botPeer, null, jsonRequest, "");
+
+                //Functions.Messages.SendMessage msg = new Functions.Messages.SendMessage(true, true, true, true, botPeer, null, jsonRequest, new Random().Next(), null, null, null);
+                //Types.Messages.BotResults update = await client.Call(msg); //https://core.telegram.org/method/messages.sendMessage //TODO: RBF
             }catch(Exception e) {
                 Logger.Error(e, "Exception while sending request to PagerBuddy-Server.");
                 await checkConnectionOnError(e);

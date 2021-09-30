@@ -32,10 +32,6 @@ namespace PagerBuddy.Views
 
         private readonly CommunicationService client;
 
-        private Collection<AlertConfig> alertList;
-
-        public delegate Task<DateTime> SnoozeTimeHandler(object sender, string title);
-
         public HomeStatusPage(CommunicationService client)
         {
             InitializeComponent();
@@ -46,13 +42,10 @@ namespace PagerBuddy.Views
             viewModel.RequestSnoozeTime += getSnoozeTime;
             viewModel.AllDeactivatedStateChanged += saveDeactivatedState;
             viewModel.AllSnoozeStateChanged += saveSnoozeState;
-            viewModel.RefreshConfigurationRequest += ;
+            viewModel.RefreshConfigurationRequest += refreshAlertConfigs;
             viewModel.RequestLogin += login;
-            viewModel.RequestRefresh += refreshClient;
-            
-            MessagingCenter.Subscribe<AlertStatusViewModel, Action<DateTime>>(this, AlertStatusViewModel.MESSAGING_KEYS.REQUEST_SNOOZE_TIME.ToString(), (obj, callback) => snoozeTimeRequest(obj, callback));
 
-            MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => deleteAllAlertConfigs());
+            MessagingCenter.Subscribe<AlertStatusViewModel>(this, AlertStatusViewModel.MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString(), async (_) => await alertConfigToggled());
 
             if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, false)) {
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, true);
@@ -66,39 +59,37 @@ namespace PagerBuddy.Views
 
             bool allOff = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_DEACTIVATE_ALL, false);
             bool allSnoozed = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue) > DateTime.Now;
-            viewModel.setWarningState(allOff, allSnoozed);
+            viewModel.setDeactivateState(allOff, true);
+            _ = viewModel.setSnoozeState(allSnoozed, true);
 
             updateClientStatus(this, client.clientStatus);
 
-            alertList = getAlertConfigs();
-            viewModel.fillAlertList(alertList);
-        }
+            viewModel.fillAlertList(getAlertConfigs()); //First fill view with current state to avoid long wait
 
-
-        private void deleteAllAlertConfigs() {
-            Collection<AlertConfig> configs = getAlertConfigs();
-            foreach(AlertConfig config in configs) {
-                deleteAlertConfig(config);
+            if (client.clientStatus == CommunicationService.STATUS.AUTHORISED) { //Do not bother if we are not connected yet
+                refreshAlertConfigs(this, null); //Check for config updates
             }
         }
 
-        private void deleteAlertConfig(AlertConfig alertConfig)
-        {
-            DataService.deleteAlertConfig(alertConfig);
-            AlertConfig remove = alertList.First(x => x.id.Equals(alertConfig.id));
-            alertList.Remove(remove);
-            
-            INotifications notifications = DependencyService.Get<INotifications>();
-            notifications.removeNotificationChannel(alertConfig);
+        private async Task alertConfigToggled() {
+            if(client.clientStatus != CommunicationService.STATUS.AUTHORISED && client.clientStatus > CommunicationService.STATUS.ONLINE) {
+                //User is not logged in - do nothing.
+                return;
+            }else if(client.clientStatus < CommunicationService.STATUS.WAIT_PHONE) {
+                Logger.Info("The client is not connected. Will retry sending updates to server at a later time...");
+                //Client is not connected (yet) - retry later
+                //TODO: Implement retry with some back-off system. This must also work if killed.
+                return;
+            }
 
-            viewModel.fillAlertList(alertList);
+            Logger.Info("An alert config was changed by the user. Informing pagerbuddy server.");
+            Collection<AlertConfig> configList = getAlertConfigs();
+            bool result = await client.sendServerRequest(configList);
         }
 
         private void updateClientStatus(object sender, CommunicationService.STATUS newStatus)
         {
             bool isLoading = newStatus == CommunicationService.STATUS.NEW || newStatus == CommunicationService.STATUS.ONLINE;
-            viewModel.setLoadingState(isLoading);
-
             if (isLoading) { //Suppress warning updates while we are loading
                 return;
             }
@@ -106,6 +97,10 @@ namespace PagerBuddy.Views
             bool hasInternet = !(newStatus == CommunicationService.STATUS.OFFLINE);
             bool isAuthorised = newStatus == CommunicationService.STATUS.AUTHORISED;
             viewModel.setErrorState(hasInternet, isAuthorised);
+
+            if(newStatus == CommunicationService.STATUS.AUTHORISED) {
+                refreshAlertConfigs(this, null); //Check for config updates as soon as we go online
+            }
         }
 
         private async void login(object sender, EventArgs eventArgs)
@@ -122,10 +117,6 @@ namespace PagerBuddy.Views
         private void saveDeactivatedState(object sender, bool state)
         {
             DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_DEACTIVATE_ALL, state);
-            if (state)
-            {
-                saveSnoozeState(this, DateTime.MinValue); //clear snooze when all is deactivated
-            }
         }
 
         private void saveSnoozeState(object sender, DateTime state)
@@ -133,20 +124,12 @@ namespace PagerBuddy.Views
             DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, state);
         }
 
-        private async void alertConfigSaved(AlertConfig alertConfig)
+        private async Task alertConfigsChanged(Collection<AlertConfig> configList)
         {
             INotifications notifications = DependencyService.Get<INotifications>();
-            notifications.addNotificationChannel(alertConfig);
+            notifications.UpdateNotificationChannels(configList);
 
-            if (!alertList.Contains(alertConfig))
-            {
-                alertList.Add(alertConfig);
-            }
-            else
-            {
-                alertList = getAlertConfigs();
-            }
-            viewModel.fillAlertList(alertList);
+            bool result = await client.sendServerRequest(configList);
 
             if (Device.RuntimePlatform == Device.Android && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, false)) {
                 showDozeExemptPrompt();
@@ -162,7 +145,7 @@ namespace PagerBuddy.Views
             if(Device.RuntimePlatform == Device.Android && DeviceInfo.Manufacturer.Contains("HUAWEI", StringComparison.OrdinalIgnoreCase) && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, false)) {
                 await showHuaweiPrompt();
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, true);
-            }
+            }  
         }
 
         private async Task showDNDPermissionPrompt()
@@ -211,98 +194,80 @@ namespace PagerBuddy.Views
             login(this, null);
         }
 
-
-         
         private Collection<AlertConfig> getAlertConfigs()
         {
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
             Collection<string> configIDs = DataService.getConfigList();
             foreach(string id in configIDs)
             {
-                configList.Add(DataService.getAlertConfig(id));
+                AlertConfig config = DataService.getAlertConfig(id, null);
+                if(config != null) {
+                    configList.Add(config);
+                }
             }
             return configList;
         }
 
-        private async Task refreshAlertConfigs() {
-            Types.Messages.Dialogs rawChatList = await client.getChatList();
+        private bool hasListChanged(Collection<AlertConfig> newList) {
+            Collection<string> oldList = DataService.getConfigList();
+            bool simpleSame = newList.All((config) => oldList.Contains(config.id)) && newList.Count == oldList.Count;
+            return !simpleSame;
+        }
 
-            IReadOnlyList<Types.Dialog> dialogList = new List<Types.Dialog>();
-            Collection<TelegramPeer> peerCollection = new Collection<TelegramPeer>();
+        private async void refreshAlertConfigs(object sender, EventArgs args) {
 
+            Types.Messages.Chats rawChatList = await client.getChatList();
+
+            IReadOnlyList<Types.Chat> chatList = new List<Types.Chat>();
             if (rawChatList == null) {
                 Logger.Warn("Retrieving chat list returned null.");
                 //TODO: Handle user-facing output in this case
                 return;
             } else if (rawChatList.Default != null) {
-                Types.Messages.Dialogs.DefaultTag dialogsTag = rawChatList.Default;
-                dialogList = dialogsTag.Dialogs;
-                peerCollection = TelegramPeer.getPeerCollection(dialogsTag.Chats);
+                Types.Messages.Chats.DefaultTag chatsTag = rawChatList.Default;
+                chatList = chatsTag.Chats;
             } else if (rawChatList.Slice != null) {
-                Logger.Info("Return type was DialogsSlice. Presumably user has more than 100 active dialogs.");
-                Types.Messages.Dialogs.SliceTag dialogsTag = rawChatList.Slice;
-                dialogList = dialogsTag.Dialogs;
-                peerCollection = TelegramPeer.getPeerCollection(dialogsTag.Chats);
-            } else if (rawChatList.NotModified != null) {
-                Logger.Warn("Return type was DialogsNotModified. This case is not implemented and will be treated as empty chat list.");
+                Logger.Info("Return type was ChatsSlice. Presumably user has more than 100 active chats.");
+                Types.Messages.Chats.SliceTag chatsTag = rawChatList.Slice;
+                chatList = chatsTag.Chats;
             }
 
-            if (dialogList.Count < 1) {
-                Logger.Warn("Chat list was empty.");
+            Collection<TelegramPeer> peerCollection = TelegramPeer.getPeerCollection(chatList);
+
+
+            if (chatList.Count < 1) {
+                Logger.Info("Chat list was empty.");
                 //TODO: Handle user-facing output in this case
-                return;
             }
 
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
 
-            foreach (Types.Dialog dialog in dialogList) {
-                if (dialog.Default == null) {
-                    Logger.Info("Dialog list contained empty member.");
-                    continue;
+            foreach(TelegramPeer peer in peerCollection) {
+                if (peer.photoLocation != null) {
+                    await peer.loadImage(client);
                 }
 
-                Types.Peer peer = dialog.Default.Peer;
-
-                int id;
-                if (peer.Channel != null) {
-                    id = peer.Channel.ChannelId;
-                } else if (peer.Chat != null) {
-                    id = peer.Chat.ChatId;
-                } else if (peer.User != null) {
-                    id = peer.User.UserId;
+                AlertConfig alertConfig = AlertConfig.findExistingConfig(peer.id);
+                if(alertConfig != null) {
+                    alertConfig.triggerGroup = peer;
                 } else {
-                    Logger.Warn("Peer type was not found and will be ignored.");
-                    continue;
+                    alertConfig = new AlertConfig(peer);
                 }
-
-                TelegramPeer detailPeer = peerCollection.FirstOrDefault((TelegramPeer x) => x.id == id);
-                if (detailPeer == null || detailPeer.id != id) {
-                    Logger.Info("Details for a peer could not be found in peer collection and will be ignored.");
-                    continue;
-                }
-
-                if (detailPeer.photoLocation != null) {
-                    _ = detailPeer.loadImage(client); //Do not wait for image loading to avoid blocking
-                }
-
-                AlertConfig alertConfig = AlertConfig.findExistingConfig(detailPeer.id);
-                if (alertConfig == null) {
-                    alertConfig = new AlertConfig(detailPeer);
-                }
+                alertConfig.saveChanges(true);
                 configList.Add(alertConfig);
             }
 
             viewModel.fillAlertList(configList);
+
+            if (hasListChanged(configList)) { //If the alert list has changed, subscribe to PagerBuddy-Server with new list
+                await alertConfigsChanged(configList);
+            }
+
         }
 
-        private async void snoozeTimeRequest(object sender, Action<DateTime> callback)
+        private async Task<DateTime> getSnoozeTime(object sender, EventArgs args)
         {
-            DateTime result = await getSnoozeTime(sender, AppResources.HomeStatusPage_IndividualSnooze_Prompt);
-            callback(result);
-        }
-
-        private async Task<DateTime> getSnoozeTime(object sender, string title)
-        {
+            string title = "Blabla"; //TODO: Fill in resource key
             string cancelText = AppResources.HomeStatusPage_Snooze_Cancel;
             Dictionary<string, TimeSpan> timeDict = new Dictionary<string, TimeSpan> {
                 { string.Format(AppResources.HomeStatusPage_Snooze_Hours, 3), new TimeSpan(3, 0, 0) },

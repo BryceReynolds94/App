@@ -1,6 +1,7 @@
 ﻿using PagerBuddy.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace PagerBuddy.Interfaces
@@ -14,6 +15,7 @@ namespace PagerBuddy.Interfaces
 
         void addNotificationChannel(AlertConfig config);
         void removeNotificationChannel(AlertConfig config);
+        void UpdateNotificationChannels(Collection<AlertConfig> configList);
 
     }
 }
