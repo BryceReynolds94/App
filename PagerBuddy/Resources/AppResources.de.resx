@@ -30,62 +30,11 @@
   <data name="Android_AndroidNotifications_StandardChannel_Title" xml:space="preserve">
     <value>App-Informationen</value>
   </data>
-  <data name="ConfigureKeywordPage_Keyword_Placeholder" xml:space="preserve">
-    <value>Schlüsselwort</value>
-  </data>
-  <data name="ConfigureKeywordPage_NextBtn" xml:space="preserve">
-    <value>Speichern</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Friday" xml:space="preserve">
-    <value>Fr</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Monday" xml:space="preserve">
-    <value>Mo</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Saturday" xml:space="preserve">
-    <value>Sa</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Sunday" xml:space="preserve">
-    <value>So</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Thursday" xml:space="preserve">
-    <value>Do</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Tuesday" xml:space="preserve">
-    <value>Di</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Wednesday" xml:space="preserve">
-    <value>Mi</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_From" xml:space="preserve">
-    <value>von</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Set" xml:space="preserve">
-    <value>Nur zu angegebenen Zeiten</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Title" xml:space="preserve">
-    <value>Zeit</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_To" xml:space="preserve">
-    <value>bis</value>
-  </data>
-  <data name="ConfigureKeywordPage_Title" xml:space="preserve">
-    <value>Alarmkonfiguration</value>
-  </data>
-  <data name="ConfigureKeywordPage_Trigger_Any" xml:space="preserve">
-    <value>Alle Nachrichten</value>
-  </data>
-  <data name="ConfigureKeywordPage_Trigger_Title" xml:space="preserve">
-    <value>Auslöser</value>
-  </data>
   <data name="HomeStatusPage_DNDPermissionPrompt_Cancel" xml:space="preserve">
     <value>Nein</value>
   </data>
   <data name="HomeStatusPage_DNDPermissionPrompt_Confirm" xml:space="preserve">
     <value>Bring mich dorthin</value>
-  </data>
-  <data name="HomeStatusPage_Error_NoInternet" xml:space="preserve">
-    <value>Keine Internetverbindung</value>
   </data>
   <data name="HomeStatusPage_FlipTime_Prefix" xml:space="preserve">
     <value>Außer</value>
@@ -207,17 +156,8 @@
   <data name="AboutPage_TelegramPP_Link" xml:space="preserve">
     <value>Datenschutzerklärung Telegram</value>
   </data>
-  <data name="AlertStatus_Status_Deactivated" xml:space="preserve">
-    <value>Deaktiviert bis {0:dd.MM.yy HH:mm}</value>
-  </data>
   <data name="AlertStatus_Status_Default" xml:space="preserve">
     <value>Ereignis wurde noch nicht ausgelöst</value>
-  </data>
-  <data name="AlertStatus_Trigger_Any" xml:space="preserve">
-    <value>Alle Nachrichten</value>
-  </data>
-  <data name="AlertStatus_Trigger_Server" xml:space="preserve">
-    <value>PagerBuddy-Server</value>
   </data>
   <data name="Android_AndroidNotifications_StandardChannel_Description" xml:space="preserve">
     <value>Generelle Benachrichtigungen zur App und Updates.</value>
@@ -231,21 +171,6 @@
   <data name="App_Share_Message" xml:space="preserve">
     <value>Hol dir PagerBuddy und verpasse nie wieder eine dringende Benachrichtigung. PagerBuddy gibt es aktuell für Android und bald auch für iOS.</value>
   </data>
-  <data name="ConfigureGroupPage_Title" xml:space="preserve">
-    <value>Chat auswählen</value>
-  </data>
-  <data name="ConfigureKeywordPage_Keyword_Hint" xml:space="preserve">
-    <value>Du kannst RegEx verwenden</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Any" xml:space="preserve">
-    <value>Immer</value>
-  </data>
-  <data name="ConfigureKeywordPage_Trigger_Keyword" xml:space="preserve">
-    <value>Nachrichten mit einem Schlüsselwort</value>
-  </data>
-  <data name="ConfigureKeywordPage_Trigger_Server" xml:space="preserve">
-    <value>Nachrichten vom PagerBuddy-Server</value>
-  </data>
   <data name="HomeStatusPage_DNDPermissionPrompt_Message" xml:space="preserve">
     <value>Erlaube PagerBuddy den Zugriff während dem "Nicht stören" Modus um unabhängig von einer Stummschaltung sicher Benachrichtigungen zu erhalten. Den Zugriff kannst du in deinen Einstellungen konfigurieren.</value>
   </data>
@@ -255,9 +180,6 @@
   <data name="HomeStatusPage_Error_NoTelegram" xml:space="preserve">
     <value>Nicht mit Telegram verbunden</value>
   </data>
-  <data name="HomeStatusPage_IndividualSnooze_Prompt" xml:space="preserve">
-    <value>Deaktivieren für</value>
-  </data>
   <data name="HomeStatusPage_Snooze_Prompt" xml:space="preserve">
     <value>Alle Benachrichtigungen deaktivieren für</value>
   </data>
@@ -265,7 +187,7 @@
     <value>Alle Benachrichtigungen deaktiviert</value>
   </data>
   <data name="HomeStatusPage_Warning_Snooze" xml:space="preserve">
-    <value>Alle Benachrichtigungen deaktiviert bis {0:dd.MM.yy HH:mm}</value>
+    <value>Alle Benachrichtigungen deaktiviert bis\n{0:dd.MM.yy HH:mm}</value>
   </data>
   <data name="HomeStatusPage_WelcomePrompt_Message" xml:space="preserve">
     <value>Willkommen! Ich bin dein Buddy für dringende Benachrichtigungen. Log dich zum loslegen mit deinem Telegram-Account ein.</value>
@@ -329,12 +251,6 @@
   </data>
   <data name="ConfigureGroupPage_Warning_NoChats" xml:space="preserve">
     <value>Es sieht so aus als ob du keine aktive Chats in Telegram hast. Trete zuerst einer Gruppe in Telegram bei oder starte eine Konversation um diese anschließend als Auslöser für Alarmbenachrichtigungen auszuwählen.</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Invert" xml:space="preserve">
-    <value>Immer, außer zu angegebenen Zeiten</value>
-  </data>
-  <data name="ConfigureKeywordPage_Trigger_Server_IgnoreTest" xml:space="preserve">
-    <value>Probealarme ignorieren</value>
   </data>
   <data name="Notification_BreakingUpdate_Title" xml:space="preserve">
     <value>PagerBuddy aktualisiert</value>

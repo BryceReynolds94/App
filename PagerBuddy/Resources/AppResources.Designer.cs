@@ -232,38 +232,11 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deactivated untill {0:dd.MM.yy HH:mm}.
-        /// </summary>
-        public static string AlertStatus_Status_Deactivated {
-            get {
-                return ResourceManager.GetString("AlertStatus_Status_Deactivated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Event was not triggered yet.
         /// </summary>
         public static string AlertStatus_Status_Default {
             get {
                 return ResourceManager.GetString("AlertStatus_Status_Default", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Any chat message.
-        /// </summary>
-        public static string AlertStatus_Trigger_Any {
-            get {
-                return ResourceManager.GetString("AlertStatus_Trigger_Any", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PagerBuddy-Server.
-        /// </summary>
-        public static string AlertStatus_Trigger_Server {
-            get {
-                return ResourceManager.GetString("AlertStatus_Trigger_Server", resourceCulture);
             }
         }
         
@@ -358,218 +331,11 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Chat.
-        /// </summary>
-        public static string ConfigureGroupPage_Title {
-            get {
-                return ResourceManager.GetString("ConfigureGroupPage_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to It appears that you have no active chats in Telegram. First join a group or start a chat in Telegram to add it as an alert trigger..
         /// </summary>
         public static string ConfigureGroupPage_Warning_NoChats {
             get {
                 return ResourceManager.GetString("ConfigureGroupPage_Warning_NoChats", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You can use RegEx.
-        /// </summary>
-        public static string ConfigureKeywordPage_Keyword_Hint {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Keyword_Hint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Keyword.
-        /// </summary>
-        public static string ConfigureKeywordPage_Keyword_Placeholder {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Keyword_Placeholder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save.
-        /// </summary>
-        public static string ConfigureKeywordPage_NextBtn {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_NextBtn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Always.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_Any {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_Any", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fr.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_Day_Friday {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Friday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mo.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_Day_Monday {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Monday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sa.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_Day_Saturday {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Saturday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Su.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_Day_Sunday {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Sunday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Th.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_Day_Thursday {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Thursday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tu.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_Day_Tuesday {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Tuesday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to We.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_Day_Wednesday {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_Day_Wednesday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to from.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_From {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_From", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Always, except at given times.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_Invert {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_Invert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only at given times.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_Set {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_Set", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Time.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_Title {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to to.
-        /// </summary>
-        public static string ConfigureKeywordPage_Time_To {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Time_To", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Alert Configuration.
-        /// </summary>
-        public static string ConfigureKeywordPage_Title {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Any message.
-        /// </summary>
-        public static string ConfigureKeywordPage_Trigger_Any {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Trigger_Any", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Messages with a keyword.
-        /// </summary>
-        public static string ConfigureKeywordPage_Trigger_Keyword {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Trigger_Keyword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Messages from PagerBuddy-Server.
-        /// </summary>
-        public static string ConfigureKeywordPage_Trigger_Server {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Trigger_Server", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ignore test alerts.
-        /// </summary>
-        public static string ConfigureKeywordPage_Trigger_Server_IgnoreTest {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Trigger_Server_IgnoreTest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trigger.
-        /// </summary>
-        public static string ConfigureKeywordPage_Trigger_Title {
-            get {
-                return ResourceManager.GetString("ConfigureKeywordPage_Trigger_Title", resourceCulture);
             }
         }
         
@@ -606,15 +372,6 @@ namespace PagerBuddy.Resources {
         public static string HomeStatusPage_DNDPermissionPrompt_Title {
             get {
                 return ResourceManager.GetString("HomeStatusPage_DNDPermissionPrompt_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Internet Connection.
-        /// </summary>
-        public static string HomeStatusPage_Error_NoInternet {
-            get {
-                return ResourceManager.GetString("HomeStatusPage_Error_NoInternet", resourceCulture);
             }
         }
         
@@ -669,15 +426,6 @@ namespace PagerBuddy.Resources {
         public static string HomeStatusPage_HuaweiPrompt_Title {
             get {
                 return ResourceManager.GetString("HomeStatusPage_HuaweiPrompt_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deactivate for.
-        /// </summary>
-        public static string HomeStatusPage_IndividualSnooze_Prompt {
-            get {
-                return ResourceManager.GetString("HomeStatusPage_IndividualSnooze_Prompt", resourceCulture);
             }
         }
         
@@ -772,7 +520,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All alerts deactivated untill {0:dd.MM.yy HH:mm}.
+        ///   Looks up a localized string similar to All alerts deactivated untill\n{0:dd.MM.yy HH:mm}.
         /// </summary>
         public static string HomeStatusPage_Warning_Snooze {
             get {

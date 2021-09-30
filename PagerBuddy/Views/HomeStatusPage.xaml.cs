@@ -267,7 +267,8 @@ namespace PagerBuddy.Views
 
         private async Task<DateTime> getSnoozeTime(object sender, EventArgs args)
         {
-            string title = "Blabla"; //TODO: Fill in resource key
+            //TODO Later: Possibly replace this with a date & time picker
+            string title = AppResources.HomeStatusPage_Snooze_Prompt;
             string cancelText = AppResources.HomeStatusPage_Snooze_Cancel;
             Dictionary<string, TimeSpan> timeDict = new Dictionary<string, TimeSpan> {
                 { string.Format(AppResources.HomeStatusPage_Snooze_Hours, 3), new TimeSpan(3, 0, 0) },

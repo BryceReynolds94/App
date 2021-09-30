@@ -166,17 +166,8 @@
   <data name="AboutPage_Title" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="AlertStatus_Status_Deactivated" xml:space="preserve">
-    <value>Deactivated untill {0:dd.MM.yy HH:mm}</value>
-  </data>
   <data name="AlertStatus_Status_Default" xml:space="preserve">
     <value>Event was not triggered yet</value>
-  </data>
-  <data name="AlertStatus_Trigger_Any" xml:space="preserve">
-    <value>Any chat message</value>
-  </data>
-  <data name="AlertStatus_Trigger_Server" xml:space="preserve">
-    <value>PagerBuddy-Server</value>
   </data>
   <data name="Android_AndroidNotifications_AlertChannel_Description" xml:space="preserve">
     <value>Alert notifications you configured in PagerBuddy.</value>
@@ -203,69 +194,6 @@
   <data name="App_Share_Message" xml:space="preserve">
     <value>Check out PagerBuddy and never miss an urgent message again. The app is currently available for Android and will be coming soon for iOS.</value>
   </data>
-  <data name="ConfigureGroupPage_Title" xml:space="preserve">
-    <value>Select Chat</value>
-  </data>
-  <data name="ConfigureKeywordPage_Keyword_Hint" xml:space="preserve">
-    <value>You can use RegEx</value>
-  </data>
-  <data name="ConfigureKeywordPage_Keyword_Placeholder" xml:space="preserve">
-    <value>Keyword</value>
-  </data>
-  <data name="ConfigureKeywordPage_NextBtn" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Any" xml:space="preserve">
-    <value>Always</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Friday" xml:space="preserve">
-    <value>Fr</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Monday" xml:space="preserve">
-    <value>Mo</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Saturday" xml:space="preserve">
-    <value>Sa</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Sunday" xml:space="preserve">
-    <value>Su</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Thursday" xml:space="preserve">
-    <value>Th</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Tuesday" xml:space="preserve">
-    <value>Tu</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Day_Wednesday" xml:space="preserve">
-    <value>We</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_From" xml:space="preserve">
-    <value>from</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Set" xml:space="preserve">
-    <value>Only at given times</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Title" xml:space="preserve">
-    <value>Time</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_To" xml:space="preserve">
-    <value>to</value>
-  </data>
-  <data name="ConfigureKeywordPage_Title" xml:space="preserve">
-    <value>Alert Configuration</value>
-  </data>
-  <data name="ConfigureKeywordPage_Trigger_Any" xml:space="preserve">
-    <value>Any message</value>
-  </data>
-  <data name="ConfigureKeywordPage_Trigger_Keyword" xml:space="preserve">
-    <value>Messages with a keyword</value>
-  </data>
-  <data name="ConfigureKeywordPage_Trigger_Server" xml:space="preserve">
-    <value>Messages from PagerBuddy-Server</value>
-  </data>
-  <data name="ConfigureKeywordPage_Trigger_Title" xml:space="preserve">
-    <value>Trigger</value>
-  </data>
   <data name="HomeStatusPage_DNDPermissionPrompt_Cancel" xml:space="preserve">
     <value>No</value>
   </data>
@@ -278,17 +206,11 @@
   <data name="HomeStatusPage_DNDPermissionPrompt_Title" xml:space="preserve">
     <value>Grant Do Not Disturb access</value>
   </data>
-  <data name="HomeStatusPage_Error_NoInternet" xml:space="preserve">
-    <value>No Internet Connection</value>
-  </data>
   <data name="HomeStatusPage_Error_NoTelegram" xml:space="preserve">
     <value>Not Connected to Telegram</value>
   </data>
   <data name="HomeStatusPage_FlipTime_Prefix" xml:space="preserve">
     <value>Except</value>
-  </data>
-  <data name="HomeStatusPage_IndividualSnooze_Prompt" xml:space="preserve">
-    <value>Deactivate for</value>
   </data>
   <data name="HomeStatusPage_Snooze_Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -322,7 +244,7 @@
     <value>All alerts deactivated</value>
   </data>
   <data name="HomeStatusPage_Warning_Snooze" xml:space="preserve">
-    <value>All alerts deactivated untill {0:dd.MM.yy HH:mm}</value>
+    <value>All alerts deactivated untill\n{0:dd.MM.yy HH:mm}</value>
   </data>
   <data name="HomeStatusPage_WelcomePrompt_Cancel" xml:space="preserve">
     <value>Not now</value>
@@ -450,12 +372,6 @@
   </data>
   <data name="ConfigureGroupPage_Warning_NoChats" xml:space="preserve">
     <value>It appears that you have no active chats in Telegram. First join a group or start a chat in Telegram to add it as an alert trigger.</value>
-  </data>
-  <data name="ConfigureKeywordPage_Time_Invert" xml:space="preserve">
-    <value>Always, except at given times</value>
-  </data>
-  <data name="ConfigureKeywordPage_Trigger_Server_IgnoreTest" xml:space="preserve">
-    <value>Ignore test alerts</value>
   </data>
   <data name="Notification_BreakingUpdate_Title" xml:space="preserve">
     <value>PagerBuddy updated</value>

@@ -3,6 +3,7 @@ using PagerBuddy.Interfaces;
 using PagerBuddy.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -35,15 +36,24 @@ namespace PagerBuddy.Services
             Logger.Info("Firebase token was updated, TOKEN: {0}", token);
             DataService.setConfigValue(DataService.DATA_KEYS.FCM_TOKEN, token);
 
+            Collection<string> configIDs = DataService.getConfigList();
+            Collection<AlertConfig> configList = new Collection<AlertConfig>();
+            foreach(string configID in configIDs) {
+                AlertConfig config = DataService.getAlertConfig(configID, null);
+                if(config != null) {
+                    configList.Add(config);
+                }
+            }
+
             if (instance != null) {
                 if (instance.client.clientStatus == CommunicationService.STATUS.AUTHORISED) {
-                    await instance.client.subscribePushNotifications(token);
+                    await instance.client.sendServerRequest(configList);
                 }
             } else {
                 CommunicationService client = new CommunicationService(true);
                 client.StatusChanged += async (sender, status) => {
                     if (status == CommunicationService.STATUS.AUTHORISED) {
-                        await client.subscribePushNotifications(token);
+                        await client.sendServerRequest(configList);
                     }
                 };
             }  

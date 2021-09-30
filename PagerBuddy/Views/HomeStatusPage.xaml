@@ -81,9 +81,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <BoxView BackgroundColor="Gray" Opacity="0.5" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
+            <BoxView BackgroundColor="Black" Opacity="0.6" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
             <Image Opacity="1"  VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="150" WidthRequest="150" Grid.Row="1" Source="{Binding WarningDeactivateIcon}"/>
-            <Label Text="All deactivated." HorizontalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0"/>
+            <Label Text="{Binding WarningDeactivateText}" HorizontalOptions="Center" FontSize="Large" TextColor="White" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0,20,20" />
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding DeactivateAllOff}"/>
             </Grid.GestureRecognizers>
@@ -96,9 +96,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <BoxView BackgroundColor="Gray" Opacity="0.5" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
+            <BoxView BackgroundColor="Black" Opacity="0.6" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
             <Image  Opacity="1" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="150" WidthRequest="150" Grid.Row="1" Source="{Binding WarningSnoozeIcon}" />
-            <Label Text="All snoozed." HorizontalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0"/>
+            <Label Text="{Binding WarningSnoozeText}" HorizontalOptions="Center" FontSize="Large" TextColor="White" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0,20,20"/>
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding SnoozeAllOff}"/>
             </Grid.GestureRecognizers>

@@ -35,8 +35,6 @@ namespace PagerBuddy.Services
             HAS_PROMPTED_DOZE_EXEMPT, //Whether the user has been asked to grant ignore battery optimization permission in Android
             HAS_PROMPTED_HUAWEI_EXEPTION, //Wheter the user has been asked to exempt app from Huawei restrictions
             FCM_TOKEN, //Token for FCM messages
-            AES_AUTH_KEY, //Encryption key used for FCM payloads
-            AES_AUTH_KEY_ID,
             BUILD_UPDATE_COMPLETE //Build ID to avoid performing double updates (mostly Samsung)
         }; 
 

@@ -3,6 +3,7 @@ using PagerBuddy.Interfaces;
 using PagerBuddy.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ namespace PagerBuddy.iOS {
 
             UNTimeIntervalNotificationTrigger trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(1, false);
 
-            UNNotificationRequest request = UNNotificationRequest.FromIdentifier("someID", content, trigger); //TODO: RBF
+            UNNotificationRequest request = UNNotificationRequest.FromIdentifier("someID", content, trigger); //TODO: IOS RBF
             UNUserNotificationCenter center = UNUserNotificationCenter.Current;
             center.AddNotificationRequest(request, (err) => {
                 if(err != null) {
@@ -53,6 +54,10 @@ namespace PagerBuddy.iOS {
 
         public void showStandardNotification(string title, string text) {
             //TODO: IOS Implementation
+            throw new NotImplementedException();
+        }
+
+        public void UpdateNotificationChannels(Collection<AlertConfig> configList) {
             throw new NotImplementedException();
         }
 

@@ -40,7 +40,7 @@ namespace PagerBuddy.Models {
                 return new ServerRequest(MESSAGING_TYPE.FCM, token, alertIDList);
 
             } else if (Device.RuntimePlatform == Device.iOS) {
-                token = ""; //TODO: Implement APNS token
+                token = ""; //TODO: IOS Implement APNS token
 
                 return new ServerRequest(MESSAGING_TYPE.APNS, token, alertIDList);
 

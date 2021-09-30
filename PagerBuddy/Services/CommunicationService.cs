@@ -26,7 +26,7 @@ namespace PagerBuddy.Services {
         private TelegramClient client;
         private STATUS status;
 
-        private static readonly string PAGERBUDDY_SERVER_BOT = "pagerbuddyserverbot"; //TODO: Add actual ID
+        private static readonly string PAGERBUDDY_SERVER_BOT = "pagerbuddyserverbot";
         public STATUS clientStatus {
             get {
                 return status;
@@ -96,7 +96,6 @@ namespace PagerBuddy.Services {
                     if (user != null) {
                         await saveUserData(user);
                     }
-                    await subscribePushNotifications(DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, ""), true);
                 }
                 if (clientStatus != STATUS.ONLINE) { //status may have changed out of scope due to previous call fallbacks
                     Logger.Info("Connect process completed, but client Status was changed out of scope. Not setting authorised status. CurrentStatus: " + clientStatus.ToString());
@@ -165,9 +164,6 @@ namespace PagerBuddy.Services {
 
             clientStatus = STATUS.NEW;
             await forceReloadConnection();
-        }
-
-        public async Task subscribePushNotifications(string token, bool isInit = false) {
         }
 
         public async Task<TStatus> loginWithPassword(string password) {
@@ -309,13 +305,6 @@ namespace PagerBuddy.Services {
         private async Task loginCompleted(Types.User user) {
             await saveUserData(user);
             clientStatus = STATUS.AUTHORISED;
-
-            string token = DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, "");
-            if (token.Length < 1) {
-                Logger.Warn("Could not subscribe to FCM Messages as no token available");
-            } else {
-                await subscribePushNotifications(token);
-            }
         }
 
         private async Task saveUserData(Types.User user) {

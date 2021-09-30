@@ -111,7 +111,7 @@ namespace PagerBuddy.Views {
                 }
             }
             if(Device.RuntimePlatform == Device.iOS) {
-                //TODO: RBF
+                //TODO: IOS RBF
 
                 Interfaces.INotifications notifications = DependencyService.Get<Interfaces.INotifications>();
                 notifications.addNotificationChannel(null);

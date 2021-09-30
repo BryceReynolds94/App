@@ -23,6 +23,7 @@
             <Color x:Key="WarningColor">#F4511E</Color>
 
             <Color x:Key="BackgroundColor">#FAFAFA</Color>
+            <SolidColorBrush x:Key="BackgroundBrush" Color="{d:StaticResource BackgroundColor}" />
 
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource PrimaryColor}" />
