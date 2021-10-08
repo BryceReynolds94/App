@@ -19,6 +19,7 @@
     <None Remove="Resources\Images\icon_alert_snooze.svg" />
     <None Remove="Resources\Images\icon_alert_snooze_off.svg" />
     <None Remove="Resources\Images\icon_alert_snooze_white.svg" />
+    <None Remove="Resources\Images\icon_alert_time.svg" />
     <None Remove="Resources\Images\icon_clear.svg" />
     <None Remove="Resources\Images\icon_confirm.svg" />
     <None Remove="Resources\Images\icon_facebook.svg" />
@@ -47,6 +48,7 @@
     <EmbeddedResource Include="Resources\Images\icon_alert_snooze.svg" />
     <EmbeddedResource Include="Resources\Images\icon_alert_snooze_off.svg" />
     <EmbeddedResource Include="Resources\Images\icon_alert_snooze_white.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_alert_time.svg" />
     <EmbeddedResource Include="Resources\Images\icon_clear.svg" />
     <EmbeddedResource Include="Resources\Images\icon_confirm.svg" />
     <EmbeddedResource Include="Resources\Images\icon_facebook.svg" />
@@ -79,6 +81,9 @@
     <EmbeddedResource Update="Resources\AppResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ActiveTimePopup.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\LoginPasswordPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>

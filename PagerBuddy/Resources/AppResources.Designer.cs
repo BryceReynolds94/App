@@ -232,6 +232,87 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string ActiveTimePopup_Cancel {
+            get {
+                return ResourceManager.GetString("ActiveTimePopup_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string ActiveTimePopup_Confirm {
+            get {
+                return ResourceManager.GetString("ActiveTimePopup_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to F.
+        /// </summary>
+        public static string ActiveTimePopup_DayFriday {
+            get {
+                return ResourceManager.GetString("ActiveTimePopup_DayFriday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M.
+        /// </summary>
+        public static string ActiveTimePopup_DayMonday {
+            get {
+                return ResourceManager.GetString("ActiveTimePopup_DayMonday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to S.
+        /// </summary>
+        public static string ActiveTimePopup_DaySaturday {
+            get {
+                return ResourceManager.GetString("ActiveTimePopup_DaySaturday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to S.
+        /// </summary>
+        public static string ActiveTimePopup_DaySunday {
+            get {
+                return ResourceManager.GetString("ActiveTimePopup_DaySunday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to T.
+        /// </summary>
+        public static string ActiveTimePopup_DayThursday {
+            get {
+                return ResourceManager.GetString("ActiveTimePopup_DayThursday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to T.
+        /// </summary>
+        public static string ActiveTimePopup_DayTuesday {
+            get {
+                return ResourceManager.GetString("ActiveTimePopup_DayTuesday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to W.
+        /// </summary>
+        public static string ActiveTimePopup_DayWednesday {
+            get {
+                return ResourceManager.GetString("ActiveTimePopup_DayWednesday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Event was not triggered yet.
         /// </summary>
         public static string AlertStatus_Status_Default {
@@ -376,7 +457,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not Connected to Telegram.
+        ///   Looks up a localized string similar to Start using PagerBuddy by logging in to your Telegram account..
         /// </summary>
         public static string HomeStatusPage_Error_NoTelegram {
             get {
@@ -516,6 +597,15 @@ namespace PagerBuddy.Resources {
         public static string HomeStatusPage_Warning_Deactivated {
             get {
                 return ResourceManager.GetString("HomeStatusPage_Warning_Deactivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No PagerBuddy alert groups found. Make sure you have been added to a Telegram alert group using PagerBuddy..
+        /// </summary>
+        public static string HomeStatusPage_Warning_EmptyList {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_Warning_EmptyList", resourceCulture);
             }
         }
         

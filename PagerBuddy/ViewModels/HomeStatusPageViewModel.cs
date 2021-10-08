@@ -29,6 +29,7 @@ namespace PagerBuddy.ViewModels {
         public Command SnoozeAll { get; set; }
         public Command SnoozeAllOff { get; set; }
         public Command ReloadConfig { get; set; }
+        public Command TimeAll { get; set; }
         public Command Login { get; set; }
 
         public EventHandler RefreshConfigurationRequest;
@@ -36,10 +37,13 @@ namespace PagerBuddy.ViewModels {
         public UpdateSnoozeEventHandler AllSnoozeStateChanged;
         public RequestSnoozeEventHandler RequestSnoozeTime;
         public EventHandler RequestLogin;
+        public EventHandler RequestTimeConfig;
 
         public delegate void UpdateStatusEventHandler(object sender, bool newStatus);
         public delegate void UpdateSnoozeEventHandler(object sender, DateTime snoozeTime);
         public delegate Task<DateTime> RequestSnoozeEventHandler(object sender, EventArgs args);
+
+        //TODO: Possibly add RefreshView https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/refreshview
 
         public HomeStatusPageViewModel() {
             Title = AppResources.HomeStatusPage_Title;
@@ -50,6 +54,7 @@ namespace PagerBuddy.ViewModels {
             SnoozeAll = new Command(() => _ = setSnoozeState(true));
             SnoozeAllOff = new Command(() => _ = setSnoozeState(false));
             ReloadConfig = new Command(() => reloadConfig());
+            TimeAll = new Command(() => RequestTimeConfig.Invoke(this, null)); 
             Login = new Command(() => RequestLogin.Invoke(this, null));
 
         }
@@ -69,7 +74,10 @@ namespace PagerBuddy.ViewModels {
         }
 
         public async Task setSnoozeState(bool state, bool init = false) {
-            DateTime snoozeTime = DateTime.MinValue; //TODO: Fix getting real snoozetime on load
+            DateTime snoozeTime = DateTime.MinValue;
+            if(init && state) {
+                snoozeTime = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue);
+            }
             if (state && !init) {
                 snoozeTime = await RequestSnoozeTime.Invoke(this, null);
                 if(snoozeTime < DateTime.Now) {
@@ -110,11 +118,13 @@ namespace PagerBuddy.ViewModels {
             OnPropertyChanged(nameof(ErrorLogin));
         }
 
+        private void getActiveTimeConfig() {
+
+        }
+
         public bool ConfigActive => errorState != ERROR_ACTION.NO_TELEGRAM;
 
         public bool WarningDeactivate => allDeactivated;
-        public ImageSource WarningDeactivateIcon => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_off_white.svg");
-        public string WarningDeactivateText => AppResources.HomeStatusPage_Warning_Deactivated;
         public ImageSource AllDeactivateIcon {
             get {
                 if (allDeactivated) {
@@ -125,7 +135,6 @@ namespace PagerBuddy.ViewModels {
             }
         }
         public bool WarningSnooze => allSnoozed;
-        public ImageSource WarningSnoozeIcon => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze_white.svg");
         public string WarningSnoozeText => string.Format(AppResources.HomeStatusPage_Warning_Snooze, allSnoozedTime).Replace("\\n", Environment.NewLine);
         public ImageSource AllSnoozeIcon {
             get {
@@ -136,6 +145,8 @@ namespace PagerBuddy.ViewModels {
                 }
             }
         }
+
+        public ImageSource AllTimeIcon => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_time.svg");
 
         public bool ReloadConfigEnabled => errorState == ERROR_ACTION.NONE;
         public ImageSource ReloadConfigIcon {
@@ -149,8 +160,6 @@ namespace PagerBuddy.ViewModels {
         }
 
         public bool ErrorLogin => errorState == ERROR_ACTION.NO_TELEGRAM;
-        public ImageSource LoginIcon => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_login.svg");
-
         public bool EmptyList => alertList.Count == 0;
         public ImageSource EmptyTabIcon => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_sync.svg");
 

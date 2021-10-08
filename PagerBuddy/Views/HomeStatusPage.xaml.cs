@@ -44,6 +44,7 @@ namespace PagerBuddy.Views
             viewModel.AllSnoozeStateChanged += saveSnoozeState;
             viewModel.RefreshConfigurationRequest += refreshAlertConfigs;
             viewModel.RequestLogin += login;
+            viewModel.RequestTimeConfig += timeConfig;
 
             MessagingCenter.Subscribe<AlertStatusViewModel>(this, AlertStatusViewModel.MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString(), async (_) => await alertConfigToggled());
 
@@ -103,6 +104,10 @@ namespace PagerBuddy.Views
             }
         }
 
+        private async void timeConfig(object sender, EventArgs eventArgs) {
+            await Navigation.PushModalAsync(new ActiveTimePopup(), false);
+        }
+
         private async void login(object sender, EventArgs eventArgs)
         {
             await Navigation.PushAsync(new LoginPhonePage(client));
@@ -124,7 +129,8 @@ namespace PagerBuddy.Views
             DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, state);
         }
 
-        private async Task alertConfigsChanged(Collection<AlertConfig> configList)
+        private async Task alertConfigsChanged(Collection<AlertConfig> configList) //TODO: This is called way too often - reduce detected changes to actual data changes
+            //TODO: RBF
         {
             INotifications notifications = DependencyService.Get<INotifications>();
             notifications.UpdateNotificationChannels(configList);

@@ -178,7 +178,7 @@
     <value>Zugriff während "Nicht stören" erlauben</value>
   </data>
   <data name="HomeStatusPage_Error_NoTelegram" xml:space="preserve">
-    <value>Nicht mit Telegram verbunden</value>
+    <value>Log dich zum loslegen mit deinem Telegram-Account ein um mit PagerBuddy loszulegen.</value>
   </data>
   <data name="HomeStatusPage_Snooze_Prompt" xml:space="preserve">
     <value>Alle Benachrichtigungen deaktivieren für</value>
@@ -275,5 +275,35 @@
   </data>
   <data name="HomeStatusPage_HuaweiPrompt_Cancel" xml:space="preserve">
     <value>Nein</value>
+  </data>
+  <data name="HomeStatusPage_Warning_EmptyList" xml:space="preserve">
+    <value>Es wurde keine PagerBuddy-Gruppe gefunden. Überprüfe, dass du einer Benachrichtigungsgruppe mit PagerBuddy bei Telegram hinzugefügt wurdest.</value>
+  </data>
+  <data name="ActiveTimePopup_DayFriday" xml:space="preserve">
+    <value>F</value>
+  </data>
+  <data name="ActiveTimePopup_DayMonday" xml:space="preserve">
+    <value>M</value>
+  </data>
+  <data name="ActiveTimePopup_DaySaturday" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="ActiveTimePopup_DaySunday" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="ActiveTimePopup_DayThursday" xml:space="preserve">
+    <value>D</value>
+  </data>
+  <data name="ActiveTimePopup_DayTuesday" xml:space="preserve">
+    <value>D</value>
+  </data>
+  <data name="ActiveTimePopup_DayWednesday" xml:space="preserve">
+    <value>M</value>
+  </data>
+  <data name="ActiveTimePopup_Confirm" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ActiveTimePopup_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
   </data>
 </root>

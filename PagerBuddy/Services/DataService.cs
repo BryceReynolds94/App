@@ -35,7 +35,10 @@ namespace PagerBuddy.Services
             HAS_PROMPTED_DOZE_EXEMPT, //Whether the user has been asked to grant ignore battery optimization permission in Android
             HAS_PROMPTED_HUAWEI_EXEPTION, //Wheter the user has been asked to exempt app from Huawei restrictions
             FCM_TOKEN, //Token for FCM messages
-            BUILD_UPDATE_COMPLETE //Build ID to avoid performing double updates (mostly Samsung)
+            BUILD_UPDATE_COMPLETE, //Build ID to avoid performing double updates (mostly Samsung)
+            ACTIVE_TIME_DAYS,
+            ACTIVE_TIME_FROM,
+            ACTIVE_TIME_TO
         }; 
 
         public static void clearData(bool developerMode = true) //Caution! Use with care
@@ -136,6 +139,25 @@ namespace PagerBuddy.Services
             }
             return deserialiseObject<Collection<string>>(list);
         }
+        public static Collection<DayOfWeek> getActiveDays() {
+            string list = getConfigValue(DATA_KEYS.ACTIVE_TIME_DAYS, (string)null);
+            if(list == null) {
+                Collection<DayOfWeek> defaultCollection = new Collection<DayOfWeek>();
+                defaultCollection.Add(DayOfWeek.Sunday);
+                defaultCollection.Add(DayOfWeek.Monday);
+                defaultCollection.Add(DayOfWeek.Tuesday);
+                defaultCollection.Add(DayOfWeek.Wednesday);
+                defaultCollection.Add(DayOfWeek.Thursday);
+                defaultCollection.Add(DayOfWeek.Friday);
+                defaultCollection.Add(DayOfWeek.Saturday);
+                list = serialiseObject(defaultCollection);
+                setConfigValue(DATA_KEYS.ACTIVE_TIME_DAYS, list);
+            }
+            return deserialiseObject<Collection<DayOfWeek>>(list);
+        }
+        public static void setActiveDays(Collection<DayOfWeek> list) {
+            setConfigValue(DATA_KEYS.ACTIVE_TIME_DAYS, serialiseObject(list));
+        }
 
         public static string getConfigValue(DATA_KEYS key, string defaultValue)
         {
@@ -155,6 +177,14 @@ namespace PagerBuddy.Services
             return Preferences.Get(key.ToString(), defaultValue);
         }
         public static int getConfigValue(DATA_KEYS key, int defaultValue) {
+            if (!Preferences.ContainsKey(key.ToString())) {
+                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
+                setConfigValue(key, defaultValue);
+                return defaultValue;
+            }
+            return Preferences.Get(key.ToString(), defaultValue);
+        }
+        public static double getConfigValue(DATA_KEYS key, double defaultValue) {
             if (!Preferences.ContainsKey(key.ToString())) {
                 Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
                 setConfigValue(key, defaultValue);
@@ -186,6 +216,9 @@ namespace PagerBuddy.Services
             Preferences.Set(key.ToString(), value);
         }
         public static void setConfigValue(DATA_KEYS key, int value) {
+            Preferences.Set(key.ToString(), value);
+        }
+        public static void setConfigValue(DATA_KEYS key, double value) {
             Preferences.Set(key.ToString(), value);
         }
         public static void setConfigValue(DATA_KEYS key, DateTime value) {

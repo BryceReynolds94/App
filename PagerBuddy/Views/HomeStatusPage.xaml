@@ -5,6 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="PagerBuddy.Views.HomeStatusPage"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:PagerBuddy.Resources"
+             xmlns:viewModels="clr-namespace:PagerBuddy.ViewModels"
              Title="{Binding Title}"
              x:Name="BrowseItemsPage">
 
@@ -18,8 +21,8 @@
                          CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding DeactivateAll}" />
                         <ImageButton Source="{Binding AllSnoozeIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
                          CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding SnoozeAll}"/>
-                        <ImageButton Source="{Binding ReloadConfigIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
-                         CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding ReloadConfig}" IsEnabled="{Binding ReloadConfigEnabled}"/>
+                        <ImageButton Source="{Binding AllTimeIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                         CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding TimeAll}"/>
                     </StackLayout>
                 </CollectionView.Header>
                 <CollectionView.ItemTemplate>
@@ -55,24 +58,33 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.Footer>
-                    <StackLayout Padding="10" IsVisible="{Binding EmptyList}">
-                        <ImageButton BackgroundColor="{StaticResource BackgroundColor}" BorderColor="LightGray" BorderWidth="2" Source="{Binding EmptyTabIcon}"  Command="{Binding ReloadConfig}"
-                                    CornerRadius="10" Padding="10,30"  HeightRequest="110" VerticalOptions="Start"/>
-                        <Label Text="It seems like you have no alert groups"/>
+                    <StackLayout Padding="20" IsVisible="{Binding EmptyList}">
+                        <ImageButton BackgroundColor="{StaticResource BackgroundColor}" Source="{Binding ReloadConfigIcon}"  Command="{Binding ReloadConfig}" 
+                                     CornerRadius="25"  HeightRequest="50" WidthRequest="50" HorizontalOptions="Center"/>
+                        <Label Text="{x:Static resources:AppResources.HomeStatusPage_Warning_EmptyList}" HorizontalTextAlignment="Center" />
                     </StackLayout>
                 </CollectionView.Footer>
             </CollectionView>
         </StackLayout>
 
+        <!-- Loading-->
         <BoxView IsVisible="{Binding IsBusy}" BackgroundColor="Gray" Opacity="0.2" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="True" HorizontalOptions="Center" VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"/>
 
         <!-- Not connected to Telegram-->
-        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" IsVisible="{Binding ErrorLogin}">
-            <ImageButton  Opacity="1" BorderColor="Gray" BorderWidth="2" BackgroundColor="{StaticResource BackgroundColor}" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="150" WidthRequest="150"
-                         CornerRadius="20" Source="{Binding LoginIcon}" Command="{Binding Login}" Padding="20"/>
-            <Label Text="Login to Telegram and get started with PagerBuddy." HorizontalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center" Padding="20,0"/>
-        </StackLayout>
+        <Grid AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" VerticalOptions="Fill" HorizontalOptions="Fill" IsVisible="{Binding ErrorLogin}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_login.svg" HorizontalOptions="Center" HeightRequest="150" Margin="40,40,40,0" Grid.Row="1" />
+            <Label Text="{x:Static resources:AppResources.HomeStatusPage_Error_NoTelegram}" HorizontalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0,20,20" />
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding Login}"/>
+            </Grid.GestureRecognizers>
+        </Grid>
         <!-- All alerts deactivated-->
         <Grid AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" VerticalOptions="Fill" HorizontalOptions="Fill" IsVisible="{Binding WarningDeactivate}">
             <Grid.RowDefinitions>
@@ -82,8 +94,8 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <BoxView BackgroundColor="Black" Opacity="0.6" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
-            <Image Opacity="1"  VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="150" WidthRequest="150" Grid.Row="1" Source="{Binding WarningDeactivateIcon}"/>
-            <Label Text="{Binding WarningDeactivateText}" HorizontalOptions="Center" FontSize="Large" TextColor="White" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0,20,20" />
+            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_alert_off_white.svg" HorizontalOptions="Center" HeightRequest="150" Grid.Row="1" />
+            <Label Text="{x:Static resources:AppResources.HomeStatusPage_Warning_Deactivated}" HorizontalOptions="Center" FontSize="Large" TextColor="White" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0,20,20" />
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding DeactivateAllOff}"/>
             </Grid.GestureRecognizers>
@@ -97,7 +109,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <BoxView BackgroundColor="Black" Opacity="0.6" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
-            <Image  Opacity="1" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="150" WidthRequest="150" Grid.Row="1" Source="{Binding WarningSnoozeIcon}" />
+            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_alert_snooze_white.svg" HorizontalOptions="Center" HeightRequest="150" Grid.Row="1" />
             <Label Text="{Binding WarningSnoozeText}" HorizontalOptions="Center" FontSize="Large" TextColor="White" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0,20,20"/>
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding SnoozeAllOff}"/>
