@@ -21,6 +21,29 @@ namespace PagerBuddy.Services {
                 return;
             }
 
+            //Check if we are in active time limit
+            Collection<DayOfWeek> activeDays = DataService.getActiveDays();
+            if (!activeDays.Contains(DateTime.Today.DayOfWeek)) {
+                Logger.Info("All alerts snoozed due to inactive day of week. Ignoring incoming message.");
+                return;
+            }
+
+            TimeSpan fromTime = new TimeSpan(DataService.getConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_FROM, 0));
+            TimeSpan toTime = new TimeSpan(DataService.getConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_TO, 0));
+            TimeSpan now = DateTime.Now.TimeOfDay;
+            bool inactiveTime;
+            //If toTime<fromTime assume user ment the next day
+            if (toTime < fromTime) {
+                inactiveTime = now > fromTime || now < toTime;
+            } else {
+                inactiveTime = now < toTime && now > fromTime;
+            }
+            if (inactiveTime) {
+                Logger.Info("All alerts snoozed due to inactive time of day. Ignoring incoming message.");
+                return;
+            }
+
+
             Logger.Info("Checking incoming message for alert.");
 
             Collection<AlertConfig> configList = new Collection<AlertConfig>();

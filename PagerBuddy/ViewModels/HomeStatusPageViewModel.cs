@@ -43,8 +43,6 @@ namespace PagerBuddy.ViewModels {
         public delegate void UpdateSnoozeEventHandler(object sender, DateTime snoozeTime);
         public delegate Task<DateTime> RequestSnoozeEventHandler(object sender, EventArgs args);
 
-        //TODO: Possibly add RefreshView https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/refreshview
-
         public HomeStatusPageViewModel() {
             Title = AppResources.HomeStatusPage_Title;
             fillAlertList(new Collection<AlertConfig>());
@@ -101,6 +99,7 @@ namespace PagerBuddy.ViewModels {
                 alertList.Add(new AlertStatusViewModel(config));
             }
             OnPropertyChanged(nameof(alertList));
+            OnPropertyChanged(nameof(EmptyList));
             IsBusy = false;
         }
 
@@ -114,12 +113,7 @@ namespace PagerBuddy.ViewModels {
             }
             OnPropertyChanged(nameof(ConfigActive));
             OnPropertyChanged(nameof(ReloadConfigEnabled));
-            OnPropertyChanged(nameof(ReloadConfigIcon));
             OnPropertyChanged(nameof(ErrorLogin));
-        }
-
-        private void getActiveTimeConfig() {
-
         }
 
         public bool ConfigActive => errorState != ERROR_ACTION.NO_TELEGRAM;
@@ -149,19 +143,9 @@ namespace PagerBuddy.ViewModels {
         public ImageSource AllTimeIcon => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_time.svg");
 
         public bool ReloadConfigEnabled => errorState == ERROR_ACTION.NONE;
-        public ImageSource ReloadConfigIcon {
-            get {
-                if (ReloadConfigEnabled) {
-                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_sync.svg");
-                } else {
-                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_sync_disabled.svg");
-                }
-            }
-        }
 
         public bool ErrorLogin => errorState == ERROR_ACTION.NO_TELEGRAM;
         public bool EmptyList => alertList.Count == 0;
-        public ImageSource EmptyTabIcon => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_sync.svg");
 
     }
 }

@@ -16,7 +16,6 @@ namespace PagerBuddy.Views {
 
         private readonly ActiveTimePopupViewModel viewModel;
 
-        //TODO: Implement this in alert check
         //TODO: Possibly add visible representation of active time config
         //TODO: Possibly add reset button for time config
         public ActiveTimePopup() {
@@ -36,8 +35,8 @@ namespace PagerBuddy.Views {
         }
 
         private void activeTimeResult(Collection<DayOfWeek> dayList, TimeSpan fromTime, TimeSpan toTime) {
-            DataService.setConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_FROM, fromTime.TotalMilliseconds);
-            DataService.setConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_TO, toTime.TotalMilliseconds);
+            DataService.setConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_FROM, fromTime.Ticks);
+            DataService.setConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_TO, toTime.Ticks);
             DataService.setActiveDays(dayList);
 
             cancel(this, null);

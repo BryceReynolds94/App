@@ -20,8 +20,10 @@ namespace PagerBuddy.ViewModels {
         public bool IsActive {
             get => alertConfig.isActive;
             set {
-                alertConfig.setActiveState(value);
-                MessagingCenter.Send(this, MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString());
+                if (value != alertConfig.isActive) {
+                    alertConfig.setActiveState(value);
+                    MessagingCenter.Send(this, MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString());
+                }
             }
         }
 

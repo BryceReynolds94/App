@@ -32,6 +32,8 @@ namespace PagerBuddy.Views
 
         private readonly CommunicationService client;
 
+        //TODO Later: Implement alert content filtering (get from Server?)
+
         public HomeStatusPage(CommunicationService client)
         {
             InitializeComponent();
@@ -129,13 +131,11 @@ namespace PagerBuddy.Views
             DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, state);
         }
 
-        private async Task alertConfigsChanged(Collection<AlertConfig> configList) //TODO: This is called way too often - reduce detected changes to actual data changes
-            //TODO: RBF
-        {
+        private async Task alertConfigsChanged(Collection<AlertConfig> configList){
             INotifications notifications = DependencyService.Get<INotifications>();
             notifications.UpdateNotificationChannels(configList);
 
-            bool result = await client.sendServerRequest(configList);
+            bool result = await client.sendServerRequest(configList); //TODO: Implement retry
 
             if (Device.RuntimePlatform == Device.Android && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, false)) {
                 showDozeExemptPrompt();
@@ -227,7 +227,6 @@ namespace PagerBuddy.Views
             IReadOnlyList<Types.Chat> chatList = new List<Types.Chat>();
             if (rawChatList == null) {
                 Logger.Warn("Retrieving chat list returned null.");
-                //TODO: Handle user-facing output in this case
                 return;
             } else if (rawChatList.Default != null) {
                 Types.Messages.Chats.DefaultTag chatsTag = rawChatList.Default;
@@ -243,7 +242,6 @@ namespace PagerBuddy.Views
 
             if (chatList.Count < 1) {
                 Logger.Info("Chat list was empty.");
-                //TODO: Handle user-facing output in this case
             }
 
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
