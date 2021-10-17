@@ -10,17 +10,14 @@ using Xamarin.Forms;
 using Xamarin.Essentials;
 using System.Threading.Tasks;
 
-namespace PagerBuddy.Services
-{
-    public class DataService
-    {
+namespace PagerBuddy.Services {
+    public class DataService {
 
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private static readonly string saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
-        public enum DATA_KEYS
-        { //Changes will break Updates!
+        public enum DATA_KEYS { //Changes will break Updates!
             ALERT_CONFIG_LIST, //List of all configurations
             CONFIG_DEACTIVATE_ALL, //All notifications disabled
             CONFIG_SNOOZE_ALL, //All notifications disabled temporarily
@@ -36,10 +33,11 @@ namespace PagerBuddy.Services
             HAS_PROMPTED_HUAWEI_EXEPTION, //Wheter the user has been asked to exempt app from Huawei restrictions
             FCM_TOKEN, //Token for FCM messages
             BUILD_UPDATE_COMPLETE, //Build ID to avoid performing double updates (mostly Samsung)
-            ACTIVE_TIME_DAYS,
-            ACTIVE_TIME_FROM,
-            ACTIVE_TIME_TO
-        }; 
+            ACTIVE_TIME_DAYS, //Days of the week where alerts are active 
+            ACTIVE_TIME_FROM, //Time of day from when alerts are active
+            ACTIVE_TIME_TO, //Time of day untill when alerts are active
+            CUSTOM_PAGERBUDDY_SERVER_BOT_LIST, //List of user set peers that should be accepted as pagerbuddy servers
+        };
 
         public static void clearData(bool developerMode = true) //Caution! Use with care
         {
@@ -50,36 +48,32 @@ namespace PagerBuddy.Services
         }
 
 
-        public static AlertConfig getAlertConfig(string id, AlertConfig defaultValue)
-        {
+        public static AlertConfig getAlertConfig(string id, AlertConfig defaultValue) {
             if (!Preferences.ContainsKey(id)) {
                 Logger.Debug("Could not find AlertConfig with ID " + id);
                 deleteAlertConfig(id);
                 return defaultValue;
             } else {
                 string confString = Preferences.Get(id, null);
-                if(confString == null) {
+                if (confString == null) {
                     deleteAlertConfig(id);
                     return defaultValue;
                 }
                 return deserialiseObject<AlertConfig>(confString);
             }
-            
+
         }
 
-        public static void saveAlertConfig(AlertConfig alertConfig)
-        {
+        public static void saveAlertConfig(AlertConfig alertConfig) {
             Collection<string> configList = getConfigList();
-            if (!configList.Contains(alertConfig.id))
-            {
+            if (!configList.Contains(alertConfig.id)) {
                 configList.Add(alertConfig.id);
                 setConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, serialiseObject(configList));
             }
             updateAlertConfig(alertConfig);
         }
 
-        public static void deleteAlertConfig(AlertConfig alertConfig)
-        {
+        public static void deleteAlertConfig(AlertConfig alertConfig) {
             deleteAlertConfig(alertConfig.id);
         }
 
@@ -107,60 +101,65 @@ namespace PagerBuddy.Services
         }
 
 
-        public static void updateAlertConfig(AlertConfig alertConfig)
-        {
+        public static void updateAlertConfig(AlertConfig alertConfig) {
             Preferences.Set(alertConfig.id, serialiseObject(alertConfig));
         }
 
-        public static void saveProfilePic(string name, MemoryStream image)
-        {
+        public static void saveProfilePic(string name, MemoryStream image) {
             File.WriteAllBytes(profilePicSavePath(name), image.ToArray());
         }
 
-        public static void removeProfilePic(string name)
-        {
-            if (File.Exists(profilePicSavePath(name))){
+        public static void removeProfilePic(string name) {
+            if (File.Exists(profilePicSavePath(name))) {
                 File.Delete(profilePicSavePath(name));
             }
         }
 
-        public static string profilePicSavePath(string name)
-        {
+        public static string profilePicSavePath(string name) {
             return Path.Combine(saveLocation, name + ".profilePic");
         }
 
-        public static Collection<string> getConfigList()
-        {
-            string list = getConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, (string) null);
+        public static Collection<string> getConfigList() {
+            string list = getConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, (string)null);
 
-            if(list == null) {
+            if (list == null) {
                 list = serialiseObject(new Collection<string>());
                 setConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, list);
             }
             return deserialiseObject<Collection<string>>(list);
         }
-        public static Collection<DayOfWeek> getActiveDays() {
-            string list = getConfigValue(DATA_KEYS.ACTIVE_TIME_DAYS, (string)null);
-            if(list == null) {
-                Collection<DayOfWeek> defaultCollection = new Collection<DayOfWeek>();
-                defaultCollection.Add(DayOfWeek.Sunday);
-                defaultCollection.Add(DayOfWeek.Monday);
-                defaultCollection.Add(DayOfWeek.Tuesday);
-                defaultCollection.Add(DayOfWeek.Wednesday);
-                defaultCollection.Add(DayOfWeek.Thursday);
-                defaultCollection.Add(DayOfWeek.Friday);
-                defaultCollection.Add(DayOfWeek.Saturday);
-                list = serialiseObject(defaultCollection);
-                setConfigValue(DATA_KEYS.ACTIVE_TIME_DAYS, list);
+        public static Collection<DayOfWeek> activeDays {
+            get {
+                string list = getConfigValue(DATA_KEYS.ACTIVE_TIME_DAYS, (string)null);
+                if (list == null) {
+                    Collection<DayOfWeek> defaultCollection = new Collection<DayOfWeek>() { 
+                        DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday 
+                    };
+                    list = serialiseObject(defaultCollection);
+                    setConfigValue(DATA_KEYS.ACTIVE_TIME_DAYS, list);
+                }
+                return deserialiseObject<Collection<DayOfWeek>>(list);
             }
-            return deserialiseObject<Collection<DayOfWeek>>(list);
-        }
-        public static void setActiveDays(Collection<DayOfWeek> list) {
-            setConfigValue(DATA_KEYS.ACTIVE_TIME_DAYS, serialiseObject(list));
+            set {
+                setConfigValue(DATA_KEYS.ACTIVE_TIME_DAYS, serialiseObject(value));
+            }
         }
 
-        public static string getConfigValue(DATA_KEYS key, string defaultValue)
-        {
+        public static List<string> customPagerBuddyServerBots {
+            get {
+                string list = getConfigValue(DATA_KEYS.CUSTOM_PAGERBUDDY_SERVER_BOT_LIST, (string)null);
+                if (list == null) {
+                    list = serialiseObject(new List<string>());
+                    setConfigValue(DATA_KEYS.CUSTOM_PAGERBUDDY_SERVER_BOT_LIST, list);
+                }
+                return deserialiseObject<List<string>>(list);
+            }
+            set {
+                setConfigValue(DATA_KEYS.CUSTOM_PAGERBUDDY_SERVER_BOT_LIST, serialiseObject(value));
+            }
+        }
+
+        public static string getConfigValue(DATA_KEYS key, string defaultValue) {
             if (!Preferences.ContainsKey(key.ToString())) {
                 Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
                 setConfigValue(key, defaultValue);
@@ -209,7 +208,7 @@ namespace PagerBuddy.Services
             return deserialiseObject<byte[]>(Preferences.Get(key.ToString(), serialiseObject(defaultValue)));
         }
 
-        public static void setConfigValue(DATA_KEYS key, bool value){
+        public static void setConfigValue(DATA_KEYS key, bool value) {
             Preferences.Set(key.ToString(), value);
         }
         public static void setConfigValue(DATA_KEYS key, string value) {
@@ -229,13 +228,11 @@ namespace PagerBuddy.Services
             Preferences.Set(key.ToString(), serialiseObject(value));
         }
 
-        public static string serialiseObject(object obj)
-        {
+        public static string serialiseObject(object obj) {
             return JsonConvert.SerializeObject(obj);
         }
 
-        public static T deserialiseObject<T>(string str)
-        {
+        public static T deserialiseObject<T>(string str) {
             return JsonConvert.DeserializeObject<T>(str);
         }
 

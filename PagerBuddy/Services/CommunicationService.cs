@@ -5,9 +5,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using static PagerBuddy.Services.ClientExceptions;
@@ -17,6 +14,7 @@ using Functions = Telega.Rpc.Dto.Functions;
 using Types = Telega.Rpc.Dto.Types;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
+using Xamarin.Essentials;
 
 namespace PagerBuddy.Services {
 
@@ -26,7 +24,15 @@ namespace PagerBuddy.Services {
         private TelegramClient client;
         private STATUS status;
 
-        private static readonly string PAGERBUDDY_SERVER_BOT = "pagerbuddyserverbot";
+        private static readonly List<string> STATIC_PAGERBUDDY_SERVER_BOTS = new List<string> { "pagerbuddyserverbot" };
+        private static List<string> pagerbuddyServerList {
+            get {
+                List<string> baseList = STATIC_PAGERBUDDY_SERVER_BOTS;
+                baseList.AddRange(DataService.customPagerBuddyServerBots);
+                return baseList;
+            }
+        }
+
         public STATUS clientStatus {
             get {
                 return status;
@@ -50,10 +56,10 @@ namespace PagerBuddy.Services {
             _ = connectClient(isBackgroundCall);
         }
 
-        public async Task reloadConnection(bool isBackgroundCall = false, int attempt = 0) {
+        public async Task reloadConnection(bool isBackgroundCall = false) {
             if (clientStatus == STATUS.OFFLINE) { //Do not reload if we are currently connecting or have successfully connected
                 Logger.Info("Reloading connection.");
-                await connectClient(isBackgroundCall, attempt);
+                await connectClient(isBackgroundCall);
             }
         }
 
@@ -70,20 +76,25 @@ namespace PagerBuddy.Services {
         public event ClientStausEventHandler StatusChanged;
         public delegate void ClientStausEventHandler(object sender, STATUS newStatus);
 
-        private async Task connectClient(bool isBackgroundCall = false, int attempt = 0) {
+        private async Task connectClient(bool isBackgroundCall = false) {
             clientStatus = STATUS.NEW;
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet) {
+                Logger.Info("Not connected to internet. Cannot initialise client.");
+                scheduleRetry(isBackgroundCall);
+            }
+
             try {
                 client = await TelegramClient.Connect(KeyService.checkID(this), store: new MySessionStore());
             } catch (Exception e) {
                 Logger.Error(e, "Initialisation of TelegramClient failed");
 
-                if(e is TgException && e.Message.Contains("Invalid session file")) { //Handle corrupt session files. (Trautner Bug)
+                if (e is TgException && e.Message.Contains("Invalid session file")) { //Handle corrupt session files. (Trautner Bug)
                     Logger.Warn("Session file was corrupted. Clearing session file.");
                     MySessionStore.Clear();
                 }
 
                 clientStatus = STATUS.OFFLINE;
-                scheduleRetry(isBackgroundCall, attempt);
+                scheduleRetry(isBackgroundCall);
                 return;
             }
 
@@ -91,7 +102,7 @@ namespace PagerBuddy.Services {
 
             if (client.Auth.IsAuthorized) {
                 Logger.Debug("User is authorised.");
-                if (!isBackgroundCall) { //only do this stuff if we are not retrieving alert messages
+                if (!isBackgroundCall) { //only do this stuff if we are not running in background
                     Types.User user = await getUser(new Types.InputUser.SelfTag());
                     if (user != null) {
                         await saveUserData(user);
@@ -108,15 +119,32 @@ namespace PagerBuddy.Services {
             }
         }
 
-        private void scheduleRetry(bool isBackgroundCall, int attempt = 0) {
-            if (isBackgroundCall && attempt > 2) {
-                Logger.Warn("Client called in background. Not scheduling another connection attempt after 3 tries.");
+        private void scheduleRetry(bool isBackgroundCall) {
+            if (isBackgroundCall) {
+                Logger.Warn("Client called in background. Sheduling retry at a later point in time.");
+                //TODO: Implement background retry
                 return;
             }
-            Logger.Warn("Could not connect client. Will retry in 5 seconds.");
 
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet) {
+                Logger.Info("Subscribing to network status changes for retry attempt.");
+
+                EventHandler<ConnectivityChangedEventArgs> handler = null;
+                handler = async (object sender, ConnectivityChangedEventArgs e) => {
+                    Logger.Debug("Network status changed to " + e.NetworkAccess);
+                    if (e.NetworkAccess == NetworkAccess.Internet) {
+                        Logger.Info("Internet connection established. Retrying connection.");
+                        Connectivity.ConnectivityChanged -= handler; //unsubscribe self to clean up
+                        await reloadConnection(isBackgroundCall);
+                    }
+                };
+                Connectivity.ConnectivityChanged += handler;
+                return;
+            }
+
+            Logger.Warn("Could not connect client. Will retry in 5 seconds.");
             //Retry in 5 seconds
-            Task.Delay(5000).ContinueWith(t => reloadConnection(isBackgroundCall, attempt));
+            Task.Delay(5000).ContinueWith(t => reloadConnection(isBackgroundCall));
         }
 
         private async Task checkConnectionOnError(Exception e = null) {
@@ -138,23 +166,12 @@ namespace PagerBuddy.Services {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to logout user without authorisation. Current state: " + clientStatus.ToString());
             }
+            //TODO: Possibly only allow logout if connected
             Logger.Debug("Logging out user.");
 
-            string token = DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, "");
+            //Try to unregister user with server
+            bool result = await sendServerRequest(new Collection<AlertConfig>());
 
-            if (token.Length > 0) {
-                Functions.Account.UnregisterDevice unregisterRequest = new Functions.Account.UnregisterDevice(
-                        tokenType: 2,
-                        token: token,
-                        new List<int>()
-                    );
-
-                try {
-                    await client.Call(unregisterRequest); //https://core.telegram.org/method/account.unregisterDevice
-                } catch (Exception e) {
-                    Logger.Error(e, "Exception while trying to unregister device.");
-                }
-            }
 
             try {
                 await client.Call(new Functions.Auth.LogOut()); //https://core.telegram.org/method/auth.logOut
@@ -350,7 +367,7 @@ namespace PagerBuddy.Services {
 
             Types.InputUser botUser;
             try {
-                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(PAGERBUDDY_SERVER_BOT); //TODO Later: Add possibility for different server peers
+                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(pagerbuddyServerList.First()); //TODO Later: Add implementation for different server bots
                 Types.User.DefaultTag resolvedUser = resolvedPeer.Users.First().Default;
 
                 if (resolvedUser != null) {
@@ -367,7 +384,7 @@ namespace PagerBuddy.Services {
 
             Types.Messages.Chats chats;
             try {
-                Functions.Messages.GetCommonChats func = new Functions.Messages.GetCommonChats(botUser, 100, 100);
+                Functions.Messages.GetCommonChats func = new Functions.Messages.GetCommonChats(botUser, 100, 100); //https://core.telegram.org/method/messages.getCommonChats
                 chats = await client.Call(func);
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to fetch chat list.");
@@ -427,8 +444,8 @@ namespace PagerBuddy.Services {
             return outUser;
         }
 
-        public async Task<bool> sendServerRequest(Collection<AlertConfig> configList) {
-            if(clientStatus < STATUS.AUTHORISED) {
+        public async Task<bool> sendServerRequest(Collection<AlertConfig> configList, int attempt = 0) {
+            if (clientStatus < STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to send request to server without appropriate client status. Current status: " + clientStatus.ToString());
                 return false;
             }
@@ -436,24 +453,31 @@ namespace PagerBuddy.Services {
             Types.InputPeer botPeer;
             Types.InputUser botUser;
             try {
-                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(PAGERBUDDY_SERVER_BOT);
+                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(pagerbuddyServerList.First()); //TODO Later: Add possibility for different server peers
                 Types.User.DefaultTag resolvedUser = resolvedPeer.Users.First().Default;
 
-                if(resolvedUser != null) {
+                if (resolvedUser != null) {
                     botPeer = new Types.InputPeer.UserTag(resolvedUser.Id, resolvedUser.AccessHash.GetValueOrDefault(0));
                     botUser = new Types.InputUser.DefaultTag(resolvedUser.Id, resolvedUser.AccessHash.GetValueOrDefault(0));
                 } else {
                     Logger.Info("PagerBuddy-Server peer could not be resolved.");
                     return false;
                 }
-            }catch(Exception e) {
+            } catch (Exception e) {
                 Logger.Error(e, "Exception while resolving PagerBuddy-Server username.");
                 await checkConnectionOnError(e);
+                if (clientStatus == STATUS.AUTHORISED && attempt < 3) {
+                    Logger.Info("Connection was possibly fixed. Retrying to send server request.");
+                    return await sendServerRequest(configList, ++attempt);
+                } else {
+                    Logger.Warn("Finally failed to send server request.");
+                    //TODO: Schedule background retry
+                }
                 return false;
             }
 
             ServerRequest request = ServerRequest.getServerRequest(configList);
-            if(request == null) {
+            if (request == null) {
                 return false;
             }
 
@@ -464,10 +488,18 @@ namespace PagerBuddy.Services {
                 Functions.Messages.GetInlineBotResults msg = new Functions.Messages.GetInlineBotResults(botUser, botPeer, null, jsonRequest, "");
 
                 //Functions.Messages.SendMessage msg = new Functions.Messages.SendMessage(true, true, true, true, botPeer, null, jsonRequest, new Random().Next(), null, null, null);
-                //Types.Messages.BotResults update = await client.Call(msg); //https://core.telegram.org/method/messages.sendMessage //TODO: RBF
-            }catch(Exception e) {
+                //Types.Messages.BotResults update = await client.Call(msg); //https://core.telegram.org/method/messages.sendMessage 
+                //TODO: RBF
+            } catch (Exception e) {
                 Logger.Error(e, "Exception while sending request to PagerBuddy-Server.");
                 await checkConnectionOnError(e);
+                if (clientStatus == STATUS.AUTHORISED && attempt < 3) {
+                    Logger.Info("Connection was possibly fixed. Retrying to send server request.");
+                    return await sendServerRequest(configList, ++attempt);
+                } else {
+                    Logger.Warn("Finally failed to send server request.");
+                    //TODO: Schedule background retry
+                }
                 return false;
             }
 

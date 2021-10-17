@@ -274,6 +274,7 @@ namespace PagerBuddy.Views
             //TODO Later: Possibly replace this with a date & time picker
             string title = AppResources.HomeStatusPage_Snooze_Prompt;
             string cancelText = AppResources.HomeStatusPage_Snooze_Cancel;
+
             Dictionary<string, TimeSpan> timeDict = new Dictionary<string, TimeSpan> {
                 { string.Format(AppResources.HomeStatusPage_Snooze_Hours, 3), new TimeSpan(3, 0, 0) },
                 { string.Format(AppResources.HomeStatusPage_Snooze_Hours, 8), new TimeSpan(8, 0, 0) },
