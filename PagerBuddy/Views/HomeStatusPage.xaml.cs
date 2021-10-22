@@ -48,7 +48,7 @@ namespace PagerBuddy.Views
             viewModel.RequestLogin += login;
             viewModel.RequestTimeConfig += timeConfig;
 
-            MessagingCenter.Subscribe<AlertStatusViewModel>(this, AlertStatusViewModel.MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString(), async (_) => await alertConfigToggled());
+            MessagingCenter.Subscribe<AlertStatusViewModel>(this, AlertStatusViewModel.MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString(), async (_) => await sendServerUpdate(getAlertConfigs()));
 
             if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, false)) {
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, true);
@@ -74,20 +74,21 @@ namespace PagerBuddy.Views
             }
         }
 
-        private async Task alertConfigToggled() {
-            if(client.clientStatus != CommunicationService.STATUS.AUTHORISED && client.clientStatus > CommunicationService.STATUS.ONLINE) {
+        private async Task sendServerUpdate(Collection<AlertConfig> configList) {
+
+            if (client.clientStatus != CommunicationService.STATUS.AUTHORISED && client.clientStatus > CommunicationService.STATUS.ONLINE) {
                 //User is not logged in - do nothing.
                 return;
             }else if(client.clientStatus < CommunicationService.STATUS.WAIT_PHONE) {
                 Logger.Info("The client is not connected. Will retry sending updates to server at a later time...");
+                IRequestScheduler scheduler = DependencyService.Get<IRequestScheduler>();
+                scheduler.scheduleRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO Later: Introduce possibility of multiple servers
                 //Client is not connected (yet) - retry later
-                //TODO: Implement retry with some back-off system. This must also work if killed.
                 return;
             }
 
             Logger.Info("An alert config was changed by the user. Informing pagerbuddy server.");
-            Collection<AlertConfig> configList = getAlertConfigs();
-            bool result = await client.sendServerRequest(configList);
+            _ = await client.sendServerRequest(configList); //Ignore result - retry attempts are handled in server
         }
 
         private void updateClientStatus(object sender, CommunicationService.STATUS newStatus)
@@ -135,7 +136,7 @@ namespace PagerBuddy.Views
             INotifications notifications = DependencyService.Get<INotifications>();
             notifications.UpdateNotificationChannels(configList);
 
-            bool result = await client.sendServerRequest(configList); //TODO: Implement retry
+            Task update = sendServerUpdate(configList);
 
             if (Device.RuntimePlatform == Device.Android && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, false)) {
                 showDozeExemptPrompt();
@@ -151,7 +152,9 @@ namespace PagerBuddy.Views
             if(Device.RuntimePlatform == Device.Android && DeviceInfo.Manufacturer.Contains("HUAWEI", StringComparison.OrdinalIgnoreCase) && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, false)) {
                 await showHuaweiPrompt();
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, true);
-            }  
+            }
+
+            await update;
         }
 
         private async Task showDNDPermissionPrompt()

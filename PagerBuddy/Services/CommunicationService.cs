@@ -26,7 +26,7 @@ namespace PagerBuddy.Services {
         private STATUS status;
 
         private static readonly List<string> STATIC_PAGERBUDDY_SERVER_BOTS = new List<string> { "pagerbuddyserverbot" };
-        private static List<string> pagerbuddyServerList {
+        public static List<string> pagerbuddyServerList {
             get {
                 List<string> baseList = STATIC_PAGERBUDDY_SERVER_BOTS;
                 baseList.AddRange(DataService.customPagerBuddyServerBots);
@@ -123,8 +123,7 @@ namespace PagerBuddy.Services {
 
         private void scheduleRetry(bool isBackgroundCall) {
             if (isBackgroundCall) {
-                Logger.Warn("Client called in background. Sheduling retry at a later point in time.");
-                //TODO: Implement background retry
+                Logger.Warn("Client called in background. Not retrying.");
                 return;
             }
 
