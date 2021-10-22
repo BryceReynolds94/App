@@ -15,6 +15,7 @@ using Types = Telega.Rpc.Dto.Types;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using Xamarin.Essentials;
+using PagerBuddy.Interfaces;
 
 namespace PagerBuddy.Services {
 
@@ -80,6 +81,7 @@ namespace PagerBuddy.Services {
             clientStatus = STATUS.NEW;
             if (Connectivity.NetworkAccess != NetworkAccess.Internet) {
                 Logger.Info("Not connected to internet. Cannot initialise client.");
+                clientStatus = STATUS.OFFLINE;
                 scheduleRetry(isBackgroundCall);
             }
 
@@ -444,16 +446,18 @@ namespace PagerBuddy.Services {
             return outUser;
         }
 
-        public async Task<bool> sendServerRequest(Collection<AlertConfig> configList, int attempt = 0) {
+        public async Task<bool> sendServerRequest(Collection<AlertConfig> configList, string serverPeer = null, int attempt = 0) {
             if (clientStatus < STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to send request to server without appropriate client status. Current status: " + clientStatus.ToString());
                 return false;
             }
+            IRequestScheduler scheduler = DependencyService.Get<IRequestScheduler>();
 
             Types.InputPeer botPeer;
             Types.InputUser botUser;
             try {
-                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(pagerbuddyServerList.First()); //TODO Later: Add possibility for different server peers
+                serverPeer ??= pagerbuddyServerList.First();
+                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(serverPeer); //TODO Later: Add possibility for different server peers
                 Types.User.DefaultTag resolvedUser = resolvedPeer.Users.First().Default;
 
                 if (resolvedUser != null) {
@@ -468,10 +472,11 @@ namespace PagerBuddy.Services {
                 await checkConnectionOnError(e);
                 if (clientStatus == STATUS.AUTHORISED && attempt < 3) {
                     Logger.Info("Connection was possibly fixed. Retrying to send server request.");
-                    return await sendServerRequest(configList, ++attempt);
+                    return await sendServerRequest(configList, serverPeer, ++attempt);
                 } else {
                     Logger.Warn("Finally failed to send server request.");
-                    //TODO: Schedule background retry
+                    //Schedule background retry
+                    scheduler.scheduleRequest(configList, serverPeer);
                 }
                 return false;
             }
@@ -495,13 +500,18 @@ namespace PagerBuddy.Services {
                 await checkConnectionOnError(e);
                 if (clientStatus == STATUS.AUTHORISED && attempt < 3) {
                     Logger.Info("Connection was possibly fixed. Retrying to send server request.");
-                    return await sendServerRequest(configList, ++attempt);
+                    return await sendServerRequest(configList, serverPeer, ++attempt);
                 } else {
                     Logger.Warn("Finally failed to send server request.");
-                    //TODO: Schedule background retry
+
+                    //Schedule background retry
+                    scheduler.scheduleRequest(configList, serverPeer);
                 }
                 return false;
             }
+
+            //Cancel active background retrys on success
+            scheduler.cancelRequest();
 
             return true;
         }

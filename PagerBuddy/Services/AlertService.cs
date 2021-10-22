@@ -22,7 +22,7 @@ namespace PagerBuddy.Services {
             }
 
             //Check if we are in active time limit
-            Collection<DayOfWeek> activeDays = DataService.getActiveDays();
+            Collection<DayOfWeek> activeDays = DataService.activeDays;
             if (!activeDays.Contains(DateTime.Today.DayOfWeek)) {
                 Logger.Info("All alerts snoozed due to inactive day of week. Ignoring incoming message.");
                 return;

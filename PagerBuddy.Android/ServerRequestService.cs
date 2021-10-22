@@ -6,74 +6,65 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
+using PagerBuddy.Models;
 using PagerBuddy.Services;
+using PagerBuddy.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PagerBuddy.Droid {
-    class ServerRequestScheduler {
-        NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-
-        private static readonly int SERVER_REQUEST_ID = 1;
-        public enum JOB_PARAMETERS { REQUEST_STRING, PAGERBUDDY_SERVER_USER}
-
-        private JobScheduler jobScheduler = (JobScheduler)Application.Context.GetSystemService(Context.JobSchedulerService);
-
-        public void scheduleRequest(string request, string botServerUser) {
-            ComponentName componentName = new ComponentName(Application.Context, Java.Lang.Class.FromType(typeof(ServerRequestService)));
-            JobInfo.Builder builder = new JobInfo.Builder(SERVER_REQUEST_ID, componentName);
-            builder.SetBackoffCriteria(5 * 60 * 1000, BackoffPolicy.Exponential); //Initially set fro 5min, use exponential back off
-            builder.SetMinimumLatency(5 * 60 * 1000);
-            builder.SetPersisted(true); //Do not loose service on reboot -- need RECEIVE_BOOT_COMPLETED permission
-
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.P) {
-                builder.SetEstimatedNetworkBytes(JobInfo.NetworkBytesUnknown, JobInfo.NetworkBytesUnknown);
-                builder.SetRequiredNetwork(new NetworkRequest.Builder().AddCapability(NetCapability.Internet).Build());
-            } else {
-                builder.SetRequiredNetworkType(NetworkType.Any);
-            }
-
-            PersistableBundle jobParameters = new PersistableBundle();
-            jobParameters.PutString(nameof(JOB_PARAMETERS.REQUEST_STRING), request);
-            jobParameters.PutString(nameof(JOB_PARAMETERS.PAGERBUDDY_SERVER_USER), botServerUser);
-
-            builder.SetExtras(jobParameters);
-
-            int scheduleResult = jobScheduler.Schedule(builder.Build());
-            if(scheduleResult != JobScheduler.ResultSuccess) {
-                Logger.Error("Scheduling a server update job failed.");
-            }
-        }
-
-        public void cancelRequest() {
-            jobScheduler.Cancel(SERVER_REQUEST_ID);
-        }
-    }
 
     [Service(Name = "de.bartunik.pagerbuddy.serverrequestservice", Permission = "android.permission.BIND_JOB_SERVICE")]
     class ServerRequestService : JobService {
+        private NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public override bool OnStartJob(JobParameters jobParams) {
             //https://docs.microsoft.com/en-us/xamarin/android/platform/android-job-scheduler
 
-            string requestString = jobParams.Extras.GetString(nameof(ServerRequestScheduler.JOB_PARAMETERS.REQUEST_STRING));
-            string serverUser = jobParams.Extras.GetString(nameof(ServerRequestScheduler.JOB_PARAMETERS.PAGERBUDDY_SERVER_USER));
-
-            CommunicationService client = new CommunicationService(true);
-            client.StatusChanged += (object sender, CommunicationService.STATUS status) => {
-                if(status == CommunicationService.STATUS.AUTHORISED) {
-                    //TODO: send request here;
-
-                    JobFinished(jobParams, false); //Do not reschedule on success
-                }
-            };
+            if(ServerRequestScheduler.instance != null && ServerRequestScheduler.instance.client != null) { //Retry with current instance if live
+                Logger.Debug("Client active in foreground. Reusing instance for attempting repeated server request.");
+                _ = HandleStatus(ServerRequestScheduler.instance.client, ServerRequestScheduler.instance.client.clientStatus, jobParams);
+            } else {
+                CommunicationService client = new CommunicationService(true);
+                client.StatusChanged += async (object sender, CommunicationService.STATUS status) => {
+                    await HandleStatus(client, status, jobParams);
+                };
+            }
 
             return true;
+        }
 
+        private async Task HandleStatus(CommunicationService client, CommunicationService.STATUS status, JobParameters jobParams) {
+
+            string requestString = jobParams.Extras.GetString(nameof(ServerRequestScheduler.JOB_PARAMETERS.REQUEST_STRING));
+            Collection<AlertConfig> request = JsonConvert.DeserializeObject<Collection<AlertConfig>>(requestString);
+            string serverUser = jobParams.Extras.GetString(nameof(ServerRequestScheduler.JOB_PARAMETERS.PAGERBUDDY_SERVER_USER));
+
+            if (status == CommunicationService.STATUS.AUTHORISED) {
+                Logger.Debug("User authorised. Sending repeat request.");
+                bool success = await client.sendServerRequest(request, serverUser);
+
+                JobFinished(jobParams, !success); //Do not reschedule on success
+            } else if (status > CommunicationService.STATUS.ONLINE) {
+                //Wait status achieved - user is not authorised - do not bother in the future
+                Logger.Warn("Repeat server request not possible. User is not authorised. Status: " + status);
+                JobFinished(jobParams, false);
+            } else if (status == CommunicationService.STATUS.OFFLINE) {
+                //We do not have a connection retry later...
+                Logger.Debug("Client offline. Rescheduling repeat server request for a later time.");
+                JobFinished(jobParams, true);
+            }
         }
 
         public override bool OnStopJob(JobParameters @params) {
+            Logger.Warn("Repeat server request job killed before completion.");
+            //Job wll be killed before completion.
+
+            //Request reschedule
             return true;
         }
     }

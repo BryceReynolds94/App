@@ -120,24 +120,15 @@ namespace PagerBuddy.Services {
         }
 
         public static Collection<string> getConfigList() {
-            string list = getConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, (string)null);
-
-            if (list == null) {
-                list = serialiseObject(new Collection<string>());
-                setConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, list);
-            }
+            string list = getConfigValue(DATA_KEYS.ALERT_CONFIG_LIST, serialiseObject(new Collection<string>()));
             return deserialiseObject<Collection<string>>(list);
         }
         public static Collection<DayOfWeek> activeDays {
             get {
-                string list = getConfigValue(DATA_KEYS.ACTIVE_TIME_DAYS, (string)null);
-                if (list == null) {
-                    Collection<DayOfWeek> defaultCollection = new Collection<DayOfWeek>() { 
-                        DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday 
+                Collection<DayOfWeek> defaultCollection = new Collection<DayOfWeek>() {
+                        DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday
                     };
-                    list = serialiseObject(defaultCollection);
-                    setConfigValue(DATA_KEYS.ACTIVE_TIME_DAYS, list);
-                }
+                string list = getConfigValue(DATA_KEYS.ACTIVE_TIME_DAYS, serialiseObject(defaultCollection));
                 return deserialiseObject<Collection<DayOfWeek>>(list);
             }
             set {
@@ -147,11 +138,7 @@ namespace PagerBuddy.Services {
 
         public static List<string> customPagerBuddyServerBots {
             get {
-                string list = getConfigValue(DATA_KEYS.CUSTOM_PAGERBUDDY_SERVER_BOT_LIST, (string)null);
-                if (list == null) {
-                    list = serialiseObject(new List<string>());
-                    setConfigValue(DATA_KEYS.CUSTOM_PAGERBUDDY_SERVER_BOT_LIST, list);
-                }
+                string list = getConfigValue(DATA_KEYS.CUSTOM_PAGERBUDDY_SERVER_BOT_LIST, serialiseObject(new List<string>()));
                 return deserialiseObject<List<string>>(list);
             }
             set {
@@ -160,52 +147,40 @@ namespace PagerBuddy.Services {
         }
 
         public static string getConfigValue(DATA_KEYS key, string defaultValue) {
-            if (!Preferences.ContainsKey(key.ToString())) {
-                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
-                setConfigValue(key, defaultValue);
-                return defaultValue;
-            }
-            return Preferences.Get(key.ToString(), defaultValue);
+            return checkGet(key, defaultValue);
         }
         public static bool getConfigValue(DATA_KEYS key, bool defaultValue) {
-            if (!Preferences.ContainsKey(key.ToString())) {
-                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
-                setConfigValue(key, defaultValue);
-                return defaultValue;
-            }
-            return Preferences.Get(key.ToString(), defaultValue);
+            return checkGet(key, defaultValue);
         }
         public static int getConfigValue(DATA_KEYS key, int defaultValue) {
-            if (!Preferences.ContainsKey(key.ToString())) {
-                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
-                setConfigValue(key, defaultValue);
-                return defaultValue;
-            }
-            return Preferences.Get(key.ToString(), defaultValue);
+            return checkGet(key, defaultValue);
         }
-        public static double getConfigValue(DATA_KEYS key, double defaultValue) {
-            if (!Preferences.ContainsKey(key.ToString())) {
-                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
-                setConfigValue(key, defaultValue);
-                return defaultValue;
-            }
-            return Preferences.Get(key.ToString(), defaultValue);
+        public static long getConfigValue(DATA_KEYS key, long defaultValue) {
+            return checkGet(key, defaultValue);
         }
         public static DateTime getConfigValue(DATA_KEYS key, DateTime defaultValue) {
-            if (!Preferences.ContainsKey(key.ToString())) {
-                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
-                setConfigValue(key, defaultValue);
-                return defaultValue;
-            }
-            return Preferences.Get(key.ToString(), defaultValue);
+            return checkGet(key, defaultValue);
         }
         public static byte[] getConfigValue(DATA_KEYS key, byte[] defaultValue) {
+            return deserialiseObject<byte[]>(getConfigValue(key, serialiseObject(defaultValue)));
+        }
+
+        private static T checkGet<T>(DATA_KEYS key, T defaultValue){
             if (!Preferences.ContainsKey(key.ToString())) {
                 Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
-                setConfigValue(key, defaultValue);
+                setConfigValue(key, (dynamic)defaultValue);
                 return defaultValue;
             }
-            return deserialiseObject<byte[]>(Preferences.Get(key.ToString(), serialiseObject(defaultValue)));
+
+            T value;
+            try {
+                value =  Preferences.Get(key.ToString(), (dynamic)defaultValue);
+            }catch(Exception e) {
+                Logger.Error(e, "Error trying to retrieve DATA_KEY " + key + ". This may be due to type mismatch. Setting default value.");
+                setConfigValue(key, (dynamic)defaultValue);
+                return defaultValue;
+            }
+            return value;
         }
 
         public static void setConfigValue(DATA_KEYS key, bool value) {
@@ -217,7 +192,7 @@ namespace PagerBuddy.Services {
         public static void setConfigValue(DATA_KEYS key, int value) {
             Preferences.Set(key.ToString(), value);
         }
-        public static void setConfigValue(DATA_KEYS key, double value) {
+        public static void setConfigValue(DATA_KEYS key, long value) {
             Preferences.Set(key.ToString(), value);
         }
         public static void setConfigValue(DATA_KEYS key, DateTime value) {
