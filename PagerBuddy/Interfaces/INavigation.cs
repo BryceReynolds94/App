@@ -7,13 +7,13 @@ namespace PagerBuddy.Interfaces
 {
     public interface INavigation
     {
-        void navigateNotificationSettings();
-        void navigateNotificationPolicyAccess();
-        void navigateDozeExempt();
-        void navigateHuaweiPowerException();
+        void navigateNotificationSettings(); //Android, evtl. iOS
+        void navigateNotificationPolicyAccess(); //Android
+        void navigateDozeExempt(); //Android
+        void navigateHuaweiPowerException(); //Android
         void navigateTelegramChat(int chatID, TelegramPeer.TYPE type);
         void quitApplication();
-        bool isTelegramInstalled();
+        bool isTelegramInstalled(); //TODO: Check for third party clients - evtl. advanced options to use alternate client
 
         void logPermissionSettings();
     }

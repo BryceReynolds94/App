@@ -35,6 +35,7 @@ namespace PagerBuddy.Droid {
         
         public void showAlertNotification(Alert alert) {
             prepareAlert();
+            //TODO: Implement notification LED
 
             Intent intent = new Intent(Application.Context, typeof(MainActivity))
                 .SetFlags(ActivityFlags.NewTask | ActivityFlags.MultipleTask | ActivityFlags.ExcludeFromRecents)

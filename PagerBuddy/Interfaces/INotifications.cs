@@ -13,9 +13,9 @@ namespace PagerBuddy.Interfaces
 
         void showStandardNotification(string title, string text);
 
-        void addNotificationChannel(AlertConfig config);
-        void removeNotificationChannel(AlertConfig config);
-        void UpdateNotificationChannels(Collection<AlertConfig> configList);
+        void addNotificationChannel(AlertConfig config); //Android
+        void removeNotificationChannel(AlertConfig config); //Android
+        void UpdateNotificationChannels(Collection<AlertConfig> configList); //Android
 
     }
 }
