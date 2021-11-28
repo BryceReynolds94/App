@@ -47,7 +47,7 @@ namespace PagerBuddy
 
             MessagingCenter.Subscribe<AboutPage>(this, AboutPage.MESSAGING_KEYS.SHOW_ALERT_PAGE.ToString(), (sender) => showAlertPage());
             MainPage = new MainPage();
-            new MessagingService(((MainPage)Current.MainPage).client);
+            
         }
 
         private void showAlertPage() {
@@ -68,8 +68,11 @@ namespace PagerBuddy
             MainPage = new AlertPage(testAlert);
         }
 
-        protected override void OnStart()
-        {
+        protected override async void OnStart(){
+            CommunicationService client = ((MainPage)Current.MainPage).client;
+            await client.connectClient();
+            new MessagingService(client);
+
         }
 
         protected override void OnSleep()

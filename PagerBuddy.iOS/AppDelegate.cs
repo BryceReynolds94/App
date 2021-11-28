@@ -7,7 +7,7 @@ using Foundation;
 using PagerBuddy.Services;
 using Plugin.FirebasePushNotification;
 using UIKit;
-
+using UserNotifications;
 
 namespace PagerBuddy.iOS
 {
@@ -36,10 +36,15 @@ namespace PagerBuddy.iOS
 
             LoadApplication(new App());
             FirebasePushNotificationManager.Initialize(options, false); //Init FirebasePushNotification Plugin
-            //TODO: iOS Set this to false and move permission prompt to after Telegram login
+                                                                        //TODO: iOS Set this to false and move permission prompt to after Telegram login
+
+            //Ensure APNS are shown even if in foreground
+            //https://iosarchitect.com/show-push-notifications-when-app-running-in-foreground-ios-swift/
+
 
             return base.FinishedLaunching(app, options);
         }
+
 
         //Callbacks for FirebasePushNotification Plugin
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken) {

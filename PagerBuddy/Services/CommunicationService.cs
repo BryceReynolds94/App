@@ -52,9 +52,8 @@ namespace PagerBuddy.Services {
 
         public enum MESSAGING_KEYS { USER_DATA_CHANGED };
 
-        public CommunicationService(bool isBackgroundCall = false) {
-            Logger.Debug("Initialising CommunicationService. Is background call: " + isBackgroundCall);
-            _ = connectClient(isBackgroundCall);
+        public CommunicationService() {
+            Logger.Debug("Initialising CommunicationService.");
         }
 
         public async Task reloadConnection(bool isBackgroundCall = false) {
@@ -77,7 +76,9 @@ namespace PagerBuddy.Services {
         public event ClientStausEventHandler StatusChanged;
         public delegate void ClientStausEventHandler(object sender, STATUS newStatus);
 
-        private async Task connectClient(bool isBackgroundCall = false) {
+        public async Task connectClient(bool isBackgroundCall = false) {
+            Logger.Debug("Connecting communication service. Is background call: " + isBackgroundCall);
+
             clientStatus = STATUS.NEW;
             if (Connectivity.NetworkAccess != NetworkAccess.Internet) {
                 Logger.Info("Not connected to internet. Cannot initialise client.");

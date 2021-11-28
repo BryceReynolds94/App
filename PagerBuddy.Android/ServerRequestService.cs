@@ -29,10 +29,11 @@ namespace PagerBuddy.Droid {
                 Logger.Debug("Client active in foreground. Reusing instance for attempting repeated server request.");
                 _ = HandleStatus(ServerRequestScheduler.instance.client, ServerRequestScheduler.instance.client.clientStatus, jobParams);
             } else {
-                CommunicationService client = new CommunicationService(true);
+                CommunicationService client = new CommunicationService();
                 client.StatusChanged += async (object sender, CommunicationService.STATUS status) => {
                     await HandleStatus(client, status, jobParams);
                 };
+                _ = client.connectClient(true);
             }
 
             return true;

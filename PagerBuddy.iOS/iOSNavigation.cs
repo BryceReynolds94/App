@@ -13,12 +13,17 @@ namespace PagerBuddy.iOS {
 
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public bool isTelegramInstalled() {
-            //This should check if a Telegram client is installed on the device. The suer is prompted to install Telegram if no client is found.
 
+            //https://www.hackingwithswift.com/example-code/system/how-to-check-whether-your-other-apps-are-installed
 
-            //TODO: IOS Implementation
-            //https://stackoverflow.com/questions/41545283/how-to-check-app-is-installed-or-not-in-phone
-            return false;
+            //TODO: TESTING
+            bool telegramInstalled = false;
+            try {
+                telegramInstalled = UIApplication.SharedApplication.CanOpenUrl(new NSUrl("telegram://test"));
+            } catch(Exception e) {
+                Logger.Warn(e, "Error probing for Telegram installation.");
+            }
+            return telegramInstalled;
         }
 
         public void navigateNotificationPolicyAccess() {

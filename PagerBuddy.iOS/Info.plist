@@ -48,5 +48,9 @@
 	<string>LaunchScreen</string>
 	<key>XSAppIconAssets</key>
 	<string>Media.xcassets/AppIcons.appiconset</string>
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+    <string>telegram</string>
+  </array>
 </dict>
 </plist>

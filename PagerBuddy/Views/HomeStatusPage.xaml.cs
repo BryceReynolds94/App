@@ -52,6 +52,7 @@ namespace PagerBuddy.Views
 
             if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, false)) {
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, true);
+                viewModel.setErrorState(true, false); //Force set not logged in for first time use
                 _ = showWelcomePrompt();
             }
         }

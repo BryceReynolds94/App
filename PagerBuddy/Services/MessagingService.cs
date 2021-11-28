@@ -63,12 +63,13 @@ namespace PagerBuddy.Services
                     await instance.client.sendServerRequest(configList);
                 }
             } else {
-                CommunicationService client = new CommunicationService(true);
+                CommunicationService client = new CommunicationService();
                 client.StatusChanged += async (sender, status) => {
                     if (status == CommunicationService.STATUS.AUTHORISED) {
                         await client.sendServerRequest(configList);
                     }
                 };
+                await client.connectClient(true);
             }  
         }
 
