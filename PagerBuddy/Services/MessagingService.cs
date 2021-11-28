@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using PagerBuddy.Interfaces;
 using PagerBuddy.Models;
+using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,9 +24,21 @@ namespace PagerBuddy.Services
         public MessagingService(CommunicationService client) {
             this.client = client;
             instance = this;
+
+            CrossFirebasePushNotification.Current.OnTokenRefresh += async (object sender, FirebasePushNotificationTokenEventArgs args) => {
+                await FirebaseTokenRefresh(args.Token);
+            };
+
+            CrossFirebasePushNotification.Current.OnNotificationReceived += (object sender, FirebasePushNotificationDataEventArgs args) => {
+                FirebaseMessage(null, DateTime.Now); //TODO: RBF
+            };
+
         }
 
 
+
+
+        //TODO: Clean this up with FCM plugin
         //This is called when FCM Messages are received
         public static void FirebaseMessage(IDictionary<string,string> data, DateTime timestamp)
         {

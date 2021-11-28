@@ -70,7 +70,7 @@ namespace PagerBuddy.iOS {
         }
 
         public void UpdateNotificationChannels(Collection<AlertConfig> configList) {
-            //Fill notification channels from prvoided list
+            //Fill notification channels from prvoided list 
 
             //TODO: IOS Implementation
 

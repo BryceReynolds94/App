@@ -18,6 +18,8 @@ namespace PagerBuddy.Droid {
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT"})]
     public class FCMMessagingService : FirebaseMessagingService{
 
+        //TODO: Replace this with push notification plugin
+
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public override void OnMessageReceived(RemoteMessage p0) {
