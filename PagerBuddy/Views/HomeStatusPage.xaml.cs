@@ -134,8 +134,10 @@ namespace PagerBuddy.Views
         }
 
         private async Task alertConfigsChanged(Collection<AlertConfig> configList){
-            INotifications notifications = DependencyService.Get<INotifications>();
-            notifications.UpdateNotificationChannels(configList);
+            if (Device.RuntimePlatform == Device.Android) {
+                IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
+                notifications.UpdateNotificationChannels(configList);
+            }
 
             Task update = sendServerUpdate(configList);
 
@@ -158,6 +160,7 @@ namespace PagerBuddy.Views
             await update;
         }
 
+        //TODO: Permission prompts should be moved to platform specific code (?)
         private async Task showDNDPermissionPrompt()
         {
             bool confirmed = await DisplayAlert(AppResources.HomeStatusPage_DNDPermissionPrompt_Title, 
@@ -169,14 +172,14 @@ namespace PagerBuddy.Views
                 return;
             }
 
-            Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
-            navigation.navigateNotificationPolicyAccess();
+            Interfaces.IAndroidPermissions permissions = DependencyService.Get<Interfaces.IAndroidPermissions>();
+            permissions.permissionNotificationPolicyAccess();
         }
 
         private void showDozeExemptPrompt() {
             //https://developer.android.com/training/monitoring-device-state/doze-standby#exemption-cases
-            Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
-            navigation.navigateDozeExempt();
+            Interfaces.IAndroidPermissions permissions = DependencyService.Get<Interfaces.IAndroidPermissions>();
+            permissions.permissionDozeExempt();
         }
 
         private async Task showHuaweiPrompt() {
@@ -188,8 +191,8 @@ namespace PagerBuddy.Views
             if (!confirmed) {
                 return;
             }
-            Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
-            navigation.navigateHuaweiPowerException();
+            Interfaces.IAndroidPermissions permissions = DependencyService.Get<Interfaces.IAndroidPermissions>();
+            permissions.permissionHuaweiPowerException();
         }
 
         private async Task showWelcomePrompt() {

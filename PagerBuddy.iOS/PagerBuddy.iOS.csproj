@@ -73,11 +73,12 @@
     <StartupObject>PagerBuddy.iOS.Application</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="iOSNavigation.cs" />
-    <Compile Include="iOSNotification.cs" />
+    <Compile Include="Navigation.cs" />
+    <Compile Include="Notification.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <BundleResource Include="Resources\splash_screen_logo.png" />
+    <Compile Include="Permission.cs" />
     <Compile Include="ServerRequestScheduler.cs" />
     <None Include="Entitlements.plist" />
     <BundleResource Include="GoogleService-Info.plist" />

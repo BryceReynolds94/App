@@ -57,7 +57,7 @@ namespace PagerBuddy.Views {
         private async void shareLog(object sender, EventArgs args) {
             Logger.Info("Launched Log sharing");
 
-            Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
+            Interfaces.IPermissions navigation = DependencyService.Get<Interfaces.IPermissions>();
             navigation.logPermissionSettings();
 
             Logger.Debug("App build version: " + VersionTracking.CurrentBuild);
@@ -84,8 +84,8 @@ namespace PagerBuddy.Views {
 
             if (Device.RuntimePlatform == Device.Android) {
 
-                Interfaces.INavigation navigation = DependencyService.Get<Interfaces.INavigation>();
-                navigation.navigateDozeExempt();
+                Interfaces.IAndroidPermissions navigation = DependencyService.Get<Interfaces.IAndroidPermissions>();
+                navigation.permissionDozeExempt();
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, true);
 
                 bool confirmed = await DisplayAlert(AppResources.HomeStatusPage_DNDPermissionPrompt_Title,
@@ -94,7 +94,7 @@ namespace PagerBuddy.Views {
                     AppResources.HomeStatusPage_DNDPermissionPrompt_Cancel);
 
                 if (confirmed) {
-                    navigation.navigateNotificationPolicyAccess();
+                    navigation.permissionNotificationPolicyAccess();
                     DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
                 }
 
@@ -105,7 +105,7 @@ namespace PagerBuddy.Views {
                             AppResources.HomeStatusPage_HuaweiPrompt_Cancel);
 
                     if (confirmedHuawei) {
-                        navigation.navigateHuaweiPowerException();
+                        navigation.permissionHuaweiPowerException();
                         DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, true);
                     }  
                 }
@@ -113,8 +113,8 @@ namespace PagerBuddy.Views {
             if(Device.RuntimePlatform == Device.iOS) {
                 //TODO: IOS RBF
 
-                Interfaces.INotifications notifications = DependencyService.Get<Interfaces.INotifications>();
-                notifications.addNotificationChannel(null);
+                Interfaces.IiOSPermissions notifications = DependencyService.Get<Interfaces.IiOSPermissions>();
+                await notifications.requestNotificationPermission();
 
             }
 
@@ -149,21 +149,25 @@ namespace PagerBuddy.Views {
 
         private void testNotification(object sender, EventArgs args) {
             Collection<string> configs = DataService.getConfigList();
-            if (configs.Count > 0) {
-                Logger.Info("Sending notification test message in 5s.");
-                AlertConfig config = DataService.getAlertConfig(configs.First(), null);
-                if(config == null) {
-                    Logger.Error("Retrieving known alert returned null. Will stop here.");
-                    return;
-                }
-                Interfaces.INotifications notifications = DependencyService.Get<Interfaces.INotifications>();
+            if (Device.RuntimePlatform == Device.Android) {
+                if (configs.Count > 0) {
+                    Logger.Info("Sending notification test message in 5s.");
+                    AlertConfig config = DataService.getAlertConfig(configs.First(), null);
+                    if (config == null) {
+                        Logger.Error("Retrieving known alert returned null. Will stop here.");
+                        return;
+                    }
+                    Interfaces.IAndroidNotification notifications = DependencyService.Get<Interfaces.IAndroidNotification>();
 
-                Task.Delay(5000).ContinueWith((t) => {
-                    Logger.Info("Sending notification test message now.");
-                    notifications.showAlertNotification(new Alert(AppResources.AboutPage_DeveloperMode_TestNotification_Message, config));
-                });
+                    Task.Delay(5000).ContinueWith((t) => {
+                        Logger.Info("Sending notification test message now.");
+                        notifications.showAlertNotification(new Alert(AppResources.AboutPage_DeveloperMode_TestNotification_Message, config));
+                    });
+                } else {
+                    Logger.Warn("Could not send notification test message as no alerts are configured.");
+                }
             } else {
-                Logger.Warn("Could not send notification test message as no alerts are configured.");
+                Logger.Warn("Test alert is not supported on this device platform.");
             }
         }
     }

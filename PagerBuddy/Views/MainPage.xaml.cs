@@ -87,9 +87,13 @@ namespace PagerBuddy.Views {
         }
 
         private void requestNotificationSettings() {
-            Interfaces.INavigation navigationInterface = DependencyService.Get<Interfaces.INavigation>();
-            navigationInterface.navigateNotificationSettings();
-            IsPresented = false;
+            if (Device.RuntimePlatform == Device.Android) {
+                Interfaces.IAndroidNavigation navigationInterface = DependencyService.Get<Interfaces.IAndroidNavigation>();
+                navigationInterface.navigateNotificationSettings();
+                IsPresented = false;
+            } else {
+                Logger.Warn("Notification settings are not available for this platform.");
+            }
         }
 
         private async Task requestShare() {

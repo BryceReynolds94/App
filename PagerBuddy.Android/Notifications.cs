@@ -23,9 +23,9 @@ using Java.IO;
 using System.Threading.Tasks;
 using System.IO;
 
-[assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.Droid.AndroidNotifications))] //register for dependency service as platform-specific code
+[assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.Droid.Notifications))] //register for dependency service as platform-specific code
 namespace PagerBuddy.Droid {
-    public class AndroidNotifications : INotifications {
+    public class Notifications : IAndroidNotification {
 
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -61,8 +61,8 @@ namespace PagerBuddy.Droid {
                 .SetFullScreenIntent(fullScreenIntent, true)
                 .SetStyle(new Notification.BigTextStyle().BigText(alert.text)); //extend message on tap
 
-            if (new AndroidNavigation().isTelegramInstalled()) {
-                PendingIntent chatIntent = PendingIntent.GetActivity(Application.Context, 0, AndroidNavigation.getTelegramIntent(alert.chatID, alert.peerType), 0);
+            if (new Navigation().isTelegramInstalled()) {
+                PendingIntent chatIntent = PendingIntent.GetActivity(Application.Context, 0, Navigation.getTelegramIntent(alert.chatID, alert.peerType), 0);
                 builder.SetContentIntent(chatIntent);
             } else {
                 builder.SetContentIntent(fullScreenIntent);

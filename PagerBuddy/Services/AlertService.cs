@@ -82,10 +82,13 @@ namespace PagerBuddy.Services {
         }
 
         private static void alertMessage(Alert alert) {
-            Logger.Info("Alert was detected. Posting it to notifications.");
 
-            INotifications notifications = DependencyService.Get<INotifications>();
-            notifications.showAlertNotification(alert);
+            if (Device.RuntimePlatform == Device.Android) {
+                Logger.Info("Alert was detected. Posting it to notifications.");
+
+                IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
+                notifications.showAlertNotification(alert);
+            }
         }
 
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PagerBuddy.Interfaces;
-using INavigation = PagerBuddy.Interfaces.INavigation;
+using IAndroidNavigation = PagerBuddy.Interfaces.IAndroidNavigation;
 using PagerBuddy.Models;
 using System.IO;
 
@@ -17,6 +17,7 @@ namespace PagerBuddy.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlertPage : ContentPage
     {      
+        //TODO: All things related to alertpage should be moved to Android platform specific code
 
         private readonly AlertPageViewModel viewModel;
 
@@ -44,19 +45,19 @@ namespace PagerBuddy.Views
 
         private void cancel(object sender, EventArgs args)
         {
-            INotifications notifications = DependencyService.Get<INotifications>();
+            IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
             notifications.closeNotification(groupID);
 
-            INavigation nav = DependencyService.Get<INavigation>();
+            IAndroidNavigation nav = DependencyService.Get<IAndroidNavigation>();
             nav.quitApplication(); 
         }
 
         private void confirm(object sender, EventArgs args)
         {
-            INotifications notifications = DependencyService.Get<INotifications>();
+            IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
             notifications.closeNotification(groupID);
 
-            INavigation nav = DependencyService.Get<INavigation>();
+            IAndroidNavigation nav = DependencyService.Get<IAndroidNavigation>();
             nav.navigateTelegramChat(groupID, peerType);
             nav.quitApplication();
         }
