@@ -264,18 +264,6 @@
   <data name="AboutPage_DeveloperMode_CheckPermissions" xml:space="preserve">
     <value>Berechtigungen prüfen</value>
   </data>
-  <data name="HomeStatusPage_HuaweiPrompt_Title" xml:space="preserve">
-    <value>Fast fertig...</value>
-  </data>
-  <data name="HomeStatusPage_HuaweiPrompt_Message" xml:space="preserve">
-    <value>Geräte mit EMUI (Huawei) haben zusätzliche Beschränkungen für App-Aktivitäten im Hintergrund. Um sicherzustellen, dass du Benachrichtigungen bekommst, deaktiviere alle Beschränkungen für PagerBuddy in deinen Systemeinstellungen.</value>
-  </data>
-  <data name="HomeStatusPage_HuaweiPrompt_Confirm" xml:space="preserve">
-    <value>Bring mich dorthin</value>
-  </data>
-  <data name="HomeStatusPage_HuaweiPrompt_Cancel" xml:space="preserve">
-    <value>Nein</value>
-  </data>
   <data name="HomeStatusPage_Warning_EmptyList" xml:space="preserve">
     <value>Es wurde keine PagerBuddy-Gruppe gefunden. Überprüfe, dass du einer Benachrichtigungsgruppe mit PagerBuddy bei Telegram hinzugefügt wurdest.</value>
   </data>

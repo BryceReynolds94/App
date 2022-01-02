@@ -385,18 +385,6 @@
   <data name="AboutPage_DeveloperMode_CheckPermissions" xml:space="preserve">
     <value>Check Permissions</value>
   </data>
-  <data name="HomeStatusPage_HuaweiPrompt_Title" xml:space="preserve">
-    <value>Nearly done...</value>
-  </data>
-  <data name="HomeStatusPage_HuaweiPrompt_Message" xml:space="preserve">
-    <value>Devices runing EMUI (Huawei) place further restrictions on background app activity. Deactivate all restrictions for PagerBuddy in your system settings to ensure you receive alerts.</value>
-  </data>
-  <data name="HomeStatusPage_HuaweiPrompt_Confirm" xml:space="preserve">
-    <value>Take me there</value>
-  </data>
-  <data name="HomeStatusPage_HuaweiPrompt_Cancel" xml:space="preserve">
-    <value>No</value>
-  </data>
   <data name="HomeStatusPage_Warning_EmptyList" xml:space="preserve">
     <value>No PagerBuddy alert groups found. Make sure you have been added to a Telegram alert group using PagerBuddy.</value>
   </data>

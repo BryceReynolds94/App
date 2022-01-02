@@ -39,72 +39,16 @@ namespace PagerBuddy.Droid {
             }
         }
 
-        private void permissionDozeExempt() {
-            //https://developer.android.com/training/monitoring-device-state/doze-standby#exemption-cases
-            Intent intent = new Intent(Settings.ActionRequestIgnoreBatteryOptimizations);
-            intent.SetData(Android.Net.Uri.Parse("package:" + Application.Context.PackageName));
-            Platform.CurrentActivity.StartActivity(intent);
-        }
-
-        private async Task permissionHuaweiPowerException(Page currentView) {
-            bool confirmed = await currentView.DisplayAlert(AppResources.HomeStatusPage_HuaweiPrompt_Title,
-                    AppResources.HomeStatusPage_HuaweiPrompt_Message,
-                    AppResources.HomeStatusPage_HuaweiPrompt_Confirm,
-                    AppResources.HomeStatusPage_HuaweiPrompt_Cancel);
-
-            if (!confirmed) {
-                return;
-            }
-
-            Intent Huawei1 = new Intent().SetComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity"));
-            Intent Huawei2 = new Intent().SetComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
-            Intent Huawei3 = new Intent().SetComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"));
-
-            try {
-                if (Application.Context.PackageManager.ResolveActivity(Huawei1, PackageInfoFlags.MatchDefaultOnly) != null) {
-                    Logger.Debug("Starting HuaweiPowerException-Activity 1.");
-                    Platform.CurrentActivity.StartActivity(Huawei1);
-                    return;
-                }
-                if (Application.Context.PackageManager.ResolveActivity(Huawei2, PackageInfoFlags.MatchDefaultOnly) != null) {
-                    Logger.Debug("Starting HuaweiPowerException-Activity 2.");
-                    Platform.CurrentActivity.StartActivity(Huawei2);
-                    return;
-                }
-                if (Application.Context.PackageManager.ResolveActivity(Huawei3, PackageInfoFlags.MatchDefaultOnly) != null) {
-                    Logger.Debug("Starting HuaweiPowerException-Activity 3.");
-                    Platform.CurrentActivity.StartActivity(Huawei3);
-                    return;
-                }
-            } catch (Exception e) {
-                Logger.Error(e, "Exception trying to open Huawei power exception activities.");
-            }
-
-        }
-
         public void logPermissionSettings() {
             NotificationManager manager = NotificationManager.FromContext(Application.Context);
             Logger.Debug("Status of DND policy access: " + manager.IsNotificationPolicyAccessGranted);
-
-            PowerManager powerManager = PowerManager.FromContext(Application.Context);
-            Logger.Debug("Status of doze exemption: " + powerManager.IsIgnoringBatteryOptimizations(Application.Context.PackageName));
-
         }
 
         public async Task checkAlertPermissions(Page currentView, bool forceReprompt = false) {
-            if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, false) || forceReprompt) {
-                permissionDozeExempt();
-                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, true);
-            }
 
             if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, false) || forceReprompt) {
                 await permissionNotificationPolicyAccess(currentView);
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
-            }
-
-            if (DeviceInfo.Manufacturer.Contains("HUAWEI", StringComparison.OrdinalIgnoreCase) && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, false) || forceReprompt) {
-                await permissionHuaweiPowerException(currentView);
-                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, true);
             }
         }
     }

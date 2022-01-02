@@ -29,8 +29,6 @@ namespace PagerBuddy.Services {
             DEVELOPER_LOG_LEVEL, //LogLevel set vor DeveloperView (AboutPage)
             HAS_PROMPTED_DND_PERMISSION, //Whether the user has been asked to grant DND Permission in Android
             HAS_PROMPTED_WELCOME, //Whether the first-use welcome screen has been shown
-            HAS_PROMPTED_DOZE_EXEMPT, //Whether the user has been asked to grant ignore battery optimization permission in Android
-            HAS_PROMPTED_HUAWEI_EXEPTION, //Wheter the user has been asked to exempt app from Huawei restrictions
             HAS_PROMPTED_IOS_NOTIFICATION_PERMISSION,
             FCM_TOKEN, //Token for FCM/APNS messages
             BUILD_UPDATE_COMPLETE, //Build ID to avoid performing double updates (mostly Samsung)
