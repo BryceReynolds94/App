@@ -43,7 +43,7 @@ namespace PagerBuddy.Droid
             WakeScreenAlertPage(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()));
             LoadApplication(new App(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()), GetAlertFromIntent(Intent)));
             CheckPlayServices(); //Try our best to inform user of missing Play Services
-            new AndroidNotifications().SetupNotificationChannels(); //Application has to be loaded first
+            new Notifications().SetupNotificationChannels(); //Application has to be loaded first
         }
 
         private void WakeScreenAlertPage(bool isAlert) {

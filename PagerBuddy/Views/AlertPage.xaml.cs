@@ -16,10 +16,8 @@ namespace PagerBuddy.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlertPage : ContentPage
-    {      
-        //TODO: All things related to alertpage should be moved to Android platform specific code
-
-        private readonly AlertPageViewModel viewModel;
+    {     
+        private readonly AlertPageViewModel viewModel; 
 
         private readonly int groupID;
         private readonly TelegramPeer.TYPE peerType;

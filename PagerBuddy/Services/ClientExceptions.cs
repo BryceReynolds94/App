@@ -22,6 +22,9 @@ namespace PagerBuddy.Services
             PHONE_PASSWORD_PROTECTED,
             SMS_CODE_CREATE_FAILED,
             PASSWORD_HASH_INVALID,
+            YOU_BLOCKED_USER,
+            MESSAGE_TOO_LONG,
+            MESSAGE_EMPTY,
             UNKNOWN
         }
 

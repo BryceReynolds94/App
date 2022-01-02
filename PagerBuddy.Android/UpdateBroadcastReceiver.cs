@@ -22,7 +22,7 @@ namespace PagerBuddy.Droid {
 
             if(UpdaterService.checkNotification(VersionTracking.PreviousBuild, VersionTracking.CurrentBuild)) {
                 Logger.Info("Breaking package update detected. Showing notification.");
-                new AndroidNotifications().showStandardNotification(Resources.AppResources.Notification_BreakingUpdate_Title, Resources.AppResources.Notification_BreakingUpdate_Message);
+                new Notifications().showStandardNotification(Resources.AppResources.Notification_BreakingUpdate_Title, Resources.AppResources.Notification_BreakingUpdate_Message);
             }
         }
     }

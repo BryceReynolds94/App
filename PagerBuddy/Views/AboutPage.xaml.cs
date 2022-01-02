@@ -82,42 +82,8 @@ namespace PagerBuddy.Views {
         private async void checkPermissions(object sender, EventArgs args) {
             Logger.Info("User requested permissions check.");
 
-            if (Device.RuntimePlatform == Device.Android) {
-
-                Interfaces.IAndroidPermissions navigation = DependencyService.Get<Interfaces.IAndroidPermissions>();
-                navigation.permissionDozeExempt();
-                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, true);
-
-                bool confirmed = await DisplayAlert(AppResources.HomeStatusPage_DNDPermissionPrompt_Title,
-                    AppResources.HomeStatusPage_DNDPermissionPrompt_Message,
-                    AppResources.HomeStatusPage_DNDPermissionPrompt_Confirm,
-                    AppResources.HomeStatusPage_DNDPermissionPrompt_Cancel);
-
-                if (confirmed) {
-                    navigation.permissionNotificationPolicyAccess();
-                    DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
-                }
-
-                if (DeviceInfo.Manufacturer.Contains("HUAWEI", StringComparison.OrdinalIgnoreCase)) {
-                    bool confirmedHuawei = await DisplayAlert(AppResources.HomeStatusPage_HuaweiPrompt_Title,
-                            AppResources.HomeStatusPage_HuaweiPrompt_Message,
-                            AppResources.HomeStatusPage_HuaweiPrompt_Confirm,
-                            AppResources.HomeStatusPage_HuaweiPrompt_Cancel);
-
-                    if (confirmedHuawei) {
-                        navigation.permissionHuaweiPowerException();
-                        DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, true);
-                    }  
-                }
-            }
-            if(Device.RuntimePlatform == Device.iOS) {
-                //TODO: IOS RBF
-
-                Interfaces.IiOSPermissions notifications = DependencyService.Get<Interfaces.IiOSPermissions>();
-                await notifications.requestNotificationPermission();
-
-            }
-
+            Interfaces.IPermissions permissions = DependencyService.Get<Interfaces.IPermissions>();
+            await permissions.checkAlertPermissions(this, true);
         }
 
         private void showAlertPage(object sender, EventArgs args) {

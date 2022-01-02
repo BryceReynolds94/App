@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Data;
 using PagerBuddy.Resources;
 using FFImageLoading.Svg.Forms;
+using System.Linq;
 
 namespace PagerBuddy.ViewModels {
     public class HomeStatusPageViewModel : BaseViewModel {
@@ -93,9 +94,10 @@ namespace PagerBuddy.ViewModels {
         }
 
         public void fillAlertList(Collection<AlertConfig> alertConfigs) {
+            IOrderedEnumerable<AlertConfig> sortedConfigs = alertConfigs.OrderBy(config => config.readableFullName);
             alertList = new ObservableCollection<AlertStatusViewModel>();
 
-            foreach (AlertConfig config in alertConfigs) {
+            foreach (AlertConfig config in sortedConfigs) {
                 alertList.Add(new AlertStatusViewModel(config));
             }
             OnPropertyChanged(nameof(alertList));

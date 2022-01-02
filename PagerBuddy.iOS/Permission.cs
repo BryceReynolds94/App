@@ -8,20 +8,29 @@ using UIKit;
 using PagerBuddy.Interfaces;
 using System.Threading.Tasks;
 using UserNotifications;
+using Xamarin.Forms;
+using PagerBuddy.Services;
 
 namespace PagerBuddy.iOS {
     class Permission : IiOSPermissions {
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
+        public async Task checkAlertPermissions(Page currentView, bool forceReprompt = false) {
+            if(!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_IOS_NOTIFICATION_PERMISSION, false) || forceReprompt) {
+                await requestNotificationPermission();
+                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_IOS_NOTIFICATION_PERMISSION, true);
+            }
+        }
+
         public void logPermissionSettings() {
 
-            //TODO: Implement permission check
+            //TODO: iOS Implement permission check
             Logger.Warn("Permission check for iOS not implemented.");
         }
 
         public async Task<bool> requestNotificationPermission() {
-                //TODO: Test this implementation
+                //TODO: iOS Test this implementation
 
                 //https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1?view=net-5.0
                 Logger.Info("Requesting notification authorisation.");

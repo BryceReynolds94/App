@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
+[assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.Droid.ServerRequestScheduler))] //register for dependency service as platform-specific code
 namespace PagerBuddy.Droid {
     class ServerRequestScheduler : IRequestScheduler {
         NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
@@ -28,17 +29,17 @@ namespace PagerBuddy.Droid {
         public static ServerRequestScheduler instance;
         public CommunicationService client;
 
-        public ServerRequestScheduler(CommunicationService client) {
+        public void initialise(CommunicationService client) {
             instance = this;
             this.client = client;
         }
 
         public void scheduleRequest(Collection<AlertConfig> request, string botServerUser) {
-            Logger.Debug("Scheduling a repeat server request for later.");
+            Logger.Debug("Scheduling a server request.");
             ComponentName componentName = new ComponentName(Application.Context, Java.Lang.Class.FromType(typeof(ServerRequestService)));
             JobInfo.Builder builder = new JobInfo.Builder(SERVER_REQUEST_ID, componentName);
-            builder.SetBackoffCriteria(5 * 60 * 1000, BackoffPolicy.Exponential); //Initially set fro 5min, use exponential back off
-            builder.SetMinimumLatency(5 * 60 * 1000);
+            builder.SetBackoffCriteria(5 * 60 * 1000, BackoffPolicy.Exponential); //Initially set for 5min, use exponential back off
+            builder.SetMinimumLatency(10 * 1000); //Initially wait 10s to reduce flooding
             builder.SetPersisted(true); //Do not loose service on reboot -- need RECEIVE_BOOT_COMPLETED permission
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.P) {
@@ -61,7 +62,7 @@ namespace PagerBuddy.Droid {
         }
 
         public void cancelRequest() {
-            Logger.Debug("Cancelling repeat server request if active.");
+            Logger.Debug("Cancelling server request if active.");
             jobScheduler.Cancel(SERVER_REQUEST_ID);
         }
     }

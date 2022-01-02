@@ -25,8 +25,8 @@ namespace PagerBuddy.Services
             this.client = client;
             instance = this;
 
-            CrossFirebasePushNotification.Current.OnTokenRefresh += async (object sender, FirebasePushNotificationTokenEventArgs args) => {
-                await FirebaseTokenRefresh(args.Token);
+            CrossFirebasePushNotification.Current.OnTokenRefresh += (object sender, FirebasePushNotificationTokenEventArgs args) => {
+                TokenRefresh(args.Token);
             };
 
             CrossFirebasePushNotification.Current.OnNotificationReceived += (object sender, FirebasePushNotificationDataEventArgs args) => {
@@ -35,9 +35,6 @@ namespace PagerBuddy.Services
 
         }
 
-
-
-
         //TODO: Clean this up with FCM plugin
         //This is called when FCM Messages are received
         public static void FirebaseMessage(IDictionary<string,string> data, DateTime timestamp)
@@ -45,8 +42,8 @@ namespace PagerBuddy.Services
             inspectPayload(data, timestamp);
         }
 
-        public static async Task FirebaseTokenRefresh(string token) {
-            Logger.Info("Firebase token was updated, TOKEN: {0}", token);
+        public static void TokenRefresh(string token) {
+            Logger.Info("FCM/APNS token was updated, TOKEN: {0}", token);
             DataService.setConfigValue(DataService.DATA_KEYS.FCM_TOKEN, token);
 
             Collection<string> configIDs = DataService.getConfigList();
@@ -58,19 +55,15 @@ namespace PagerBuddy.Services
                 }
             }
 
+            if(configList.Count < 1) {
+                return;
+            }
+
+            IRequestScheduler scheduler = DependencyService.Get<IRequestScheduler>();
             if (instance != null) {
-                if (instance.client.clientStatus == CommunicationService.STATUS.AUTHORISED) {
-                    await instance.client.sendServerRequest(configList);
-                }
-            } else {
-                CommunicationService client = new CommunicationService();
-                client.StatusChanged += async (sender, status) => {
-                    if (status == CommunicationService.STATUS.AUTHORISED) {
-                        await client.sendServerRequest(configList);
-                    }
-                };
-                await client.connectClient(true);
-            }  
+                scheduler.initialise(instance.client);
+            }
+            scheduler.scheduleRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO: Allow all bot types
         }
 
         private static void inspectPayload(IDictionary<string,string> data, DateTime timestamp) {

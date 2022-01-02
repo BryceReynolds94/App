@@ -20,12 +20,10 @@ using Xamarin.Essentials;
 
 using Types = Telega.Rpc.Dto.Types;
 
-namespace PagerBuddy.Views
-{
+namespace PagerBuddy.Views {
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HomeStatusPage : ContentPage
-    {
+    public partial class HomeStatusPage : ContentPage {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly HomeStatusPageViewModel viewModel;
@@ -34,8 +32,7 @@ namespace PagerBuddy.Views
 
         //TODO Later: Implement alert content filtering (get from Server?)
 
-        public HomeStatusPage(CommunicationService client)
-        {
+        public HomeStatusPage(CommunicationService client) {
             InitializeComponent();
             this.client = client;
             this.client.StatusChanged += updateClientStatus;
@@ -48,7 +45,7 @@ namespace PagerBuddy.Views
             viewModel.RequestLogin += login;
             viewModel.RequestTimeConfig += timeConfig;
 
-            MessagingCenter.Subscribe<AlertStatusViewModel>(this, AlertStatusViewModel.MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString(), async (_) => await sendServerUpdate(getAlertConfigs()));
+            MessagingCenter.Subscribe<AlertStatusViewModel>(this, AlertStatusViewModel.MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString(), (_) => sendServerUpdate(getAlertConfigs()));
 
             if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, false)) {
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, true);
@@ -57,8 +54,7 @@ namespace PagerBuddy.Views
             }
         }
 
-        protected override void OnAppearing()
-        {
+        protected override void OnAppearing() {
             base.OnAppearing();
 
             bool allOff = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_DEACTIVATE_ALL, false);
@@ -75,25 +71,21 @@ namespace PagerBuddy.Views
             }
         }
 
-        private async Task sendServerUpdate(Collection<AlertConfig> configList) {
+        private void sendServerUpdate(Collection<AlertConfig> configList) {
 
             if (client.clientStatus != CommunicationService.STATUS.AUTHORISED && client.clientStatus > CommunicationService.STATUS.ONLINE) {
                 //User is not logged in - do nothing.
                 return;
-            }else if(client.clientStatus < CommunicationService.STATUS.WAIT_PHONE) {
-                Logger.Info("The client is not connected. Will retry sending updates to server at a later time...");
-                IRequestScheduler scheduler = DependencyService.Get<IRequestScheduler>();
-                scheduler.scheduleRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO Later: Introduce possibility of multiple servers
-                //Client is not connected (yet) - retry later
-                return;
             }
 
             Logger.Info("An alert config was changed by the user. Informing pagerbuddy server.");
-            _ = await client.sendServerRequest(configList); //Ignore result - retry attempts are handled in server
+
+            IRequestScheduler scheduler = DependencyService.Get<IRequestScheduler>();
+            scheduler.initialise(client);
+            scheduler.scheduleRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO Later: Introduce possibility of multiple servers
         }
 
-        private void updateClientStatus(object sender, CommunicationService.STATUS newStatus)
-        {
+        private void updateClientStatus(object sender, CommunicationService.STATUS newStatus) {
             bool isLoading = newStatus == CommunicationService.STATUS.NEW || newStatus == CommunicationService.STATUS.ONLINE;
             if (isLoading) { //Suppress warning updates while we are loading
                 return;
@@ -103,7 +95,7 @@ namespace PagerBuddy.Views
             bool isAuthorised = newStatus == CommunicationService.STATUS.AUTHORISED;
             viewModel.setErrorState(hasInternet, isAuthorised);
 
-            if(newStatus == CommunicationService.STATUS.AUTHORISED) {
+            if (newStatus == CommunicationService.STATUS.AUTHORISED) {
                 refreshAlertConfigs(this, null); //Check for config updates as soon as we go online
             }
         }
@@ -112,87 +104,33 @@ namespace PagerBuddy.Views
             await Navigation.PushModalAsync(new ActiveTimePopup(), false);
         }
 
-        private async void login(object sender, EventArgs eventArgs)
-        {
+        private async void login(object sender, EventArgs eventArgs) {
             await Navigation.PushAsync(new LoginPhonePage(client));
         }
 
-        private async void refreshClient(object sender, EventArgs eventArgs)
-        {
+        private async void refreshClient(object sender, EventArgs eventArgs) {
             await client.reloadConnection();
         }
 
 
-        private void saveDeactivatedState(object sender, bool state)
-        {
+        private void saveDeactivatedState(object sender, bool state) {
             DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_DEACTIVATE_ALL, state);
         }
 
-        private void saveSnoozeState(object sender, DateTime state)
-        {
+        private void saveSnoozeState(object sender, DateTime state) {
             DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, state);
         }
 
-        private async Task alertConfigsChanged(Collection<AlertConfig> configList){
+        private async Task alertConfigsChanged(Collection<AlertConfig> configList) {
             if (Device.RuntimePlatform == Device.Android) {
                 IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
                 notifications.UpdateNotificationChannels(configList);
             }
 
-            Task update = sendServerUpdate(configList);
+            sendServerUpdate(configList);
 
-            if (Device.RuntimePlatform == Device.Android && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, false)) {
-                showDozeExemptPrompt();
-                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DOZE_EXEMPT, true);
-            }
-
-            if (Device.RuntimePlatform == Device.Android && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, false))
-            {
-                await showDNDPermissionPrompt();
-                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
-            }
-
-            if(Device.RuntimePlatform == Device.Android && DeviceInfo.Manufacturer.Contains("HUAWEI", StringComparison.OrdinalIgnoreCase) && !DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, false)) {
-                await showHuaweiPrompt();
-                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HUAWEI_EXEPTION, true);
-            }
-
-            await update;
-        }
-
-        //TODO: Permission prompts should be moved to platform specific code (?)
-        private async Task showDNDPermissionPrompt()
-        {
-            bool confirmed = await DisplayAlert(AppResources.HomeStatusPage_DNDPermissionPrompt_Title, 
-                AppResources.HomeStatusPage_DNDPermissionPrompt_Message, 
-                AppResources.HomeStatusPage_DNDPermissionPrompt_Confirm, 
-                AppResources.HomeStatusPage_DNDPermissionPrompt_Cancel);
-
-            if (!confirmed) {
-                return;
-            }
-
-            Interfaces.IAndroidPermissions permissions = DependencyService.Get<Interfaces.IAndroidPermissions>();
-            permissions.permissionNotificationPolicyAccess();
-        }
-
-        private void showDozeExemptPrompt() {
-            //https://developer.android.com/training/monitoring-device-state/doze-standby#exemption-cases
-            Interfaces.IAndroidPermissions permissions = DependencyService.Get<Interfaces.IAndroidPermissions>();
-            permissions.permissionDozeExempt();
-        }
-
-        private async Task showHuaweiPrompt() {
-            bool confirmed = await DisplayAlert(AppResources.HomeStatusPage_HuaweiPrompt_Title,
-                AppResources.HomeStatusPage_HuaweiPrompt_Message,
-                AppResources.HomeStatusPage_HuaweiPrompt_Confirm,
-                AppResources.HomeStatusPage_HuaweiPrompt_Cancel);
-
-            if (!confirmed) {
-                return;
-            }
-            Interfaces.IAndroidPermissions permissions = DependencyService.Get<Interfaces.IAndroidPermissions>();
-            permissions.permissionHuaweiPowerException();
+            IPermissions permissions = DependencyService.Get<IPermissions>();
+            await permissions.checkAlertPermissions(this);
         }
 
         private async Task showWelcomePrompt() {
@@ -207,27 +145,26 @@ namespace PagerBuddy.Views
             login(this, null);
         }
 
-        private Collection<AlertConfig> getAlertConfigs()
-        {
+        private Collection<AlertConfig> getAlertConfigs() {
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
             Collection<string> configIDs = DataService.getConfigList();
-            foreach(string id in configIDs)
-            {
+            foreach (string id in configIDs) {
                 AlertConfig config = DataService.getAlertConfig(id, null);
-                if(config != null) {
+                if (config != null) {
                     configList.Add(config);
                 }
             }
             return configList;
         }
 
-        private bool hasListChanged(Collection<AlertConfig> newList) {
-            Collection<string> oldList = DataService.getConfigList();
+        private bool hasListChanged(Collection<string> oldList, Collection<AlertConfig> newList) {
             bool simpleSame = newList.All((config) => oldList.Contains(config.id)) && newList.Count == oldList.Count;
             return !simpleSame;
         }
 
         private async void refreshAlertConfigs(object sender, EventArgs args) {
+
+            Collection<string> oldList = DataService.getConfigList();
 
             Types.Messages.Chats rawChatList = await client.getChatList();
 
@@ -252,15 +189,19 @@ namespace PagerBuddy.Views
             }
 
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
+            Collection<string> deleteList = DataService.getConfigList();
 
-            foreach(TelegramPeer peer in peerCollection) {
+            foreach (TelegramPeer peer in peerCollection) {
                 if (peer.photoLocation != null) {
                     await peer.loadImage(client);
                 }
 
                 AlertConfig alertConfig = AlertConfig.findExistingConfig(peer.id);
-                if(alertConfig != null) {
+                if (alertConfig != null) {
                     alertConfig.triggerGroup = peer;
+                    if (deleteList.Contains(alertConfig.id)) {
+                        deleteList.Remove(alertConfig.id);
+                    }
                 } else {
                     alertConfig = new AlertConfig(peer);
                 }
@@ -270,14 +211,17 @@ namespace PagerBuddy.Views
 
             viewModel.fillAlertList(configList);
 
-            if (hasListChanged(configList)) { //If the alert list has changed, subscribe to PagerBuddy-Server with new list
+            foreach(string alertID in deleteList){ //Make sure old groups are removed if not present anymore
+                DataService.deleteAlertConfig(alertID);
+            }
+
+            if (hasListChanged(oldList, configList)) { //If the alert list has changed, subscribe to PagerBuddy-Server with new list
                 await alertConfigsChanged(configList);
             }
 
         }
 
-        private async Task<DateTime> getSnoozeTime(object sender, EventArgs args)
-        {
+        private async Task<DateTime> getSnoozeTime(object sender, EventArgs args) {
             //TODO Later: Possibly replace this with a date & time picker
             string title = AppResources.HomeStatusPage_Snooze_Prompt;
             string cancelText = AppResources.HomeStatusPage_Snooze_Cancel;
@@ -296,8 +240,7 @@ namespace PagerBuddy.Views
 
             string result = await DisplayActionSheet(title, cancelText, null, timeDict.Keys.ToArray());
 
-            if (!timeDict.TryGetValue(result, out TimeSpan selection))
-            {
+            if (!timeDict.TryGetValue(result, out TimeSpan selection)) {
                 return DateTime.MinValue;
             }
 

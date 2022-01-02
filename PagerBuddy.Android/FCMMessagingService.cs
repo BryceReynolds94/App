@@ -18,8 +18,6 @@ namespace PagerBuddy.Droid {
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT"})]
     public class FCMMessagingService : FirebaseMessagingService{
 
-        //TODO: Replace this with push notification plugin
-
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public override void OnMessageReceived(RemoteMessage p0) {
@@ -50,7 +48,7 @@ namespace PagerBuddy.Droid {
                 Xamarin.Essentials.Platform.Init(this.Application); //We need to init Essentials from killed state to use preference storage
                 Xamarin.Forms.Forms.Init(Application.Context, null); //We need to make sure Xamarin.Forms is initialised when notifications are received in killed state  
             }
-            MessagingService.FirebaseTokenRefresh(p0).Wait();
+            MessagingService.TokenRefresh(p0);
         }
 
         public class OnCompleteListener : Java.Lang.Object, IOnCompleteListener {

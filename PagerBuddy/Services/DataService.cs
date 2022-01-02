@@ -31,7 +31,8 @@ namespace PagerBuddy.Services {
             HAS_PROMPTED_WELCOME, //Whether the first-use welcome screen has been shown
             HAS_PROMPTED_DOZE_EXEMPT, //Whether the user has been asked to grant ignore battery optimization permission in Android
             HAS_PROMPTED_HUAWEI_EXEPTION, //Wheter the user has been asked to exempt app from Huawei restrictions
-            FCM_TOKEN, //Token for FCM messages
+            HAS_PROMPTED_IOS_NOTIFICATION_PERMISSION,
+            FCM_TOKEN, //Token for FCM/APNS messages
             BUILD_UPDATE_COMPLETE, //Build ID to avoid performing double updates (mostly Samsung)
             ACTIVE_TIME_DAYS, //Days of the week where alerts are active 
             ACTIVE_TIME_FROM, //Time of day from when alerts are active
@@ -77,7 +78,7 @@ namespace PagerBuddy.Services {
             deleteAlertConfig(alertConfig.id);
         }
 
-        private static void deleteAlertConfig(string id) {
+        public static void deleteAlertConfig(string id) {
             Collection<string> configList = getConfigList();
             configList.Remove(id);
             removeProfilePic(id);

@@ -1,4 +1,5 @@
-﻿using PagerBuddy.Services;
+﻿using Newtonsoft.Json;
+using PagerBuddy.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,14 +10,16 @@ namespace PagerBuddy.Models {
     public class ServerRequest {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public enum MESSAGING_TYPE { FCM, APNS}
-
-        public MESSAGING_TYPE MessagingType;
+        //Caution! JSON Property names are used for serialisaton and must match the server implementation!
+        [JsonProperty("token")]
         public string Token;
+        [JsonProperty("alert_list")]
         public Collection<int> AlertIDList;
 
-        public ServerRequest(MESSAGING_TYPE messagingType, string token, Collection<int> alertIDList) {
-            this.MessagingType = messagingType;
+        [JsonIgnore]
+        public static string PREFIX = "/subscribe ";
+
+        public ServerRequest(string token, Collection<int> alertIDList) {
             this.Token = token;
             this.AlertIDList = alertIDList;
         }
@@ -30,24 +33,13 @@ namespace PagerBuddy.Models {
                 }
             }
 
-            string token;
-            if (Device.RuntimePlatform == Device.Android) {
-                token = DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, "");
-                if (token == null || token.Length < 1) {
-                    Logger.Warn("Token invalid. Cannot construct ServerRequest");
-                    return null;
-                }
-                return new ServerRequest(MESSAGING_TYPE.FCM, token, alertIDList);
-
-            } else if (Device.RuntimePlatform == Device.iOS) {
-                token = ""; //TODO: IOS Implement APNS token
-
-                return new ServerRequest(MESSAGING_TYPE.APNS, token, alertIDList);
-
-            } else {
-                Logger.Error("Device platform was of unexpected type. This should never happen. The current RuntimePLatform is " + Device.RuntimePlatform);
+            string token = DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, "");
+            if (token == null || token.Length < 1) {
+                Logger.Warn("Token invalid. Cannot construct ServerRequest");
                 return null;
             }
+
+            return new ServerRequest(token, alertIDList);
         }
     }
 }

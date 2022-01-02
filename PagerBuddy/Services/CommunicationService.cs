@@ -25,7 +25,7 @@ namespace PagerBuddy.Services {
         private TelegramClient client;
         private STATUS status;
 
-        private static readonly List<string> STATIC_PAGERBUDDY_SERVER_BOTS = new List<string> { "pagerbuddyserverbot" };
+        private static readonly List<string> STATIC_PAGERBUDDY_SERVER_BOTS = new List<string> { "pagerbuddyservertestbot" }; //TODO: RBF
         public static List<string> pagerbuddyServerList {
             get {
                 List<string> baseList = STATIC_PAGERBUDDY_SERVER_BOTS;
@@ -451,7 +451,6 @@ namespace PagerBuddy.Services {
                 Logger.Warn("Attempted to send request to server without appropriate client status. Current status: " + clientStatus.ToString());
                 return false;
             }
-            IRequestScheduler scheduler = DependencyService.Get<IRequestScheduler>();
 
             Types.InputPeer botPeer;
             Types.InputUser botUser;
@@ -475,10 +474,9 @@ namespace PagerBuddy.Services {
                     return await sendServerRequest(configList, serverPeer, ++attempt);
                 } else {
                     Logger.Warn("Finally failed to send server request.");
-                    //Schedule background retry
-                    scheduler.scheduleRequest(configList, serverPeer);
+                    //Retry will be handled by scheduler
+                    return false;
                 }
-                return false;
             }
 
             ServerRequest request = ServerRequest.getServerRequest(configList);
@@ -487,33 +485,85 @@ namespace PagerBuddy.Services {
             }
 
             string jsonRequest = JsonConvert.SerializeObject(request);
+            Logger.Debug("Server request JSON payload: " + jsonRequest);
 
-            Logger.Debug("Sending update to server: " + jsonRequest);
+            string stringRequest = ServerRequest.PREFIX + Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(jsonRequest));
+            Logger.Debug("Sending update to server: " + stringRequest);
+
+            int msgID = 0;
             try {
-                Functions.Messages.GetInlineBotResults msg = new Functions.Messages.GetInlineBotResults(botUser, botPeer, null, jsonRequest, "");
+                Functions.Messages.SendMessage msg = new Functions.Messages.SendMessage(true, true, true, true, botPeer, null, stringRequest, new Random().Next(), null, null, null);
+                Types.UpdatesType update = await client.Call(msg); //https://core.telegram.org/method/messages.sendMessage
 
-                //Functions.Messages.SendMessage msg = new Functions.Messages.SendMessage(true, true, true, true, botPeer, null, jsonRequest, new Random().Next(), null, null, null);
-                //Types.Messages.BotResults update = await client.Call(msg); //https://core.telegram.org/method/messages.sendMessage 
-                //TODO: RBF
+                if(update.Default.Updates.Count > 0) {
+                    foreach(Types.Update upd in update.Default.Updates) {
+                        if(upd.MessageId != null) {
+                            msgID = upd.MessageId.Id;
+                            break;
+                        }
+                    }
+                }
             } catch (Exception e) {
                 Logger.Error(e, "Exception while sending request to PagerBuddy-Server.");
+
+                TException exception = getTException(e.Message);
+                switch (exception) {
+                    case TException.YOU_BLOCKED_USER:
+                        Logger.Info("Bot is blocked by user. Will unblock and retry.");
+                        try {
+                            Functions.Contacts.Unblock unblockFunc = new Functions.Contacts.Unblock(botPeer);
+                            bool res = await client.Call(unblockFunc);
+                        }catch(Exception error) {
+                            Logger.Error(error, "Exception while sending unblock command.");
+                            break;
+                        }
+                        return await sendServerRequest(configList, serverPeer, ++attempt);
+
+                    case TException.MESSAGE_TOO_LONG:
+                        Logger.Error("Cannot send server update. The message is too long.");
+                        return false;
+                    case TException.MESSAGE_EMPTY:
+                        Logger.Error("Cannpt send server update. The message body is empty.");
+                        return false;
+                }
+
                 await checkConnectionOnError(e);
                 if (clientStatus == STATUS.AUTHORISED && attempt < 3) {
                     Logger.Info("Connection was possibly fixed. Retrying to send server request.");
                     return await sendServerRequest(configList, serverPeer, ++attempt);
                 } else {
                     Logger.Warn("Finally failed to send server request.");
-
-                    //Schedule background retry
-                    scheduler.scheduleRequest(configList, serverPeer);
+                    //Retry will be handled by scheduler
+                    return false;
                 }
-                return false;
             }
 
-            //Cancel active background retrys on success
-            scheduler.cancelRequest();
-
+            //From here on we assume sending the message to the server was successfull
+            await deleteMessage(msgID);
             return true;
+        }
+
+        private async Task deleteMessage(int messageID, int attempt = 0) {
+            if (clientStatus < STATUS.AUTHORISED) {
+                Logger.Warn("Attempted to delete message without appropriate client status. Current status: " + clientStatus.ToString());
+                return;
+            }
+
+            try {
+                Functions.Messages.DeleteMessages func = new Functions.Messages.DeleteMessages(false, new List<int>() { messageID });
+                Types.Messages.AffectedMessages update = await client.Call(func); //https://core.telegram.org/method/messages.deleteMessages
+
+            } catch (Exception e) {
+                Logger.Error(e, "Exception while deleting sent message.");
+                await checkConnectionOnError(e);
+                if (clientStatus == STATUS.AUTHORISED && attempt < 3) {
+                    Logger.Info("Connection was possibly fixed. Retrying to send server request.");
+                    await deleteMessage(messageID, ++attempt);
+                } else {
+                    Logger.Warn("Finally failed to delete message.");
+                }
+                return;
+            }
         }
     }
 
