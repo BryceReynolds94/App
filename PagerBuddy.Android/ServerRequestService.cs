@@ -21,7 +21,7 @@ namespace PagerBuddy.Droid {
 
     [Service(Name = "de.bartunik.pagerbuddy.serverrequestservice", Permission = "android.permission.BIND_JOB_SERVICE")]
     class ServerRequestService : JobService {
-        private NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public override bool OnStartJob(JobParameters jobParams) {
             //https://docs.microsoft.com/en-us/xamarin/android/platform/android-job-scheduler
 

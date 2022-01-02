@@ -16,7 +16,7 @@ namespace PagerBuddy.iOS
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
@@ -73,7 +73,7 @@ namespace PagerBuddy.iOS
             if (!Xamarin.Forms.Forms.IsInitialized) //TODO: iOS Testing
                 {
                 Xamarin.Forms.Forms.Init(); //We need to make sure Xamarin.Forms is initialised when notifications are received in killed state
-                MessagingService.FirebaseMessage(null, DateTime.Now);
+                MessagingService.FirebaseMessage(null);
             }
 
             completionHandler(UIBackgroundFetchResult.NewData);

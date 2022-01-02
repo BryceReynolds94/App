@@ -19,12 +19,12 @@ using System.Text;
 [assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.Droid.ServerRequestScheduler))] //register for dependency service as platform-specific code
 namespace PagerBuddy.Droid {
     class ServerRequestScheduler : IRequestScheduler {
-        NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private static readonly int SERVER_REQUEST_ID = 1;
         public enum JOB_PARAMETERS { REQUEST_STRING, PAGERBUDDY_SERVER_USER }
 
-        private JobScheduler jobScheduler = (JobScheduler)Application.Context.GetSystemService(Context.JobSchedulerService);
+        private readonly JobScheduler jobScheduler = (JobScheduler)Application.Context.GetSystemService(Context.JobSchedulerService);
 
         public static ServerRequestScheduler instance;
         public CommunicationService client;

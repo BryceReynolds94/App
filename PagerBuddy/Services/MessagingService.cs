@@ -39,13 +39,9 @@ namespace PagerBuddy.Services
             data.TryGetValue("zvei_description", out string description);
             data.TryGetValue("chat_id", out string chatIDR);
 
-            int timestamp;
-            bool testAlert;
-            int chatID;
-
-            bool res = int.TryParse(timestampR, out timestamp);
-            res &= bool.TryParse(testAlertR, out testAlert);
-            res &= int.TryParse(chatIDR, out chatID);
+            bool res = int.TryParse(timestampR, out int timestamp);
+            res &= bool.TryParse(testAlertR, out bool testAlert);
+            res &= int.TryParse(chatIDR, out int chatID);
 
             if (!res) {
                 Logger.Warn("Error parsing payload. Ignoring message.");

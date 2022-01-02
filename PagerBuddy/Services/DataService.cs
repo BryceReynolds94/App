@@ -146,40 +146,92 @@ namespace PagerBuddy.Services {
         }
 
         public static string getConfigValue(DATA_KEYS key, string defaultValue) {
-            return checkGet(key, defaultValue);
-        }
-        public static bool getConfigValue(DATA_KEYS key, bool defaultValue) {
-            return checkGet(key, defaultValue);
-        }
-        public static int getConfigValue(DATA_KEYS key, int defaultValue) {
-            return checkGet(key, defaultValue);
-        }
-        public static long getConfigValue(DATA_KEYS key, long defaultValue) {
-            return checkGet(key, defaultValue);
-        }
-        public static DateTime getConfigValue(DATA_KEYS key, DateTime defaultValue) {
-            return checkGet(key, defaultValue);
-        }
-        public static byte[] getConfigValue(DATA_KEYS key, byte[] defaultValue) {
-            return deserialiseObject<byte[]>(getConfigValue(key, serialiseObject(defaultValue)));
-        }
-
-        private static T checkGet<T>(DATA_KEYS key, T defaultValue){
             if (!Preferences.ContainsKey(key.ToString())) {
                 Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
-                setConfigValue(key, (dynamic)defaultValue);
+                setConfigValue(key, defaultValue);
                 return defaultValue;
             }
 
-            T value;
+            string value;
             try {
-                value =  Preferences.Get(key.ToString(), (dynamic)defaultValue);
-            }catch(Exception e) {
+                value = Preferences.Get(key.ToString(), defaultValue);
+            } catch (Exception e) {
                 Logger.Error(e, "Error trying to retrieve DATA_KEY " + key + ". This may be due to type mismatch. Setting default value.");
-                setConfigValue(key, (dynamic)defaultValue);
+                setConfigValue(key, defaultValue);
                 return defaultValue;
             }
             return value;
+        }
+        public static bool getConfigValue(DATA_KEYS key, bool defaultValue) {
+            if (!Preferences.ContainsKey(key.ToString())) {
+                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
+                setConfigValue(key, defaultValue);
+                return defaultValue;
+            }
+
+            bool value;
+            try {
+                value = Preferences.Get(key.ToString(), defaultValue);
+            } catch (Exception e) {
+                Logger.Error(e, "Error trying to retrieve DATA_KEY " + key + ". This may be due to type mismatch. Setting default value.");
+                setConfigValue(key, defaultValue);
+                return defaultValue;
+            }
+            return value;
+        }
+        public static int getConfigValue(DATA_KEYS key, int defaultValue) {
+            if (!Preferences.ContainsKey(key.ToString())) {
+                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
+                setConfigValue(key, defaultValue);
+                return defaultValue;
+            }
+
+            int value;
+            try {
+                value = Preferences.Get(key.ToString(), defaultValue);
+            } catch (Exception e) {
+                Logger.Error(e, "Error trying to retrieve DATA_KEY " + key + ". This may be due to type mismatch. Setting default value.");
+                setConfigValue(key, defaultValue);
+                return defaultValue;
+            }
+            return value;
+        }
+        public static long getConfigValue(DATA_KEYS key, long defaultValue) {
+            if (!Preferences.ContainsKey(key.ToString())) {
+                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
+                setConfigValue(key, defaultValue);
+                return defaultValue;
+            }
+
+            long value;
+            try {
+                value = Preferences.Get(key.ToString(), defaultValue);
+            } catch (Exception e) {
+                Logger.Error(e, "Error trying to retrieve DATA_KEY " + key + ". This may be due to type mismatch. Setting default value.");
+                setConfigValue(key, defaultValue);
+                return defaultValue;
+            }
+            return value;
+        }
+        public static DateTime getConfigValue(DATA_KEYS key, DateTime defaultValue) {
+            if (!Preferences.ContainsKey(key.ToString())) {
+                Logger.Debug("Could not find DATA_KEY " + key + ". Setting default value.");
+                setConfigValue(key, defaultValue);
+                return defaultValue;
+            }
+
+            DateTime value;
+            try {
+                value = Preferences.Get(key.ToString(), defaultValue);
+            } catch (Exception e) {
+                Logger.Error(e, "Error trying to retrieve DATA_KEY " + key + ". This may be due to type mismatch. Setting default value.");
+                setConfigValue(key, defaultValue);
+                return defaultValue;
+            }
+            return value;
+        }
+        public static byte[] getConfigValue(DATA_KEYS key, byte[] defaultValue) {
+            return deserialiseObject<byte[]>(getConfigValue(key, serialiseObject(defaultValue)));
         }
 
         public static void setConfigValue(DATA_KEYS key, bool value) {

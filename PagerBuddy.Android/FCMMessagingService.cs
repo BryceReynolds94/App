@@ -52,7 +52,7 @@ namespace PagerBuddy.Droid {
 
         public class OnCompleteListener : Java.Lang.Object, IOnCompleteListener {
 
-            private Action<string> callback;
+            private readonly Action<string> callback;
 
             public OnCompleteListener(Action<string> callback) {
                 this.callback = callback;

@@ -17,8 +17,6 @@ using PagerBuddy.Services;
 using PagerBuddy.Resources;
 using Android.Gms.Common;
 
-//TODO: Possibly uninstall Xamarin.AndroidX.RecyclerView when Firebase.Messaging (v 121.1.0) reference is fixed in future update
-
 namespace PagerBuddy.Droid
 {
     [Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -38,7 +36,10 @@ namespace PagerBuddy.Droid
 
             CachedImageRenderer.Init(true); //Addded to enable FFImageLoading
             CachedImageRenderer.InitImageViewHandler();
+
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             var ignore = typeof(SvgCachedImage); //Added to enable SVG FFImageLoading
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
 
             WakeScreenAlertPage(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()));
             LoadApplication(new App(Intent.HasExtra(Alert.EXTRAS.ALERT_FLAG.ToString()), GetAlertFromIntent(Intent)));

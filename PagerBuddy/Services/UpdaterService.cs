@@ -6,7 +6,7 @@ using System.Text;
 namespace PagerBuddy.Services {
     public class UpdaterService {
 
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static void checkUpdate(string previousBuild, string currentBuild) {
 

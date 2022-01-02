@@ -131,15 +131,15 @@ namespace PagerBuddy.Services {
             if (Connectivity.NetworkAccess != NetworkAccess.Internet) {
                 Logger.Info("Subscribing to network status changes for retry attempt.");
 
-                EventHandler<ConnectivityChangedEventArgs> handler = null;
-                handler = async (object sender, ConnectivityChangedEventArgs e) => {
+                async void handler(object sender, ConnectivityChangedEventArgs e) {
                     Logger.Debug("Network status changed to " + e.NetworkAccess);
                     if (e.NetworkAccess == NetworkAccess.Internet) {
                         Logger.Info("Internet connection established. Retrying connection.");
                         Connectivity.ConnectivityChanged -= handler; //unsubscribe self to clean up
                         await reloadConnection(isBackgroundCall);
                     }
-                };
+                }
+
                 Connectivity.ConnectivityChanged += handler;
                 return;
             }
@@ -432,8 +432,9 @@ namespace PagerBuddy.Services {
 
             Types.User outUser;
             try {
-                List<Types.InputUser> inArr = new List<Types.InputUser>();
-                inArr.Add(inUser);
+                List<Types.InputUser> inArr = new List<Types.InputUser> {
+                    inUser
+                };
 
                 IReadOnlyList<Types.User> outList = await client.Call(new Functions.Users.GetUsers(inArr)); //https://core.telegram.org/method/users.getUsers
                 outUser = outList.First();
@@ -579,7 +580,7 @@ namespace PagerBuddy.Services {
 
         public async Task<Session> Load() {
             if (!File.Exists(file)) {
-                return default(Session);
+                return default;
 
             }
 

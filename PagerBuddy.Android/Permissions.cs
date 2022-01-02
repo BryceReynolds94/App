@@ -23,7 +23,7 @@ using PagerBuddy.Services;
 namespace PagerBuddy.Droid {
     class Permissions : IAndroidPermissions {
 
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private async Task permissionNotificationPolicyAccess(Page currentView) {
 
