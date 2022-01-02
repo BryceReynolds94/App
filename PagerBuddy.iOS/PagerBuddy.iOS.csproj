@@ -104,9 +104,6 @@
     <PackageReference Include="NLog">
       <Version>4.7.10</Version>
     </PackageReference>
-    <PackageReference Include="Plugin.FirebasePushNotification">
-      <Version>3.3.10</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>

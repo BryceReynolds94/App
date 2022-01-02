@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using PagerBuddy.Interfaces;
 using PagerBuddy.Models;
-using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,22 +23,36 @@ namespace PagerBuddy.Services
         public MessagingService(CommunicationService client) {
             this.client = client;
             instance = this;
-
-            CrossFirebasePushNotification.Current.OnTokenRefresh += (object sender, FirebasePushNotificationTokenEventArgs args) => {
-                TokenRefresh(args.Token);
-            };
-
-            CrossFirebasePushNotification.Current.OnNotificationReceived += (object sender, FirebasePushNotificationDataEventArgs args) => {
-                FirebaseMessage(null, DateTime.Now); //TODO: RBF
-            };
-
         }
 
-        //TODO: Clean this up with FCM plugin
         //This is called when FCM Messages are received
-        public static void FirebaseMessage(IDictionary<string,string> data, DateTime timestamp)
+        public static void FirebaseMessage(IDictionary<string,string> data)
         {
-            inspectPayload(data, timestamp);
+            if (data.Count < 5) {
+                Logger.Warn("Received an FCM/APNS message with an invalid payload count. Ignoring message.");
+                return;
+            }
+
+            data.TryGetValue("alert_timestamp", out string timestampR);
+            data.TryGetValue("zvei", out string zvei);
+            data.TryGetValue("is_test_alert", out string testAlertR);
+            data.TryGetValue("zvei_description", out string description);
+            data.TryGetValue("chat_id", out string chatIDR);
+
+            int timestamp;
+            bool testAlert;
+            int chatID;
+
+            bool res = int.TryParse(timestampR, out timestamp);
+            res &= bool.TryParse(testAlertR, out testAlert);
+            res &= int.TryParse(chatIDR, out chatID);
+
+            if (!res) {
+                Logger.Warn("Error parsing payload. Ignoring message.");
+                return;
+            }
+
+            DateTime alertTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(timestamp).ToLocalTime(); //Unix base time -- we need local time for alert time comparison
         }
 
         public static void TokenRefresh(string token) {
@@ -64,10 +77,6 @@ namespace PagerBuddy.Services
                 scheduler.initialise(instance.client);
             }
             scheduler.scheduleRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO: Allow all bot types
-        }
-
-        private static void inspectPayload(IDictionary<string,string> data, DateTime timestamp) {
-           //TODO: Handle message
         }
     }
 }

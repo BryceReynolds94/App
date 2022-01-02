@@ -5,7 +5,6 @@ using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
 using Foundation;
 using PagerBuddy.Services;
-using Plugin.FirebasePushNotification;
 using UIKit;
 using UserNotifications;
 
@@ -35,7 +34,7 @@ namespace PagerBuddy.iOS
             var ignore = typeof(SvgCachedImage); //Added to enable SVG FFImageLoading
 
             LoadApplication(new App());
-            FirebasePushNotificationManager.Initialize(options, false); //Init FirebasePushNotification Plugin
+            //FirebasePushNotificationManager.Initialize(options, false); //Init FirebasePushNotification Plugin
                                                                         //TODO: iOS Set this to false and move permission prompt to after Telegram login
 
             //Ensure APNS are shown even if in foreground
@@ -48,12 +47,12 @@ namespace PagerBuddy.iOS
 
         //Callbacks for FirebasePushNotification Plugin
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken) {
-            FirebasePushNotificationManager.DidRegisterRemoteNotifications(deviceToken);
+            //FirebasePushNotificationManager.DidRegisterRemoteNotifications(deviceToken);
             Logger.Debug("Registered for remote notification. Device token: " + deviceToken);
         }
 
         public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error) {
-            FirebasePushNotificationManager.RemoteNotificationRegistrationFailed(error);
+            //FirebasePushNotificationManager.RemoteNotificationRegistrationFailed(error);
             Logger.Error(error.Description, "Could not register for remote notifications. This is probably fatal.");
             //TODO: iOS Handle this case in real-life
         }
@@ -68,7 +67,7 @@ namespace PagerBuddy.iOS
             // automatically with method swizzling enabled.
 
             Logger.Info("Received remote notification.");
-            FirebasePushNotificationManager.DidReceiveMessage(userInfo);
+            //FirebasePushNotificationManager.DidReceiveMessage(userInfo);
             // Do your magic to handle the notification data
 
             if (!Xamarin.Forms.Forms.IsInitialized) //TODO: iOS Testing

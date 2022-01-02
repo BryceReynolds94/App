@@ -30,6 +30,13 @@
             {
               "client_id": "473554663754-ss0c4tcs1nt280eqfgcngnu1ahmnvsci.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "473554663754-ju2kn86853b4tl3el4hbkhgocrpksgg3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "de.bartunik.pagerbuddy"
+              }
             }
           ]
         }

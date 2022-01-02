@@ -25,271 +25,6 @@ namespace PagerBuddy.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::Plugin.FirebasePushNotification.Resource.Attribute.alpha = global::PagerBuddy.Droid.Resource.Attribute.alpha;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.buttonSize = global::PagerBuddy.Droid.Resource.Attribute.buttonSize;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.circleCrop = global::PagerBuddy.Droid.Resource.Attribute.circleCrop;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.colorScheme = global::PagerBuddy.Droid.Resource.Attribute.colorScheme;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.coordinatorLayoutStyle = global::PagerBuddy.Droid.Resource.Attribute.coordinatorLayoutStyle;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.font = global::PagerBuddy.Droid.Resource.Attribute.font;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.fontProviderAuthority = global::PagerBuddy.Droid.Resource.Attribute.fontProviderAuthority;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.fontProviderCerts = global::PagerBuddy.Droid.Resource.Attribute.fontProviderCerts;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.fontProviderFetchStrategy = global::PagerBuddy.Droid.Resource.Attribute.fontProviderFetchStrategy;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.fontProviderFetchTimeout = global::PagerBuddy.Droid.Resource.Attribute.fontProviderFetchTimeout;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.fontProviderPackage = global::PagerBuddy.Droid.Resource.Attribute.fontProviderPackage;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.fontProviderQuery = global::PagerBuddy.Droid.Resource.Attribute.fontProviderQuery;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.fontStyle = global::PagerBuddy.Droid.Resource.Attribute.fontStyle;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.fontVariationSettings = global::PagerBuddy.Droid.Resource.Attribute.fontVariationSettings;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.fontWeight = global::PagerBuddy.Droid.Resource.Attribute.fontWeight;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.imageAspectRatio = global::PagerBuddy.Droid.Resource.Attribute.imageAspectRatio;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.imageAspectRatioAdjust = global::PagerBuddy.Droid.Resource.Attribute.imageAspectRatioAdjust;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.keylines = global::PagerBuddy.Droid.Resource.Attribute.keylines;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.layout_anchor = global::PagerBuddy.Droid.Resource.Attribute.layout_anchor;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.layout_anchorGravity = global::PagerBuddy.Droid.Resource.Attribute.layout_anchorGravity;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.layout_behavior = global::PagerBuddy.Droid.Resource.Attribute.layout_behavior;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.layout_dodgeInsetEdges = global::PagerBuddy.Droid.Resource.Attribute.layout_dodgeInsetEdges;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.layout_insetEdge = global::PagerBuddy.Droid.Resource.Attribute.layout_insetEdge;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.layout_keyline = global::PagerBuddy.Droid.Resource.Attribute.layout_keyline;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.scopeUris = global::PagerBuddy.Droid.Resource.Attribute.scopeUris;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.statusBarBackground = global::PagerBuddy.Droid.Resource.Attribute.statusBarBackground;
-			global::Plugin.FirebasePushNotification.Resource.Attribute.ttcIndex = global::PagerBuddy.Droid.Resource.Attribute.ttcIndex;
-			global::Plugin.FirebasePushNotification.Resource.Color.common_google_signin_btn_text_dark = global::PagerBuddy.Droid.Resource.Color.common_google_signin_btn_text_dark;
-			global::Plugin.FirebasePushNotification.Resource.Color.common_google_signin_btn_text_dark_default = global::PagerBuddy.Droid.Resource.Color.common_google_signin_btn_text_dark_default;
-			global::Plugin.FirebasePushNotification.Resource.Color.common_google_signin_btn_text_dark_disabled = global::PagerBuddy.Droid.Resource.Color.common_google_signin_btn_text_dark_disabled;
-			global::Plugin.FirebasePushNotification.Resource.Color.common_google_signin_btn_text_dark_focused = global::PagerBuddy.Droid.Resource.Color.common_google_signin_btn_text_dark_focused;
-			global::Plugin.FirebasePushNotification.Resource.Color.common_google_signin_btn_text_dark_pressed = global::PagerBuddy.Droid.Resource.Color.common_google_signin_btn_text_dark_pressed;
-			global::Plugin.FirebasePushNotification.Resource.Color.common_google_signin_btn_text_light = global::PagerBuddy.Droid.Resource.Color.common_google_signin_btn_text_light;
-			global::Plugin.FirebasePushNotification.Resource.Color.common_google_signin_btn_text_light_default = global::PagerBuddy.Droid.Resource.Color.common_google_signin_btn_text_light_default;
-			global::Plugin.FirebasePushNotification.Resource.Color.common_google_signin_btn_text_light_disabled = global::PagerBuddy.Droid.Resource.Color.common_google_signin_btn_text_light_disabled;
-			global::Plugin.FirebasePushNotification.Resource.Color.common_google_signin_btn_text_light_focused = global::PagerBuddy.Droid.Resource.Color.common_google_signin_btn_text_light_focused;
-			global::Plugin.FirebasePushNotification.Resource.Color.common_google_signin_btn_text_light_pressed = global::PagerBuddy.Droid.Resource.Color.common_google_signin_btn_text_light_pressed;
-			global::Plugin.FirebasePushNotification.Resource.Color.common_google_signin_btn_tint = global::PagerBuddy.Droid.Resource.Color.common_google_signin_btn_tint;
-			global::Plugin.FirebasePushNotification.Resource.Color.notification_action_color_filter = global::PagerBuddy.Droid.Resource.Color.notification_action_color_filter;
-			global::Plugin.FirebasePushNotification.Resource.Color.notification_icon_bg_color = global::PagerBuddy.Droid.Resource.Color.notification_icon_bg_color;
-			global::Plugin.FirebasePushNotification.Resource.Color.notification_material_background_media_default_color = global::PagerBuddy.Droid.Resource.Color.notification_material_background_media_default_color;
-			global::Plugin.FirebasePushNotification.Resource.Color.primary_text_default_material_dark = global::PagerBuddy.Droid.Resource.Color.primary_text_default_material_dark;
-			global::Plugin.FirebasePushNotification.Resource.Color.ripple_material_light = global::PagerBuddy.Droid.Resource.Color.ripple_material_light;
-			global::Plugin.FirebasePushNotification.Resource.Color.secondary_text_default_material_dark = global::PagerBuddy.Droid.Resource.Color.secondary_text_default_material_dark;
-			global::Plugin.FirebasePushNotification.Resource.Color.secondary_text_default_material_light = global::PagerBuddy.Droid.Resource.Color.secondary_text_default_material_light;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.compat_button_inset_horizontal_material = global::PagerBuddy.Droid.Resource.Dimension.compat_button_inset_horizontal_material;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.compat_button_inset_vertical_material = global::PagerBuddy.Droid.Resource.Dimension.compat_button_inset_vertical_material;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.compat_button_padding_horizontal_material = global::PagerBuddy.Droid.Resource.Dimension.compat_button_padding_horizontal_material;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.compat_button_padding_vertical_material = global::PagerBuddy.Droid.Resource.Dimension.compat_button_padding_vertical_material;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.compat_control_corner_material = global::PagerBuddy.Droid.Resource.Dimension.compat_control_corner_material;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.compat_notification_large_icon_max_height = global::PagerBuddy.Droid.Resource.Dimension.compat_notification_large_icon_max_height;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.compat_notification_large_icon_max_width = global::PagerBuddy.Droid.Resource.Dimension.compat_notification_large_icon_max_width;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_action_icon_size = global::PagerBuddy.Droid.Resource.Dimension.notification_action_icon_size;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_action_text_size = global::PagerBuddy.Droid.Resource.Dimension.notification_action_text_size;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_big_circle_margin = global::PagerBuddy.Droid.Resource.Dimension.notification_big_circle_margin;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_content_margin_start = global::PagerBuddy.Droid.Resource.Dimension.notification_content_margin_start;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_large_icon_height = global::PagerBuddy.Droid.Resource.Dimension.notification_large_icon_height;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_large_icon_width = global::PagerBuddy.Droid.Resource.Dimension.notification_large_icon_width;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_main_column_padding_top = global::PagerBuddy.Droid.Resource.Dimension.notification_main_column_padding_top;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_media_narrow_margin = global::PagerBuddy.Droid.Resource.Dimension.notification_media_narrow_margin;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_right_icon_size = global::PagerBuddy.Droid.Resource.Dimension.notification_right_icon_size;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_right_side_padding_top = global::PagerBuddy.Droid.Resource.Dimension.notification_right_side_padding_top;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_small_icon_background_padding = global::PagerBuddy.Droid.Resource.Dimension.notification_small_icon_background_padding;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_small_icon_size_as_large = global::PagerBuddy.Droid.Resource.Dimension.notification_small_icon_size_as_large;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_subtext_size = global::PagerBuddy.Droid.Resource.Dimension.notification_subtext_size;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_top_pad = global::PagerBuddy.Droid.Resource.Dimension.notification_top_pad;
-			global::Plugin.FirebasePushNotification.Resource.Dimension.notification_top_pad_large_text = global::PagerBuddy.Droid.Resource.Dimension.notification_top_pad_large_text;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_full_open_on_phone = global::PagerBuddy.Droid.Resource.Drawable.common_full_open_on_phone;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_icon_dark = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_icon_dark;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_icon_dark_focused = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_icon_dark_focused;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_icon_dark_normal = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_icon_dark_normal;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_icon_dark_normal_background = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_icon_dark_normal_background;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_icon_disabled = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_icon_disabled;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_icon_light = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_icon_light;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_icon_light_focused = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_icon_light_focused;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_icon_light_normal = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_icon_light_normal;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_icon_light_normal_background = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_icon_light_normal_background;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_text_dark = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_text_dark;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_text_dark_focused = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_text_dark_focused;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_text_dark_normal = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_text_dark_normal;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_text_dark_normal_background = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_text_dark_normal_background;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_text_disabled = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_text_disabled;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_text_light = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_text_light;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_text_light_focused = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_text_light_focused;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_text_light_normal = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_text_light_normal;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.common_google_signin_btn_text_light_normal_background = global::PagerBuddy.Droid.Resource.Drawable.common_google_signin_btn_text_light_normal_background;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.googleg_disabled_color_18 = global::PagerBuddy.Droid.Resource.Drawable.googleg_disabled_color_18;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.googleg_standard_color_18 = global::PagerBuddy.Droid.Resource.Drawable.googleg_standard_color_18;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.notification_action_background = global::PagerBuddy.Droid.Resource.Drawable.notification_action_background;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.notification_bg = global::PagerBuddy.Droid.Resource.Drawable.notification_bg;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.notification_bg_low = global::PagerBuddy.Droid.Resource.Drawable.notification_bg_low;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.notification_bg_low_normal = global::PagerBuddy.Droid.Resource.Drawable.notification_bg_low_normal;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.notification_bg_low_pressed = global::PagerBuddy.Droid.Resource.Drawable.notification_bg_low_pressed;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.notification_bg_normal = global::PagerBuddy.Droid.Resource.Drawable.notification_bg_normal;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.notification_bg_normal_pressed = global::PagerBuddy.Droid.Resource.Drawable.notification_bg_normal_pressed;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.notification_icon_background = global::PagerBuddy.Droid.Resource.Drawable.notification_icon_background;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.notification_template_icon_bg = global::PagerBuddy.Droid.Resource.Drawable.notification_template_icon_bg;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.notification_template_icon_low_bg = global::PagerBuddy.Droid.Resource.Drawable.notification_template_icon_low_bg;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.notification_tile_bg = global::PagerBuddy.Droid.Resource.Drawable.notification_tile_bg;
-			global::Plugin.FirebasePushNotification.Resource.Drawable.notify_panel_notification_icon_bg = global::PagerBuddy.Droid.Resource.Drawable.notify_panel_notification_icon_bg;
-			global::Plugin.FirebasePushNotification.Resource.Id.action0 = global::PagerBuddy.Droid.Resource.Id.action0;
-			global::Plugin.FirebasePushNotification.Resource.Id.actions = global::PagerBuddy.Droid.Resource.Id.actions;
-			global::Plugin.FirebasePushNotification.Resource.Id.action_container = global::PagerBuddy.Droid.Resource.Id.action_container;
-			global::Plugin.FirebasePushNotification.Resource.Id.action_divider = global::PagerBuddy.Droid.Resource.Id.action_divider;
-			global::Plugin.FirebasePushNotification.Resource.Id.action_image = global::PagerBuddy.Droid.Resource.Id.action_image;
-			global::Plugin.FirebasePushNotification.Resource.Id.action_text = global::PagerBuddy.Droid.Resource.Id.action_text;
-			global::Plugin.FirebasePushNotification.Resource.Id.adjust_height = global::PagerBuddy.Droid.Resource.Id.adjust_height;
-			global::Plugin.FirebasePushNotification.Resource.Id.adjust_width = global::PagerBuddy.Droid.Resource.Id.adjust_width;
-			global::Plugin.FirebasePushNotification.Resource.Id.all = global::PagerBuddy.Droid.Resource.Id.all;
-			global::Plugin.FirebasePushNotification.Resource.Id.async = global::PagerBuddy.Droid.Resource.Id.async;
-			global::Plugin.FirebasePushNotification.Resource.Id.auto = global::PagerBuddy.Droid.Resource.Id.auto;
-			global::Plugin.FirebasePushNotification.Resource.Id.blocking = global::PagerBuddy.Droid.Resource.Id.blocking;
-			global::Plugin.FirebasePushNotification.Resource.Id.bottom = global::PagerBuddy.Droid.Resource.Id.bottom;
-			global::Plugin.FirebasePushNotification.Resource.Id.cancel_action = global::PagerBuddy.Droid.Resource.Id.cancel_action;
-			global::Plugin.FirebasePushNotification.Resource.Id.center = global::PagerBuddy.Droid.Resource.Id.center;
-			global::Plugin.FirebasePushNotification.Resource.Id.center_horizontal = global::PagerBuddy.Droid.Resource.Id.center_horizontal;
-			global::Plugin.FirebasePushNotification.Resource.Id.center_vertical = global::PagerBuddy.Droid.Resource.Id.center_vertical;
-			global::Plugin.FirebasePushNotification.Resource.Id.chronometer = global::PagerBuddy.Droid.Resource.Id.chronometer;
-			global::Plugin.FirebasePushNotification.Resource.Id.clip_horizontal = global::PagerBuddy.Droid.Resource.Id.clip_horizontal;
-			global::Plugin.FirebasePushNotification.Resource.Id.clip_vertical = global::PagerBuddy.Droid.Resource.Id.clip_vertical;
-			global::Plugin.FirebasePushNotification.Resource.Id.dark = global::PagerBuddy.Droid.Resource.Id.dark;
-			global::Plugin.FirebasePushNotification.Resource.Id.end = global::PagerBuddy.Droid.Resource.Id.end;
-			global::Plugin.FirebasePushNotification.Resource.Id.end_padder = global::PagerBuddy.Droid.Resource.Id.end_padder;
-			global::Plugin.FirebasePushNotification.Resource.Id.fill = global::PagerBuddy.Droid.Resource.Id.fill;
-			global::Plugin.FirebasePushNotification.Resource.Id.fill_horizontal = global::PagerBuddy.Droid.Resource.Id.fill_horizontal;
-			global::Plugin.FirebasePushNotification.Resource.Id.fill_vertical = global::PagerBuddy.Droid.Resource.Id.fill_vertical;
-			global::Plugin.FirebasePushNotification.Resource.Id.forever = global::PagerBuddy.Droid.Resource.Id.forever;
-			global::Plugin.FirebasePushNotification.Resource.Id.icon = global::PagerBuddy.Droid.Resource.Id.icon;
-			global::Plugin.FirebasePushNotification.Resource.Id.icon_group = global::PagerBuddy.Droid.Resource.Id.icon_group;
-			global::Plugin.FirebasePushNotification.Resource.Id.icon_only = global::PagerBuddy.Droid.Resource.Id.icon_only;
-			global::Plugin.FirebasePushNotification.Resource.Id.info = global::PagerBuddy.Droid.Resource.Id.info;
-			global::Plugin.FirebasePushNotification.Resource.Id.italic = global::PagerBuddy.Droid.Resource.Id.italic;
-			global::Plugin.FirebasePushNotification.Resource.Id.left = global::PagerBuddy.Droid.Resource.Id.left;
-			global::Plugin.FirebasePushNotification.Resource.Id.light = global::PagerBuddy.Droid.Resource.Id.light;
-			global::Plugin.FirebasePushNotification.Resource.Id.line1 = global::PagerBuddy.Droid.Resource.Id.line1;
-			global::Plugin.FirebasePushNotification.Resource.Id.line3 = global::PagerBuddy.Droid.Resource.Id.line3;
-			global::Plugin.FirebasePushNotification.Resource.Id.media_actions = global::PagerBuddy.Droid.Resource.Id.media_actions;
-			global::Plugin.FirebasePushNotification.Resource.Id.none = global::PagerBuddy.Droid.Resource.Id.none;
-			global::Plugin.FirebasePushNotification.Resource.Id.normal = global::PagerBuddy.Droid.Resource.Id.normal;
-			global::Plugin.FirebasePushNotification.Resource.Id.notification_background = global::PagerBuddy.Droid.Resource.Id.notification_background;
-			global::Plugin.FirebasePushNotification.Resource.Id.notification_main_column = global::PagerBuddy.Droid.Resource.Id.notification_main_column;
-			global::Plugin.FirebasePushNotification.Resource.Id.notification_main_column_container = global::PagerBuddy.Droid.Resource.Id.notification_main_column_container;
-			global::Plugin.FirebasePushNotification.Resource.Id.right = global::PagerBuddy.Droid.Resource.Id.right;
-			global::Plugin.FirebasePushNotification.Resource.Id.right_icon = global::PagerBuddy.Droid.Resource.Id.right_icon;
-			global::Plugin.FirebasePushNotification.Resource.Id.right_side = global::PagerBuddy.Droid.Resource.Id.right_side;
-			global::Plugin.FirebasePushNotification.Resource.Id.standard = global::PagerBuddy.Droid.Resource.Id.standard;
-			global::Plugin.FirebasePushNotification.Resource.Id.start = global::PagerBuddy.Droid.Resource.Id.start;
-			global::Plugin.FirebasePushNotification.Resource.Id.status_bar_latest_event_content = global::PagerBuddy.Droid.Resource.Id.status_bar_latest_event_content;
-			global::Plugin.FirebasePushNotification.Resource.Id.tag_transition_group = global::PagerBuddy.Droid.Resource.Id.tag_transition_group;
-			global::Plugin.FirebasePushNotification.Resource.Id.tag_unhandled_key_event_manager = global::PagerBuddy.Droid.Resource.Id.tag_unhandled_key_event_manager;
-			global::Plugin.FirebasePushNotification.Resource.Id.tag_unhandled_key_listeners = global::PagerBuddy.Droid.Resource.Id.tag_unhandled_key_listeners;
-			global::Plugin.FirebasePushNotification.Resource.Id.text = global::PagerBuddy.Droid.Resource.Id.text;
-			global::Plugin.FirebasePushNotification.Resource.Id.text2 = global::PagerBuddy.Droid.Resource.Id.text2;
-			global::Plugin.FirebasePushNotification.Resource.Id.time = global::PagerBuddy.Droid.Resource.Id.time;
-			global::Plugin.FirebasePushNotification.Resource.Id.title = global::PagerBuddy.Droid.Resource.Id.title;
-			global::Plugin.FirebasePushNotification.Resource.Id.top = global::PagerBuddy.Droid.Resource.Id.top;
-			global::Plugin.FirebasePushNotification.Resource.Id.wide = global::PagerBuddy.Droid.Resource.Id.wide;
-			global::Plugin.FirebasePushNotification.Resource.Integer.cancel_button_image_alpha = global::PagerBuddy.Droid.Resource.Integer.cancel_button_image_alpha;
-			global::Plugin.FirebasePushNotification.Resource.Integer.google_play_services_version = global::PagerBuddy.Droid.Resource.Integer.google_play_services_version;
-			global::Plugin.FirebasePushNotification.Resource.Integer.status_bar_notification_info_maxnum = global::PagerBuddy.Droid.Resource.Integer.status_bar_notification_info_maxnum;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_action = global::PagerBuddy.Droid.Resource.Layout.notification_action;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_action_tombstone = global::PagerBuddy.Droid.Resource.Layout.notification_action_tombstone;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_media_action = global::PagerBuddy.Droid.Resource.Layout.notification_media_action;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_media_cancel_action = global::PagerBuddy.Droid.Resource.Layout.notification_media_cancel_action;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_template_big_media = global::PagerBuddy.Droid.Resource.Layout.notification_template_big_media;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_template_big_media_custom = global::PagerBuddy.Droid.Resource.Layout.notification_template_big_media_custom;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_template_big_media_narrow = global::PagerBuddy.Droid.Resource.Layout.notification_template_big_media_narrow;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_template_big_media_narrow_custom = global::PagerBuddy.Droid.Resource.Layout.notification_template_big_media_narrow_custom;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_template_custom_big = global::PagerBuddy.Droid.Resource.Layout.notification_template_custom_big;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_template_icon_group = global::PagerBuddy.Droid.Resource.Layout.notification_template_icon_group;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_template_lines_media = global::PagerBuddy.Droid.Resource.Layout.notification_template_lines_media;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_template_media = global::PagerBuddy.Droid.Resource.Layout.notification_template_media;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_template_media_custom = global::PagerBuddy.Droid.Resource.Layout.notification_template_media_custom;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_template_part_chronometer = global::PagerBuddy.Droid.Resource.Layout.notification_template_part_chronometer;
-			global::Plugin.FirebasePushNotification.Resource.Layout.notification_template_part_time = global::PagerBuddy.Droid.Resource.Layout.notification_template_part_time;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_enable_button = global::PagerBuddy.Droid.Resource.String.common_google_play_services_enable_button;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_enable_text = global::PagerBuddy.Droid.Resource.String.common_google_play_services_enable_text;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_enable_title = global::PagerBuddy.Droid.Resource.String.common_google_play_services_enable_title;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_install_button = global::PagerBuddy.Droid.Resource.String.common_google_play_services_install_button;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_install_text = global::PagerBuddy.Droid.Resource.String.common_google_play_services_install_text;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_install_title = global::PagerBuddy.Droid.Resource.String.common_google_play_services_install_title;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_notification_channel_name = global::PagerBuddy.Droid.Resource.String.common_google_play_services_notification_channel_name;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_notification_ticker = global::PagerBuddy.Droid.Resource.String.common_google_play_services_notification_ticker;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_unknown_issue = global::PagerBuddy.Droid.Resource.String.common_google_play_services_unknown_issue;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_unsupported_text = global::PagerBuddy.Droid.Resource.String.common_google_play_services_unsupported_text;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_update_button = global::PagerBuddy.Droid.Resource.String.common_google_play_services_update_button;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_update_text = global::PagerBuddy.Droid.Resource.String.common_google_play_services_update_text;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_update_title = global::PagerBuddy.Droid.Resource.String.common_google_play_services_update_title;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_updating_text = global::PagerBuddy.Droid.Resource.String.common_google_play_services_updating_text;
-			global::Plugin.FirebasePushNotification.Resource.String.common_google_play_services_wear_update_text = global::PagerBuddy.Droid.Resource.String.common_google_play_services_wear_update_text;
-			global::Plugin.FirebasePushNotification.Resource.String.common_open_on_phone = global::PagerBuddy.Droid.Resource.String.common_open_on_phone;
-			global::Plugin.FirebasePushNotification.Resource.String.common_signin_button_text = global::PagerBuddy.Droid.Resource.String.common_signin_button_text;
-			global::Plugin.FirebasePushNotification.Resource.String.common_signin_button_text_long = global::PagerBuddy.Droid.Resource.String.common_signin_button_text_long;
-			global::Plugin.FirebasePushNotification.Resource.String.fcm_fallback_notification_channel_label = global::PagerBuddy.Droid.Resource.String.fcm_fallback_notification_channel_label;
-			global::Plugin.FirebasePushNotification.Resource.String.status_bar_notification_info_overflow = global::PagerBuddy.Droid.Resource.String.status_bar_notification_info_overflow;
-			global::Plugin.FirebasePushNotification.Resource.Style.TextAppearance_Compat_Notification = global::PagerBuddy.Droid.Resource.Style.TextAppearance_Compat_Notification;
-			global::Plugin.FirebasePushNotification.Resource.Style.TextAppearance_Compat_Notification_Info = global::PagerBuddy.Droid.Resource.Style.TextAppearance_Compat_Notification_Info;
-			global::Plugin.FirebasePushNotification.Resource.Style.TextAppearance_Compat_Notification_Info_Media = global::PagerBuddy.Droid.Resource.Style.TextAppearance_Compat_Notification_Info_Media;
-			global::Plugin.FirebasePushNotification.Resource.Style.TextAppearance_Compat_Notification_Line2 = global::PagerBuddy.Droid.Resource.Style.TextAppearance_Compat_Notification_Line2;
-			global::Plugin.FirebasePushNotification.Resource.Style.TextAppearance_Compat_Notification_Line2_Media = global::PagerBuddy.Droid.Resource.Style.TextAppearance_Compat_Notification_Line2_Media;
-			global::Plugin.FirebasePushNotification.Resource.Style.TextAppearance_Compat_Notification_Media = global::PagerBuddy.Droid.Resource.Style.TextAppearance_Compat_Notification_Media;
-			global::Plugin.FirebasePushNotification.Resource.Style.TextAppearance_Compat_Notification_Time = global::PagerBuddy.Droid.Resource.Style.TextAppearance_Compat_Notification_Time;
-			global::Plugin.FirebasePushNotification.Resource.Style.TextAppearance_Compat_Notification_Time_Media = global::PagerBuddy.Droid.Resource.Style.TextAppearance_Compat_Notification_Time_Media;
-			global::Plugin.FirebasePushNotification.Resource.Style.TextAppearance_Compat_Notification_Title = global::PagerBuddy.Droid.Resource.Style.TextAppearance_Compat_Notification_Title;
-			global::Plugin.FirebasePushNotification.Resource.Style.TextAppearance_Compat_Notification_Title_Media = global::PagerBuddy.Droid.Resource.Style.TextAppearance_Compat_Notification_Title_Media;
-			global::Plugin.FirebasePushNotification.Resource.Style.Widget_Compat_NotificationActionContainer = global::PagerBuddy.Droid.Resource.Style.Widget_Compat_NotificationActionContainer;
-			global::Plugin.FirebasePushNotification.Resource.Style.Widget_Compat_NotificationActionText = global::PagerBuddy.Droid.Resource.Style.Widget_Compat_NotificationActionText;
-			global::Plugin.FirebasePushNotification.Resource.Style.Widget_Support_CoordinatorLayout = global::PagerBuddy.Droid.Resource.Style.Widget_Support_CoordinatorLayout;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.ColorStateListItem = global::PagerBuddy.Droid.Resource.Styleable.ColorStateListItem;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.ColorStateListItem_alpha = global::PagerBuddy.Droid.Resource.Styleable.ColorStateListItem_alpha;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.ColorStateListItem_android_alpha = global::PagerBuddy.Droid.Resource.Styleable.ColorStateListItem_android_alpha;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.ColorStateListItem_android_color = global::PagerBuddy.Droid.Resource.Styleable.ColorStateListItem_android_color;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.CoordinatorLayout = global::PagerBuddy.Droid.Resource.Styleable.CoordinatorLayout;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.CoordinatorLayout_keylines = global::PagerBuddy.Droid.Resource.Styleable.CoordinatorLayout_keylines;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.CoordinatorLayout_Layout = global::PagerBuddy.Droid.Resource.Styleable.CoordinatorLayout_Layout;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.CoordinatorLayout_Layout_android_layout_gravity = global::PagerBuddy.Droid.Resource.Styleable.CoordinatorLayout_Layout_android_layout_gravity;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.CoordinatorLayout_Layout_layout_anchor = global::PagerBuddy.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_anchor;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.CoordinatorLayout_Layout_layout_anchorGravity = global::PagerBuddy.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_anchorGravity;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.CoordinatorLayout_Layout_layout_behavior = global::PagerBuddy.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_behavior;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges = global::PagerBuddy.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge = global::PagerBuddy.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline = global::PagerBuddy.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.CoordinatorLayout_statusBarBackground = global::PagerBuddy.Droid.Resource.Styleable.CoordinatorLayout_statusBarBackground;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamily = global::PagerBuddy.Droid.Resource.Styleable.FontFamily;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamilyFont = global::PagerBuddy.Droid.Resource.Styleable.FontFamilyFont;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamilyFont_android_font = global::PagerBuddy.Droid.Resource.Styleable.FontFamilyFont_android_font;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamilyFont_android_fontStyle = global::PagerBuddy.Droid.Resource.Styleable.FontFamilyFont_android_fontStyle;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamilyFont_android_fontVariationSettings = global::PagerBuddy.Droid.Resource.Styleable.FontFamilyFont_android_fontVariationSettings;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamilyFont_android_fontWeight = global::PagerBuddy.Droid.Resource.Styleable.FontFamilyFont_android_fontWeight;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamilyFont_android_ttcIndex = global::PagerBuddy.Droid.Resource.Styleable.FontFamilyFont_android_ttcIndex;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamilyFont_font = global::PagerBuddy.Droid.Resource.Styleable.FontFamilyFont_font;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamilyFont_fontStyle = global::PagerBuddy.Droid.Resource.Styleable.FontFamilyFont_fontStyle;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamilyFont_fontVariationSettings = global::PagerBuddy.Droid.Resource.Styleable.FontFamilyFont_fontVariationSettings;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamilyFont_fontWeight = global::PagerBuddy.Droid.Resource.Styleable.FontFamilyFont_fontWeight;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamilyFont_ttcIndex = global::PagerBuddy.Droid.Resource.Styleable.FontFamilyFont_ttcIndex;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamily_fontProviderAuthority = global::PagerBuddy.Droid.Resource.Styleable.FontFamily_fontProviderAuthority;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamily_fontProviderCerts = global::PagerBuddy.Droid.Resource.Styleable.FontFamily_fontProviderCerts;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamily_fontProviderFetchStrategy = global::PagerBuddy.Droid.Resource.Styleable.FontFamily_fontProviderFetchStrategy;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamily_fontProviderFetchTimeout = global::PagerBuddy.Droid.Resource.Styleable.FontFamily_fontProviderFetchTimeout;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamily_fontProviderPackage = global::PagerBuddy.Droid.Resource.Styleable.FontFamily_fontProviderPackage;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.FontFamily_fontProviderQuery = global::PagerBuddy.Droid.Resource.Styleable.FontFamily_fontProviderQuery;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor = global::PagerBuddy.Droid.Resource.Styleable.GradientColor;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColorItem = global::PagerBuddy.Droid.Resource.Styleable.GradientColorItem;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColorItem_android_color = global::PagerBuddy.Droid.Resource.Styleable.GradientColorItem_android_color;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColorItem_android_offset = global::PagerBuddy.Droid.Resource.Styleable.GradientColorItem_android_offset;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor_android_centerColor = global::PagerBuddy.Droid.Resource.Styleable.GradientColor_android_centerColor;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor_android_centerX = global::PagerBuddy.Droid.Resource.Styleable.GradientColor_android_centerX;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor_android_centerY = global::PagerBuddy.Droid.Resource.Styleable.GradientColor_android_centerY;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor_android_endColor = global::PagerBuddy.Droid.Resource.Styleable.GradientColor_android_endColor;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor_android_endX = global::PagerBuddy.Droid.Resource.Styleable.GradientColor_android_endX;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor_android_endY = global::PagerBuddy.Droid.Resource.Styleable.GradientColor_android_endY;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor_android_gradientRadius = global::PagerBuddy.Droid.Resource.Styleable.GradientColor_android_gradientRadius;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor_android_startColor = global::PagerBuddy.Droid.Resource.Styleable.GradientColor_android_startColor;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor_android_startX = global::PagerBuddy.Droid.Resource.Styleable.GradientColor_android_startX;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor_android_startY = global::PagerBuddy.Droid.Resource.Styleable.GradientColor_android_startY;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor_android_tileMode = global::PagerBuddy.Droid.Resource.Styleable.GradientColor_android_tileMode;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.GradientColor_android_type = global::PagerBuddy.Droid.Resource.Styleable.GradientColor_android_type;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.LoadingImageView = global::PagerBuddy.Droid.Resource.Styleable.LoadingImageView;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.LoadingImageView_circleCrop = global::PagerBuddy.Droid.Resource.Styleable.LoadingImageView_circleCrop;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.LoadingImageView_imageAspectRatio = global::PagerBuddy.Droid.Resource.Styleable.LoadingImageView_imageAspectRatio;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.LoadingImageView_imageAspectRatioAdjust = global::PagerBuddy.Droid.Resource.Styleable.LoadingImageView_imageAspectRatioAdjust;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.SignInButton = global::PagerBuddy.Droid.Resource.Styleable.SignInButton;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.SignInButton_buttonSize = global::PagerBuddy.Droid.Resource.Styleable.SignInButton_buttonSize;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.SignInButton_colorScheme = global::PagerBuddy.Droid.Resource.Styleable.SignInButton_colorScheme;
-			global::Plugin.FirebasePushNotification.Resource.Styleable.SignInButton_scopeUris = global::PagerBuddy.Droid.Resource.Styleable.SignInButton_scopeUris;
 			global::Xamarin.Essentials.Resource.Attribute.alpha = global::PagerBuddy.Droid.Resource.Attribute.alpha;
 			global::Xamarin.Essentials.Resource.Attribute.font = global::PagerBuddy.Droid.Resource.Attribute.font;
 			global::Xamarin.Essentials.Resource.Attribute.fontProviderAuthority = global::PagerBuddy.Droid.Resource.Attribute.fontProviderAuthority;
@@ -512,13 +247,7 @@ namespace PagerBuddy.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.EnterFromRight = global::PagerBuddy.Droid.Resource.Animation.EnterFromRight;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.ExitToLeft = global::PagerBuddy.Droid.Resource.Animation.ExitToLeft;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.ExitToRight = global::PagerBuddy.Droid.Resource.Animation.ExitToRight;
-			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_close_enter = global::PagerBuddy.Droid.Resource.Animation.fragment_close_enter;
-			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_close_exit = global::PagerBuddy.Droid.Resource.Animation.fragment_close_exit;
-			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_fade_enter = global::PagerBuddy.Droid.Resource.Animation.fragment_fade_enter;
-			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_fade_exit = global::PagerBuddy.Droid.Resource.Animation.fragment_fade_exit;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_fast_out_extra_slow_in = global::PagerBuddy.Droid.Resource.Animation.fragment_fast_out_extra_slow_in;
-			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_open_enter = global::PagerBuddy.Droid.Resource.Animation.fragment_open_enter;
-			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_open_exit = global::PagerBuddy.Droid.Resource.Animation.fragment_open_exit;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.mtrl_bottom_sheet_slide_in = global::PagerBuddy.Droid.Resource.Animation.mtrl_bottom_sheet_slide_in;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.mtrl_bottom_sheet_slide_out = global::PagerBuddy.Droid.Resource.Animation.mtrl_bottom_sheet_slide_out;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.mtrl_card_lowers_interpolator = global::PagerBuddy.Droid.Resource.Animation.mtrl_card_lowers_interpolator;
@@ -4137,13 +3866,7 @@ namespace PagerBuddy.Droid
 			global::Xamarin.Forms.Platform.Resource.Animation.EnterFromRight = global::PagerBuddy.Droid.Resource.Animation.EnterFromRight;
 			global::Xamarin.Forms.Platform.Resource.Animation.ExitToLeft = global::PagerBuddy.Droid.Resource.Animation.ExitToLeft;
 			global::Xamarin.Forms.Platform.Resource.Animation.ExitToRight = global::PagerBuddy.Droid.Resource.Animation.ExitToRight;
-			global::Xamarin.Forms.Platform.Resource.Animation.fragment_close_enter = global::PagerBuddy.Droid.Resource.Animation.fragment_close_enter;
-			global::Xamarin.Forms.Platform.Resource.Animation.fragment_close_exit = global::PagerBuddy.Droid.Resource.Animation.fragment_close_exit;
-			global::Xamarin.Forms.Platform.Resource.Animation.fragment_fade_enter = global::PagerBuddy.Droid.Resource.Animation.fragment_fade_enter;
-			global::Xamarin.Forms.Platform.Resource.Animation.fragment_fade_exit = global::PagerBuddy.Droid.Resource.Animation.fragment_fade_exit;
 			global::Xamarin.Forms.Platform.Resource.Animation.fragment_fast_out_extra_slow_in = global::PagerBuddy.Droid.Resource.Animation.fragment_fast_out_extra_slow_in;
-			global::Xamarin.Forms.Platform.Resource.Animation.fragment_open_enter = global::PagerBuddy.Droid.Resource.Animation.fragment_open_enter;
-			global::Xamarin.Forms.Platform.Resource.Animation.fragment_open_exit = global::PagerBuddy.Droid.Resource.Animation.fragment_open_exit;
 			global::Xamarin.Forms.Platform.Resource.Animation.mtrl_bottom_sheet_slide_in = global::PagerBuddy.Droid.Resource.Animation.mtrl_bottom_sheet_slide_in;
 			global::Xamarin.Forms.Platform.Resource.Animation.mtrl_bottom_sheet_slide_out = global::PagerBuddy.Droid.Resource.Animation.mtrl_bottom_sheet_slide_out;
 			global::Xamarin.Forms.Platform.Resource.Animation.mtrl_card_lowers_interpolator = global::PagerBuddy.Droid.Resource.Animation.mtrl_card_lowers_interpolator;
@@ -7832,34 +7555,16 @@ namespace PagerBuddy.Droid
 			public const int ExitToRight = 2130771999;
 			
 			// aapt resource value: 0x7F010020
-			public const int fragment_close_enter = 2130772000;
+			public const int fragment_fast_out_extra_slow_in = 2130772000;
 			
 			// aapt resource value: 0x7F010021
-			public const int fragment_close_exit = 2130772001;
+			public const int mtrl_bottom_sheet_slide_in = 2130772001;
 			
 			// aapt resource value: 0x7F010022
-			public const int fragment_fade_enter = 2130772002;
+			public const int mtrl_bottom_sheet_slide_out = 2130772002;
 			
 			// aapt resource value: 0x7F010023
-			public const int fragment_fade_exit = 2130772003;
-			
-			// aapt resource value: 0x7F010024
-			public const int fragment_fast_out_extra_slow_in = 2130772004;
-			
-			// aapt resource value: 0x7F010025
-			public const int fragment_open_enter = 2130772005;
-			
-			// aapt resource value: 0x7F010026
-			public const int fragment_open_exit = 2130772006;
-			
-			// aapt resource value: 0x7F010027
-			public const int mtrl_bottom_sheet_slide_in = 2130772007;
-			
-			// aapt resource value: 0x7F010028
-			public const int mtrl_bottom_sheet_slide_out = 2130772008;
-			
-			// aapt resource value: 0x7F010029
-			public const int mtrl_card_lowers_interpolator = 2130772009;
+			public const int mtrl_card_lowers_interpolator = 2130772003;
 			
 			static Animation()
 			{
@@ -7884,40 +7589,58 @@ namespace PagerBuddy.Droid
 			public const int design_fab_show_motion_spec = 2130837506;
 			
 			// aapt resource value: 0x7F020003
-			public const int mtrl_btn_state_list_anim = 2130837507;
+			public const int fragment_close_enter = 2130837507;
 			
 			// aapt resource value: 0x7F020004
-			public const int mtrl_btn_unelevated_state_list_anim = 2130837508;
+			public const int fragment_close_exit = 2130837508;
 			
 			// aapt resource value: 0x7F020005
-			public const int mtrl_card_state_list_anim = 2130837509;
+			public const int fragment_fade_enter = 2130837509;
 			
 			// aapt resource value: 0x7F020006
-			public const int mtrl_chip_state_list_anim = 2130837510;
+			public const int fragment_fade_exit = 2130837510;
 			
 			// aapt resource value: 0x7F020007
-			public const int mtrl_extended_fab_change_size_motion_spec = 2130837511;
+			public const int fragment_open_enter = 2130837511;
 			
 			// aapt resource value: 0x7F020008
-			public const int mtrl_extended_fab_hide_motion_spec = 2130837512;
+			public const int fragment_open_exit = 2130837512;
 			
 			// aapt resource value: 0x7F020009
-			public const int mtrl_extended_fab_show_motion_spec = 2130837513;
+			public const int mtrl_btn_state_list_anim = 2130837513;
 			
 			// aapt resource value: 0x7F02000A
-			public const int mtrl_extended_fab_state_list_animator = 2130837514;
+			public const int mtrl_btn_unelevated_state_list_anim = 2130837514;
 			
 			// aapt resource value: 0x7F02000B
-			public const int mtrl_fab_hide_motion_spec = 2130837515;
+			public const int mtrl_card_state_list_anim = 2130837515;
 			
 			// aapt resource value: 0x7F02000C
-			public const int mtrl_fab_show_motion_spec = 2130837516;
+			public const int mtrl_chip_state_list_anim = 2130837516;
 			
 			// aapt resource value: 0x7F02000D
-			public const int mtrl_fab_transformation_sheet_collapse_spec = 2130837517;
+			public const int mtrl_extended_fab_change_size_motion_spec = 2130837517;
 			
 			// aapt resource value: 0x7F02000E
-			public const int mtrl_fab_transformation_sheet_expand_spec = 2130837518;
+			public const int mtrl_extended_fab_hide_motion_spec = 2130837518;
+			
+			// aapt resource value: 0x7F02000F
+			public const int mtrl_extended_fab_show_motion_spec = 2130837519;
+			
+			// aapt resource value: 0x7F020010
+			public const int mtrl_extended_fab_state_list_animator = 2130837520;
+			
+			// aapt resource value: 0x7F020011
+			public const int mtrl_fab_hide_motion_spec = 2130837521;
+			
+			// aapt resource value: 0x7F020012
+			public const int mtrl_fab_show_motion_spec = 2130837522;
+			
+			// aapt resource value: 0x7F020013
+			public const int mtrl_fab_transformation_sheet_collapse_spec = 2130837523;
+			
+			// aapt resource value: 0x7F020014
+			public const int mtrl_fab_transformation_sheet_expand_spec = 2130837524;
 			
 			static Animator()
 			{
@@ -12972,139 +12695,142 @@ namespace PagerBuddy.Droid
 			public const int spacer = 2131230979;
 			
 			// aapt resource value: 0x7F080104
-			public const int split_action_bar = 2131230980;
+			public const int special_effects_controller_view_tag = 2131230980;
 			
 			// aapt resource value: 0x7F080105
-			public const int src_atop = 2131230981;
+			public const int split_action_bar = 2131230981;
 			
 			// aapt resource value: 0x7F080106
-			public const int src_in = 2131230982;
+			public const int src_atop = 2131230982;
 			
 			// aapt resource value: 0x7F080107
-			public const int src_over = 2131230983;
+			public const int src_in = 2131230983;
 			
 			// aapt resource value: 0x7F080108
-			public const int standard = 2131230984;
+			public const int src_over = 2131230984;
 			
 			// aapt resource value: 0x7F080109
-			public const int start = 2131230985;
+			public const int standard = 2131230985;
 			
 			// aapt resource value: 0x7F08010A
-			public const int status_bar_latest_event_content = 2131230986;
+			public const int start = 2131230986;
 			
 			// aapt resource value: 0x7F08010B
-			public const int stretch = 2131230987;
+			public const int status_bar_latest_event_content = 2131230987;
 			
 			// aapt resource value: 0x7F08010C
-			public const int submenuarrow = 2131230988;
+			public const int stretch = 2131230988;
 			
 			// aapt resource value: 0x7F08010D
-			public const int submit_area = 2131230989;
+			public const int submenuarrow = 2131230989;
+			
+			// aapt resource value: 0x7F08010E
+			public const int submit_area = 2131230990;
 			
 			// aapt resource value: 0x7F080007
 			public const int SYM = 2131230727;
 			
-			// aapt resource value: 0x7F08010E
-			public const int tabMode = 2131230990;
-			
 			// aapt resource value: 0x7F08010F
-			public const int tag_accessibility_actions = 2131230991;
+			public const int tabMode = 2131230991;
 			
 			// aapt resource value: 0x7F080110
-			public const int tag_accessibility_clickable_spans = 2131230992;
+			public const int tag_accessibility_actions = 2131230992;
 			
 			// aapt resource value: 0x7F080111
-			public const int tag_accessibility_heading = 2131230993;
+			public const int tag_accessibility_clickable_spans = 2131230993;
 			
 			// aapt resource value: 0x7F080112
-			public const int tag_accessibility_pane_title = 2131230994;
+			public const int tag_accessibility_heading = 2131230994;
 			
 			// aapt resource value: 0x7F080113
-			public const int tag_screen_reader_focusable = 2131230995;
+			public const int tag_accessibility_pane_title = 2131230995;
 			
 			// aapt resource value: 0x7F080114
-			public const int tag_transition_group = 2131230996;
+			public const int tag_screen_reader_focusable = 2131230996;
 			
 			// aapt resource value: 0x7F080115
-			public const int tag_unhandled_key_event_manager = 2131230997;
+			public const int tag_transition_group = 2131230997;
 			
 			// aapt resource value: 0x7F080116
-			public const int tag_unhandled_key_listeners = 2131230998;
+			public const int tag_unhandled_key_event_manager = 2131230998;
 			
 			// aapt resource value: 0x7F080117
-			public const int test_checkbox_android_button_tint = 2131230999;
+			public const int tag_unhandled_key_listeners = 2131230999;
 			
 			// aapt resource value: 0x7F080118
-			public const int test_checkbox_app_button_tint = 2131231000;
+			public const int test_checkbox_android_button_tint = 2131231000;
 			
 			// aapt resource value: 0x7F080119
-			public const int test_radiobutton_android_button_tint = 2131231001;
+			public const int test_checkbox_app_button_tint = 2131231001;
 			
 			// aapt resource value: 0x7F08011A
-			public const int test_radiobutton_app_button_tint = 2131231002;
+			public const int test_radiobutton_android_button_tint = 2131231002;
 			
 			// aapt resource value: 0x7F08011B
-			public const int text = 2131231003;
+			public const int test_radiobutton_app_button_tint = 2131231003;
 			
 			// aapt resource value: 0x7F08011C
-			public const int text2 = 2131231004;
+			public const int text = 2131231004;
 			
 			// aapt resource value: 0x7F08011D
-			public const int textEnd = 2131231005;
-			
-			// aapt resource value: 0x7F080123
-			public const int textinput_counter = 2131231011;
-			
-			// aapt resource value: 0x7F080124
-			public const int textinput_error = 2131231012;
-			
-			// aapt resource value: 0x7F080125
-			public const int textinput_helper_text = 2131231013;
-			
-			// aapt resource value: 0x7F080126
-			public const int textinput_placeholder = 2131231014;
-			
-			// aapt resource value: 0x7F080127
-			public const int textinput_prefix_text = 2131231015;
-			
-			// aapt resource value: 0x7F080128
-			public const int textinput_suffix_text = 2131231016;
+			public const int text2 = 2131231005;
 			
 			// aapt resource value: 0x7F08011E
-			public const int textSpacerNoButtons = 2131231006;
+			public const int textEnd = 2131231006;
 			
-			// aapt resource value: 0x7F08011F
-			public const int textSpacerNoTitle = 2131231007;
+			// aapt resource value: 0x7F080124
+			public const int textinput_counter = 2131231012;
 			
-			// aapt resource value: 0x7F080120
-			public const int textStart = 2131231008;
+			// aapt resource value: 0x7F080125
+			public const int textinput_error = 2131231013;
 			
-			// aapt resource value: 0x7F080121
-			public const int text_input_end_icon = 2131231009;
+			// aapt resource value: 0x7F080126
+			public const int textinput_helper_text = 2131231014;
 			
-			// aapt resource value: 0x7F080122
-			public const int text_input_start_icon = 2131231010;
+			// aapt resource value: 0x7F080127
+			public const int textinput_placeholder = 2131231015;
+			
+			// aapt resource value: 0x7F080128
+			public const int textinput_prefix_text = 2131231016;
 			
 			// aapt resource value: 0x7F080129
-			public const int time = 2131231017;
+			public const int textinput_suffix_text = 2131231017;
+			
+			// aapt resource value: 0x7F08011F
+			public const int textSpacerNoButtons = 2131231007;
+			
+			// aapt resource value: 0x7F080120
+			public const int textSpacerNoTitle = 2131231008;
+			
+			// aapt resource value: 0x7F080121
+			public const int textStart = 2131231009;
+			
+			// aapt resource value: 0x7F080122
+			public const int text_input_end_icon = 2131231010;
+			
+			// aapt resource value: 0x7F080123
+			public const int text_input_start_icon = 2131231011;
 			
 			// aapt resource value: 0x7F08012A
-			public const int title = 2131231018;
+			public const int time = 2131231018;
 			
 			// aapt resource value: 0x7F08012B
-			public const int titleDividerNoCustom = 2131231019;
+			public const int title = 2131231019;
 			
 			// aapt resource value: 0x7F08012C
-			public const int title_template = 2131231020;
+			public const int titleDividerNoCustom = 2131231020;
 			
 			// aapt resource value: 0x7F08012D
-			public const int toolbar = 2131231021;
+			public const int title_template = 2131231021;
 			
 			// aapt resource value: 0x7F08012E
-			public const int top = 2131231022;
+			public const int toolbar = 2131231022;
 			
 			// aapt resource value: 0x7F08012F
-			public const int topPanel = 2131231023;
+			public const int top = 2131231023;
+			
+			// aapt resource value: 0x7F080130
+			public const int topPanel = 2131231024;
 			
 			// aapt resource value: 0x7F080008
 			public const int TOP_END = 2131230728;
@@ -13112,71 +12838,71 @@ namespace PagerBuddy.Droid
 			// aapt resource value: 0x7F080009
 			public const int TOP_START = 2131230729;
 			
-			// aapt resource value: 0x7F080130
-			public const int touch_outside = 2131231024;
-			
 			// aapt resource value: 0x7F080131
-			public const int transition_current_scene = 2131231025;
+			public const int touch_outside = 2131231025;
 			
 			// aapt resource value: 0x7F080132
-			public const int transition_layout_save = 2131231026;
+			public const int transition_current_scene = 2131231026;
 			
 			// aapt resource value: 0x7F080133
-			public const int transition_position = 2131231027;
+			public const int transition_layout_save = 2131231027;
 			
 			// aapt resource value: 0x7F080134
-			public const int transition_scene_layoutid_cache = 2131231028;
+			public const int transition_position = 2131231028;
 			
 			// aapt resource value: 0x7F080135
-			public const int transition_transform = 2131231029;
+			public const int transition_scene_layoutid_cache = 2131231029;
 			
 			// aapt resource value: 0x7F080136
-			public const int @unchecked = 2131231030;
+			public const int transition_transform = 2131231030;
 			
 			// aapt resource value: 0x7F080137
-			public const int uniform = 2131231031;
+			public const int @unchecked = 2131231031;
 			
 			// aapt resource value: 0x7F080138
-			public const int unlabeled = 2131231032;
+			public const int uniform = 2131231032;
 			
 			// aapt resource value: 0x7F080139
-			public const int up = 2131231033;
+			public const int unlabeled = 2131231033;
 			
 			// aapt resource value: 0x7F08013A
-			public const int useLogo = 2131231034;
+			public const int up = 2131231034;
 			
 			// aapt resource value: 0x7F08013B
-			public const int view_offset_helper = 2131231035;
+			public const int useLogo = 2131231035;
 			
 			// aapt resource value: 0x7F08013C
-			public const int view_tree_lifecycle_owner = 2131231036;
+			public const int view_offset_helper = 2131231036;
 			
 			// aapt resource value: 0x7F08013D
-			public const int view_tree_saved_state_registry_owner = 2131231037;
+			public const int view_tree_lifecycle_owner = 2131231037;
 			
 			// aapt resource value: 0x7F08013E
-			public const int view_tree_view_model_store_owner = 2131231038;
+			public const int view_tree_saved_state_registry_owner = 2131231038;
 			
 			// aapt resource value: 0x7F08013F
-			public const int visible = 2131231039;
+			public const int view_tree_view_model_store_owner = 2131231039;
 			
 			// aapt resource value: 0x7F080140
-			public const int visible_removing_fragment_view_tag = 2131231040;
+			public const int visible = 2131231040;
 			
 			// aapt resource value: 0x7F080141
-			public const int wide = 2131231041;
-			
-			// aapt resource value: 0x7F080143
-			public const int withinBounds = 2131231043;
+			public const int visible_removing_fragment_view_tag = 2131231041;
 			
 			// aapt resource value: 0x7F080142
-			public const int withText = 2131231042;
+			public const int wide = 2131231042;
 			
 			// aapt resource value: 0x7F080144
-			public const int wrap_content = 2131231044;
+			public const int withinBounds = 2131231044;
+			
+			// aapt resource value: 0x7F080143
+			public const int withText = 2131231043;
 			
 			// aapt resource value: 0x7F080145
-			public const int zero_corner_chip = 2131231045;
+			public const int wrap_content = 2131231045;
+			
+			// aapt resource value: 0x7F080146
+			public const int zero_corner_chip = 2131231046;
 			
 			static Id()
 			{

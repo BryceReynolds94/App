@@ -30,15 +30,14 @@ namespace PagerBuddy.Droid {
                 Xamarin.Forms.Forms.Init(Application.Context, null); //We need to make sure Xamarin.Forms is initialised when notifications are received in killed state  
             }
 
-            DateTime sentTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(p0.SentTime).ToLocalTime(); //Unix base time -- we need local time for alert time comparison
-
-            Logger.Debug(string.Format("Got FCM message with prio {0} (sent as {1}) at {2} (sent at {3}).", p0.Priority, p0.OriginalPriority, DateTime.Now.ToString("HH:mm:ss"), sentTime.ToString("HH:mm:ss")));
-            MessagingService.FirebaseMessage(p0.Data, sentTime); //TODO: Change FCM handling for pagerbuddyserver
-
-            if (!p0.Data.ContainsKey("p")) {
-                Logger.Warn("FCM message did not contain payload. Requesting Token refresh.");
-                FirebaseMessaging.Instance.GetToken().AddOnCompleteListener(new OnCompleteListener(OnNewToken));
+            if(p0.Data == null) {
+                Logger.Warn("Received an FCM message without a payload. Ignoring message.");
+                return;
             }
+
+            Logger.Debug("Received an FCM message.");
+                
+            MessagingService.FirebaseMessage(p0.Data);
         }
 
         public override void OnNewToken(string p0) {
