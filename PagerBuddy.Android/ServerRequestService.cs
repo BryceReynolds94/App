@@ -46,17 +46,17 @@ namespace PagerBuddy.Droid {
             string serverUser = jobParams.Extras.GetString(nameof(ServerRequestScheduler.JOB_PARAMETERS.PAGERBUDDY_SERVER_USER));
 
             if (status == CommunicationService.STATUS.AUTHORISED) {
-                Logger.Debug("User authorised. Sending repeat request.");
+                Logger.Debug("User authorised. Sending request.");
                 bool success = await client.sendServerRequest(request, serverUser);
 
                 JobFinished(jobParams, !success); //Do not reschedule on success
             } else if (status > CommunicationService.STATUS.ONLINE) {
                 //Wait status achieved - user is not authorised - do not bother in the future
-                Logger.Warn("Repeat server request not possible. User is not authorised. Status: " + status);
+                Logger.Warn("Server request not possible. User is not authorised. Status: " + status);
                 JobFinished(jobParams, false);
             } else if (status == CommunicationService.STATUS.OFFLINE) {
                 //We do not have a connection retry later...
-                Logger.Debug("Client offline. Rescheduling repeat server request for a later time.");
+                Logger.Debug("Client offline. Rescheduling server request for a later time.");
                 JobFinished(jobParams, true);
             }
         }

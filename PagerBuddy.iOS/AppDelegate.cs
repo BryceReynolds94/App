@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BackgroundTasks;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
+using Firebase.CloudMessaging;
 using Foundation;
 using PagerBuddy.Services;
 using UIKit;
@@ -14,8 +16,7 @@ namespace PagerBuddy.iOS
     // User Interface of the application, as well as listening (and optionally responding) to 
     // application events from iOS.
     [Register("AppDelegate")]
-    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
-    {
+    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate {
         private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         //
@@ -31,28 +32,36 @@ namespace PagerBuddy.iOS
 
             CachedImageRenderer.Init(); //Added to enable FFImageLoading
             CachedImageRenderer.InitImageSourceHandler();
+
             var ignore = typeof(SvgCachedImage); //Added to enable SVG FFImageLoading
 
+            Firebase.Core.App.Configure();
+
+            bool res = BGTaskScheduler.Shared.Register(ServerRequestScheduler.SERVER_REFRESH_TASK, null, new Action<BGTask>(async (BGTask task) => {
+                if (ServerRequestScheduler.instance != null) {
+                    await ServerRequestScheduler.instance.runServerRefresh(task);
+                } else {
+                    await new ServerRequestScheduler().runServerRefresh(task);
+                }
+            }));
+
             LoadApplication(new App());
-            //FirebasePushNotificationManager.Initialize(options, false); //Init FirebasePushNotification Plugin
-                                                                        //TODO: iOS Set this to false and move permission prompt to after Telegram login
 
-            //Ensure APNS are shown even if in foreground
-            //https://iosarchitect.com/show-push-notifications-when-app-running-in-foreground-ios-swift/
+            UNUserNotificationCenter.Current.Delegate = new UserNotificationCenterDelegate();
+            Messaging.SharedInstance.Delegate = new MessagingDelegate();
 
+            UIApplication.SharedApplication.RegisterForRemoteNotifications();
 
             return base.FinishedLaunching(app, options);
         }
 
 
-        //Callbacks for FirebasePushNotification Plugin
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken) {
-            //FirebasePushNotificationManager.DidRegisterRemoteNotifications(deviceToken);
             Logger.Debug("Registered for remote notification. Device token: " + deviceToken);
+            //Do we need this? We should be receiving this in MessagingDelegate
         }
 
         public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error) {
-            //FirebasePushNotificationManager.RemoteNotificationRegistrationFailed(error);
             Logger.Error(error.Description, "Could not register for remote notifications. This is probably fatal.");
             //TODO: iOS Handle this case in real-life
         }
@@ -67,16 +76,9 @@ namespace PagerBuddy.iOS
             // automatically with method swizzling enabled.
 
             Logger.Info("Received remote notification.");
-            //FirebasePushNotificationManager.DidReceiveMessage(userInfo);
-            // Do your magic to handle the notification data
-
-            if (!Xamarin.Forms.Forms.IsInitialized) //TODO: iOS Testing
-                {
-                Xamarin.Forms.Forms.Init(); //We need to make sure Xamarin.Forms is initialised when notifications are received in killed state
-                MessagingService.FirebaseMessage(null);
-            }
-
             completionHandler(UIBackgroundFetchResult.NewData);
+
+            //Do we need this? Should be handeled in UserNotificationCenterDelegate
         }
 
     }

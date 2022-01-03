@@ -73,13 +73,14 @@
     <StartupObject>PagerBuddy.iOS.Application</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MessagingDelegate.cs" />
     <Compile Include="Navigation.cs" />
-    <Compile Include="Notification.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <BundleResource Include="Resources\splash_screen_logo.png" />
     <Compile Include="Permission.cs" />
     <Compile Include="ServerRequestScheduler.cs" />
+    <Compile Include="UserNotificationCenterDelegate.cs" />
     <None Include="Entitlements.plist" />
     <BundleResource Include="GoogleService-Info.plist" />
     <None Include="Info.plist" />
@@ -103,6 +104,9 @@
   <ItemGroup>
     <PackageReference Include="NLog">
       <Version>4.7.13</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Firebase.iOS.CloudMessaging">
+      <Version>4.7.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
