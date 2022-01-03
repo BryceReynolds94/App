@@ -49,6 +49,7 @@ namespace PagerBuddy.Services
             }
 
             DateTime alertTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(timestamp).ToLocalTime(); //Unix base time -- we need local time for alert time comparison
+            AlertService.checkMessage(description, chatID, alertTime, testAlert);
         }
 
         public static void TokenRefresh(string token) {

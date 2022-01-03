@@ -12,9 +12,6 @@ using UserNotifications;
 
 namespace PagerBuddy.iOS
 {
-    // The UIApplicationDelegate for the application. This class is responsible for launching the 
-    // User Interface of the application, as well as listening (and optionally responding) to 
-    // application events from iOS.
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate {
         private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
@@ -37,11 +34,12 @@ namespace PagerBuddy.iOS
 
             Firebase.Core.App.Configure();
 
+            //https://developer.apple.com/documentation/uikit/app_and_environment/scenes/preparing_your_ui_to_run_in_the_background/using_background_tasks_to_update_your_app
             bool res = BGTaskScheduler.Shared.Register(ServerRequestScheduler.SERVER_REFRESH_TASK, null, new Action<BGTask>(async (BGTask task) => {
                 if (ServerRequestScheduler.instance != null) {
-                    await ServerRequestScheduler.instance.runServerRefresh(task);
+                    await ServerRequestScheduler.instance.backgroundRequest(task);
                 } else {
-                    await new ServerRequestScheduler().runServerRefresh(task);
+                    await new ServerRequestScheduler().backgroundRequest(task);
                 }
             }));
 

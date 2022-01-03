@@ -51,5 +51,9 @@
 	<array>
 		<string>telegram</string>
 	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>de.bartunik.pagerbuddy.serverRefresh</string>
+	</array>
 </dict>
 </plist>

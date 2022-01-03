@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UIKit;
 
@@ -16,13 +17,13 @@ namespace PagerBuddy.iOS {
 
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static readonly string SERVER_REFRESH_TASK = "de.bartunik.pagerbuddy.serverRefresh";
+        public static readonly string SERVER_REFRESH_TASK = "de.bartunik.pagerbuddy.serverRefresh"; //Caution! Has to be identical in info.plist
 
         private CommunicationService client;
         public static ServerRequestScheduler instance;
 
+        private static CancellationTokenSource cancellationSource;
 
-        //TODO: iOS Implement BG Tasks
         //https://developer.apple.com/documentation/uikit/app_and_environment/scenes/preparing_your_ui_to_run_in_the_background/using_background_tasks_to_update_your_app
 
         public void initialise(CommunicationService client) {
@@ -30,58 +31,125 @@ namespace PagerBuddy.iOS {
             instance = this;
         }
 
-        public void scheduleRequest(Collection<AlertConfig> request, string botServerUser) {
-            
-            BGProcessingTaskRequest req = new BGProcessingTaskRequest(SERVER_REFRESH_TASK);
-            req.EarliestBeginDate = NSDate.Now.AddSeconds(15);
-            req.RequiresNetworkConnectivity = true;
-            
-            bool res = BGTaskScheduler.Shared.Submit(req, out NSError error);
-            if (!res) {
-                Logger.Warn(error.DebugDescription, "Could not schedule background task.");
-            }
-        }
+        public async Task backgroundRequest(BGTask task) {
 
-        public async Task runServerRefresh(BGTask task) {
-            task.ExpirationHandler = new Action(() => {
-                //Killed before completion
+            CancellationTokenSource bgCancellationSource = new CancellationTokenSource();
+
+            task.ExpirationHandler += () => {
+                bgCancellationSource.Cancel();
                 task.SetTaskCompleted(false);
-            });
+            };
 
-            if(client != null) {
-                await HandleStatus(client, client.clientStatus, task);
-            } else {
-                CommunicationService client = new CommunicationService();
-                client.StatusChanged += async (object sender, CommunicationService.STATUS status) => {
-                    await HandleStatus(client, status, task);
-                };
+            Collection<string> stringConfigList = DataService.getConfigList();
+            Collection<AlertConfig> configList = new Collection<AlertConfig>();
+            foreach (string configID in stringConfigList) {
+                AlertConfig config = DataService.getAlertConfig(configID, null);
+                if (config != null) {
+                    configList.Add(config);
+                }
             }
+
+            string botServer = CommunicationService.pagerbuddyServerList.First(); //TODO: Implement multiple server bots
+
+            bool result = await runServerRefresh(client, configList, botServer, bgCancellationSource.Token);
+            task.SetTaskCompleted(result);
         }
 
-        private async Task HandleStatus(CommunicationService client, CommunicationService.STATUS status, BGTask task) {
+        public void scheduleRequest(Collection<AlertConfig> request, string botServerUser) {
+            _ = scheduleRequest(request, botServerUser, 10);
+        }
 
-            if (status == CommunicationService.STATUS.AUTHORISED) {
-                Collection<string> stringConfigList = DataService.getConfigList();
-                Collection<AlertConfig> configList = new Collection<AlertConfig>();
-                foreach (string configID in stringConfigList) {
-                    AlertConfig config = DataService.getAlertConfig(configID, null);
-                    if (config != null) {
-                        configList.Add(config);
+        private async Task scheduleRequest(Collection<AlertConfig> request, string botServerUser, int delay) {
+
+            cancellationSource?.Cancel();
+            cancellationSource?.Dispose();
+
+            cancellationSource = new CancellationTokenSource();
+
+
+            await Task.Run(async () => {
+
+                nint taskID = UIApplication.SharedApplication.BeginBackgroundTask(() => {
+                    //Task ending before completion
+                    Logger.Info("Could not complete server request in alotted background time. Rescheduling.");
+
+                    BGAppRefreshTaskRequest req = new BGAppRefreshTaskRequest(SERVER_REFRESH_TASK);
+                    req.EarliestBeginDate = NSDate.Now.AddSeconds(10); //Reset backoff when commiting task to background
+
+                    bool res = BGTaskScheduler.Shared.Submit(req, out NSError error);
+                    if (!res) {
+                        Logger.Warn(error.DebugDescription, "Could not schedule background task.");
                     }
+
+                    cancellationSource.Cancel();
+                });
+
+                cancellationSource.Token.Register(() => {
+                    UIApplication.SharedApplication.EndBackgroundTask(taskID);
+                });
+
+                try {
+                    await Task.Delay(delay * 1000, cancellationSource.Token);
+                } catch (TaskCanceledException) {
+                    UIApplication.SharedApplication.EndBackgroundTask(taskID);
+                    return;
                 }
 
-                Logger.Debug("User authorised. Sending request.");
-                bool success = await client.sendServerRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO: Later implement multiple servers
+                bool success = await runServerRefresh(client, request, botServerUser, cancellationSource.Token);
+                if (!success && !cancellationSource.IsCancellationRequested) {
+                    int newDelay = delay + 60; //Linear back off, cap at 5h
+                    newDelay = newDelay < 5 * 60 * 60 ? newDelay : 5 * 60 * 60;
+                    _ = scheduleRequest(request, botServerUser, newDelay);
+                }
+                UIApplication.SharedApplication.EndBackgroundTask(taskID);
+            });
 
-                task.SetTaskCompleted(success);
+        }
+
+        private async Task<bool> runServerRefresh(CommunicationService client, Collection<AlertConfig> configList, string botServer, CancellationToken cancellationToken) {
+            if(client == null) {
+                client = new CommunicationService();
+            }
+
+            if (client.clientStatus < CommunicationService.STATUS.WAIT_PHONE && client.clientStatus != CommunicationService.STATUS.OFFLINE) {
+
+                Task<Task<bool>> handleTask = new Task<Task<bool>>(async () => await HandleStatus(client, configList, botServer));
+                CommunicationService.ClientStausEventHandler handler = (object sender, CommunicationService.STATUS status) => {
+                    if (status < CommunicationService.STATUS.WAIT_PHONE && status != CommunicationService.STATUS.OFFLINE) {
+                        return;
+                    }
+                    handleTask.Start();
+                };
+
+                client.StatusChanged += handler;
+
+                Task<bool> cancelTask = new Task<bool>(() => false);
+                cancellationToken.Register(() => {
+                    client.StatusChanged -= handler;
+                    cancelTask.Start();
+                });
+
+                return await await Task.WhenAny(await handleTask, cancelTask);
+            } else {
+                return await HandleStatus(client, configList, botServer);
+            }
+        }
+
+        private async Task<bool> HandleStatus(CommunicationService client, Collection<AlertConfig> configList, string botServer) {
+
+            CommunicationService.STATUS status = client.clientStatus;
+            if (status == CommunicationService.STATUS.AUTHORISED) {
+                Logger.Debug("User authorised. Sending request.");
+                bool success = await client.sendServerRequest(configList, botServer); //TODO: Later implement multiple servers
+                return success;
             } else if (status > CommunicationService.STATUS.ONLINE) {
                 //Wait status achieved - user is not authorised - do not bother in the future
                 Logger.Warn("Server request not possible. User is not authorised. Status: " + status);
-                task.SetTaskCompleted(true);
-            } else if (status == CommunicationService.STATUS.OFFLINE) {
+                return true;
+            } else{
                 //We do not have a connection, retry later...
                 Logger.Debug("Client offline. Rescheduling server request for a later time.");
-                task.SetTaskCompleted(false);
+                return false;
             }
         }
     }
