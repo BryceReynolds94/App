@@ -18,6 +18,11 @@
                 <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
                     <CollectionView.Header>
                         <StackLayout Orientation="Horizontal" HeightRequest="50" Padding="0,5,0,0">
+                            <StackLayout.IsVisible>
+                                <OnPlatform x:TypeArguments="x:Boolean">
+                                    <On Platform="iOS" Value="false"/>
+                                </OnPlatform>
+                            </StackLayout.IsVisible>
                             <ImageButton Source="{Binding AllDeactivateIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
                              CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding DeactivateAll}" />
                             <ImageButton Source="{Binding AllSnoozeIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 

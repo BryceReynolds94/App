@@ -16,6 +16,7 @@ using PagerBuddy.Models;
 using PagerBuddy.Services;
 using PagerBuddy.Resources;
 using Android.Gms.Common;
+using AndroidX.AppCompat.App;
 
 namespace PagerBuddy.Droid
 {
@@ -26,10 +27,9 @@ namespace PagerBuddy.Droid
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            //TabLayoutResource = Resource.Layout.Tabbar;
-            //ToolbarResource = Resource.Layout.Toolbar;
-
             base.OnCreate(savedInstanceState);
+
+            AppCompatDelegate.DefaultNightMode = AppCompatDelegate.ModeNightNo; //Disable dark mode --Possibly move above base call
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);

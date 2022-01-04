@@ -17,7 +17,7 @@ namespace PagerBuddy.Views {
 
         public CommunicationService client;
 
-        public enum MESSAGING_KEYS { LOGOUT_USER};
+        public enum MESSAGING_KEYS { LOGOUT_USER };
         public MainPage() {
             InitializeComponent();
 
@@ -55,7 +55,7 @@ namespace PagerBuddy.Views {
         }
 
         private async Task LoginUser() {
-            if(client.clientStatus == CommunicationService.STATUS.OFFLINE || client.clientStatus == CommunicationService.STATUS.NEW || client.clientStatus == CommunicationService.STATUS.AUTHORISED) {
+            if (client.clientStatus == CommunicationService.STATUS.OFFLINE || client.clientStatus == CommunicationService.STATUS.NEW || client.clientStatus == CommunicationService.STATUS.AUTHORISED) {
                 return;
             }
             await Detail.Navigation.PushAsync(new LoginPhonePage(client));
@@ -87,13 +87,9 @@ namespace PagerBuddy.Views {
         }
 
         private void requestNotificationSettings() {
-            if (Device.RuntimePlatform == Device.Android) {
-                Interfaces.IAndroidNavigation navigationInterface = DependencyService.Get<Interfaces.IAndroidNavigation>();
-                navigationInterface.navigateNotificationSettings();
-                IsPresented = false;
-            } else {
-                Logger.Warn("Notification settings are not available for this platform.");
-            }
+            Interfaces.INavigation navigationInterface = DependencyService.Get<Interfaces.INavigation>();
+            navigationInterface.navigateNotificationSettings();
+            IsPresented = false;
         }
 
         private async Task requestShare() {

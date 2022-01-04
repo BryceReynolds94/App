@@ -26,5 +26,16 @@ namespace PagerBuddy.iOS {
             return telegramInstalled;
         }
 
+        public void navigateNotificationSettings() {
+            NSUrl settingsURL = new NSUrl(UIApplication.OpenSettingsUrlString);
+            if(UIApplication.SharedApplication.CanOpenUrl(settingsURL)) {
+                bool result = UIApplication.SharedApplication.OpenUrl(settingsURL);
+                if (!result) {
+                    Logger.Warn("Failed to open settings URL.");
+                }
+            } else {
+                Logger.Warn("Cannot go to app settings. Application cannot open URL.");
+            }
+        }
     }
 } 

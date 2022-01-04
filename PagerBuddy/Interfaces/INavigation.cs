@@ -6,10 +6,11 @@ using System.Text;
 namespace PagerBuddy.Interfaces {
     public interface INavigation {
         bool isTelegramInstalled();
+
+        void navigateNotificationSettings();
     }
 
     public interface IAndroidNavigation : INavigation {
-        void navigateNotificationSettings(); //Android, evtl. iOS
         void navigateTelegramChat(int chatID, TelegramPeer.TYPE type);
         void quitApplication();
     }
