@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PagerBuddy.Interfaces;
-using IAndroidNavigation = PagerBuddy.Interfaces.IAndroidNavigation;
 using PagerBuddy.Models;
 using System.IO;
 
@@ -22,17 +21,26 @@ namespace PagerBuddy.Views
         private readonly int groupID;
         private readonly TelegramPeer.TYPE peerType;
 
+        private Android.Media.Ringtone ringtone;
+
         public AlertPage(Alert alert)
         {
             InitializeComponent();
 
             this.groupID = alert.chatID;
             this.peerType = alert.peerType;
-            BindingContext = viewModel = new AlertPageViewModel(alert.title, alert.text, alert.configID, alert.hasPic);
+            BindingContext = viewModel = new AlertPageViewModel(alert.title, alert.description, alert.configID, alert.hasPic);
             viewModel.RequestCancel += cancel;
             viewModel.RequestConfirm += confirm;
 
             startAnimation();
+
+            if(Device.RuntimePlatform == Device.Android) {
+                IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
+                notifications.closeNotification(groupID);
+                ringtone = notifications.playChannelRingtone(alert.configID); //Take over sound control
+            }
+
         }
 
         private async void startAnimation() {
@@ -41,23 +49,31 @@ namespace PagerBuddy.Views
             startAnimation();
         }
 
+        private void stopRingtone() {
+            if(Device.RuntimePlatform == Device.Android && ringtone != null) {
+                if (ringtone.IsPlaying) {
+                    ringtone.Stop();
+                }
+            }
+        }
+
         private void cancel(object sender, EventArgs args)
         {
-            IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
-            notifications.closeNotification(groupID);
+            stopRingtone();
 
-            IAndroidNavigation nav = DependencyService.Get<IAndroidNavigation>();
-            nav.quitApplication(); 
+            if (Device.RuntimePlatform == Device.Android) {
+                IAndroidNavigation nav = DependencyService.Get<IAndroidNavigation>();
+                nav.quitApplication();
+            }
         }
 
         private void confirm(object sender, EventArgs args)
         {
-            IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
-            notifications.closeNotification(groupID);
-
-            IAndroidNavigation nav = DependencyService.Get<IAndroidNavigation>();
-            nav.navigateTelegramChat(groupID, peerType);
-            nav.quitApplication();
+            if (Device.RuntimePlatform == Device.Android) {
+                IAndroidNavigation nav = DependencyService.Get<IAndroidNavigation>();
+                nav.navigateTelegramChat(groupID, peerType);
+                nav.quitApplication();
+            }
         }
 
         protected override void OnDisappearing() {

@@ -14,29 +14,48 @@ namespace PagerBuddy.Models
         public string configID;
         public int chatID;
         public bool hasPic;
+        public DateTime timestamp;
+        public bool isTestAlert;
 
         public TelegramPeer.TYPE peerType;
 
-        public Alert(string message, AlertConfig config)
+        public Alert(string message, DateTime timestamp, bool isTestAlert, AlertConfig config)
         {
             title = config.triggerGroup.name;
             text = message;
+            this.timestamp = timestamp;
             configID = config.id;
             chatID = config.triggerGroup.id;
             hasPic = config.triggerGroup.hasImage;
+            this.isTestAlert = isTestAlert;
 
             peerType = config.triggerGroup.type;
         }
 
         [JsonConstructor]
-        public Alert(string title, string text, string configID, int chatID, bool hasPic, TelegramPeer.TYPE type)
+        public Alert(string title, string text, string configID, int chatID, bool hasPic, DateTime timestamp, bool isTestAlert, TelegramPeer.TYPE peerType)
         {
             this.title = title;
             this.text = text;
             this.configID = configID;
             this.chatID = chatID;
             this.hasPic = hasPic;
-            this.peerType = type;
+            this.timestamp = timestamp;
+            this.peerType = peerType;
+            this.isTestAlert = isTestAlert;
+        }
+
+        public string description {
+            get {
+                string alertText = "";
+                if (isTestAlert) {
+                    alertText += Resources.AppResources.Alert_TestFilter + Environment.NewLine;
+                }
+                alertText += text + Environment.NewLine;
+                alertText += timestamp.ToString();
+
+                return alertText;
+            }
         }
 
     }

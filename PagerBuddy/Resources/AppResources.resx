@@ -415,4 +415,7 @@
   <data name="ActiveTimePopup_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Alert_TestFilter" xml:space="preserve">
+    <value>TEST ALERT</value>
+  </data>
 </root>

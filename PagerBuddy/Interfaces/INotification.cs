@@ -14,5 +14,6 @@ namespace PagerBuddy.Interfaces
         void addNotificationChannel(AlertConfig config); //Android
         void removeNotificationChannel(AlertConfig config); //Android
         void UpdateNotificationChannels(Collection<AlertConfig> configList); //Android
+        Android.Media.Ringtone playChannelRingtone(string alertConfigID);
     }
 }

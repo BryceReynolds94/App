@@ -45,27 +45,9 @@ namespace PagerBuddy
                 return;
             }
 
-            MessagingCenter.Subscribe<AboutPage>(this, AboutPage.MESSAGING_KEYS.SHOW_ALERT_PAGE.ToString(), (sender) => showAlertPage());
+            MessagingCenter.Subscribe<AboutPage,Alert>(this, AboutPage.MESSAGING_KEYS.SHOW_ALERT_PAGE.ToString(), (sender, alert) => MainPage = new AlertPage(alert));
             MainPage = new MainPage();
             
-        }
-
-        private void showAlertPage() {
-            Collection<string> configs = DataService.getConfigList();
-            Alert testAlert;
-            if(configs.Count > 0) {
-                AlertConfig config = DataService.getAlertConfig(configs[0], null);
-                if(config == null) {
-                    Logger.Error("Loading a known alert config returned null. Stopping here.");
-                    return;
-                }
-                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Message, config);
-            } else {
-                Logger.Info("No configurations found. Using mock configuration for sample AlertPage.");
-                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Title, AppResources.App_DeveloperMode_AlertPage_Message, "", 0, false, TelegramPeer.TYPE.CHAT);
-            }
-            Logger.Info("Launching AlertPage from Developer Mode");
-            MainPage = new AlertPage(testAlert);
         }
 
         protected override async void OnStart(){

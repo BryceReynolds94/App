@@ -313,6 +313,15 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TEST ALERT.
+        /// </summary>
+        public static string Alert_TestFilter {
+            get {
+                return ResourceManager.GetString("Alert_TestFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Event was not triggered yet.
         /// </summary>
         public static string AlertStatus_Status_Default {

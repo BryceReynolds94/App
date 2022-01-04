@@ -66,7 +66,7 @@ namespace PagerBuddy.Services {
                             if (!isTestAlert) {
                                 config.setLastTriggered(timestamp);
                             }
-                            alertMessage(new Alert(message, config), isTestAlert);
+                            alertMessage(new Alert(message, timestamp, isTestAlert, config));
                         }
                     }
                     break;
@@ -74,14 +74,14 @@ namespace PagerBuddy.Services {
             }
         }
 
-        private static void alertMessage(Alert alert, bool isTestAlert) {
+        private static void alertMessage(Alert alert) {
 
             if (Device.RuntimePlatform == Device.Android) {
                 Logger.Info("Alert was detected. Posting it to notifications.");
 
                 IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
-                if (isTestAlert) {
-                    notifications.showStandardNotification("Probealarm: " + alert.title, alert.text); //TODO: RBF
+                if (alert.isTestAlert) {
+                    notifications.showStandardNotification(alert.title, alert.description);
                 } else {
                     notifications.showAlertNotification(alert);
                 }

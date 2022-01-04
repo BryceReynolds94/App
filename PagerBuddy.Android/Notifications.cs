@@ -52,14 +52,16 @@ namespace PagerBuddy.Droid {
 
             Notification.Builder builder = new Notification.Builder(Application.Context, alert.configID)
                 .SetContentTitle(alert.title)
-                .SetContentText(alert.text)
+                .SetContentText(alert.description)
                 .SetSmallIcon(Resource.Drawable.notification_icon) //use simplified xml vector
                 .SetColor(Resource.Color.colorPrimary) //set app color for small notification icon
                 .SetLargeIcon(largePic) //group pic 
                 .SetCategory(Notification.CategoryCall) //category for message classification 
                 .SetAutoCancel(true) //cancel notification when tapped
                 .SetFullScreenIntent(fullScreenIntent, true)
-                .SetStyle(new Notification.BigTextStyle().BigText(alert.text)); //extend message on tap
+                .SetWhen(alert.timestamp.Ticks)
+                .SetShowWhen(true)
+                .SetStyle(new Notification.BigTextStyle().BigText(alert.description)); //extend message on tap
 
             if (new Navigation().isTelegramInstalled()) {
                 PendingIntent chatIntent = PendingIntent.GetActivity(Application.Context, 0, Navigation.getTelegramIntent(alert.chatID, alert.peerType), 0);
@@ -117,6 +119,23 @@ namespace PagerBuddy.Droid {
 
             NotificationManager manager = NotificationManager.FromContext(Application.Context);
             manager.Notify(new Random().Next(), builder.Build()); //Currently no need to access notification later - so set ID random and forget
+        }
+
+        public Ringtone playChannelRingtone(string alertConfigID) {
+            NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);
+            NotificationChannel channel = notificationManager.GetNotificationChannel(alertConfigID);
+
+            if(channel == null) {
+                Logger.Warn("Could not find notification channel for alert config.");
+                return null;
+            }
+
+            Uri sound = channel.Sound;
+            Ringtone ringtone = RingtoneManager.GetRingtone(Application.Context, sound);
+            ringtone.Looping = true;
+            ringtone.Play();
+
+            return ringtone;
         }
 
         public void addNotificationChannel(AlertConfig alertConfig) {

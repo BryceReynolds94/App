@@ -25,10 +25,14 @@ namespace PagerBuddy.Services {
         private TelegramClient client;
         private STATUS status;
 
-        private static readonly List<string> STATIC_PAGERBUDDY_SERVER_BOTS = new List<string> { "pagerbuddyservertestbot" }; //TODO: RBF
+        private static readonly List<string> STATIC_PAGERBUDDY_SERVER_BOTS = new List<string> { "pagerbuddyserverbot" };
+
         public static List<string> pagerbuddyServerList {
             get {
                 List<string> baseList = STATIC_PAGERBUDDY_SERVER_BOTS;
+#if DEBUG
+                baseList = new List<string> { "pagerbuddyservertestbot" }; //Ignore real bots when testing
+#endif
                 baseList.AddRange(DataService.customPagerBuddyServerBots);
                 return baseList;
             }

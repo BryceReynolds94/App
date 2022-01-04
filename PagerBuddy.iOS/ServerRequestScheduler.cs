@@ -109,6 +109,7 @@ namespace PagerBuddy.iOS {
         private async Task<bool> runServerRefresh(CommunicationService client, Collection<AlertConfig> configList, string botServer, CancellationToken cancellationToken) {
             if(client == null) {
                 client = new CommunicationService();
+                _ = client.connectClient(true);
             }
 
             if (client.clientStatus < CommunicationService.STATUS.WAIT_PHONE && client.clientStatus != CommunicationService.STATUS.OFFLINE) {
