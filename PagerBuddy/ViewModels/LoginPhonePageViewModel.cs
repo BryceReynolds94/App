@@ -15,6 +15,13 @@ namespace PagerBuddy.ViewModels {
         private readonly PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
 
         private TStatus errorStatus = TStatus.OK;
+
+        public Dictionary<string, string> colorSetAccent {
+            get {
+                Color accent = (Color)Application.Current.Resources["AccentColor"];
+                return new Dictionary<string, string>() { { "black", accent.ToHex() } };
+            }
+        }
         public Command Next { get; set; }
         public Command Return { get; set; }
 

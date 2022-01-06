@@ -97,10 +97,10 @@ namespace PagerBuddy.Views {
                     Logger.Error("Loading a known alert config returned null. Stopping here.");
                     return;
                 }
-                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Message, config);
+                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Message, DateTime.Now, false, config);
             } else {
                 Logger.Info("No configurations found. Using mock configuration for sample AlertPage.");
-                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Title, AppResources.App_DeveloperMode_AlertPage_Message, "", 0, false, TelegramPeer.TYPE.CHAT);
+                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Title, AppResources.App_DeveloperMode_AlertPage_Message, "", 0, false, DateTime.Now, false, TelegramPeer.TYPE.CHAT);
             }
             Logger.Info("Launching AlertPage from Developer Mode");
 
@@ -143,7 +143,7 @@ namespace PagerBuddy.Views {
 
                     Task.Delay(5000).ContinueWith((t) => {
                         Logger.Info("Sending notification test message now.");
-                        notifications.showAlertNotification(new Alert(AppResources.AboutPage_DeveloperMode_TestNotification_Message, config));
+                        notifications.showAlertNotification(new Alert(AppResources.AboutPage_DeveloperMode_TestNotification_Message, DateTime.Now, false, config));
                     });
                 } else {
                     Logger.Warn("Could not send notification test message as no alerts are configured.");

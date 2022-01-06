@@ -9,7 +9,8 @@
     <ContentPage.Content>
         
         <StackLayout BackgroundColor="{StaticResource PrimaryColor}" >
-            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.launcher_light.svg" x:Name="MainIcon" HeightRequest="200" Margin="20,70" VerticalOptions="StartAndExpand"/>
+            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_pagerbuddy.svg" x:Name="MainIcon" HeightRequest="200" Margin="20,70" 
+                                              VerticalOptions="StartAndExpand" ReplaceStringMap="{Binding colorSetWhite}"/>
 
             <ScrollView Padding="20">
                 <Grid>

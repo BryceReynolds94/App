@@ -25,6 +25,25 @@ namespace PagerBuddy.ViewModels {
         private bool allSnoozed = false;
         private DateTime allSnoozedTime = DateTime.MinValue;
 
+        private string iconColor {
+            get {
+                Style style = (Style) Application.Current.Resources["ActionIcons"];
+
+                string mode = Application.Current.RequestedTheme == OSAppTheme.Dark ? "Dark" : "Light";
+                Setter themeSetter = style.Setters.First((setter) => setter.TargetName == mode);
+                return ((Color)themeSetter.Value).ToHex();
+            }
+        }
+
+        public Dictionary<string, string> colorSetWhite => new Dictionary<string, string>() { { "black", Color.White.ToHex() } };
+
+        public Dictionary<string, string> colorSetAccent {
+            get {
+                Color accent = (Color)Application.Current.Resources["AccentColor"];
+                return new Dictionary<string, string>() { { "black", accent.ToHex() } };
+            }
+        }
+
         public Command DeactivateAll { get; set; }
         public Command DeactivateAllOff { get; set; }
         public Command SnoozeAll { get; set; }
@@ -56,6 +75,11 @@ namespace PagerBuddy.ViewModels {
             TimeAll = new Command(() => RequestTimeConfig.Invoke(this, null)); 
             Login = new Command(() => RequestLogin.Invoke(this, null));
 
+            Application.Current.RequestedThemeChanged += (s, a) => {
+                OnPropertyChanged(nameof(AllDeactivateIcon));
+                OnPropertyChanged(nameof(AllSnoozeIcon));
+                OnPropertyChanged(nameof(AllTimeIcon));
+            };
         }
 
         private void reloadConfig() {
@@ -123,26 +147,39 @@ namespace PagerBuddy.ViewModels {
         public bool WarningDeactivate => allDeactivated;
         public ImageSource AllDeactivateIcon {
             get {
+                SvgImageSource source;
                 if (allDeactivated) {
-                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert.svg");
+                    source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert.svg");
                 } else {
-                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_off.svg");
+                    source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_off.svg");
                 }
+                source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColor } };
+                return source;
             }
         }
         public bool WarningSnooze => allSnoozed;
         public string WarningSnoozeText => string.Format(AppResources.HomeStatusPage_Warning_Snooze, allSnoozedTime).Replace("\\n", Environment.NewLine);
         public ImageSource AllSnoozeIcon {
             get {
+                SvgImageSource source;
                 if (allSnoozed) {
-                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze_off.svg");
+                    source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze_off.svg");
                 } else {
-                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze.svg");
+                    source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_snooze.svg");
                 }
+                source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColor } };
+                return source;
             }
         }
 
-        public ImageSource AllTimeIcon => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_time.svg");
+        public ImageSource AllTimeIcon {
+            get {
+                SvgImageSource source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_time.svg");
+                source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColor } };
+                return source;
+            }
+        }
+
 
         public bool ReloadConfigEnabled => errorState == ERROR_ACTION.NONE;
 

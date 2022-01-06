@@ -52,7 +52,10 @@ namespace PagerBuddy.ViewModels {
                 if (alertConfig.triggerGroup.hasImage) {
                     return ImageSource.FromFile(DataService.profilePicSavePath(alertConfig.id));
                 } else {
-                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.group_default.svg");
+                    SvgImageSource source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.group_default.svg");
+                    Color accent = (Color)Application.Current.Resources["AccentColor"];
+                    source.ReplaceStringMap = new Dictionary<string, string>() { { "black", accent.ToHex() } };
+                    return source;
                 }
             }
         }

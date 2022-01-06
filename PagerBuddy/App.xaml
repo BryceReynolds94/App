@@ -9,27 +9,93 @@
     <Application.Resources>
         <ResourceDictionary>
             <!--Global Styles-->
-            <!-- schema: https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=1d4999&secondary.color=c0d3ff -->
+            <!-- schema: https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=1d4999&secondary.color=97b7f9 -->
+            
             <Color x:Key="PrimaryColor">#1d4999</Color>
-            <Color x:Key="PrimaryColorLight">#5874ca</Color>
-            <Color x:Key="PrimaryColorDark">#00236a</Color>
-
             <Color x:Key="PrimaryTextColor">#ffffff</Color>
 
-            <Color x:Key="SecondaryColor">#c0d3ff</Color>
-            <Color x:Key="SecondaryColorGrey">#eeeeee</Color>
+            <Color x:Key="AccentColor">#5874ca</Color> <!--derived from primary color-->
 
-            <Color x:Key="ErrorColor">#F44336</Color>
+            <Color x:Key="SecondaryColor">#bed3f7</Color>            
+            <Color x:Key="DarkSecondaryColor">#555555</Color>
+            <Color x:Key="SecondaryColorLight">#e4edfe</Color>            
+            <Color x:Key="DarkSecondaryColorLight">#1f1f1f</Color>
+
             <Color x:Key="WarningColor">#F4511E</Color>
 
-            <Color x:Key="BackgroundColor">#FAFAFA</Color>
-            <SolidColorBrush x:Key="BackgroundBrush" Color="{d:StaticResource BackgroundColor}" />
+            <Color x:Key="IconColor">#000000</Color>
+            <Color x:Key="DarkIconColor">#ffffff</Color>
 
-            <Style TargetType="NavigationPage">
-                <Setter Property="BarBackgroundColor" Value="{StaticResource PrimaryColor}" />
-                <Setter Property="BarTextColor" Value="{StaticResource PrimaryTextColor}" />
+            <Color x:Key="BackgroundColor">#FAFAFA</Color>
+            <Color x:Key="DarkBackgroundColor">#121212</Color>
+
+            <Color x:Key="OverlayBackgroundColor">#fafafa</Color>
+            <Color x:Key="DarkOverlayBackgroundColor">#303030</Color>
+
+
+            <Style TargetType="ContentPage" x:Key="BasePageStyle">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource DarkBackgroundColor}}"/>
             </Style>
 
+            <Style TargetType="ImageButton" x:Key="ImageButtonStyle">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource DarkBackgroundColor}}"/>
+            </Style>
+
+            <Style TargetType="StackLayout" x:Key="FlyoutHeaderStyle">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryColor}, Dark={StaticResource PrimaryColor}}"/>
+            </Style>
+            <Style TargetType="Label" x:Key="FlyoutHeaderTextStyle">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColor}}"/>
+            </Style>
+            <Style TargetType="ImageButton" x:Key="FlyoutImageButtonStyle">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource OverlayBackgroundColor}, Dark={StaticResource DarkOverlayBackgroundColor}}"/>
+            </Style>
+
+            <Style TargetType="Frame" x:Key="FrameStyle">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SecondaryColor}, Dark={StaticResource DarkSecondaryColor}}"/>
+            </Style>
+
+            <Style TargetType="Frame" x:Key="FrameStyleOff">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SecondaryColorLight}, Dark={StaticResource DarkSecondaryColorLight}}"/>
+            </Style>
+
+            <Style TargetType="StackLayout" x:Key="OverlayLayoutStyle">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource OverlayBackgroundColor}, Dark={StaticResource DarkOverlayBackgroundColor}}"/>
+            </Style>
+            <Style TargetType="Button" x:Key="OverlayButton">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource OverlayBackgroundColor}, Dark={StaticResource DarkOverlayBackgroundColor}}"/>
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource AccentColor}, Dark={StaticResource AccentColor}}"/>
+            </Style>
+
+            <Style TargetType="ImageButton" x:Key="ActionIcons">
+                <!-- Custom construct for AppThemeBinding in C# code-->
+                <Setter TargetName="Light" Property="BackgroundColor" Value="{StaticResource IconColor}"/>
+                <Setter TargetName="Dark" Property="BackgroundColor" Value="{StaticResource DarkIconColor}"/>
+            </Style>
+
+            <Style TargetType="Button" x:Key="DayPickerButtonOff">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource OverlayBackgroundColor}, Dark={StaticResource DarkOverlayBackgroundColor}}"/>
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource SecondaryColorLight}, Dark={StaticResource AccentColor}}"/>
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=LightGray, Dark={StaticResource AccentColor}}"/>
+                <Setter Property="BorderWidth" Value="2"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="WidthRequest" Value="40"/>
+            </Style>
+            <Style TargetType="Button" x:Key="DayPickerButton">
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource AccentColor}, Dark=White}"/>
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource AccentColor}, Dark=White}"/>
+                <Setter Property="BorderWidth" Value="2"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="WidthRequest" Value="40"/>
+            </Style>
+
+            <Style TargetType="ImageButton" x:Key="AboutLogo">
+                <!-- Custom construct for AppThemeBinding in C# code-->
+                <Setter TargetName="Light" Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
+                <Setter TargetName="Dark" Property="BackgroundColor" Value="{StaticResource DarkIconColor}"/>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
     

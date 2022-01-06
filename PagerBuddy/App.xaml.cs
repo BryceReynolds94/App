@@ -30,6 +30,7 @@ namespace PagerBuddy
         public App(bool isAlert = false, Alert alert = null)
         {
             Logger.Debug("Starting App.");
+
             InitializeComponent();
             VersionTracking.Track(); //Initialise global version tracking
 

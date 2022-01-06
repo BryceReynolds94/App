@@ -12,6 +12,8 @@ namespace PagerBuddy.ViewModels
         public Command Cancel { get; set; }
         public Command Confirm { get; set; }
 
+        public Dictionary<string, string> colorSetWhite => new Dictionary<string, string>() { { "black", Color.White.ToHex() } };
+
         private readonly bool hasPic;
         private readonly string picFile;
 
@@ -43,7 +45,10 @@ namespace PagerBuddy.ViewModels
                 if (hasPic) {
                     return ImageSource.FromFile(picFile);
                 } else {
-                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.group_default.svg");
+                    SvgImageSource source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.group_default.svg");
+                    Color accent = (Color)Application.Current.Resources["AccentColor"];
+                    source.ReplaceStringMap = new Dictionary<string, string>() { { "black", accent.ToHex() } };
+                    return source;
                 }
             }
         }

@@ -4,6 +4,7 @@ using PagerBuddy.Services;
 using PagerBuddy.Views;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 
@@ -16,6 +17,16 @@ namespace PagerBuddy.ViewModels {
         public Command Profile { get; set; }
         public Command Website { get; set; }
 
+        private string iconColor {
+            get {
+                Style style = (Style)Application.Current.Resources["ActionIcons"];
+
+                string mode = Application.Current.RequestedTheme == OSAppTheme.Dark ? "Dark" : "Light";
+                Setter themeSetter = style.Setters.First((setter) => setter.TargetName == mode);
+                return ((Color)themeSetter.Value).ToHex();
+            }
+        }
+
         public MenuPageViewModel() {
 
             NotificationSettings = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.NotificationSettings));
@@ -27,6 +38,14 @@ namespace PagerBuddy.ViewModels {
 
             MessagingCenter.Subscribe<CommunicationService>(this, CommunicationService.MESSAGING_KEYS.USER_DATA_CHANGED.ToString(), (_) => userDataChanged());
             MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => userDataChanged());
+
+            Application.Current.RequestedThemeChanged += (s, a) => {
+                OnPropertyChanged(nameof(AboutPic));
+                OnPropertyChanged(nameof(NotificationConfigPic));
+                OnPropertyChanged(nameof(SharePic));
+                OnPropertyChanged(nameof(WebsitePic));
+                OnPropertyChanged(nameof(LogoutPic));
+            };
         }
 
         public NavigationEventHandler RequestNavigation;
@@ -46,15 +65,48 @@ namespace PagerBuddy.ViewModels {
                 if (DataService.getConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, false)) {
                     return ImageSource.FromFile(DataService.profilePicSavePath(DataService.DATA_KEYS.USER_PHOTO.ToString()));
                 } else {
-                    return SvgImageSource.FromResource("PagerBuddy.Resources.Images.user_default.svg");
+                    SvgImageSource source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.user_default.svg");
+                    Color accent = (Color) Application.Current.Resources["AccentColor"];
+                    source.ReplaceStringMap = new Dictionary<string, string> { { "black", accent.ToHex() } };
+                    return source;
                 }
             }
         }
 
-        public ImageSource NotificationConfigPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert.svg");
-        public ImageSource SharePic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_share.svg");
-        public ImageSource WebsitePic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_facebook.svg");
-        public ImageSource AboutPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_about.svg");
-        public ImageSource LogoutPic => SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_logout.svg");
+        public ImageSource NotificationConfigPic{
+            get {
+                SvgImageSource source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert.svg");
+                source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColor } };
+                return source;
+            }
+        }
+        public ImageSource SharePic {
+            get {
+                SvgImageSource source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_share.svg");
+                source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColor } };
+                return source;
+            }
+        }
+        public ImageSource WebsitePic {
+            get {
+                SvgImageSource source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_facebook.svg");
+                source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColor } };
+                return source;
+            }
+        }
+        public ImageSource AboutPic {
+            get {
+                SvgImageSource source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_about.svg");
+                source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColor } };
+                return source;
+            }
+        }
+        public ImageSource LogoutPic {
+            get {
+                SvgImageSource source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_logout.svg");
+                source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColor } };
+                return source;
+            }
+        }
     }
 }

@@ -8,6 +8,13 @@ using static PagerBuddy.Services.ClientExceptions;
 namespace PagerBuddy.ViewModels {
     public class LoginPasswordPageViewModel : BaseViewModel {
 
+        public Dictionary<string, string> colorSetAccent {
+            get {
+                Color accent = (Color)Application.Current.Resources["AccentColor"];
+                return new Dictionary<string, string>() { { "black", accent.ToHex() } };
+            }
+        }
+
         public Command Return { get; set; }
         public Command Next { get; set; }
         private TStatus errorStatus = TStatus.OK;

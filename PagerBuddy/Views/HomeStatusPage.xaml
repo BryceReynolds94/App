@@ -8,11 +8,11 @@
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:resources="clr-namespace:PagerBuddy.Resources"
              xmlns:viewModels="clr-namespace:PagerBuddy.ViewModels"
-             Title="{Binding Title}"
-             x:Name="BrowseItemsPage">
+             Style="{StaticResource BasePageStyle}"
+             Title="{Binding Title}">
 
     <AbsoluteLayout>
-        <RefreshView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" IsVisible="{Binding ConfigActive}" Command="{Binding ReloadConfig}" IsEnabled="{Binding ReloadCOnfigEnabled}"
+        <RefreshView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" IsVisible="{Binding ConfigActive}" Command="{Binding ReloadConfig}" IsEnabled="{Binding ReloadConfigEnabled}"
                      IsRefreshing="{Binding IsBusy}">
             <StackLayout>
                 <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
@@ -24,21 +24,21 @@
                                     <On Platform="Android" Value="True"/>
                                 </OnPlatform>
                             </StackLayout.IsVisible>
-                            <ImageButton Source="{Binding AllDeactivateIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                            <ImageButton Source="{Binding AllDeactivateIcon}" WidthRequest="50" HeightRequest="50" Style="{StaticResource ImageButtonStyle}"
                              CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding DeactivateAll}" />
-                            <ImageButton Source="{Binding AllSnoozeIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                            <ImageButton Source="{Binding AllSnoozeIcon}" WidthRequest="50" HeightRequest="50" Style="{StaticResource ImageButtonStyle}"
                              CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding SnoozeAll}"/>
-                            <ImageButton Source="{Binding AllTimeIcon}" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource BackgroundColor}" 
+                            <ImageButton Source="{Binding AllTimeIcon}" WidthRequest="50" HeightRequest="50" Style="{StaticResource ImageButtonStyle}"
                              CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding TimeAll}"/>
                         </StackLayout>
                     </CollectionView.Header>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout Padding="10,10,10,0">
-                                <Frame x:Name="Backdrop" BackgroundColor="{StaticResource SecondaryColorGrey}"  CornerRadius="10" Padding="10">
+                                <Frame x:Name="Backdrop" Style="{StaticResource FrameStyleOff}"  CornerRadius="10" Padding="10" >
                                     <Frame.Triggers>
                                         <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference SwitchIsActive}, Path=IsToggled}" Value="True">
-                                            <Setter Property="BackgroundColor" Value="{StaticResource SecondaryColor}" />
+                                            <Setter Property="Style" Value="{StaticResource FrameStyle}" />
                                         </DataTrigger>
                                     </Frame.Triggers>
                                     <Grid>
@@ -81,7 +81,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_login.svg" HorizontalOptions="Center" HeightRequest="150" Margin="40,40,40,0" Grid.Row="1" />
+            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_login.svg" HorizontalOptions="Center" HeightRequest="150" Margin="40,40,40,0" Grid.Row="1" ReplaceStringMap="{Binding colorSetAccent}"/>
             <Label Text="{x:Static resources:AppResources.HomeStatusPage_Error_NoTelegram}" HorizontalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0,20,20" />
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding Login}"/>
@@ -96,7 +96,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <BoxView BackgroundColor="Black" Opacity="0.6" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
-            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_alert_off_white.svg" HorizontalOptions="Center" HeightRequest="150" Grid.Row="1" />
+            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_alert_off.svg" HorizontalOptions="Center" HeightRequest="150" Grid.Row="1" ReplaceStringMap="{Binding colorSetWhite}"/>
             <Label Text="{x:Static resources:AppResources.HomeStatusPage_Warning_Deactivated}" HorizontalOptions="Center" FontSize="Large" TextColor="White" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0,20,20" />
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding DeactivateAllOff}"/>
@@ -111,7 +111,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <BoxView BackgroundColor="Black" Opacity="0.6" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
-            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_alert_snooze_white.svg" HorizontalOptions="Center" HeightRequest="150" Grid.Row="1" />
+            <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_alert_snooze.svg" HorizontalOptions="Center" HeightRequest="150" Grid.Row="1" ReplaceStringMap="{Binding colorSetWhite}"/>
             <Label Text="{Binding WarningSnoozeText}" HorizontalOptions="Center" FontSize="Large" TextColor="White" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0,20,20"/>
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding SnoozeAllOff}"/>

@@ -5,83 +5,67 @@
              xmlns:resources="clr-namespace:PagerBuddy.Resources"
              BackgroundColor="#66000000">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Padding="10,10" VerticalOptions="Center" HorizontalOptions="Center">
+        <StackLayout Style="{StaticResource OverlayLayoutStyle}" Padding="10,10" VerticalOptions="Center" HorizontalOptions="Center">
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="10">
-                <Button BackgroundColor="{StaticResource BackgroundColor}" BorderColor="{StaticResource SecondaryColor}" TextColor="LightGray" BorderWidth="2" 
-                                CornerRadius="20" WidthRequest="40" HeightRequest="40" Text="{x:Static resources:AppResources.ActiveTimePopup_DayMonday}" Command="{Binding ToggleDay}" CommandParameter="1">
+                <Button Style="{StaticResource DayPickerButtonOff}" Text="{x:Static resources:AppResources.ActiveTimePopup_DayMonday}" Command="{Binding ToggleDay}" CommandParameter="1">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding ActiveDayMonday}" Value="True">
-                            <Setter Property="BorderColor" Value="{StaticResource PrimaryColorLight}"/>
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColorLight}" />
+                            <Setter Property="Style" Value="{StaticResource DayPickerButton}"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-                <Button BackgroundColor="{StaticResource BackgroundColor}" BorderColor="{StaticResource SecondaryColor}" TextColor="LightGray" BorderWidth="2" 
-                                CornerRadius="20" WidthRequest="40" HeightRequest="40" Text="{x:Static resources:AppResources.ActiveTimePopup_DayTuesday}" Command="{Binding ToggleDay}" CommandParameter="2">
+                <Button Style="{StaticResource DayPickerButtonOff}" Text="{x:Static resources:AppResources.ActiveTimePopup_DayTuesday}" Command="{Binding ToggleDay}" CommandParameter="2">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding ActiveDayTuesday}" Value="True">
-                            <Setter Property="BorderColor" Value="{StaticResource PrimaryColorLight}"/>
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColorLight}" />
+                            <Setter Property="Style" Value="{StaticResource DayPickerButton}"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-                <Button BackgroundColor="{StaticResource BackgroundColor}" BorderColor="{StaticResource SecondaryColor}" TextColor="LightGray" BorderWidth="2" 
-                                CornerRadius="20" WidthRequest="40" HeightRequest="40" Text="{x:Static resources:AppResources.ActiveTimePopup_DayWednesday}" Command="{Binding ToggleDay}" CommandParameter="3">
+                <Button Style="{StaticResource DayPickerButtonOff}" Text="{x:Static resources:AppResources.ActiveTimePopup_DayWednesday}" Command="{Binding ToggleDay}" CommandParameter="3">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding ActiveDayWednesday}" Value="True">
-                            <Setter Property="BorderColor" Value="{StaticResource PrimaryColorLight}"/>
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColorLight}" />
+                            <Setter Property="Style" Value="{StaticResource DayPickerButton}"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-                <Button BackgroundColor="{StaticResource BackgroundColor}" BorderColor="{StaticResource SecondaryColor}" TextColor="LightGray" BorderWidth="2" 
-                                CornerRadius="20" WidthRequest="40" HeightRequest="40" Text="{x:Static resources:AppResources.ActiveTimePopup_DayThursday}" Command="{Binding ToggleDay}" CommandParameter="4">
+                <Button Style="{StaticResource DayPickerButtonOff}" Text="{x:Static resources:AppResources.ActiveTimePopup_DayThursday}" Command="{Binding ToggleDay}" CommandParameter="4">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding ActiveDayThursday}" Value="True">
-                            <Setter Property="BorderColor" Value="{StaticResource PrimaryColorLight}"/>
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColorLight}" />
+                            <Setter Property="Style" Value="{StaticResource DayPickerButton}"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-                <Button BackgroundColor="{StaticResource BackgroundColor}" BorderColor="{StaticResource SecondaryColor}" TextColor="LightGray" BorderWidth="2" 
-                                CornerRadius="20" WidthRequest="40" HeightRequest="40" Text="{x:Static resources:AppResources.ActiveTimePopup_DayFriday}" Command="{Binding ToggleDay}" CommandParameter="5">
+                <Button Style="{StaticResource DayPickerButtonOff}" Text="{x:Static resources:AppResources.ActiveTimePopup_DayFriday}" Command="{Binding ToggleDay}" CommandParameter="5">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding ActiveDayFriday}" Value="True">
-                            <Setter Property="BorderColor" Value="{StaticResource PrimaryColorLight}"/>
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColorLight}" />
+                            <Setter Property="Style" Value="{StaticResource DayPickerButton}"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-                <Button BackgroundColor="{StaticResource BackgroundColor}" BorderColor="{StaticResource SecondaryColor}" TextColor="LightGray" BorderWidth="2" 
-                                CornerRadius="20" WidthRequest="40" HeightRequest="40" Text="{x:Static resources:AppResources.ActiveTimePopup_DaySaturday}" Command="{Binding ToggleDay}" CommandParameter="6">
+                <Button Style="{StaticResource DayPickerButtonOff}" Text="{x:Static resources:AppResources.ActiveTimePopup_DaySaturday}" Command="{Binding ToggleDay}" CommandParameter="6">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding ActiveDaySaturday}" Value="True">
-                            <Setter Property="BorderColor" Value="{StaticResource PrimaryColorLight}"/>
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColorLight}" />
+                            <Setter Property="Style" Value="{StaticResource DayPickerButton}"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-                <Button BackgroundColor="{StaticResource BackgroundColor}" BorderColor="{StaticResource SecondaryColor}" TextColor="LightGray" BorderWidth="2" 
-                                CornerRadius="20" WidthRequest="40" HeightRequest="40" Text="{x:Static resources:AppResources.ActiveTimePopup_DaySunday}" Command="{Binding ToggleDay}" CommandParameter="0">
+                <Button Style="{StaticResource DayPickerButtonOff}" Text="{x:Static resources:AppResources.ActiveTimePopup_DaySunday}" Command="{Binding ToggleDay}" CommandParameter="0">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding ActiveDaySunday}" Value="True">
-                            <Setter Property="BorderColor" Value="{StaticResource PrimaryColorLight}"/>
-                            <Setter Property="TextColor" Value="{StaticResource PrimaryColorLight}" />
+                            <Setter Property="Style" Value="{StaticResource DayPickerButton}"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
 
             </StackLayout>
             <StackLayout Orientation="Horizontal" Padding="10,0">
-                <TimePicker Time="{Binding FromTime}" FontSize="Large"  TextColor="{StaticResource PrimaryColorLight}" HorizontalOptions="EndAndExpand"/>
+                <TimePicker Time="{Binding FromTime}" FontSize="Large"  TextColor="{StaticResource AccentColor}" HorizontalOptions="EndAndExpand"/>
                 <Label Text="-" FontSize="Large" VerticalOptions="Center" VerticalTextAlignment="Center"/>
-                <TimePicker Time="{Binding ToTime}" FontSize="Large" TextColor="{StaticResource PrimaryColorLight}" HorizontalOptions="StartAndExpand"/>
+                <TimePicker Time="{Binding ToTime}" FontSize="Large" TextColor="{StaticResource AccentColor}" HorizontalOptions="StartAndExpand"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal" Padding="10,0">
-                <Button Text="{x:Static resources:AppResources.ActiveTimePopup_Cancel}" Command="{Binding Cancel}" HorizontalOptions="EndAndExpand" BackgroundColor="{StaticResource BackgroundColor}" 
-                        TextColor="{StaticResource PrimaryColorLight}"/>
-                <Button Text="{x:Static resources:AppResources.ActiveTimePopup_Confirm}" Command="{Binding Confirm}" HorizontalOptions="End" BackgroundColor="{StaticResource BackgroundColor}" 
-                        TextColor="{StaticResource PrimaryColorLight}"/>
+                <Button Text="{x:Static resources:AppResources.ActiveTimePopup_Cancel}" Command="{Binding Cancel}" HorizontalOptions="EndAndExpand" Style="{StaticResource OverlayButton}"/>
+                <Button Text="{x:Static resources:AppResources.ActiveTimePopup_Confirm}" Command="{Binding Confirm}" HorizontalOptions="End" Style="{StaticResource OverlayButton}"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

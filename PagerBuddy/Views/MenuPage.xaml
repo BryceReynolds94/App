@@ -8,8 +8,8 @@
              x:Class="PagerBuddy.Views.MenuPage"
              Title="Menu">
 
-    <StackLayout Spacing="0">
-        <StackLayout Orientation="Horizontal" BackgroundColor="{StaticResource PrimaryColor}">
+    <StackLayout Spacing="0" Style="{StaticResource OverlayLayoutStyle}">
+        <StackLayout Orientation="Horizontal" Style="{StaticResource FlyoutHeaderStyle}">
             <StackLayout.Padding>
                 <OnPlatform x:TypeArguments="Thickness">
                     <On Platform="iOS" Value="10,50,10,20" />
@@ -20,36 +20,36 @@
                 <Image Source="{Binding UserPic}" />
             </Frame>
             <StackLayout Margin="10,0" VerticalOptions="Center">
-                <Label Text="{Binding UserName}" FontSize="Large" TextColor="{StaticResource PrimaryTextColor}"/>
-                <Label Text="{Binding UserPhone}" TextColor="{StaticResource PrimaryTextColor}"/>
+                <Label Text="{Binding UserName}" FontSize="Large" Style="{StaticResource FlyoutHeaderTextStyle}"/>
+                <Label Text="{Binding UserPhone}" Style="{StaticResource FlyoutHeaderTextStyle}"/>
             </StackLayout>
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding Profile}" />
             </StackLayout.GestureRecognizers>
         </StackLayout>
         <Grid>
-            <ImageButton BackgroundColor="{StaticResource BackgroundColor}" CornerRadius="0" Command="{Binding NotificationSettings}" />
+            <ImageButton Style="{StaticResource FlyoutImageButtonStyle}" CornerRadius="0" Command="{Binding NotificationSettings}" />
             <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5">
                 <Image Margin="5" Source="{Binding NotificationConfigPic}" HeightRequest="30" WidthRequest="30"/>
                 <Label Text="{x:Static resources:AppResources.MenuPage_Action_NotificationSettings}" FontSize="Medium" VerticalOptions="Center"/>
             </StackLayout>
         </Grid>
         <Grid>
-            <ImageButton BackgroundColor="{StaticResource BackgroundColor}" CornerRadius="0" Command="{Binding Share}" HeightRequest="40"/>
+            <ImageButton Style="{StaticResource FlyoutImageButtonStyle}" CornerRadius="0" Command="{Binding Share}" HeightRequest="40"/>
             <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5">
                 <Image Margin="5" Source="{Binding SharePic}" HeightRequest="30" WidthRequest="30"/>
                 <Label Text="{x:Static resources:AppResources.MenuPage_Action_Share}" FontSize="Medium" VerticalOptions="Center"/>
             </StackLayout>
         </Grid>
         <Grid>
-            <ImageButton BackgroundColor="{StaticResource BackgroundColor}" CornerRadius="0" Command="{Binding Website}" />
+            <ImageButton Style="{StaticResource FlyoutImageButtonStyle}" CornerRadius="0" Command="{Binding Website}" />
             <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5">
                 <Image Margin="5" Source="{Binding WebsitePic}" HeightRequest="30" WidthRequest="30"/>
                 <Label Text="{x:Static resources:AppResources.MenuPage_Action_Website}" FontSize="Medium" VerticalOptions="Center"/>
             </StackLayout>
         </Grid>
         <Grid VerticalOptions="StartAndExpand">
-            <ImageButton BackgroundColor="{StaticResource BackgroundColor}" CornerRadius="0" Command="{Binding About}" />
+            <ImageButton Style="{StaticResource FlyoutImageButtonStyle}" CornerRadius="0" Command="{Binding About}" />
             <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5">
                 <Image Margin="5" Source="{Binding AboutPic}" HeightRequest="30" WidthRequest="30"/>
                 <Label Text="{x:Static resources:AppResources.MenuPage_Action_About}" FontSize="Medium" VerticalOptions="Center"/>
@@ -62,8 +62,8 @@
                     <On Platform="Android" Value="0,10" />
                 </OnPlatform>
             </Grid.Padding>
-            <ImageButton BackgroundColor="{StaticResource BackgroundColor}" CornerRadius="0" Command="{Binding Logout}" />
-            <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5">
+            <ImageButton Style="{StaticResource FlyoutImageButtonStyle}" CornerRadius="0" Command="{Binding Logout}" />
+            <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5" >
                 <Image Margin="5" Source="{Binding LogoutPic}" HeightRequest="30" WidthRequest="30"/>
                 <Label Text="{x:Static resources:AppResources.MenuPage_Action_Logout}" FontSize="Medium" VerticalOptions="Center"/>
             </StackLayout>

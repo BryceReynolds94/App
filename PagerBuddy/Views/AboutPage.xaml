@@ -18,7 +18,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.launcher_dark.svg" x:Name="MainIcon" Grid.RowSpan="2">
+                        <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_pagerbuddy.svg" x:Name="MainIcon" Grid.RowSpan="2" ReplaceStringMap="{Binding LogoColor}">
                             <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding DeveloperMode}"/>
                             </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>

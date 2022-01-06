@@ -4,6 +4,7 @@ using PagerBuddy.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -25,6 +26,17 @@ namespace PagerBuddy.ViewModels {
         public Command ChangeLogLevel { get; set; }
         public Command CheckPermissions { get; set; }
         public Command ClearData { get; set; }
+
+        public Dictionary<string, string> LogoColor {
+            get {
+                Style style = (Style)Application.Current.Resources["AboutLogo"];
+
+                string mode = Application.Current.RequestedTheme == OSAppTheme.Dark ? "Dark" : "Light";
+                Setter themeSetter = style.Setters.First((setter) => setter.TargetName == mode);
+                string color = ((Color)themeSetter.Value).ToHex();
+                return new Dictionary<string, string>() { { "black", color } };
+            }
+        }
 
         private enum LogLevel { DEBUG, INFO, WARN, ERROR }
         private LogLevel logLevel;
@@ -54,6 +66,8 @@ namespace PagerBuddy.ViewModels {
             ChangeLogLevel = new Command(() => rotateLogLevel());
             CheckPermissions = new Command(() => requestCheckPermissions(this, null));
             ClearData = new Command(() => requestClearData(this, null));
+
+            Application.Current.RequestedThemeChanged += (s, a) => OnPropertyChanged(nameof(LogoColor));
 
             reloadLogLoop();
         }
