@@ -65,10 +65,10 @@
                         <Button Grid.ColumnSpan="2" Grid.Row="1" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_HideDeveloperModeBtn}" Command="{Binding HideDeveloperMode}"/>
                         <Button Grid.Row="2" Grid.Column="0" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_ClearData}" Command="{Binding ClearData}"/>
                         <Button Grid.Row="2" Grid.Column="1" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_CheckPermissions}" Command="{Binding CheckPermissions}"/>
-                        <Button Grid.Row="3" Grid.Column="0" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_ShowAlertPageBtn}" Command="{Binding ShowAlertPage}"/>
-                        <Button Grid.Row="3" Grid.Column="1" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_TestNotificationBtn}" Command="{Binding TestNotification}"/>
+                        <Button Grid.Row="3" Grid.Column="0" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_ShowAlertPageBtn}" Command="{Binding ShowAlertPage}" IsEnabled="{Binding HasAndroidFeatures}"/>
+                        <Button Grid.Row="3" Grid.Column="1" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_TestNotificationBtn}" Command="{Binding TestNotification}" IsEnabled="{Binding HasAndroidFeatures}"/>
                         <Button Grid.Row="4" Grid.Column="0" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_RestartClientBtn}" Command="{Binding RestartClient}"/>
-                        <Button Grid.Row="4" Grid.Column="1" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_TestFCMMessageBtn}" Command="{Binding TestFCMMessage}"/>
+                        <Button Grid.Row="4" Grid.Column="1" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_TestFCMMessageBtn}" Command="{Binding TestFCMMessage}" IsEnabled="{Binding HasAndroidFeatures}"/>
 
                         <Button Grid.Row="5" Grid.ColumnSpan="2" Text="{Binding LogLevelText}" Command="{Binding ChangeLogLevel}" />
 

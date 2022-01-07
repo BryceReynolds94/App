@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UIKit;
 
+[assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.iOS.ServerRequestScheduler))] //register for dependency service as platform-specific code
 namespace PagerBuddy.iOS {
     class ServerRequestScheduler : IRequestScheduler {
 
@@ -49,7 +50,7 @@ namespace PagerBuddy.iOS {
                 }
             }
 
-            string botServer = CommunicationService.pagerbuddyServerList.First(); //TODO: Implement multiple server bots
+            string botServer = CommunicationService.pagerbuddyServerList.First(); //TODO Later: MULTI-Server
 
             bool result = await runServerRefresh(client, configList, botServer, bgCancellationSource.Token);
             task.SetTaskCompleted(result);
@@ -91,7 +92,6 @@ namespace PagerBuddy.iOS {
                 try {
                     await Task.Delay(delay * 1000, cancellationSource.Token);
                 } catch (TaskCanceledException) {
-                    UIApplication.SharedApplication.EndBackgroundTask(taskID);
                     return;
                 }
 
@@ -101,7 +101,8 @@ namespace PagerBuddy.iOS {
                     newDelay = newDelay < 5 * 60 * 60 ? newDelay : 5 * 60 * 60;
                     _ = scheduleRequest(request, botServerUser, newDelay);
                 }
-                UIApplication.SharedApplication.EndBackgroundTask(taskID);
+
+                cancellationSource.Cancel();
             });
 
         }
@@ -141,7 +142,7 @@ namespace PagerBuddy.iOS {
             CommunicationService.STATUS status = client.clientStatus;
             if (status == CommunicationService.STATUS.AUTHORISED) {
                 Logger.Debug("User authorised. Sending request.");
-                bool success = await client.sendServerRequest(configList, botServer); //TODO: Later implement multiple servers
+                bool success = await client.sendServerRequest(configList, botServer); //TODO Later: MULTI-Server
                 return success;
             } else if (status > CommunicationService.STATUS.ONLINE) {
                 //Wait status achieved - user is not authorised - do not bother in the future

@@ -25,6 +25,7 @@ namespace PagerBuddy.Views {
             client = new CommunicationService();
 
             Detail = new NavigationPage(new HomeStatusPage(client));
+            Detail.Style = (Style) Application.Current.Resources["NavigationBarStyle"];
 
             MessagingCenter.Subscribe<AboutPage>(this, AboutPage.MESSAGING_KEYS.RESTART_CLIENT.ToString(), async (sender) => await client.forceReloadConnection());
         }

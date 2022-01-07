@@ -11,6 +11,7 @@ using UserNotifications;
 using Xamarin.Forms;
 using PagerBuddy.Services;
 
+[assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.iOS.Permission))] //register for dependency service as platform-specific code
 namespace PagerBuddy.iOS {
     class Permission : IiOSPermissions {
 
@@ -23,14 +24,14 @@ namespace PagerBuddy.iOS {
             }
         }
 
-        public void logPermissionSettings() {
+        public async void logPermissionSettings() {
 
-            //TODO: iOS Implement permission check
-            Logger.Warn("Permission check for iOS not implemented.");
+            UNNotificationSettings settings = await UNUserNotificationCenter.Current.GetNotificationSettingsAsync();
+            Logger.Debug("Status of notification permissions: Sound: " + settings.SoundSetting + ", Alerts: " + settings.AlertSetting + ", Critical Alerts: " + settings.CriticalAlertSetting);
         }
 
         public async Task<bool> requestNotificationPermission() {
-                //TODO: iOS Test this implementation
+                //TODO Testing: iOS Test notification permission
 
                 //https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1?view=net-5.0
                 Logger.Info("Requesting notification authorisation.");
@@ -40,7 +41,6 @@ namespace PagerBuddy.iOS {
                 Tuple<bool, NSError> tupleOut = await center.RequestAuthorizationAsync(options).ConfigureAwait(false);
                 if (tupleOut.Item2 != null) {
                     Logger.Error(tupleOut.Item2.DebugDescription, "Error while requesting notification authorisation.");
-                    //TODO: IOS Handle this scenario
                 }
                 Logger.Debug("Result of authorisation request: " + tupleOut.Item1);
                 return tupleOut.Item1;

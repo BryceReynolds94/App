@@ -27,6 +27,8 @@ namespace PagerBuddy
     public partial class App : Application
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+        private bool isAlert = false;
         public App(bool isAlert = false, Alert alert = null)
         {
             Logger.Debug("Starting App.");
@@ -42,6 +44,7 @@ namespace PagerBuddy
             }
 
             if (isAlert && alert != null) {
+                this.isAlert = true;
                 MainPage = new AlertPage(alert);
                 return;
             }
@@ -52,9 +55,11 @@ namespace PagerBuddy
         }
 
         protected override async void OnStart(){
-            CommunicationService client = ((MainPage)Current.MainPage).client;
-            await client.connectClient();
-            new MessagingService(client);
+            if (!isAlert) {
+                CommunicationService client = ((MainPage)Current.MainPage).client;
+                await client.connectClient();
+                new MessagingService(client);
+            }
 
         }
 

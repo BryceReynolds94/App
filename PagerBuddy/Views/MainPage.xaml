@@ -6,6 +6,7 @@
             mc:Ignorable="d"
             xmlns:views="clr-namespace:PagerBuddy.Views"
             x:Class="PagerBuddy.Views.MainPage"
+            
             >
 
     <FlyoutPage.Flyout>

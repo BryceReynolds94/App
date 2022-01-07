@@ -43,6 +43,8 @@ namespace PagerBuddy.iOS
                 }
             }));
 
+            ApplyStyle();
+
             LoadApplication(new App());
 
             UNUserNotificationCenter.Current.Delegate = new UserNotificationCenterDelegate();
@@ -53,6 +55,14 @@ namespace PagerBuddy.iOS
             return base.FinishedLaunching(app, options);
         }
 
+        private void ApplyStyle() {
+            UIColor accent = new UIColor(red: new nfloat(0.35), green: new nfloat(0.45), blue: new nfloat(0.79), alpha: new nfloat(1));
+            UIColor primary = new UIColor(red: new nfloat(0.11), green: new nfloat(0.29), blue: new nfloat(0.60), alpha: new nfloat(1));
+
+            UISwitch.Appearance.OnTintColor = accent;
+
+        }
+
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken) {
             Logger.Debug("Registered for remote notification. Device token: " + deviceToken);
@@ -60,8 +70,11 @@ namespace PagerBuddy.iOS
         }
 
         public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error) {
-            Logger.Error(error.Description, "Could not register for remote notifications. This is probably fatal.");
-            //TODO: iOS Handle this case in real-life
+            if (error.Code == 3010) {
+                Logger.Warn("Remote notifications not available in simulator.");
+            } else {
+                Logger.Error(error.Description, "Could not register for remote notifications. This is probably fatal.");
+            }
         }
 
         // To receive notifications in background in any iOS version

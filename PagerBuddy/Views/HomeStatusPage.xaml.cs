@@ -82,7 +82,7 @@ namespace PagerBuddy.Views {
 
             IRequestScheduler scheduler = DependencyService.Get<IRequestScheduler>();
             scheduler.initialise(client);
-            scheduler.scheduleRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO Later: Introduce possibility of multiple servers
+            scheduler.scheduleRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO Later: MULTI-Server
         }
 
         private void updateClientStatus(object sender, CommunicationService.STATUS newStatus) {
@@ -121,7 +121,7 @@ namespace PagerBuddy.Views {
             DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, state);
         }
 
-        private async Task alertConfigsChanged(Collection<AlertConfig> configList) {
+        private void alertConfigsChanged(Collection<AlertConfig> configList) {
             if (Device.RuntimePlatform == Device.Android) {
                 IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
                 notifications.UpdateNotificationChannels(configList);
@@ -130,7 +130,7 @@ namespace PagerBuddy.Views {
             sendServerUpdate(configList);
 
             IPermissions permissions = DependencyService.Get<IPermissions>();
-            await permissions.checkAlertPermissions(this);
+            _ = permissions.checkAlertPermissions(this);
         }
 
         private async Task showWelcomePrompt() {
@@ -216,7 +216,7 @@ namespace PagerBuddy.Views {
             }
 
             if (hasListChanged(oldList, configList)) { //If the alert list has changed, subscribe to PagerBuddy-Server with new list
-                await alertConfigsChanged(configList);
+                alertConfigsChanged(configList);
             }
 
         }

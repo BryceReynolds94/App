@@ -172,7 +172,6 @@ namespace PagerBuddy.Services {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to logout user without authorisation. Current state: " + clientStatus.ToString());
             }
-            //TODO: Possibly only allow logout if connected
             Logger.Debug("Logging out user.");
 
             //Try to unregister user with server
@@ -316,6 +315,12 @@ namespace PagerBuddy.Services {
                 await checkConnectionOnError(e);
                 return TStatus.OFFLINE;
             } catch (Exception e) {
+                TException exception = getTException(e.Message);
+                if(exception == TException.PHONE_CODE_EXPIRED) {
+                    Logger.Info("Code has expired.");
+                    return TStatus.INVALID_CODE;
+                }
+
                 Logger.Error(e, "Authenticating user code failed.");
                 await checkConnectionOnError(e);
                 return TStatus.UNKNOWN;
@@ -373,7 +378,7 @@ namespace PagerBuddy.Services {
 
             Types.InputUser botUser;
             try {
-                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(pagerbuddyServerList.First()); //TODO Later: Add implementation for different server bots
+                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(pagerbuddyServerList.First()); //TODO Later: MULTI-Server
                 Types.User.DefaultTag resolvedUser = resolvedPeer.Users.First().Default;
 
                 if (resolvedUser != null) {
@@ -461,7 +466,7 @@ namespace PagerBuddy.Services {
             Types.InputUser botUser;
             try {
                 serverPeer ??= pagerbuddyServerList.First();
-                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(serverPeer); //TODO Later: Add possibility for different server peers
+                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(serverPeer); //TODO Later: MULTI-Server
                 Types.User.DefaultTag resolvedUser = resolvedPeer.Users.First().Default;
 
                 if (resolvedUser != null) {

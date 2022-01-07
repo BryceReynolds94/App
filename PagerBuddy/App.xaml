@@ -32,6 +32,11 @@
             <Color x:Key="DarkOverlayBackgroundColor">#303030</Color>
 
 
+            <Style TargetType="NavigationPage" x:Key="NavigationBarStyle">
+                <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryColor}, Dark={StaticResource DarkOverlayBackgroundColor}}"/>
+                <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColor}}"/>
+            </Style>
+            
             <Style TargetType="ContentPage" x:Key="BasePageStyle">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource DarkBackgroundColor}}"/>
             </Style>

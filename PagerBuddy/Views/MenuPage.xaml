@@ -16,8 +16,14 @@
                     <On Platform="Android" Value="10,20" />
                 </OnPlatform>
             </StackLayout.Padding>
-            <Frame Padding="0" WidthRequest="60" HeightRequest="60" CornerRadius="30" IsClippedToBounds="True" VerticalOptions="Center" >
+            <Frame Padding="0" WidthRequest="60" HeightRequest="60" CornerRadius="30" IsClippedToBounds="True" VerticalOptions="Center">
                 <Image Source="{Binding UserPic}" />
+                <Frame.HasShadow>
+                    <OnPlatform x:TypeArguments="x:Boolean">
+                        <On Platform="iOS" Value="False"/>
+                        <On Platform="Android" Value="True"/> 
+                    </OnPlatform>
+                </Frame.HasShadow>
             </Frame>
             <StackLayout Margin="10,0" VerticalOptions="Center">
                 <Label Text="{Binding UserName}" FontSize="Large" Style="{StaticResource FlyoutHeaderTextStyle}"/>

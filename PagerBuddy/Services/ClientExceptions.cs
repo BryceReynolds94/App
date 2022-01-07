@@ -20,6 +20,7 @@ namespace PagerBuddy.Services
             PHONE_NUMBER_INVALID,
             PHONE_PASSWORD_FLOOD,
             PHONE_PASSWORD_PROTECTED,
+            PHONE_CODE_EXPIRED,
             SMS_CODE_CREATE_FAILED,
             PASSWORD_HASH_INVALID,
             YOU_BLOCKED_USER,

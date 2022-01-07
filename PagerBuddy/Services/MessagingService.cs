@@ -78,7 +78,7 @@ namespace PagerBuddy.Services
             if (instance != null) {
                 scheduler.initialise(instance.client);
             }
-            scheduler.scheduleRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO: Allow all bot types
+            scheduler.scheduleRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO Later: MULTI-Server
         }
     }
 }

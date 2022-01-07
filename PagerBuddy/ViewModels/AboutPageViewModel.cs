@@ -27,6 +27,8 @@ namespace PagerBuddy.ViewModels {
         public Command CheckPermissions { get; set; }
         public Command ClearData { get; set; }
 
+        public bool HasAndroidFeatures => Device.RuntimePlatform == Device.Android;
+
         public Dictionary<string, string> LogoColor {
             get {
                 Style style = (Style)Application.Current.Resources["AboutLogo"];

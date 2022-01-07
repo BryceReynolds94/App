@@ -87,24 +87,28 @@ namespace PagerBuddy.Views {
         }
 
         private void showAlertPage(object sender, EventArgs args) {
-            Logger.Info("User requested view AlertPage.");
+            if (Device.RuntimePlatform == Device.Android) {
+                Logger.Info("User requested view AlertPage.");
 
-            Collection<string> configs = DataService.getConfigList();
-            Alert testAlert;
-            if (configs.Count > 0) {
-                AlertConfig config = DataService.getAlertConfig(configs[0], null);
-                if (config == null) {
-                    Logger.Error("Loading a known alert config returned null. Stopping here.");
-                    return;
+                Collection<string> configs = DataService.getConfigList();
+                Alert testAlert;
+                if (configs.Count > 0) {
+                    AlertConfig config = DataService.getAlertConfig(configs[0], null);
+                    if (config == null) {
+                        Logger.Error("Loading a known alert config returned null. Stopping here.");
+                        return;
+                    }
+                    testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Message, DateTime.Now, false, config);
+                } else {
+                    Logger.Info("No configurations found. Using mock configuration for sample AlertPage.");
+                    testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Title, AppResources.App_DeveloperMode_AlertPage_Message, "", 0, false, DateTime.Now, false, TelegramPeer.TYPE.CHAT);
                 }
-                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Message, DateTime.Now, false, config);
-            } else {
-                Logger.Info("No configurations found. Using mock configuration for sample AlertPage.");
-                testAlert = new Alert(AppResources.App_DeveloperMode_AlertPage_Title, AppResources.App_DeveloperMode_AlertPage_Message, "", 0, false, DateTime.Now, false, TelegramPeer.TYPE.CHAT);
-            }
-            Logger.Info("Launching AlertPage from Developer Mode");
+                Logger.Info("Launching AlertPage from Developer Mode");
 
-            MessagingCenter.Send(this, MESSAGING_KEYS.SHOW_ALERT_PAGE.ToString(), testAlert);
+                MessagingCenter.Send(this, MESSAGING_KEYS.SHOW_ALERT_PAGE.ToString(), testAlert);
+            } else {
+                Logger.Warn("Alert page is not supported on this device platform.");
+            }
         }
 
         private void restartClient(object sender, EventArgs args) {
@@ -113,25 +117,29 @@ namespace PagerBuddy.Views {
         }
 
         private void testFCMMessage(object sender, EventArgs args) {
-            Logger.Info("Launching FCM Message Handling as if an external update was received.");
+            if (Device.RuntimePlatform == Device.Android) {
+                Logger.Info("Launching FCM Message Handling as if an external update was received.");
 
-            Collection<string> configs = DataService.getConfigList();
-            if (configs.Count > 0) {
-                Logger.Info("Sending alert test message");
-                AlertConfig config = DataService.getAlertConfig(configs.First(), null);
-                if(config == null) {
-                    Logger.Error("Retrieving known alert returned null. Will stop here.");
-                    return;
+                Collection<string> configs = DataService.getConfigList();
+                if (configs.Count > 0) {
+                    Logger.Info("Sending alert test message");
+                    AlertConfig config = DataService.getAlertConfig(configs.First(), null);
+                    if (config == null) {
+                        Logger.Error("Retrieving known alert returned null. Will stop here.");
+                        return;
+                    }
+                    AlertService.checkMessage(AppResources.AboutPage_DeveloperMode_TestNotification_Message, config.triggerGroup.id, DateTime.Now, false);
+                } else {
+                    Logger.Warn("Could not send alert test message as no alerts are configured.");
                 }
-                AlertService.checkMessage(AppResources.AboutPage_DeveloperMode_TestNotification_Message, config.triggerGroup.id, DateTime.Now, false);
             } else {
-                Logger.Warn("Could not send alert test message as no alerts are configured.");
+                Logger.Warn("Test FCM is not supported on this device platform.");
             }
         }
 
         private void testNotification(object sender, EventArgs args) {
-            Collection<string> configs = DataService.getConfigList();
             if (Device.RuntimePlatform == Device.Android) {
+                Collection<string> configs = DataService.getConfigList();
                 if (configs.Count > 0) {
                     Logger.Info("Sending notification test message in 5s.");
                     AlertConfig config = DataService.getAlertConfig(configs.First(), null);
@@ -149,7 +157,7 @@ namespace PagerBuddy.Views {
                     Logger.Warn("Could not send notification test message as no alerts are configured.");
                 }
             } else {
-                Logger.Warn("Test alert is not supported on this device platform.");
+                Logger.Warn("Test notification is not supported on this device platform.");
             }
         }
     }

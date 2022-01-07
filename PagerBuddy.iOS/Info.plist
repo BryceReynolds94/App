@@ -55,5 +55,9 @@
 	<array>
 		<string>de.bartunik.pagerbuddy.serverRefresh</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
+  <key>UIViewControllerBasedStatusBarAppearance</key>
+  <false/>
 </dict>
 </plist>

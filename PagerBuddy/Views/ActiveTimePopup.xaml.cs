@@ -16,8 +16,6 @@ namespace PagerBuddy.Views {
 
         private readonly ActiveTimePopupViewModel viewModel;
 
-        //TODO: Possibly add visible representation of active time config
-        //TODO: Possibly add reset button for time config
         public ActiveTimePopup() {
             InitializeComponent();
 
