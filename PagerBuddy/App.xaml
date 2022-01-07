@@ -8,8 +8,7 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            <!--Global Styles-->
-            <!-- schema: https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=1d4999&secondary.color=97b7f9 -->
+            <!-- schema: https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=1d4999&secondary.color=bed3f7 -->
             
             <Color x:Key="PrimaryColor">#1d4999</Color>
             <Color x:Key="PrimaryTextColor">#ffffff</Color>

@@ -121,7 +121,7 @@ namespace PagerBuddy.Droid {
             manager.Notify(new Random().Next(), builder.Build()); //Currently no need to access notification later - so set ID random and forget
         }
 
-        public Ringtone playChannelRingtone(string alertConfigID) {
+        public Action playChannelRingtone(string alertConfigID) {
             NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);
             NotificationChannel channel = notificationManager.GetNotificationChannel(alertConfigID);
 
@@ -135,7 +135,14 @@ namespace PagerBuddy.Droid {
             ringtone.Looping = true;
             ringtone.Play();
 
-            return ringtone;
+            Action stopAction = new Action(() => {
+                if (ringtone != null && ringtone.IsPlaying) {
+                    ringtone.Stop();
+                }
+                ringtone?.Dispose();
+            });
+
+            return stopAction;
         }
 
         public void addNotificationChannel(AlertConfig alertConfig) {

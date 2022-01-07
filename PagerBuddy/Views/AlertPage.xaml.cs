@@ -21,7 +21,7 @@ namespace PagerBuddy.Views
         private readonly int groupID;
         private readonly TelegramPeer.TYPE peerType;
 
-        private Android.Media.Ringtone ringtone;
+        private Action stopRingtoneCallback;
 
         public AlertPage(Alert alert)
         {
@@ -38,7 +38,7 @@ namespace PagerBuddy.Views
             if(Device.RuntimePlatform == Device.Android) {
                 IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
                 notifications.closeNotification(groupID);
-                ringtone = notifications.playChannelRingtone(alert.configID); //Take over sound control
+                stopRingtoneCallback = notifications.playChannelRingtone(alert.configID); //Take over sound control
             }
 
         }
@@ -50,10 +50,8 @@ namespace PagerBuddy.Views
         }
 
         private void stopRingtone() {
-            if(Device.RuntimePlatform == Device.Android && ringtone != null) {
-                if (ringtone.IsPlaying) {
-                    ringtone.Stop();
-                }
+            if(Device.RuntimePlatform == Device.Android && stopRingtoneCallback != null) {
+                stopRingtoneCallback.Invoke();
             }
         }
 
