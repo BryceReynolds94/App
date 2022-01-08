@@ -38,11 +38,11 @@ namespace PagerBuddy.Services {
             CUSTOM_PAGERBUDDY_SERVER_BOT_LIST, //List of user set peers that should be accepted as pagerbuddy servers
         };
 
-        public static void clearData(bool developerMode = true) //Caution! Use with care
+        public static void clearData(bool developerMode = true, bool hasPromptedWelcome = true) //Caution! Use with care
         {
             Preferences.Clear();
             setConfigValue(DATA_KEYS.DEVELOPER_MODE, developerMode);
-            setConfigValue(DATA_KEYS.HAS_PROMPTED_WELCOME, true);
+            setConfigValue(DATA_KEYS.HAS_PROMPTED_WELCOME, hasPromptedWelcome);
             setConfigValue(DATA_KEYS.BUILD_UPDATE_COMPLETE, VersionTracking.CurrentBuild);
         }
 

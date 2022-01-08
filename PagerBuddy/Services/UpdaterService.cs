@@ -20,6 +20,12 @@ namespace PagerBuddy.Services {
 
             int updateBuildStatus = DataService.getConfigValue(DataService.DATA_KEYS.BUILD_UPDATE_COMPLETE, 0);
 
+            if (updateBuildStatus != currentVersion && currentVersion >= 35 && previousVersion < 35) { //Would set Update check here
+                //Update to V2.0 (possibly breaking everything)
+                Logger.Info("Detected update across v2 threshold. Deleting user preferences to ensure long-term compatibility. Keeping client session.");
+                DataService.clearData(false, false);
+            }
+
             DataService.setConfigValue(DataService.DATA_KEYS.BUILD_UPDATE_COMPLETE, currentVersion);
         }
 
@@ -33,10 +39,9 @@ namespace PagerBuddy.Services {
                 return false;
             }
 
-            if (false) { //Would set Update check here
-                //TODO: RBF
-                //Breaking changes throughout with new version?
-                //return true;
+            if (currentVersion >= 35 && previousVersion < 35) { //Would set Update check here
+                //Update to V2.0 (possibly breaking everything)
+                return true;
             }
             return false;
         }

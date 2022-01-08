@@ -39,9 +39,11 @@ namespace PagerBuddy.Services
             res &= data.TryGetValue("is_test_alert", out string testAlertR);
             res &= data.TryGetValue("zvei_description", out string description);
             res &= data.TryGetValue("chat_id", out string chatIDR);
+            res &= data.TryGetValue("is_manual_test_alert", out string manualTestR);
 
             res &= long.TryParse(timestampR, out long timestamp);
             res &= bool.TryParse(testAlertR, out bool testAlert);
+            res &= bool.TryParse(manualTestR, out bool manualTest);
             res &= long.TryParse(chatIDR, out long chatID);
 
             if (!res) {
@@ -50,7 +52,7 @@ namespace PagerBuddy.Services
             }
 
             DateTime alertTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(timestamp).ToLocalTime(); //Unix base time -- we need local time for alert time comparison
-            AlertService.checkMessage(description, chatID, alertTime, testAlert);
+            AlertService.checkMessage(description, chatID, alertTime, testAlert, manualTest);
         }
 
         public static void TokenRefresh(string token) {

@@ -1,5 +1,6 @@
 ﻿using PagerBuddy.Interfaces;
 using PagerBuddy.Models;
+using PagerBuddy.Resources;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace PagerBuddy.Services {
     public class AlertService {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static void checkMessage(string message, long chatID, DateTime timestamp, bool isTestAlert) {
+        public static void checkMessage(string message, long chatID, DateTime timestamp, bool isTestAlert, bool isManualTest) {
             if(DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_DEACTIVATE_ALL, false)) {
                 Logger.Info("All alerts are deactivated. Ignoring incoming message.");
                 return;
@@ -54,8 +55,13 @@ namespace PagerBuddy.Services {
 
             foreach (string id in configIDs) {
                 AlertConfig config = DataService.getAlertConfig(id, null);
-                if (config != null && config.triggerGroup.id == chatID) {
+                if (config != null && (config.triggerGroup.id == chatID || isManualTest)) {
                     Logger.Debug("New message for alert config " + config.readableFullName);
+                    if (isManualTest) {
+                        Logger.Debug("Message is a manual test alert.");
+                        alertMessage(new Alert(message, timestamp, isTestAlert, config));
+                        return;
+                    }
                     if (config.isAlert(timestamp)) {
                         DateTime referenceTime = DateTime.Now.Subtract(new TimeSpan(0, 10, 0)); //grace period of 10min
                         if (timestamp < referenceTime) //timestamp is older than referenceTime
