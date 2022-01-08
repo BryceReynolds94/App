@@ -18,6 +18,8 @@ using Xamarin.Forms;
 using System.Threading.Tasks;
 using Application = Android.App.Application;
 using PagerBuddy.Services;
+using Android.App.Usage;
+using AndroidX.Core.Content;
 
 [assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.Droid.Permissions))] //register for dependency service as platform-specific code
 namespace PagerBuddy.Droid {
@@ -39,9 +41,25 @@ namespace PagerBuddy.Droid {
             }
         }
 
+        private async Task permissionHibernationExclusion(Page currentView) {
+            bool confirmed = await currentView.DisplayAlert("Exempt from Hibernation", //TODO: RBF - Remove static string
+               "To ensure working need no hibernation",
+              AppResources.HomeStatusPage_DNDPermissionPrompt_Confirm,
+              AppResources.HomeStatusPage_DNDPermissionPrompt_Cancel);
+
+            if (confirmed) {
+                //https://developer.android.com/topic/performance/app-hibernation
+                //TODO: Implement hibernation exemption
+
+            }
+        }
+
         public void logPermissionSettings() {
             NotificationManager manager = NotificationManager.FromContext(Application.Context);
             Logger.Debug("Status of DND policy access: " + manager.IsNotificationPolicyAccessGranted);
+
+            UsageStatsManager usage = (UsageStatsManager) Application.Context.GetSystemService("usagestats");
+            Logger.Debug("App currently in standby bucket: " + usage.AppStandbyBucket);
         }
 
         public async Task checkAlertPermissions(Page currentView, bool forceReprompt = false) {

@@ -40,7 +40,7 @@ namespace PagerBuddy.Droid {
                 .SetFlags(ActivityFlags.NewTask | ActivityFlags.MultipleTask | ActivityFlags.ExcludeFromRecents)
                 .PutExtra(Alert.EXTRAS.ALERT_FLAG.ToString(), DataService.serialiseObject(alert));
 
-            PendingIntent fullScreenIntent = PendingIntent.GetActivity(Application.Context, 0, intent, 0);
+            PendingIntent fullScreenIntent = PendingIntent.GetActivity(Application.Context, 0, intent, PendingIntentFlags.Immutable);
 
             Android.Graphics.Bitmap largePic;
             if (alert.hasPic) {
@@ -139,6 +139,7 @@ namespace PagerBuddy.Droid {
                     ringtone.Stop();
                 }
                 ringtone?.Dispose();
+                ringtone = null;
             });
 
             return stopAction;

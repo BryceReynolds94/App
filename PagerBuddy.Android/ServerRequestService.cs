@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace PagerBuddy.Droid {
 
-    [Service(Name = "de.bartunik.pagerbuddy.serverrequestservice", Permission = "android.permission.BIND_JOB_SERVICE")]
+    [Service(Name = "de.bartunik.pagerbuddy.serverrequestservice", Permission = "android.permission.BIND_JOB_SERVICE", Exported = false)]
     class ServerRequestService : JobService {
         private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public override bool OnStartJob(JobParameters jobParams) {

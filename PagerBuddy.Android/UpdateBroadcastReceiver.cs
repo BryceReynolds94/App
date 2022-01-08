@@ -13,7 +13,7 @@ using Xamarin.Essentials;
 
 namespace PagerBuddy.Droid {
 
-    [BroadcastReceiver(Enabled =true)]
+    [BroadcastReceiver(Enabled =true, Exported = false)]
     [IntentFilter(new[] { Intent.ActionMyPackageReplaced})]
     class UpdateBroadcastReceiver : BroadcastReceiver {
 
