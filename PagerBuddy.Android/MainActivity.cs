@@ -29,8 +29,6 @@ namespace PagerBuddy.Droid
         {
             base.OnCreate(savedInstanceState);
 
-            //AppCompatDelegate.DefaultNightMode = AppCompatDelegate.ModeNightNo; //Disable dark mode --Possibly move above base call
-
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
