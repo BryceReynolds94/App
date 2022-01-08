@@ -11,7 +11,7 @@ namespace PagerBuddy.Interfaces {
     }
 
     public interface IAndroidNavigation : INavigation {
-        void navigateTelegramChat(int chatID, TelegramPeer.TYPE type);
+        void navigateTelegramChat(long chatID, TelegramPeer.TYPE type);
         void quitApplication();
     }
 

@@ -30,13 +30,16 @@ namespace PagerBuddy.Droid {
                 Xamarin.Forms.Forms.Init(Application.Context, null); //We need to make sure Xamarin.Forms is initialised when notifications are received in killed state  
             }
 
-            if(p0.Data == null) {
+            if (p0.SenderId != "473554663754") {
+                Logger.Warn("Received an FCM message from an unknown sender. Ignoring message.");
+                return;
+            }
+            if (p0.Data == null) {
                 Logger.Warn("Received an FCM message without a payload. Ignoring message.");
                 return;
             }
 
             Logger.Debug("Received an FCM message.");
-                
             MessagingService.FirebaseMessage(p0.Data);
         }
 
@@ -48,6 +51,11 @@ namespace PagerBuddy.Droid {
                 Xamarin.Forms.Forms.Init(Application.Context, null); //We need to make sure Xamarin.Forms is initialised when notifications are received in killed state  
             }
             MessagingService.TokenRefresh(p0);
+        }
+
+        public void RefreshToken() {
+            Logger.Debug("Refreshing FCM token.");
+            FirebaseMessaging.Instance.GetToken().AddOnCompleteListener(new OnCompleteListener((token) => OnNewToken(token)));
         }
 
         public class OnCompleteListener : Java.Lang.Object, IOnCompleteListener {

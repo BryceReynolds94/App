@@ -31,7 +31,7 @@ namespace PagerBuddy.Droid
 
      
 
-        public void navigateTelegramChat(int chatID, TelegramPeer.TYPE type)
+        public void navigateTelegramChat(long chatID, TelegramPeer.TYPE type)
         {
             if (isTelegramInstalled()) {
                 Application.Context.StartActivity(getTelegramIntent(chatID, type));
@@ -40,7 +40,7 @@ namespace PagerBuddy.Droid
 
         //Telegram intent handling:
         //https://github.com/DrKLO/Telegram/blob/5a47056c7b1cb0b7d095ca6e7d1a288c01f8f160/TMessagesProj/src/main/java/org/telegram/ui/LaunchActivity.java#L1101
-        public static Intent getTelegramIntent(int peerID, TelegramPeer.TYPE type) {
+        public static Intent getTelegramIntent(long peerID, TelegramPeer.TYPE type) {
             string requestURL = "tg:openmessage/?chat_id=";
             if(type == TelegramPeer.TYPE.USER) {
                 requestURL = "tg:openmessage/?user_id=";

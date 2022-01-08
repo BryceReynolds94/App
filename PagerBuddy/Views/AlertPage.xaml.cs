@@ -18,7 +18,7 @@ namespace PagerBuddy.Views
     {     
         private readonly AlertPageViewModel viewModel; 
 
-        private readonly int groupID;
+        private readonly long groupID;
         private readonly TelegramPeer.TYPE peerType;
 
         private Action stopRingtoneCallback;
@@ -37,7 +37,7 @@ namespace PagerBuddy.Views
 
             if(Device.RuntimePlatform == Device.Android) {
                 IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
-                notifications.closeNotification(groupID);
+                notifications.closeNotification((int) groupID);
                 stopRingtoneCallback = notifications.playChannelRingtone(alert.configID); //Take over sound control
             }
 

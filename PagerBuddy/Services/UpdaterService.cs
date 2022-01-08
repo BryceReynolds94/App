@@ -36,7 +36,7 @@ namespace PagerBuddy.Services {
             if (false) { //Would set Update check here
                 //TODO: RBF
                 //Breaking changes throughout with new version?
-                return true;
+                //return true;
             }
             return false;
         }

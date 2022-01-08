@@ -73,7 +73,7 @@ namespace PagerBuddy.Droid {
             notification.Flags |= NotificationFlags.Insistent; //repeat sound untill acknowledged
 
             NotificationManager manager = NotificationManager.FromContext(Application.Context);
-            manager.Notify(alert.chatID, notification);
+            manager.Notify((int) alert.chatID, notification);
         }
 
         public void closeNotification(int notificationID) {
@@ -219,6 +219,10 @@ namespace PagerBuddy.Droid {
             }
 
             UpdateNotificationChannels(configList);
+        }
+
+        public void RefreshToken() {
+            new FCMMessagingService().RefreshToken();
         }
 
 

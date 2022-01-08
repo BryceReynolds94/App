@@ -11,7 +11,7 @@ namespace PagerBuddy.Models
     public class Group
     {
         public string name;
-        public int id;
+        public long id;
         public long accessHash;
         
         [JsonIgnore] //do not try to serialise Stream
@@ -21,7 +21,7 @@ namespace PagerBuddy.Models
         public TelegramPeer.TYPE type;
 
         [JsonConstructor]
-        public Group(string name, int id, long accessHash, TelegramPeer.TYPE type, bool hasImage)
+        public Group(string name, long id, long accessHash, TelegramPeer.TYPE type, bool hasImage)
         {
             this.name = name;
             this.id = id;
@@ -30,7 +30,7 @@ namespace PagerBuddy.Models
             this.hasImage = hasImage;
         }
 
-        public Group(string name, int id, TelegramPeer.TYPE type, long accessHash = 0) {
+        public Group(string name, long id, TelegramPeer.TYPE type, long accessHash = 0) {
             this.name = name;
             this.id = id;
             this.accessHash = accessHash;

@@ -11,7 +11,7 @@ namespace PagerBuddy.Services {
     public class AlertService {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static void checkMessage(string message, int chatID, DateTime timestamp, bool isTestAlert) {
+        public static void checkMessage(string message, long chatID, DateTime timestamp, bool isTestAlert) {
             if(DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_DEACTIVATE_ALL, false)) {
                 Logger.Info("All alerts are deactivated. Ignoring incoming message.");
                 return;

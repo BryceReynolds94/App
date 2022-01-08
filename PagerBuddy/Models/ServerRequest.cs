@@ -14,19 +14,19 @@ namespace PagerBuddy.Models {
         [JsonProperty("token")]
         public string Token;
         [JsonProperty("alert_list")]
-        public Collection<int> AlertIDList;
+        public Collection<long> AlertIDList;
 
         [JsonIgnore]
         public static string PREFIX = "/subscribe ";
 
-        public ServerRequest(string token, Collection<int> alertIDList) {
+        public ServerRequest(string token, Collection<long> alertIDList) {
             this.Token = token;
             this.AlertIDList = alertIDList;
         }
 
         public static ServerRequest getServerRequest(Collection<AlertConfig> configList) {
 
-            Collection<int> alertIDList = new Collection<int>();
+            Collection<long> alertIDList = new Collection<long>();
             foreach(AlertConfig config in configList) {
                 if (config.isActive) {
                     alertIDList.Add(-1*config.triggerGroup.id); //Server needs chat ID notation with "-"

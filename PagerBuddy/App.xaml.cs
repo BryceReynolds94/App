@@ -56,6 +56,12 @@ namespace PagerBuddy
 
         protected override async void OnStart(){
             if (!isAlert) {
+                //Reload Token on start
+                if(Device.RuntimePlatform == Device.Android) {
+                    IAndroidNotification notification = DependencyService.Get<IAndroidNotification>();
+                    notification.RefreshToken();
+                }
+
                 CommunicationService client = ((MainPage)Current.MainPage).client;
                 await client.connectClient();
                 new MessagingService(client);

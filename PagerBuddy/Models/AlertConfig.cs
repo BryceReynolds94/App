@@ -44,7 +44,7 @@ namespace PagerBuddy.Models {
             this.lockTime = lockTime;
         }
 
-        public static AlertConfig findExistingConfig(int triggerGroupID) {
+        public static AlertConfig findExistingConfig(long triggerGroupID) {
             Collection<string> configList = DataService.getConfigList();
             foreach (string config in configList) {
                 AlertConfig alertConfig = DataService.getAlertConfig(config, null);

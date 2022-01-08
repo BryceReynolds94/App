@@ -12,7 +12,7 @@ namespace PagerBuddy.Models
         public string title;
         public string text;
         public string configID;
-        public int chatID;
+        public long chatID;
         public bool hasPic;
         public DateTime timestamp;
         public bool isTestAlert;
@@ -33,7 +33,7 @@ namespace PagerBuddy.Models
         }
 
         [JsonConstructor]
-        public Alert(string title, string text, string configID, int chatID, bool hasPic, DateTime timestamp, bool isTestAlert, TelegramPeer.TYPE peerType)
+        public Alert(string title, string text, string configID, long chatID, bool hasPic, DateTime timestamp, bool isTestAlert, TelegramPeer.TYPE peerType)
         {
             this.title = title;
             this.text = text;

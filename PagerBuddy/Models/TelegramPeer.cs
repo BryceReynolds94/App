@@ -15,7 +15,7 @@ namespace PagerBuddy.Models {
 
         public Types.InputFileLocation photoLocation;
 
-        public TelegramPeer(TYPE type, int id, string name, Types.InputFileLocation photo, long accessHash = 0) : base(name, id, type, accessHash) {
+        public TelegramPeer(TYPE type, long id, string name, Types.InputFileLocation photo, long accessHash = 0) : base(name, id, type, accessHash) {
             this.photoLocation = photo;
         }
 
