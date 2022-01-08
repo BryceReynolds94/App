@@ -64,7 +64,7 @@ namespace PagerBuddy.Views {
 
             updateClientStatus(this, client.clientStatus);
 
-            viewModel.fillAlertList(getAlertConfigs()); //First fill view with current state to avoid long wait
+            viewModel.fillAlertList(getAlertConfigs(), true); //First fill view with current state to avoid long wait
 
             if (client.clientStatus == CommunicationService.STATUS.AUTHORISED) { //Do not bother if we are not connected yet
                 refreshAlertConfigs(this, null); //Check for config updates
@@ -121,7 +121,7 @@ namespace PagerBuddy.Views {
             DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, state);
         }
 
-        private void alertConfigsChanged(Collection<AlertConfig> configList) {
+        private async Task alertConfigsChanged(Collection<AlertConfig> configList) {
             if (Device.RuntimePlatform == Device.Android) {
                 IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
                 notifications.UpdateNotificationChannels(configList);
@@ -130,7 +130,7 @@ namespace PagerBuddy.Views {
             sendServerUpdate(configList);
 
             IPermissions permissions = DependencyService.Get<IPermissions>();
-            _ = permissions.checkAlertPermissions(this);
+            await permissions.checkAlertPermissions(this);
         }
 
         private async Task showWelcomePrompt() {
@@ -209,14 +209,14 @@ namespace PagerBuddy.Views {
                 configList.Add(alertConfig);
             }
 
-            viewModel.fillAlertList(configList);
+            viewModel.fillAlertList(configList, false);
 
             foreach(string alertID in deleteList){ //Make sure old groups are removed if not present anymore
                 DataService.deleteAlertConfig(alertID);
             }
 
             if (hasListChanged(oldList, configList)) { //If the alert list has changed, subscribe to PagerBuddy-Server with new list
-                alertConfigsChanged(configList);
+                await alertConfigsChanged(configList);
             }
 
         }

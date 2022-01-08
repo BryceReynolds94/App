@@ -28,6 +28,7 @@ namespace PagerBuddy.Services {
             DEVELOPER_MODE,
             DEVELOPER_LOG_LEVEL, //LogLevel set vor DeveloperView (AboutPage)
             HAS_PROMPTED_DND_PERMISSION, //Whether the user has been asked to grant DND Permission in Android
+            HAS_PROMPTED_HIBERNATION_EXCLUSION, //Whether the user has been asked to exempt the app from Android hibernation restrictions
             HAS_PROMPTED_WELCOME, //Whether the first-use welcome screen has been shown
             HAS_PROMPTED_IOS_NOTIFICATION_PERMISSION,
             FCM_TOKEN, //Token for FCM/APNS messages

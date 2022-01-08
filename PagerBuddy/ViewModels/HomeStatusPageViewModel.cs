@@ -65,7 +65,7 @@ namespace PagerBuddy.ViewModels {
 
         public HomeStatusPageViewModel() {
             Title = AppResources.HomeStatusPage_Title;
-            fillAlertList(new Collection<AlertConfig>());
+            fillAlertList(new Collection<AlertConfig>(), true);
 
             DeactivateAll = new Command(() => setDeactivateState(true));
             DeactivateAllOff = new Command(() => setDeactivateState(false));
@@ -74,6 +74,8 @@ namespace PagerBuddy.ViewModels {
             ReloadConfig = new Command(() => reloadConfig());
             TimeAll = new Command(() => RequestTimeConfig.Invoke(this, null)); 
             Login = new Command(() => RequestLogin.Invoke(this, null));
+
+            MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => fillAlertList(new Collection<AlertConfig>(), true));
 
             Application.Current.RequestedThemeChanged += (s, a) => {
                 OnPropertyChanged(nameof(AllDeactivateIcon));
@@ -117,7 +119,7 @@ namespace PagerBuddy.ViewModels {
             OnPropertyChanged(nameof(WarningSnoozeText));
         }
 
-        public void fillAlertList(Collection<AlertConfig> alertConfigs) {
+        public void fillAlertList(Collection<AlertConfig> alertConfigs, bool initialBusy) {
             IOrderedEnumerable<AlertConfig> sortedConfigs = alertConfigs.OrderBy(config => config.readableFullName);
             alertList = new ObservableCollection<AlertStatusViewModel>();
 
@@ -126,7 +128,8 @@ namespace PagerBuddy.ViewModels {
             }
             OnPropertyChanged(nameof(alertList));
             OnPropertyChanged(nameof(EmptyList));
-            IsBusy = false;
+
+            IsBusy = initialBusy && alertConfigs.Count == 0;
         }
 
         public void setErrorState(bool hasInternet, bool isAuthorised) {

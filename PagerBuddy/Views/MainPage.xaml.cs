@@ -69,16 +69,17 @@ namespace PagerBuddy.Views {
             if (result) {
                 Logger.Info("User requested logout.");
 
-                await client.logoutUser();
+                _ = client.logoutUser();
 
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_NAME, AppResources.MenuPage_UserName_Default);
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_PHONE, AppResources.MenuPage_UserPhone_Default);
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, false);
+                MessagingCenter.Send(this, MESSAGING_KEYS.LOGOUT_USER.ToString());
 
                 DataService.deleteAllAlertConfigs();
 
-                MessagingCenter.Send(this, MESSAGING_KEYS.LOGOUT_USER.ToString());
                 IsPresented = false;
+                
             }
         }
 

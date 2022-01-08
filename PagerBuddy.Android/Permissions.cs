@@ -42,15 +42,30 @@ namespace PagerBuddy.Droid {
         }
 
         private async Task permissionHibernationExclusion(Page currentView) {
-            bool confirmed = await currentView.DisplayAlert("Exempt from Hibernation", //TODO: RBF - Remove static string
+            //TODO: Later - Implement with Android 12
+            bool confirmed = await currentView.DisplayAlert("Exempt from Hibernation", //TODO: Later - Remove static string
                "To ensure working need no hibernation",
               AppResources.HomeStatusPage_DNDPermissionPrompt_Confirm,
               AppResources.HomeStatusPage_DNDPermissionPrompt_Cancel);
 
             if (confirmed) {
-                //https://developer.android.com/topic/performance/app-hibernation
-                //TODO: Implement hibernation exemption
+                //https://github.com/androidx/androidx/blob/androidx-main/core/core/src/main/java/androidx/core/content/IntentCompat.java
 
+                //https://developer.android.com/topic/performance/app-hibernation
+                //TODO: Later - Replace manual implementation with AndroidX
+
+                string intentString;
+                if(Build.VERSION.SdkInt > BuildVersionCodes.R){
+                    intentString = Settings.ActionApplicationDetailsSettings;
+                } else{
+                    intentString = Intent.ActionAutoRevokePermissions;
+                }
+                Intent intent = new Intent(intentString).SetData(Android.Net.Uri.FromParts("package", Application.Context.PackageName, null));
+                try {
+                    Platform.CurrentActivity.StartActivityForResult(intent, 0);
+                } catch (Exception e) {
+                    Logger.Error(e, "Could not launch hibernation exclusion intent.");
+                }
             }
         }
 
@@ -60,6 +75,8 @@ namespace PagerBuddy.Droid {
 
             UsageStatsManager usage = (UsageStatsManager) Application.Context.GetSystemService("usagestats");
             Logger.Debug("App currently in standby bucket: " + usage.AppStandbyBucket);
+
+            //TODO: Later - Add logging for hibernation exemption
         }
 
         public async Task checkAlertPermissions(Page currentView, bool forceReprompt = false) {
@@ -67,6 +84,10 @@ namespace PagerBuddy.Droid {
             if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, false) || forceReprompt) {
                 await permissionNotificationPolicyAccess(currentView);
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
+            }
+            if(!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, false) || forceReprompt) {
+                //await permissionHibernationExclusion(currentView);
+                //DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, true);
             }
         }
     }

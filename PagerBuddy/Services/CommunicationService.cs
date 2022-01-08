@@ -52,7 +52,7 @@ namespace PagerBuddy.Services {
         private string clientRequestCodeHash = null;
         private string clientPhoneNumber = null;
 
-        public enum STATUS { NEW, OFFLINE, ONLINE, WAIT_PHONE, WAIT_CODE, WAIT_PASSWORD, AUTHORISED };
+        public enum STATUS {LOGOUT, NEW, OFFLINE, ONLINE, WAIT_PHONE, WAIT_CODE, WAIT_PASSWORD, AUTHORISED };
 
         public enum MESSAGING_KEYS { USER_DATA_CHANGED };
 
@@ -173,6 +173,7 @@ namespace PagerBuddy.Services {
                 Logger.Warn("Attempted to logout user without authorisation. Current state: " + clientStatus.ToString());
             }
             Logger.Debug("Logging out user.");
+            clientStatus = STATUS.LOGOUT;
 
             //Try to unregister user with server
             bool result = await sendServerRequest(new Collection<AlertConfig>());
@@ -457,7 +458,7 @@ namespace PagerBuddy.Services {
         }
 
         public async Task<bool> sendServerRequest(Collection<AlertConfig> configList, string serverPeer = null, int attempt = 0) {
-            if (clientStatus < STATUS.AUTHORISED) {
+            if (clientStatus < STATUS.AUTHORISED && clientStatus != STATUS.LOGOUT) {
                 Logger.Warn("Attempted to send request to server without appropriate client status. Current status: " + clientStatus.ToString());
                 return false;
             }
@@ -554,7 +555,7 @@ namespace PagerBuddy.Services {
         }
 
         private async Task deleteMessage(int messageID, int attempt = 0) {
-            if (clientStatus < STATUS.AUTHORISED) {
+            if (clientStatus < STATUS.AUTHORISED && clientStatus != STATUS.LOGOUT) {
                 Logger.Warn("Attempted to delete message without appropriate client status. Current status: " + clientStatus.ToString());
                 return;
             }
