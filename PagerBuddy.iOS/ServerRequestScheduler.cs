@@ -142,7 +142,7 @@ namespace PagerBuddy.iOS {
             CommunicationService.STATUS status = client.clientStatus;
             if (status == CommunicationService.STATUS.AUTHORISED) {
                 Logger.Debug("User authorised. Sending request.");
-                bool success = await client.sendServerRequest(configList, botServer); //TODO Later: MULTI-Server
+                bool success = await client.sendServerRequest(configList, botServer);
                 return success;
             } else if (status > CommunicationService.STATUS.ONLINE) {
                 //Wait status achieved - user is not authorised - do not bother in the future

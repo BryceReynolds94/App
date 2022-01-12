@@ -83,5 +83,23 @@ namespace PagerBuddy.Services
             }
             scheduler.scheduleRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO Later: MULTI-Server
         }
+
+        //TODO: Later - Remove this once all legacy users migrated
+        public static async Task LegacyMessageReceived() {
+
+            string token = DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, "");
+            if(instance == null) {
+                CommunicationService client = new CommunicationService();
+                client.StatusChanged += async (object sender, CommunicationService.STATUS status) => {
+                    if(status == CommunicationService.STATUS.AUTHORISED) {
+                        await client.legacyUnregister(token);
+                    };
+                };
+                _ = client.connectClient(true);
+            } else {
+                await instance.client?.legacyUnregister(token);
+            }
+
+        }
     }
 }

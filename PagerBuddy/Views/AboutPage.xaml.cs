@@ -128,7 +128,7 @@ namespace PagerBuddy.Views {
                         Logger.Error("Retrieving known alert returned null. Will stop here.");
                         return;
                     }
-                    AlertService.checkMessage(AppResources.AboutPage_DeveloperMode_TestNotification_Message, config.triggerGroup.id, DateTime.Now, false, false);
+                    AlertService.checkMessage(AppResources.AboutPage_DeveloperMode_TestNotification_Message, config.triggerGroup.serverID, DateTime.Now, false, false);
                 } else {
                     Logger.Warn("Could not send alert test message as no alerts are configured.");
                 }

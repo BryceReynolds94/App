@@ -29,7 +29,7 @@ namespace PagerBuddy.Models {
             Collection<long> alertIDList = new Collection<long>();
             foreach(AlertConfig config in configList) {
                 if (config.isActive) {
-                    alertIDList.Add(-1*config.triggerGroup.id); //Server needs chat ID notation with "-"
+                    alertIDList.Add(config.triggerGroup.serverID);
                 }
             }
 

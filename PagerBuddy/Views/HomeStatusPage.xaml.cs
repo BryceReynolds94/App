@@ -166,7 +166,7 @@ namespace PagerBuddy.Views {
 
             Collection<string> oldList = DataService.getConfigList();
 
-            Types.Messages.Chats rawChatList = await client.getChatList();
+            Types.Messages.Chats rawChatList = await client.getChatList(CommunicationService.pagerbuddyServerList.First()); //TODO Later: MULTI-Server
 
             IReadOnlyList<Types.Chat> chatList = new List<Types.Chat>();
             if (rawChatList == null) {

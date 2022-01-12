@@ -13,6 +13,7 @@ namespace PagerBuddy.Models
         public string name;
         public long id;
         public long accessHash;
+        public bool isMegaGroup;
         
         [JsonIgnore] //do not try to serialise Stream
         public MemoryStream image = null;
@@ -20,19 +21,34 @@ namespace PagerBuddy.Models
 
         public TelegramPeer.TYPE type;
 
+        public long serverID {
+            get {
+                long extendedID = id;
+                if (isMegaGroup) { //This seems a bit hacky - watch this closely for breaking changes in the future
+                    extendedID += (long)100E10;
+                }
+                if(type == TelegramPeer.TYPE.CHANNEL || type == TelegramPeer.TYPE.CHAT) {
+                    extendedID *= -1;
+                }
+                return extendedID; //Server needs chat ID notation with "-", and appended 100 for megagroups
+            }
+        }
+
         [JsonConstructor]
-        public Group(string name, long id, long accessHash, TelegramPeer.TYPE type, bool hasImage)
+        public Group(string name, long id, bool isMegaGroup, long accessHash, TelegramPeer.TYPE type, bool hasImage)
         {
             this.name = name;
             this.id = id;
+            this.isMegaGroup = isMegaGroup;
             this.accessHash = accessHash;
             this.type = type;
             this.hasImage = hasImage;
         }
 
-        public Group(string name, long id, TelegramPeer.TYPE type, long accessHash = 0) {
+        public Group(string name, long id, bool isMegaGroup, TelegramPeer.TYPE type, long accessHash = 0) {
             this.name = name;
             this.id = id;
+            this.isMegaGroup = isMegaGroup;
             this.accessHash = accessHash;
             this.type = type;
         }

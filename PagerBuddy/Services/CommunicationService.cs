@@ -175,9 +175,13 @@ namespace PagerBuddy.Services {
             Logger.Debug("Logging out user.");
             clientStatus = STATUS.LOGOUT;
 
-            //Try to unregister user with server
-            bool result = await sendServerRequest(new Collection<AlertConfig>());
+            //TODO: Fix infinite hang on logout if not logged in
+            //Either use a timeout or check actual user status before logging out
 
+            //Try to unregister user with servers
+            foreach(string server in pagerbuddyServerList) {
+                await sendServerRequest(new Collection<AlertConfig>(), server);
+            }
 
             try {
                 await client.Call(new Functions.Auth.LogOut()); //https://core.telegram.org/method/auth.logOut
@@ -187,6 +191,29 @@ namespace PagerBuddy.Services {
 
             clientStatus = STATUS.NEW;
             await forceReloadConnection();
+        }
+
+        public async Task legacyUnregister(string token) {
+            //TODO Later: Once all users are migrated this can be removed
+            if(Device.RuntimePlatform == Device.Android) {
+                Logger.Debug("Attempting to unregister user from legacy messaging.");
+                if (token.Length > 0) {
+                    Functions.Account.UnregisterDevice unregisterRequest = new Functions.Account.UnregisterDevice(
+                            tokenType: 2,
+                            token: token,
+                            new List<long>()
+                        );
+
+                    try {
+                        await client.Call(unregisterRequest); //https://core.telegram.org/method/account.unregisterDevice
+                    } catch (Exception e) {
+                        Logger.Error(e, "Exception while trying to unregister device.");
+                    }
+                }
+
+
+            }
+            
         }
 
         public async Task<TStatus> loginWithPassword(string password) {
@@ -347,8 +374,8 @@ namespace PagerBuddy.Services {
             bool hasPhoto = userTag.Photo.Default != null;
             if (hasPhoto) {
 
-                Types.FileLocation profilePhoto = userTag.Photo.Default.PhotoBig;
-                Types.InputFileLocation fileLocation = new Types.InputFileLocation.PeerPhotoTag(true, new Types.InputPeer.SelfTag(), profilePhoto.VolumeId, profilePhoto.LocalId);
+                long photoID = userTag.Photo.Default.PhotoId;
+                Types.InputFileLocation fileLocation = new Types.InputFileLocation.PeerPhotoTag(true, new Types.InputPeer.SelfTag(), photoID);
 
                 MemoryStream file = await getProfilePic(fileLocation);
                 if (file != null) {
@@ -371,7 +398,7 @@ namespace PagerBuddy.Services {
             MessagingCenter.Send(this, MESSAGING_KEYS.USER_DATA_CHANGED.ToString());
         }
 
-        public async Task<Types.Messages.Chats> getChatList(int attempt = 0) {
+        public async Task<Types.Messages.Chats> getChatList(string pagerbuddyserver, int attempt = 0) {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to load chat list without appropriate client status. Current status: " + clientStatus.ToString());
                 return null;
@@ -379,13 +406,13 @@ namespace PagerBuddy.Services {
 
             Types.InputUser botUser;
             try {
-                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(pagerbuddyServerList.First()); //TODO Later: MULTI-Server
+                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(pagerbuddyserver);
                 Types.User.DefaultTag resolvedUser = resolvedPeer.Users.First().Default;
 
                 if (resolvedUser != null) {
                     botUser = new Types.InputUser.DefaultTag(resolvedUser.Id, resolvedUser.AccessHash.GetValueOrDefault(0));
                 } else {
-                    Logger.Info("PagerBuddy-Server peer could not be resolved.");
+                    Logger.Info("PagerBuddy-Server peer '" + pagerbuddyserver + "' could not be resolved.");
                     return null;
                 }
             } catch (Exception e) {
@@ -403,7 +430,7 @@ namespace PagerBuddy.Services {
                 await checkConnectionOnError(e);
                 if (clientStatus == STATUS.AUTHORISED && attempt < 3) {
                     Logger.Info("Connection was possibly fixed. Retrying chat retrieval.");
-                    return await getChatList(++attempt);
+                    return await getChatList(pagerbuddyserver, ++attempt);
                 } else {
                     Logger.Warn("Finally failed to get chat messages. Returning empty list.");
                 }
@@ -457,7 +484,7 @@ namespace PagerBuddy.Services {
             return outUser;
         }
 
-        public async Task<bool> sendServerRequest(Collection<AlertConfig> configList, string serverPeer = null, int attempt = 0) {
+        public async Task<bool> sendServerRequest(Collection<AlertConfig> configList, string serverPeer, int attempt = 0) {
             if (clientStatus < STATUS.AUTHORISED && clientStatus != STATUS.LOGOUT) {
                 Logger.Warn("Attempted to send request to server without appropriate client status. Current status: " + clientStatus.ToString());
                 return false;
@@ -466,8 +493,7 @@ namespace PagerBuddy.Services {
             Types.InputPeer botPeer;
             Types.InputUser botUser;
             try {
-                serverPeer ??= pagerbuddyServerList.First();
-                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(serverPeer); //TODO Later: MULTI-Server
+                Types.Contacts.ResolvedPeer resolvedPeer = await client.Contacts.ResolveUsername(serverPeer);
                 Types.User.DefaultTag resolvedUser = resolvedPeer.Users.First().Default;
 
                 if (resolvedUser != null) {
@@ -503,7 +529,7 @@ namespace PagerBuddy.Services {
 
             int msgID = 0;
             try {
-                Functions.Messages.SendMessage msg = new Functions.Messages.SendMessage(true, true, true, true, botPeer, null, stringRequest, new Random().Next(), null, null, null);
+                Functions.Messages.SendMessage msg = new Functions.Messages.SendMessage(true, true, true, true, false, botPeer, null, stringRequest, new Random().Next(), null, null, null, null);
                 Types.UpdatesType update = await client.Call(msg); //https://core.telegram.org/method/messages.sendMessage
 
                 if(update.Default.Updates.Count > 0) {
