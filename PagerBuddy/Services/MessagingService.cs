@@ -30,6 +30,7 @@ namespace PagerBuddy.Services
         {
             if (data.Count < 5) {
                 Logger.Warn("Received an FCM/APNS message with an invalid payload count. Ignoring message.");
+                _ = LegacyMessageReceived();
                 return;
             }
 
