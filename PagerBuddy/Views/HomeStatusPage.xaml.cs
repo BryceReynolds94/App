@@ -30,6 +30,8 @@ namespace PagerBuddy.Views {
 
         private readonly CommunicationService client;
 
+        public enum MESSAGING_KEYS { ALERT_CONFIGS_CHANGED}
+
         //TODO Later: Implement alert content filtering (get from Server?)
 
         public HomeStatusPage(CommunicationService client) {
@@ -126,6 +128,7 @@ namespace PagerBuddy.Views {
                 IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
                 notifications.UpdateNotificationChannels(configList);
             }
+            MessagingCenter.Send(this, MESSAGING_KEYS.ALERT_CONFIGS_CHANGED.ToString());
 
             sendServerUpdate(configList);
 

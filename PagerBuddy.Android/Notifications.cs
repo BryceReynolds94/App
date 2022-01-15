@@ -145,6 +145,11 @@ namespace PagerBuddy.Droid {
             return stopAction;
         }
 
+        public void showToast(string message) {
+            Toast toast = Toast.MakeText(Application.Context, message, ToastLength.Long);
+            toast.Show();
+        }
+
         public void addNotificationChannel(AlertConfig alertConfig) {
             Logger.Debug("Setting up notification channel for config: " + alertConfig.readableFullName);
 

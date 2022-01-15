@@ -41,6 +41,19 @@
             </StackLayout>
         </Grid>
         <Grid>
+            <ImageButton Style="{StaticResource FlyoutImageButtonStyle}" CornerRadius="0" Command="{Binding AlertTest}" IsEnabled="{Binding TestAlertActive}"/>
+            <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5" >
+                <Image Margin="5" Source="{Binding TestAlertPic}" HeightRequest="30" WidthRequest="30"/>
+                <Label Text="{x:Static resources:AppResources.MenuPage_Action_Test}" FontSize="Medium" VerticalOptions="Center" IsEnabled="{Binding TestAlertActive}"/>
+            </StackLayout>
+            <Grid.IsVisible>
+                <OnPlatform x:TypeArguments="x:Boolean">
+                    <On Platform="iOS" Value="False"/>
+                    <On Platform="Android" Value="True"/>
+                </OnPlatform>
+            </Grid.IsVisible>
+        </Grid>
+        <Grid>
             <ImageButton Style="{StaticResource FlyoutImageButtonStyle}" CornerRadius="0" Command="{Binding Share}" HeightRequest="40"/>
             <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5">
                 <Image Margin="5" Source="{Binding SharePic}" HeightRequest="30" WidthRequest="30"/>

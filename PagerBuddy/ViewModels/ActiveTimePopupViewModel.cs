@@ -77,11 +77,11 @@ namespace PagerBuddy.ViewModels {
             }
         }
 
-        public bool InvertTime {
-            get => invertTime;
+        public bool NotInvertTime {
+            get => !invertTime;
             set {
-                invertTime = value;
-                OnPropertyChanged(nameof(InvertTime));
+                invertTime = !value;
+                OnPropertyChanged(nameof(NotInvertTime));
             }
         }
 

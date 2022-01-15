@@ -24,6 +24,8 @@ namespace PagerBuddy.Views {
             FlyoutLayoutBehavior = FlyoutLayoutBehavior.Popover;
             client = new CommunicationService();
 
+            Flyout = new MenuPage();
+
             Detail = new NavigationPage(new HomeStatusPage(client));
             Detail.Style = (Style) Application.Current.Resources["NavigationBarStyle"];
 
@@ -50,6 +52,9 @@ namespace PagerBuddy.Views {
                 case MenuPage.MENU_PAGE.Website:
                     await requestWebsite();
                     break;
+                case MenuPage.MENU_PAGE.Close:
+                    IsPresented = false;
+                    break;
                 default:
                     break;
             }
@@ -74,9 +79,9 @@ namespace PagerBuddy.Views {
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_NAME, AppResources.MenuPage_UserName_Default);
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_PHONE, AppResources.MenuPage_UserPhone_Default);
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, false);
-                MessagingCenter.Send(this, MESSAGING_KEYS.LOGOUT_USER.ToString());
-
+                
                 DataService.deleteAllAlertConfigs();
+                MessagingCenter.Send(this, MESSAGING_KEYS.LOGOUT_USER.ToString());
 
                 IsPresented = false;
                 

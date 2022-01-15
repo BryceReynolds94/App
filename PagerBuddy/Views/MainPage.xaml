@@ -5,12 +5,7 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             mc:Ignorable="d"
             xmlns:views="clr-namespace:PagerBuddy.Views"
-            x:Class="PagerBuddy.Views.MainPage"
-            
-            >
+            x:Class="PagerBuddy.Views.MainPage">
 
-    <FlyoutPage.Flyout>
-        <views:MenuPage />
-    </FlyoutPage.Flyout>
 
 </FlyoutPage>

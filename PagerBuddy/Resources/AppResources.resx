@@ -424,4 +424,13 @@
   <data name="ActiveTimePopup_InvertTime_Inactive" xml:space="preserve">
     <value>Set active times</value>
   </data>
+  <data name="MenuPage_Action_Test" xml:space="preserve">
+    <value>Test alert</value>
+  </data>
+  <data name="MenuPage_TestNotification_Message" xml:space="preserve">
+    <value>Test alert</value>
+  </data>
+  <data name="MenuPager_TestNotification_Warning" xml:space="preserve">
+    <value>Ok. I will start an alert test in 5 seconds.</value>
+  </data>
 </root>

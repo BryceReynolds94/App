@@ -7,13 +7,13 @@
     <ContentPage.Content>
         <StackLayout Style="{StaticResource OverlayLayoutStyle}" Padding="10,10" VerticalOptions="Center" HorizontalOptions="Center">
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Padding="10">
-                <Switch IsToggled="{Binding InvertTime}"/>
+                <Switch IsToggled="{Binding NotInvertTime}"/>
                 <Label FontSize="Medium">
                     <Label.Triggers>
-                        <DataTrigger TargetType="Label" Binding="{Binding InvertTime}" Value="False">
+                        <DataTrigger TargetType="Label" Binding="{Binding NotInvertTime}" Value="True">
                             <Setter Property="Text" Value="{x:Static resources:AppResources.ActiveTimePopup_InvertTime_Inactive}"/>
                         </DataTrigger>
-                        <DataTrigger TargetType="Label" Binding="{Binding InvertTime}" Value="True">
+                        <DataTrigger TargetType="Label" Binding="{Binding NotInvertTime}" Value="False">
                             <Setter Property="Text" Value="{x:Static resources:AppResources.ActiveTimePopup_InvertTime_Active}"/>
                         </DataTrigger>
                     </Label.Triggers>
@@ -78,8 +78,8 @@
                 <TimePicker Time="{Binding ToTime}" FontSize="Large" TextColor="{StaticResource AccentColor}" HorizontalOptions="StartAndExpand"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal" Padding="10,0">
-                <Button Text="{x:Static resources:AppResources.ActiveTimePopup_Cancel}" Command="{Binding Cancel}" HorizontalOptions="EndAndExpand" Style="{StaticResource OverlayButton}" WidthRequest="80"/>
-                <Button Text="{x:Static resources:AppResources.ActiveTimePopup_Confirm}" Command="{Binding Confirm}" HorizontalOptions="End" Style="{StaticResource OverlayButton}" WidthRequest="60"/>
+                <Button Text="{x:Static resources:AppResources.ActiveTimePopup_Cancel}" Command="{Binding Cancel}" HorizontalOptions="EndAndExpand" Style="{StaticResource OverlayButton}"/>
+                <Button Text="{x:Static resources:AppResources.ActiveTimePopup_Confirm}" Command="{Binding Confirm}" HorizontalOptions="End" Style="{StaticResource OverlayButton}"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

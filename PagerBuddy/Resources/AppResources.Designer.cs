@@ -889,6 +889,15 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test alert.
+        /// </summary>
+        public static string MenuPage_Action_Test {
+            get {
+                return ResourceManager.GetString("MenuPage_Action_Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Support PagerBuddy.
         /// </summary>
         public static string MenuPage_Action_Website {
@@ -934,6 +943,15 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test alert.
+        /// </summary>
+        public static string MenuPage_TestNotification_Message {
+            get {
+                return ResourceManager.GetString("MenuPage_TestNotification_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string MenuPage_UserName_Default {
@@ -948,6 +966,15 @@ namespace PagerBuddy.Resources {
         public static string MenuPage_UserPhone_Default {
             get {
                 return ResourceManager.GetString("MenuPage_UserPhone_Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok. I will start an alert test in 5 seconds..
+        /// </summary>
+        public static string MenuPager_TestNotification_Warning {
+            get {
+                return ResourceManager.GetString("MenuPager_TestNotification_Warning", resourceCulture);
             }
         }
         

@@ -303,4 +303,13 @@
   <data name="ActiveTimePopup_InvertTime_Inactive" xml:space="preserve">
     <value>Aktivierte Zeiten einstellen</value>
   </data>
+  <data name="MenuPage_Action_Test" xml:space="preserve">
+    <value>Alarm testen</value>
+  </data>
+  <data name="MenuPage_TestNotification_Message" xml:space="preserve">
+    <value>Testalarm</value>
+  </data>
+  <data name="MenuPager_TestNotification_Warning" xml:space="preserve">
+    <value>Ok. Ich werden in 5 Sekunden einen Testalarm starten.</value>
+  </data>
 </root>

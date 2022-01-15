@@ -18,6 +18,7 @@
     <None Remove="Resources\Images\icon_alert_off.svg" />
     <None Remove="Resources\Images\icon_alert_snooze.svg" />
     <None Remove="Resources\Images\icon_alert_snooze_off.svg" />
+    <None Remove="Resources\Images\icon_alert_test.svg" />
     <None Remove="Resources\Images\icon_alert_time.svg" />
     <None Remove="Resources\Images\icon_clear.svg" />
     <None Remove="Resources\Images\icon_confirm.svg" />
@@ -40,6 +41,7 @@
     <EmbeddedResource Include="Resources\Images\icon_alert_off.svg" />
     <EmbeddedResource Include="Resources\Images\icon_alert_snooze.svg" />
     <EmbeddedResource Include="Resources\Images\icon_alert_snooze_off.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_alert_test.svg" />
     <EmbeddedResource Include="Resources\Images\icon_alert_time.svg" />
     <EmbeddedResource Include="Resources\Images\icon_clear.svg" />
     <EmbeddedResource Include="Resources\Images\icon_confirm.svg" />

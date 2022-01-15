@@ -24,6 +24,8 @@
 
             <Color x:Key="IconColor">#000000</Color>
             <Color x:Key="DarkIconColor">#ffffff</Color>
+            <Color x:Key="IconColorDisabled">#bbbbbb</Color>
+            <Color x:Key="DarkIconColorDisabled">#888888</Color>
 
             <Color x:Key="BackgroundColor">#FAFAFA</Color>
             <Color x:Key="DarkBackgroundColor">#121212</Color>
@@ -77,6 +79,8 @@
                 <!-- Custom construct for AppThemeBinding in C# code-->
                 <Setter TargetName="Light" Property="BackgroundColor" Value="{StaticResource IconColor}"/>
                 <Setter TargetName="Dark" Property="BackgroundColor" Value="{StaticResource DarkIconColor}"/>
+                <Setter TargetName="LightDisabled" Property="BackgroundColor" Value="{StaticResource IconColorDisabled}"/>
+                <Setter TargetName="DarkDisabled" Property="BackgroundColor" Value="{StaticResource DarkIconColorDisabled}"/>
             </Style>
 
             <Style TargetType="Button" x:Key="DayPickerButtonOff">

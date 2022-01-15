@@ -4,6 +4,7 @@ using PagerBuddy.Services;
 using PagerBuddy.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Xamarin.Forms;
@@ -17,6 +18,8 @@ namespace PagerBuddy.ViewModels {
         public Command Profile { get; set; }
         public Command Website { get; set; }
 
+        public Command AlertTest { get; set; }
+
         private string iconColor {
             get {
                 Style style = (Style)Application.Current.Resources["ActionIcons"];
@@ -27,14 +30,25 @@ namespace PagerBuddy.ViewModels {
             }
         }
 
+        private string iconColorDisabled {
+            get {
+                Style style = (Style)Application.Current.Resources["ActionIcons"];
+
+                string mode = Application.Current.RequestedTheme == OSAppTheme.Dark ? "DarkDisabled" : "LightDisabled";
+                Setter themeSetter = style.Setters.First((setter) => setter.TargetName == mode);
+                return ((Color)themeSetter.Value).ToHex();
+            }
+        }
+
         public MenuPageViewModel() {
 
-            NotificationSettings = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.NotificationSettings));
-            About = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.AboutPage));
-            Share = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.Share));
-            Logout = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.LogoutUser));
-            Profile = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.Login));
-            Website = new Command(() => RequestNavigation.Invoke(this, MenuPage.MENU_PAGE.Website));
+            NotificationSettings = new Command(() => RequestNavigation?.Invoke(this, MenuPage.MENU_PAGE.NotificationSettings));
+            About = new Command(() => RequestNavigation?.Invoke(this, MenuPage.MENU_PAGE.AboutPage));
+            Share = new Command(() => RequestNavigation?.Invoke(this, MenuPage.MENU_PAGE.Share));
+            Logout = new Command(() => RequestNavigation?.Invoke(this, MenuPage.MENU_PAGE.LogoutUser));
+            Profile = new Command(() => RequestNavigation?.Invoke(this, MenuPage.MENU_PAGE.Login));
+            Website = new Command(() => RequestNavigation?.Invoke(this, MenuPage.MENU_PAGE.Website));
+            AlertTest = new Command(() => RequestTestAlert?.Invoke(this, null));
 
             MessagingCenter.Subscribe<CommunicationService>(this, CommunicationService.MESSAGING_KEYS.USER_DATA_CHANGED.ToString(), (_) => userDataChanged());
             MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => userDataChanged());
@@ -51,14 +65,28 @@ namespace PagerBuddy.ViewModels {
         public NavigationEventHandler RequestNavigation;
         public delegate void NavigationEventHandler(object sender, MenuPage.MENU_PAGE destination);
 
+        public EventHandler RequestTestAlert;
+
         private void userDataChanged() {
             OnPropertyChanged(nameof(UserName));
             OnPropertyChanged(nameof(UserPhone));
             OnPropertyChanged(nameof(UserPic));
         }
 
+        public void configsChanged() {
+            OnPropertyChanged(nameof(TestAlertActive));
+            OnPropertyChanged(nameof(TestAlertPic));
+        }
+
         public string UserName => DataService.getConfigValue(DataService.DATA_KEYS.USER_NAME, AppResources.MenuPage_UserName_Default);
         public string UserPhone => DataService.getConfigValue(DataService.DATA_KEYS.USER_PHONE, AppResources.MenuPage_UserPhone_Default);
+
+        public bool TestAlertActive {
+            get {
+                Collection<string> configs = DataService.getConfigList();
+                return configs.Count > 0;
+            }
+        }
 
         public ImageSource UserPic {
             get {
@@ -77,6 +105,18 @@ namespace PagerBuddy.ViewModels {
             get {
                 SvgImageSource source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert.svg");
                 source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColor } };
+                return source;
+            }
+        }
+
+        public ImageSource TestAlertPic {
+            get {
+                SvgImageSource source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_alert_test.svg");
+                if (TestAlertActive) {
+                    source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColor } };
+                } else {
+                    source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColorDisabled } };
+                }
                 return source;
             }
         }
