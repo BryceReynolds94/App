@@ -3,10 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PagerBuddy.Views.ActiveTimePopup"
              xmlns:resources="clr-namespace:PagerBuddy.Resources"
-             BackgroundColor="#66000000">
+             BackgroundColor="{StaticResource InactiveOverlayColor}">
     <ContentPage.Content>
         <StackLayout Style="{StaticResource OverlayLayoutStyle}" Padding="10,10" VerticalOptions="Center" HorizontalOptions="Center">
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="10">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Padding="10">
+                <Switch IsToggled="{Binding InvertTime}"/>
+                <Label FontSize="Medium">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding InvertTime}" Value="False">
+                            <Setter Property="Text" Value="{x:Static resources:AppResources.ActiveTimePopup_InvertTime_Inactive}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label" Binding="{Binding InvertTime}" Value="True">
+                            <Setter Property="Text" Value="{x:Static resources:AppResources.ActiveTimePopup_InvertTime_Active}"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </StackLayout>
+            
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="10,0">
                 <Button Style="{StaticResource DayPickerButtonOff}" Text="{x:Static resources:AppResources.ActiveTimePopup_DayMonday}" Command="{Binding ToggleDay}" CommandParameter="1">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding ActiveDayMonday}" Value="True">
@@ -64,8 +78,8 @@
                 <TimePicker Time="{Binding ToTime}" FontSize="Large" TextColor="{StaticResource AccentColor}" HorizontalOptions="StartAndExpand"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal" Padding="10,0">
-                <Button Text="{x:Static resources:AppResources.ActiveTimePopup_Cancel}" Command="{Binding Cancel}" HorizontalOptions="EndAndExpand" Style="{StaticResource OverlayButton}"/>
-                <Button Text="{x:Static resources:AppResources.ActiveTimePopup_Confirm}" Command="{Binding Confirm}" HorizontalOptions="End" Style="{StaticResource OverlayButton}"/>
+                <Button Text="{x:Static resources:AppResources.ActiveTimePopup_Cancel}" Command="{Binding Cancel}" HorizontalOptions="EndAndExpand" Style="{StaticResource OverlayButton}" WidthRequest="80"/>
+                <Button Text="{x:Static resources:AppResources.ActiveTimePopup_Confirm}" Command="{Binding Confirm}" HorizontalOptions="End" Style="{StaticResource OverlayButton}" WidthRequest="60"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

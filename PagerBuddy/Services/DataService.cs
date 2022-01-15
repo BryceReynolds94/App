@@ -36,6 +36,7 @@ namespace PagerBuddy.Services {
             ACTIVE_TIME_DAYS, //Days of the week where alerts are active 
             ACTIVE_TIME_FROM, //Time of day from when alerts are active
             ACTIVE_TIME_TO, //Time of day untill when alerts are active
+            ACTIVE_TIME_INVERT, //If the set times are when alerts are inactive
             CUSTOM_PAGERBUDDY_SERVER_BOT_LIST, //List of user set peers that should be accepted as pagerbuddy servers
         };
 

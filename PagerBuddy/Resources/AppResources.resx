@@ -334,7 +334,7 @@
     <value>Yes</value>
   </data>
   <data name="MenuPage_LogoutPrompt_Text" xml:space="preserve">
-    <value>Are you sure? All configurations will be deleted.</value>
+    <value>Are you sure? You will not receive any alerts.</value>
   </data>
   <data name="MenuPage_LogoutPrompt_Title" xml:space="preserve">
     <value>Logout</value>
@@ -417,5 +417,11 @@
   </data>
   <data name="Alert_TestFilter" xml:space="preserve">
     <value>TEST ALERT</value>
+  </data>
+  <data name="ActiveTimePopup_InvertTime_Active" xml:space="preserve">
+    <value>Set inactive times</value>
+  </data>
+  <data name="ActiveTimePopup_InvertTime_Inactive" xml:space="preserve">
+    <value>Set active times</value>
   </data>
 </root>

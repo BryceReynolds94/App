@@ -24,10 +24,7 @@ namespace PagerBuddy.Services {
 
             //Check if we are in active time limit
             Collection<DayOfWeek> activeDays = DataService.activeDays;
-            if (!activeDays.Contains(DateTime.Today.DayOfWeek)) {
-                Logger.Info("All alerts snoozed due to inactive day of week. Ignoring incoming message.");
-                return;
-            }
+            bool inactiveDay =!activeDays.Contains(DateTime.Today.DayOfWeek);
 
             TimeSpan fromTime = new TimeSpan(DataService.getConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_FROM, 0));
             TimeSpan toTime = new TimeSpan(DataService.getConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_TO, 0));
@@ -39,8 +36,10 @@ namespace PagerBuddy.Services {
             } else {
                 inactiveTime = now < toTime && now > fromTime;
             }
-            if (inactiveTime) {
-                Logger.Info("All alerts snoozed due to inactive time of day. Ignoring incoming message.");
+
+            bool invertTime = DataService.getConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_INVERT, false);
+            if ((!invertTime && (inactiveTime || inactiveDay)) || (invertTime && (!inactiveTime || !inactiveDay))) {
+                Logger.Info("All alerts snoozed due to inactive time. Ignoring incoming message.");
                 return;
             }
 

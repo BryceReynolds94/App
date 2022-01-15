@@ -21,10 +21,11 @@ namespace PagerBuddy.Views {
 
             TimeSpan fromTime = TimeSpan.FromTicks(DataService.getConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_FROM, TimeSpan.Zero.Ticks));
             TimeSpan toTime = TimeSpan.FromTicks(DataService.getConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_TO, TimeSpan.FromMinutes(1439).Ticks));
+            bool invertTime = DataService.getConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_INVERT, false);
             Collection<DayOfWeek> activeDays = DataService.activeDays;
 
 
-            BindingContext = viewModel = new ActiveTimePopupViewModel(activeDays, fromTime, toTime);
+            BindingContext = viewModel = new ActiveTimePopupViewModel(activeDays, fromTime, toTime, invertTime);
             viewModel.RequestCancel += cancel;
             viewModel.ActiveTimeResult += activeTimeResult;
         }
@@ -33,9 +34,10 @@ namespace PagerBuddy.Views {
             Navigation.PopModalAsync(false);
         }
 
-        private void activeTimeResult(Collection<DayOfWeek> dayList, TimeSpan fromTime, TimeSpan toTime) {
+        private void activeTimeResult(Collection<DayOfWeek> dayList, TimeSpan fromTime, TimeSpan toTime, bool invertTime) {
             DataService.setConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_FROM, fromTime.Ticks);
             DataService.setConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_TO, toTime.Ticks);
+            DataService.setConfigValue(DataService.DATA_KEYS.ACTIVE_TIME_INVERT, invertTime);
             DataService.activeDays = dayList;
 
             cancel(this, null);

@@ -313,6 +313,24 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set inactive times.
+        /// </summary>
+        public static string ActiveTimePopup_InvertTime_Active {
+            get {
+                return ResourceManager.GetString("ActiveTimePopup_InvertTime_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set active times.
+        /// </summary>
+        public static string ActiveTimePopup_InvertTime_Inactive {
+            get {
+                return ResourceManager.GetString("ActiveTimePopup_InvertTime_Inactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TEST ALERT.
         /// </summary>
         public static string Alert_TestFilter {
@@ -898,7 +916,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure? All configurations will be deleted..
+        ///   Looks up a localized string similar to Are you sure? You will not receive any alerts..
         /// </summary>
         public static string MenuPage_LogoutPrompt_Text {
             get {

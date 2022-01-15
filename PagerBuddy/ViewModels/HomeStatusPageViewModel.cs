@@ -72,8 +72,8 @@ namespace PagerBuddy.ViewModels {
             SnoozeAll = new Command(() => _ = setSnoozeState(true));
             SnoozeAllOff = new Command(() => _ = setSnoozeState(false));
             ReloadConfig = new Command(() => reloadConfig());
-            TimeAll = new Command(() => RequestTimeConfig.Invoke(this, null)); 
-            Login = new Command(() => RequestLogin.Invoke(this, null));
+            TimeAll = new Command(() => RequestTimeConfig?.Invoke(this, null)); 
+            Login = new Command(() => RequestLogin?.Invoke(this, null));
 
             MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => fillAlertList(new Collection<AlertConfig>(), true));
 
@@ -86,13 +86,13 @@ namespace PagerBuddy.ViewModels {
 
         private void reloadConfig() {
             IsBusy = true;
-            RefreshConfigurationRequest.Invoke(this, null);
+            RefreshConfigurationRequest?.Invoke(this, null);
         }
 
         public void setDeactivateState(bool state, bool init = false) {
             allDeactivated = state;
             if (!init) {
-                AllDeactivatedStateChanged.Invoke(this, state);
+                AllDeactivatedStateChanged?.Invoke(this, state);
             }
             OnPropertyChanged(nameof(WarningDeactivate));
             OnPropertyChanged(nameof(AllDeactivateIcon));
@@ -104,7 +104,7 @@ namespace PagerBuddy.ViewModels {
                 snoozeTime = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue);
             }
             if (state && !init) {
-                snoozeTime = await RequestSnoozeTime.Invoke(this, null);
+                snoozeTime = await RequestSnoozeTime?.Invoke(this, null);
                 if(snoozeTime < DateTime.Now) {
                     return;
                 }
@@ -112,7 +112,7 @@ namespace PagerBuddy.ViewModels {
             allSnoozed = state;
             allSnoozedTime = snoozeTime;
             if (!init) {
-                AllSnoozeStateChanged.Invoke(this, snoozeTime);
+                AllSnoozeStateChanged?.Invoke(this, snoozeTime);
             }
             OnPropertyChanged(nameof(WarningSnooze));
             OnPropertyChanged(nameof(AllSnoozeIcon));
@@ -130,6 +130,7 @@ namespace PagerBuddy.ViewModels {
             OnPropertyChanged(nameof(EmptyList));
 
             IsBusy = initialBusy && alertConfigs.Count == 0;
+            OnPropertyChanged(nameof(ReloadConfigEnabled));
         }
 
         public void setErrorState(bool hasInternet, bool isAuthorised) {
@@ -184,7 +185,7 @@ namespace PagerBuddy.ViewModels {
         }
 
 
-        public bool ReloadConfigEnabled => errorState == ERROR_ACTION.NONE;
+        public bool ReloadConfigEnabled => errorState == ERROR_ACTION.NONE || IsBusy;
 
         public bool ErrorLogin => errorState == ERROR_ACTION.NO_TELEGRAM;
         public bool EmptyList => alertList.Count == 0;

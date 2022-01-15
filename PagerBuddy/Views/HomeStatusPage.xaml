@@ -13,7 +13,7 @@
 
     <AbsoluteLayout>
         <RefreshView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" IsVisible="{Binding ConfigActive}" Command="{Binding ReloadConfig}" IsEnabled="{Binding ReloadConfigEnabled}"
-                     IsRefreshing="{Binding IsBusy}">
+                     IsRefreshing="{Binding IsBusy}" >
             <StackLayout>
                 <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
                     <CollectionView.Header>
@@ -113,7 +113,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <BoxView BackgroundColor="Black" Opacity="0.6" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
+            <BoxView BackgroundColor="{StaticResource InactiveOverlayColor}" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
             <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_alert_off.svg" HorizontalOptions="Center" HeightRequest="150" Grid.Row="1" ReplaceStringMap="{Binding colorSetWhite}"/>
             <Label Text="{x:Static resources:AppResources.HomeStatusPage_Warning_Deactivated}" HorizontalOptions="Center" FontSize="Large" TextColor="White" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0,20,20" />
             <Grid.GestureRecognizers>
@@ -128,7 +128,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <BoxView BackgroundColor="Black" Opacity="0.6" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
+            <BoxView BackgroundColor="{StaticResource InactiveOverlayColor}" VerticalOptions="Fill" HorizontalOptions="Fill" Grid.RowSpan="4"/>
             <ffimageloadingsvg:SvgCachedImage Source="resource://PagerBuddy.Resources.Images.icon_alert_snooze.svg" HorizontalOptions="Center" HeightRequest="150" Grid.Row="1" ReplaceStringMap="{Binding colorSetWhite}"/>
             <Label Text="{Binding WarningSnoozeText}" HorizontalOptions="Center" FontSize="Large" TextColor="White" HorizontalTextAlignment="Center" Grid.Row="2" Padding="20,0,20,20"/>
             <Grid.GestureRecognizers>

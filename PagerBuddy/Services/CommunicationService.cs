@@ -175,12 +175,10 @@ namespace PagerBuddy.Services {
             Logger.Debug("Logging out user.");
             clientStatus = STATUS.LOGOUT;
 
-            //TODO: Fix infinite hang on logout if not logged in
-            //Either use a timeout or check actual user status before logging out
-
             //Try to unregister user with servers
             foreach(string server in pagerbuddyServerList) {
-                await sendServerRequest(new Collection<AlertConfig>(), server);
+                Task request = sendServerRequest(new Collection<AlertConfig>(), server);
+                Task.WaitAny(Task.Delay(2000), request); //Timeout after 2s if not completed
             }
 
             try {
@@ -371,7 +369,7 @@ namespace PagerBuddy.Services {
 
             Types.User.DefaultTag userTag = user.Default;
 
-            bool hasPhoto = userTag.Photo.Default != null;
+            bool hasPhoto = userTag.Photo?.Default != null;
             if (hasPhoto) {
 
                 long photoID = userTag.Photo.Default.PhotoId;

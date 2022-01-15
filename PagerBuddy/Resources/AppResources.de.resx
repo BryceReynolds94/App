@@ -211,7 +211,7 @@
     <value>Die eingegeben Nummer ist keine gültige Telefonnummer. Überprüfe deine Eingabe und verwende eine Ländervorwahl.</value>
   </data>
   <data name="MenuPage_LogoutPrompt_Text" xml:space="preserve">
-    <value>Bist du dir sicher? Alle Konfigurationen werden gelöscht.</value>
+    <value>Bist du dir sicher? Du wirst keine Benachrichtigungen empfangen.</value>
   </data>
   <data name="LoginPhonePage_InstallTelegram" xml:space="preserve">
     <value>Telegram installieren</value>
@@ -296,5 +296,11 @@
   </data>
   <data name="Alert_TestFilter" xml:space="preserve">
     <value>PROBEALARM</value>
+  </data>
+  <data name="ActiveTimePopup_InvertTime_Active" xml:space="preserve">
+    <value>Deaktivierte Zeiten einstellen</value>
+  </data>
+  <data name="ActiveTimePopup_InvertTime_Inactive" xml:space="preserve">
+    <value>Aktivierte Zeiten einstellen</value>
   </data>
 </root>

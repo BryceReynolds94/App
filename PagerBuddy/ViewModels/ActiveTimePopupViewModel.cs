@@ -12,24 +12,26 @@ namespace PagerBuddy.ViewModels {
         private Collection<DayOfWeek> activeDays;
         private TimeSpan fromTime;
         private TimeSpan toTime;
+        private bool invertTime;
 
         public Command<string> ToggleDay { get; set; }
         public Command Confirm { get; set; }
         public Command Cancel { get; set; }
 
-        public ActiveTimePopupViewModel(Collection<DayOfWeek> activeDays, TimeSpan fromTime, TimeSpan toTime) {
+        public ActiveTimePopupViewModel(Collection<DayOfWeek> activeDays, TimeSpan fromTime, TimeSpan toTime, bool invertTime) {
             this.activeDays = activeDays;
             this.fromTime = fromTime;
             this.toTime = toTime;
+            this.invertTime = invertTime;
 
             ToggleDay = new Command<string>((string rawDay) => toggleDay(rawDay));
-            Cancel = new Command(() => RequestCancel.Invoke(this, null));
-            Confirm = new Command(() => ActiveTimeResult.Invoke(this.activeDays, this.fromTime, this.toTime));
+            Cancel = new Command(() => RequestCancel?.Invoke(this, null));
+            Confirm = new Command(() => ActiveTimeResult?.Invoke(this.activeDays, this.fromTime, this.toTime, this.invertTime)); //TODO: RBF implement invert
         }
 
         public EventHandler RequestCancel;
         public ActiveTimeHandler ActiveTimeResult;
-        public delegate void ActiveTimeHandler(Collection<DayOfWeek> activeDays, TimeSpan fromTime, TimeSpan toTime);
+        public delegate void ActiveTimeHandler(Collection<DayOfWeek> activeDays, TimeSpan fromTime, TimeSpan toTime, bool invertTime);
 
         private void toggleDay(string rawDay) {
             int.TryParse(rawDay, out int intDay);
@@ -72,6 +74,14 @@ namespace PagerBuddy.ViewModels {
             }
             set {
                 toTime = value;
+            }
+        }
+
+        public bool InvertTime {
+            get => invertTime;
+            set {
+                invertTime = value;
+                OnPropertyChanged(nameof(InvertTime));
             }
         }
 
