@@ -30,6 +30,8 @@ namespace PagerBuddy.Views {
 
         private readonly CommunicationService client;
 
+        private bool MOCK_MODE = false;
+
         public enum MESSAGING_KEYS { ALERT_CONFIGS_CHANGED}
 
         //TODO Later: Implement alert content filtering (get from Server?)
@@ -59,6 +61,8 @@ namespace PagerBuddy.Views {
         protected override void OnAppearing() {
             base.OnAppearing();
 
+            MOCK_MODE = DataService.getConfigValue(DataService.DATA_KEYS.MOCK_ACCOUNT, false);
+
             bool allOff = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_DEACTIVATE_ALL, false);
             bool allSnoozed = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, DateTime.MinValue) > DateTime.Now;
             viewModel.setDeactivateState(allOff, true);
@@ -68,14 +72,14 @@ namespace PagerBuddy.Views {
 
             viewModel.fillAlertList(getAlertConfigs(), true); //First fill view with current state to avoid long wait
 
-            if (client.clientStatus == CommunicationService.STATUS.AUTHORISED) { //Do not bother if we are not connected yet
+            if (client.clientStatus == CommunicationService.STATUS.AUTHORISED || MOCK_MODE) { //Do not bother if we are not connected yet
                 refreshAlertConfigs(this, null); //Check for config updates
             }
         }
 
         private void sendServerUpdate(Collection<AlertConfig> configList) {
 
-            if (client.clientStatus != CommunicationService.STATUS.AUTHORISED && client.clientStatus > CommunicationService.STATUS.ONLINE) {
+            if (client.clientStatus != CommunicationService.STATUS.AUTHORISED && client.clientStatus > CommunicationService.STATUS.ONLINE || MOCK_MODE) {
                 //User is not logged in - do nothing.
                 return;
             }
@@ -89,7 +93,7 @@ namespace PagerBuddy.Views {
 
         private void updateClientStatus(object sender, CommunicationService.STATUS newStatus) {
             bool isLoading = newStatus == CommunicationService.STATUS.NEW || newStatus == CommunicationService.STATUS.ONLINE;
-            if (isLoading) { //Suppress warning updates while we are loading
+            if (isLoading || MOCK_MODE) { //Suppress warning updates while we are loading
                 return;
             }
 
@@ -125,11 +129,12 @@ namespace PagerBuddy.Views {
 
         private async Task alertConfigsChanged(Collection<AlertConfig> configList) {
             if (Device.RuntimePlatform == Device.Android) {
-                IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
+                IAndroidNotifications notifications = DependencyService.Get<IAndroidNotifications>();
                 notifications.UpdateNotificationChannels(configList);
             }
             MessagingCenter.Send(this, MESSAGING_KEYS.ALERT_CONFIGS_CHANGED.ToString());
 
+            
             sendServerUpdate(configList);
 
             IPermissions permissions = DependencyService.Get<IPermissions>();
@@ -169,7 +174,12 @@ namespace PagerBuddy.Views {
 
             Collection<string> oldList = DataService.getConfigList();
 
-            Types.Messages.Chats rawChatList = await client.getChatList(CommunicationService.pagerbuddyServerList.First()); //TODO Later: MULTI-Server
+            Types.Messages.Chats rawChatList;
+            if (!MOCK_MODE) {
+                rawChatList = await client.getChatList(CommunicationService.pagerbuddyServerList.First()); //TODO Later: MULTI-Server
+            } else {
+                rawChatList = client.getMockChatList();
+            }
 
             IReadOnlyList<Types.Chat> chatList = new List<Types.Chat>();
             if (rawChatList == null) {

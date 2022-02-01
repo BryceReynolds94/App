@@ -21,6 +21,7 @@ namespace PagerBuddy.Services {
             ALERT_CONFIG_LIST, //List of all configurations
             CONFIG_DEACTIVATE_ALL, //All notifications disabled
             CONFIG_SNOOZE_ALL, //All notifications disabled temporarily
+            CONFIG_SILENT_TEST, //If test alerts should be muted
             USER_NAME, //Name of Telegram user for display
             USER_PHONE, //Phone number of Telegram user for display
             USER_HAS_PHOTO, //Whether user has a profile pic
@@ -38,6 +39,7 @@ namespace PagerBuddy.Services {
             ACTIVE_TIME_TO, //Time of day untill when alerts are active
             ACTIVE_TIME_INVERT, //If the set times are when alerts are inactive
             CUSTOM_PAGERBUDDY_SERVER_BOT_LIST, //List of user set peers that should be accepted as pagerbuddy servers
+            MOCK_ACCOUNT, //If we are in mock mode, showing sample functionality
         };
 
         public static void clearData(bool developerMode = true, bool hasPromptedWelcome = true) //Caution! Use with care

@@ -41,6 +41,12 @@ namespace PagerBuddy.Views
 
         private async void performLogin(object sender, string phoneNumber)
         {
+            if(phoneNumber == "+12099999999") {
+                DataService.setConfigValue(DataService.DATA_KEYS.MOCK_ACCOUNT, true);
+                await Navigation.PushAsync(new LoginCodePage(client));
+                return;
+            }
+
             TStatus result = await client.requestCode(phoneNumber);
             viewModel.changeErrorStatus(result);
             viewModel.setWaitStatus(false);

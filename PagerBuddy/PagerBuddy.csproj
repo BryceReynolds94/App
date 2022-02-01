@@ -32,6 +32,8 @@
     <None Remove="Resources\Images\icon_phone.svg" />
     <None Remove="Resources\Images\icon_settings.svg" />
     <None Remove="Resources\Images\icon_share.svg" />
+    <None Remove="Resources\Images\icon_volume_off.svg" />
+    <None Remove="Resources\Images\icon_volume_on.svg" />
     <None Remove="Resources\Images\user_default.svg" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +57,8 @@
     <EmbeddedResource Include="Resources\Images\icon_phone.svg" />
     <EmbeddedResource Include="Resources\Images\icon_settings.svg" />
     <EmbeddedResource Include="Resources\Images\icon_share.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_volume_off.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_volume_on.svg" />
     <EmbeddedResource Include="Resources\Images\user_default.svg" />
   </ItemGroup>
   <ItemGroup>

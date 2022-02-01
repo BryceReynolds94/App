@@ -24,6 +24,8 @@ namespace PagerBuddy.iOS {
             return telegramInstalled;
         }
 
+        //TODO: Later - Implement iOS navigate telegram (URL scheme)
+
         public void navigateNotificationSettings() {
             NSUrl settingsURL = new NSUrl(UIApplication.OpenSettingsUrlString);
             if(UIApplication.SharedApplication.CanOpenUrl(settingsURL)) {

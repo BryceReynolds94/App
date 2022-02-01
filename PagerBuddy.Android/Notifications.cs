@@ -25,7 +25,7 @@ using System.IO;
 
 [assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.Droid.Notifications))] //register for dependency service as platform-specific code
 namespace PagerBuddy.Droid {
-    public class Notifications : IAndroidNotification {
+    public class Notifications : IAndroidNotifications {
 
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 

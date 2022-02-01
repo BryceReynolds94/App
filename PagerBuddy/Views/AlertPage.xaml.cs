@@ -38,7 +38,7 @@ namespace PagerBuddy.Views
             startAnimation();
 
             if(Device.RuntimePlatform == Device.Android) {
-                IAndroidNotification notifications = DependencyService.Get<IAndroidNotification>();
+                IAndroidNotifications notifications = DependencyService.Get<IAndroidNotifications>();
                 notifications.closeNotification((int) groupID);
                 stopRingtoneCallback = notifications.playChannelRingtone(alert.configID); //Take over sound control
             }

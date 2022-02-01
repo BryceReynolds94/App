@@ -77,7 +77,7 @@ namespace PagerBuddy
             if (!isAlert) {
                 //Reload Token on start
                 if(Device.RuntimePlatform == Device.Android) {
-                    IAndroidNotification notification = DependencyService.Get<IAndroidNotification>();
+                    IAndroidNotifications notification = DependencyService.Get<IAndroidNotifications>();
                     notification.RefreshToken();
                 }
 

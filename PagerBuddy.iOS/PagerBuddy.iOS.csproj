@@ -60,8 +60,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>Apple Development: Max Bartunik (4JH8ZK36L2)</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <CodesignProvision>VS: de.bartunik.pagerbuddy Development</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <AppExtensionDebugBundleId />
@@ -78,6 +79,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <BundleResource Include="Resources\splash_screen_logo.png" />
+    <Compile Include="Notifications.cs" />
     <Compile Include="Permission.cs" />
     <Compile Include="ServerRequestScheduler.cs" />
     <Compile Include="UserNotificationCenterDelegate.cs" />

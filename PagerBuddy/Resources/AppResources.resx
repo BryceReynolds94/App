@@ -322,7 +322,7 @@
     <value>Logout</value>
   </data>
   <data name="MenuPage_Action_NotificationSettings" xml:space="preserve">
-    <value>Notification Settings</value>
+    <value>Notification settings</value>
   </data>
   <data name="MenuPage_Action_Share" xml:space="preserve">
     <value>Share</value>
@@ -425,12 +425,18 @@
     <value>Set active times</value>
   </data>
   <data name="MenuPage_Action_Test" xml:space="preserve">
-    <value>Test alert</value>
+    <value>Show sample alert</value>
   </data>
   <data name="MenuPage_TestNotification_Message" xml:space="preserve">
     <value>Test alert</value>
   </data>
   <data name="MenuPager_TestNotification_Warning" xml:space="preserve">
     <value>Ok. I will start an alert test in 5 seconds.</value>
+  </data>
+  <data name="MenuPage_Set_SilentTest_On" xml:space="preserve">
+    <value>Silent test alerts</value>
+  </data>
+  <data name="MenuPage_Set_SilentTest_Off" xml:space="preserve">
+    <value>Loud test alerts</value>
   </data>
 </root>

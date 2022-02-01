@@ -396,6 +396,14 @@ namespace PagerBuddy.Services {
             MessagingCenter.Send(this, MESSAGING_KEYS.USER_DATA_CHANGED.ToString());
         }
 
+        public void mockLogin() {
+            DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, false);
+            DataService.setConfigValue(DataService.DATA_KEYS.USER_NAME, "Mock User");
+            DataService.setConfigValue(DataService.DATA_KEYS.USER_PHONE, "+12099999999");
+
+            MessagingCenter.Send(this, MESSAGING_KEYS.USER_DATA_CHANGED.ToString());
+        }
+
         public async Task<Types.Messages.Chats> getChatList(string pagerbuddyserver, int attempt = 0) {
             if (clientStatus != STATUS.AUTHORISED) {
                 Logger.Warn("Attempted to load chat list without appropriate client status. Current status: " + clientStatus.ToString());
@@ -436,6 +444,13 @@ namespace PagerBuddy.Services {
             }
 
             return chats;
+        }
+
+        public Types.Messages.Chats getMockChatList() {
+            
+            Types.Chat chat1 = new Types.Chat.DefaultTag(false, false, false, false, false, false, false, 100000, "Firebrigade", new Types.ChatPhoto.EmptyTag(), 1, 0, 0, null, null, null);
+            Types.Chat chat2 = new Types.Chat.DefaultTag(false, false, false, false, false, false, false, 200000, "Annina", new Types.ChatPhoto.EmptyTag(), 1, 0, 0, null, null, null);
+            return new Types.Messages.Chats.DefaultTag(new List<Types.Chat>() { chat1, chat2 });
         }
 
         public async Task<MemoryStream> getProfilePic(Types.InputFileLocation photo) {

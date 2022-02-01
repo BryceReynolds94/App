@@ -19,7 +19,7 @@ namespace PagerBuddy.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class AppResources {
@@ -871,7 +871,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notification Settings.
+        ///   Looks up a localized string similar to Notification settings.
         /// </summary>
         public static string MenuPage_Action_NotificationSettings {
             get {
@@ -889,7 +889,7 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test alert.
+        ///   Looks up a localized string similar to Show sample alert.
         /// </summary>
         public static string MenuPage_Action_Test {
             get {
@@ -939,6 +939,24 @@ namespace PagerBuddy.Resources {
         public static string MenuPage_LogoutPrompt_Title {
             get {
                 return ResourceManager.GetString("MenuPage_LogoutPrompt_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loud test alerts.
+        /// </summary>
+        public static string MenuPage_Set_SilentTest_Off {
+            get {
+                return ResourceManager.GetString("MenuPage_Set_SilentTest_Off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Silent test alerts.
+        /// </summary>
+        public static string MenuPage_Set_SilentTest_On {
+            get {
+                return ResourceManager.GetString("MenuPage_Set_SilentTest_On", resourceCulture);
             }
         }
         

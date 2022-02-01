@@ -57,7 +57,7 @@ namespace PagerBuddy.Models {
         }
 
         private static Types.InputFileLocation getPhotoLocation(Types.InputPeer peer, Types.ChatPhoto photo) {
-            if (photo.Default != null) {
+            if (photo?.Default != null) {
                 return new Types.InputFileLocation.PeerPhotoTag(false, peer, photo.Default.PhotoId);
             }
             return null;

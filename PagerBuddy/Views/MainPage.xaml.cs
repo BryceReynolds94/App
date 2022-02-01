@@ -76,6 +76,7 @@ namespace PagerBuddy.Views {
 
                 _ = client.logoutUser();
 
+                DataService.setConfigValue(DataService.DATA_KEYS.MOCK_ACCOUNT, false);
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_NAME, AppResources.MenuPage_UserName_Default);
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_PHONE, AppResources.MenuPage_UserPhone_Default);
                 DataService.setConfigValue(DataService.DATA_KEYS.USER_HAS_PHOTO, false);

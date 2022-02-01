@@ -34,7 +34,6 @@ namespace PagerBuddy.Views {
 
             //TODO: Make test alert available to public
             viewModel.requestTestFCMMessage += testFCMMessage;
-            viewModel.requestTestNotification += testNotification;
             viewModel.requestClearData += clearData;
             viewModel.requestCheckPermissions += checkPermissions;
         }
@@ -87,7 +86,6 @@ namespace PagerBuddy.Views {
         }
 
         private void showAlertPage(object sender, EventArgs args) {
-            if (Device.RuntimePlatform == Device.Android) {
                 Logger.Info("User requested view AlertPage.");
 
                 Collection<string> configs = DataService.getConfigList();
@@ -106,9 +104,6 @@ namespace PagerBuddy.Views {
                 Logger.Info("Launching AlertPage from Developer Mode");
 
                 MessagingCenter.Send(this, MESSAGING_KEYS.SHOW_ALERT_PAGE.ToString(), testAlert);
-            } else {
-                Logger.Warn("Alert page is not supported on this device platform.");
-            }
         }
 
         private void restartClient(object sender, EventArgs args) {
@@ -137,28 +132,5 @@ namespace PagerBuddy.Views {
             }
         }
 
-        private void testNotification(object sender, EventArgs args) {
-            if (Device.RuntimePlatform == Device.Android) {
-                Collection<string> configs = DataService.getConfigList();
-                if (configs.Count > 0) {
-                    Logger.Info("Sending notification test message in 5s.");
-                    AlertConfig config = DataService.getAlertConfig(configs.First(), null);
-                    if (config == null) {
-                        Logger.Error("Retrieving known alert returned null. Will stop here.");
-                        return;
-                    }
-                    Interfaces.IAndroidNotification notifications = DependencyService.Get<Interfaces.IAndroidNotification>();
-
-                    Task.Delay(5000).ContinueWith((t) => {
-                        Logger.Info("Sending notification test message now.");
-                        notifications.showAlertNotification(new Alert(AppResources.AboutPage_DeveloperMode_TestNotification_Message, DateTime.Now, false, config));
-                    });
-                } else {
-                    Logger.Warn("Could not send notification test message as no alerts are configured.");
-                }
-            } else {
-                Logger.Warn("Test notification is not supported on this device platform.");
-            }
-        }
     }
 }

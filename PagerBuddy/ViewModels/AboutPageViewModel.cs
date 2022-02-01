@@ -19,7 +19,6 @@ namespace PagerBuddy.ViewModels {
         public Command HideDeveloperMode { get; set; }
         public Command ShareLog { get; set; }
         public Command ShowAlertPage { get; set; }
-        public Command TestNotification { get; set; }
         public Command RestartClient { get; set; }
         public Command TestFCMMessage { get; set; }
         public Command Hyperlink { get; set; }
@@ -61,7 +60,6 @@ namespace PagerBuddy.ViewModels {
             HideDeveloperMode = new Command(() => stopDeveloperMode());
             ShareLog = new Command(() => requestShareLog.Invoke(this, null));
             ShowAlertPage = new Command(() => requestShowAlertPage(this, null));
-            TestNotification = new Command(() => requestTestNotification(this, null));
             RestartClient = new Command(() => requestRestartClient(this, null));
             TestFCMMessage = new Command(() => requestTestFCMMessage(this, null));
             Hyperlink = new Command<string>(async (url) => await Launcher.OpenAsync(url));
@@ -76,7 +74,6 @@ namespace PagerBuddy.ViewModels {
 
         public EventHandler requestShareLog;
         public EventHandler requestShowAlertPage;
-        public EventHandler requestTestNotification;
         public EventHandler requestRestartClient;
         public EventHandler requestTestFCMMessage;
         public EventHandler requestClearData;

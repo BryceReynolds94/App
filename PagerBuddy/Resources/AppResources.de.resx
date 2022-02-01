@@ -312,4 +312,10 @@
   <data name="MenuPager_TestNotification_Warning" xml:space="preserve">
     <value>Ok. Ich werden in 5 Sekunden einen Testalarm starten.</value>
   </data>
+  <data name="MenuPage_Set_SilentTest_On" xml:space="preserve">
+    <value>Probealarm stumm</value>
+  </data>
+  <data name="MenuPage_Set_SilentTest_Off" xml:space="preserve">
+    <value>Probealarm laut</value>
+  </data>
 </root>
