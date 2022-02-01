@@ -93,7 +93,12 @@ namespace PagerBuddy.Views {
 
         private void updateClientStatus(object sender, CommunicationService.STATUS newStatus) {
             bool isLoading = newStatus == CommunicationService.STATUS.NEW || newStatus == CommunicationService.STATUS.ONLINE;
-            if (isLoading || MOCK_MODE) { //Suppress warning updates while we are loading
+            if (isLoading) { //Suppress warning updates while we are loading
+                return;
+            }
+
+            if (MOCK_MODE) { //We are "logged in" if we have mock mode
+                viewModel.setErrorState(true, true);
                 return;
             }
 
@@ -175,10 +180,10 @@ namespace PagerBuddy.Views {
             Collection<string> oldList = DataService.getConfigList();
 
             Types.Messages.Chats rawChatList;
-            if (!MOCK_MODE) {
-                rawChatList = await client.getChatList(CommunicationService.pagerbuddyServerList.First()); //TODO Later: MULTI-Server
-            } else {
+            if (MOCK_MODE) {
                 rawChatList = client.getMockChatList();
+            } else {
+                rawChatList = await client.getChatList(CommunicationService.pagerbuddyServerList.First()); //TODO Later: MULTI-Server
             }
 
             IReadOnlyList<Types.Chat> chatList = new List<Types.Chat>();

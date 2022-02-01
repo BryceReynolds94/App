@@ -4,7 +4,9 @@
              x:Class="PagerBuddy.Views.AboutPage"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:resources="clr-namespace:PagerBuddy.Resources"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true">
     <ContentPage.Content>
         <StackLayout>
             <ScrollView VerticalOptions="FillAndExpand">

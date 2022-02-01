@@ -6,16 +6,13 @@
              xmlns:resources="clr-namespace:PagerBuddy.Resources"
              mc:Ignorable="d"
              x:Class="PagerBuddy.Views.MenuPage"
-             Title="Menu">
+             Title="Menu"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="True">
 
     <StackLayout Spacing="0" Style="{StaticResource OverlayLayoutStyle}">
-        <StackLayout Orientation="Horizontal" Style="{StaticResource FlyoutHeaderStyle}">
-            <StackLayout.Padding>
-                <OnPlatform x:TypeArguments="Thickness">
-                    <On Platform="iOS" Value="10,50,10,20" />
-                    <On Platform="Android" Value="10,20" />
-                </OnPlatform>
-            </StackLayout.Padding>
+        <StackLayout HeightRequest="100" Margin="0,-100,0,0" Style="{StaticResource FlyoutHeaderStyle}"/>
+        <StackLayout Orientation="Horizontal" Style="{StaticResource FlyoutHeaderStyle}" Padding="10,20">
             <Frame Padding="0" WidthRequest="60" HeightRequest="60" CornerRadius="30" IsClippedToBounds="True" VerticalOptions="Center">
                 <Image Source="{Binding UserPic}" />
                 <Frame.HasShadow>
@@ -87,13 +84,7 @@
                 <Label Text="{x:Static resources:AppResources.MenuPage_Action_About}" FontSize="Medium" VerticalOptions="Center"/>
             </StackLayout>
         </Grid>
-        <Grid VerticalOptions="End">
-            <Grid.Padding>
-                <OnPlatform x:TypeArguments="Thickness">
-                    <On Platform="iOS" Value="0,10,0,30" />
-                    <On Platform="Android" Value="0,10" />
-                </OnPlatform>
-            </Grid.Padding>
+        <Grid VerticalOptions="End" Padding="0,10">
             <ImageButton Style="{StaticResource FlyoutImageButtonStyle}" CornerRadius="0" Command="{Binding Logout}" />
             <StackLayout Orientation="Horizontal" InputTransparent="True" Padding="10,5" >
                 <Image Margin="5" Source="{Binding LogoutPic}" HeightRequest="30" WidthRequest="30"/>

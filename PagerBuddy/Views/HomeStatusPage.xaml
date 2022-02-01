@@ -9,10 +9,12 @@
              xmlns:resources="clr-namespace:PagerBuddy.Resources"
              xmlns:viewModels="clr-namespace:PagerBuddy.ViewModels"
              Style="{StaticResource BasePageStyle}"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true">
 
-    <AbsoluteLayout>
-        <RefreshView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" IsVisible="{Binding ConfigActive}" Command="{Binding ReloadConfig}" IsEnabled="{Binding ReloadConfigEnabled}"
+    <Grid>
+        <RefreshView IsVisible="{Binding ConfigActive}" Command="{Binding ReloadConfig}" IsEnabled="{Binding ReloadConfigEnabled}"
                      IsRefreshing="{Binding IsBusy}" >
             <StackLayout>
                 <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
@@ -92,7 +94,7 @@
         </RefreshView>
 
         <!-- Not connected to Telegram-->
-        <Grid AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" VerticalOptions="Fill" HorizontalOptions="Fill" IsVisible="{Binding ErrorLogin}">
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" IsVisible="{Binding ErrorLogin}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
@@ -106,7 +108,7 @@
             </Grid.GestureRecognizers>
         </Grid>
         <!-- All alerts deactivated-->
-        <Grid AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" VerticalOptions="Fill" HorizontalOptions="Fill" IsVisible="{Binding WarningDeactivate}">
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" IsVisible="{Binding WarningDeactivate}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
@@ -121,7 +123,7 @@
             </Grid.GestureRecognizers>
         </Grid>
         <!-- All alerts snoozed-->
-        <Grid AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" VerticalOptions="Fill" HorizontalOptions="Fill" IsVisible="{Binding WarningSnooze}">
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" IsVisible="{Binding WarningSnooze}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
@@ -135,5 +137,5 @@
                 <TapGestureRecognizer Command="{Binding SnoozeAllOff}"/>
             </Grid.GestureRecognizers>
         </Grid>
-    </AbsoluteLayout>
+    </Grid>
 </ContentPage>

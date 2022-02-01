@@ -23,9 +23,9 @@ namespace PagerBuddy.ViewModels {
 
         private string iconColor {
             get {
-                Style style = (Style)Application.Current.Resources["ActionIcons"];
+                Style style = (Style)Xamarin.Forms.Application.Current.Resources["ActionIcons"];
 
-                string mode = Application.Current.RequestedTheme == OSAppTheme.Dark ? "Dark" : "Light";
+                string mode = Xamarin.Forms.Application.Current.RequestedTheme == OSAppTheme.Dark ? "Dark" : "Light";
                 Setter themeSetter = style.Setters.First((setter) => setter.TargetName == mode);
                 return ((Color)themeSetter.Value).ToHex();
             }
@@ -33,9 +33,9 @@ namespace PagerBuddy.ViewModels {
 
         private string iconColorDisabled {
             get {
-                Style style = (Style)Application.Current.Resources["ActionIcons"];
+                Style style = (Style)Xamarin.Forms.Application.Current.Resources["ActionIcons"];
 
-                string mode = Application.Current.RequestedTheme == OSAppTheme.Dark ? "DarkDisabled" : "LightDisabled";
+                string mode = Xamarin.Forms.Application.Current.RequestedTheme == OSAppTheme.Dark ? "DarkDisabled" : "LightDisabled";
                 Setter themeSetter = style.Setters.First((setter) => setter.TargetName == mode);
                 return ((Color)themeSetter.Value).ToHex();
             }
@@ -55,7 +55,7 @@ namespace PagerBuddy.ViewModels {
             MessagingCenter.Subscribe<CommunicationService>(this, CommunicationService.MESSAGING_KEYS.USER_DATA_CHANGED.ToString(), (_) => userDataChanged());
             MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => userDataChanged());
 
-            Application.Current.RequestedThemeChanged += (s, a) => {
+            Xamarin.Forms.Application.Current.RequestedThemeChanged += (s, a) => {
                 OnPropertyChanged(nameof(AboutPic));
                 OnPropertyChanged(nameof(NotificationConfigPic));
                 OnPropertyChanged(nameof(SharePic));
@@ -110,7 +110,7 @@ namespace PagerBuddy.ViewModels {
                     return ImageSource.FromFile(DataService.profilePicSavePath(DataService.DATA_KEYS.USER_PHOTO.ToString()));
                 } else {
                     SvgImageSource source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.user_default.svg");
-                    Color accent = (Color) Application.Current.Resources["AccentColor"];
+                    Color accent = (Color)Xamarin.Forms.Application.Current.Resources["AccentColor"];
                     source.ReplaceStringMap = new Dictionary<string, string> { { "black", accent.ToHex() } };
                     return source;
                 }
@@ -179,5 +179,6 @@ namespace PagerBuddy.ViewModels {
                 return source;
             }
         }
+
     }
 }

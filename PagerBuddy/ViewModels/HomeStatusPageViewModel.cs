@@ -25,6 +25,8 @@ namespace PagerBuddy.ViewModels {
         private bool allSnoozed = false;
         private DateTime allSnoozedTime = DateTime.MinValue;
 
+        private bool waitRefresh = false;
+
         private string iconColor {
             get {
                 Style style = (Style) Application.Current.Resources["ActionIcons"];
@@ -85,8 +87,10 @@ namespace PagerBuddy.ViewModels {
         }
 
         private void reloadConfig() {
-            IsBusy = true;
-            RefreshConfigurationRequest?.Invoke(this, null);
+
+            if (!waitRefresh) {
+                RefreshConfigurationRequest?.Invoke(this, null);
+            }
         }
 
         public void setDeactivateState(bool state, bool init = false) {
@@ -130,6 +134,7 @@ namespace PagerBuddy.ViewModels {
             OnPropertyChanged(nameof(EmptyList));
 
             IsBusy = initialBusy && alertConfigs.Count == 0;
+            waitRefresh = false;
             OnPropertyChanged(nameof(ReloadConfigEnabled));
         }
 

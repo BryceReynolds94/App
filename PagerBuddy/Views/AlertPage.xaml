@@ -5,7 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              mc:Ignorable="d"
-             x:Class="PagerBuddy.Views.AlertPage">
+             x:Class="PagerBuddy.Views.AlertPage"
+             BackgroundColor="{StaticResource PrimaryColor}"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true">
     <ContentPage.Content>
         
         <StackLayout BackgroundColor="{StaticResource PrimaryColor}" >
@@ -25,6 +28,12 @@
 
                     <Frame Padding="0" CornerRadius="20" IsClippedToBounds="True" HeightRequest="40" VerticalOptions="Start" >
                         <Image Source="{Binding GroupPic}"/>
+                        <Frame.HasShadow>
+                            <OnPlatform x:TypeArguments="x:Boolean">
+                                <On Platform="iOS" Value="False"/>
+                                <On Platform="Android" Value="True"/>
+                            </OnPlatform>
+                        </Frame.HasShadow>
                     </Frame>
 
                     <Label Text="{Binding AlertTitle}"  Grid.Column="1" TextColor="{StaticResource PrimaryTextColor}" FontSize="Title" Margin="10,0,0,0" VerticalOptions="Center"/>
