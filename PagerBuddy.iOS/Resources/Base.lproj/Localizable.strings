@@ -1,0 +1,7 @@
+﻿/* TEST ALERT <newline> Text <newline> Timestamp */
+"TEST_ALERT_MESSAGE" = "TEST ALERT\n%@\n%@";
+/* Text <newline> Timestamp */
+"ALERT_MESSAGE" = "%@\n%@";
+
+"ALERT_TITLE" = "ALERT";
+"TEST_ALERT_TITLE" = "TEST ALERT (SILENT)";

@@ -12,38 +12,44 @@ using Xamarin.Forms;
 using PagerBuddy.Services;
 
 [assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.iOS.Permission))] //register for dependency service as platform-specific code
-namespace PagerBuddy.iOS {
-    class Permission : IiOSPermissions {
+namespace PagerBuddy.iOS
+{
+    class Permission : IiOSPermissions
+    {
 
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public async Task checkAlertPermissions(Page currentView, bool forceReprompt = false) {
-            if(!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_IOS_NOTIFICATION_PERMISSION, false) || forceReprompt) {
+        public async Task checkAlertPermissions(Page currentView, bool forceReprompt = false)
+        {
+            if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_IOS_NOTIFICATION_PERMISSION, false) || forceReprompt)
+            {
                 await requestNotificationPermission();
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_IOS_NOTIFICATION_PERMISSION, true);
             }
         }
 
-        public async void logPermissionSettings() {
+        public async void logPermissionSettings()
+        {
 
             UNNotificationSettings settings = await UNUserNotificationCenter.Current.GetNotificationSettingsAsync();
             Logger.Debug("Status of notification permissions: Sound: " + settings.SoundSetting + ", Alerts: " + settings.AlertSetting + ", Critical Alerts: " + settings.CriticalAlertSetting);
         }
 
-        public async Task<bool> requestNotificationPermission() {
-                //TODO Testing: iOS Test notification permission
+        public async Task<bool> requestNotificationPermission()
+        {
 
-                //https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1?view=net-5.0
-                Logger.Info("Requesting notification authorisation.");
+            //https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1?view=net-5.0
+            Logger.Info("Requesting notification authorisation.");
 
-                UNUserNotificationCenter center = UNUserNotificationCenter.Current;
-                UNAuthorizationOptions options = UNAuthorizationOptions.Sound | UNAuthorizationOptions.Alert | UNAuthorizationOptions.CriticalAlert;
-                Tuple<bool, NSError> tupleOut = await center.RequestAuthorizationAsync(options).ConfigureAwait(false);
-                if (tupleOut.Item2 != null) {
-                    Logger.Error(tupleOut.Item2.DebugDescription, "Error while requesting notification authorisation.");
-                }
-                Logger.Debug("Result of authorisation request: " + tupleOut.Item1);
-                return tupleOut.Item1;
+            UNUserNotificationCenter center = UNUserNotificationCenter.Current;
+            UNAuthorizationOptions options = UNAuthorizationOptions.Sound | UNAuthorizationOptions.Alert | UNAuthorizationOptions.CriticalAlert;
+            Tuple<bool, NSError> tupleOut = await center.RequestAuthorizationAsync(options).ConfigureAwait(false);
+            if (tupleOut.Item2 != null)
+            {
+                Logger.Error(tupleOut.Item2.DebugDescription, "Error while requesting notification authorisation.");
+            }
+            Logger.Debug("Result of authorisation request: " + tupleOut.Item1);
+            return tupleOut.Item1;
         }
     }
 }

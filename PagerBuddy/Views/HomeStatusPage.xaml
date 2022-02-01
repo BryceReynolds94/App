@@ -83,8 +83,8 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     <CollectionView.Footer>
-                        <StackLayout Padding="20" IsVisible="{Binding EmptyList}">
-                            <Label Text="{x:Static resources:AppResources.HomeStatusPage_Warning_EmptyList}" HorizontalTextAlignment="Center" />
+                        <StackLayout Padding="20" IsVisible="{Binding EmptyList}" VerticalOptions="FillAndExpand">
+                            <Label Text="{x:Static resources:AppResources.HomeStatusPage_Warning_EmptyList}" HorizontalTextAlignment="Center"  VerticalOptions="CenterAndExpand"/>
                         </StackLayout>
                     </CollectionView.Footer>
                 </CollectionView>

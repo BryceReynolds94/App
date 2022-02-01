@@ -22,6 +22,8 @@ namespace PagerBuddy.Views
         private readonly TelegramPeer.TYPE peerType;
 
         private Action stopRingtoneCallback;
+        public enum MESSAGING_KEYS { REQUEST_START_PAGE }
+
 
         public AlertPage(Alert alert)
         {
@@ -62,6 +64,8 @@ namespace PagerBuddy.Views
             if (Device.RuntimePlatform == Device.Android) {
                 IAndroidNavigation nav = DependencyService.Get<IAndroidNavigation>();
                 nav.quitApplication();
+            } else {
+                MessagingCenter.Send(this, MESSAGING_KEYS.REQUEST_START_PAGE.ToString());
             }
         }
 
@@ -71,6 +75,8 @@ namespace PagerBuddy.Views
                 IAndroidNavigation nav = DependencyService.Get<IAndroidNavigation>();
                 nav.navigateTelegramChat(groupID, peerType);
                 nav.quitApplication();
+            } else {
+                MessagingCenter.Send(this, MESSAGING_KEYS.REQUEST_START_PAGE.ToString());
             }
         }
 

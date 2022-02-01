@@ -26,7 +26,7 @@ namespace PagerBuddy.ViewModels {
 
             ToggleDay = new Command<string>((string rawDay) => toggleDay(rawDay));
             Cancel = new Command(() => RequestCancel?.Invoke(this, null));
-            Confirm = new Command(() => ActiveTimeResult?.Invoke(this.activeDays, this.fromTime, this.toTime, this.invertTime)); //TODO: RBF implement invert
+            Confirm = new Command(() => ActiveTimeResult?.Invoke(this.activeDays, this.fromTime, this.toTime, this.invertTime));
         }
 
         public EventHandler RequestCancel;

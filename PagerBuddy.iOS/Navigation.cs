@@ -15,8 +15,6 @@ namespace PagerBuddy.iOS {
         public bool isTelegramInstalled() {
 
             //https://www.hackingwithswift.com/example-code/system/how-to-check-whether-your-other-apps-are-installed
-
-            //TODO Testing: iOS detect Telegram installed
             bool telegramInstalled = false;
             try {
                 telegramInstalled = UIApplication.SharedApplication.CanOpenUrl(new NSUrl("telegram://test"));

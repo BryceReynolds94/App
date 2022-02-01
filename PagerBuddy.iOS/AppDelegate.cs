@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using BackgroundTasks;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
 using Firebase.CloudMessaging;
 using Foundation;
+using PagerBuddy.Models;
 using PagerBuddy.Services;
 using UIKit;
 using UserNotifications;
 
-namespace PagerBuddy.iOS
-{
+namespace PagerBuddy.iOS {
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate {
         private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
@@ -23,8 +24,10 @@ namespace PagerBuddy.iOS
         //
         // You have 17 seconds to return from this method, or iOS will terminate your application.
         //
-        public override bool FinishedLaunching(UIApplication app, NSDictionary options)
-        {
+
+        private App XFApp;
+
+        public override bool FinishedLaunching(UIApplication app, NSDictionary options) {
             global::Xamarin.Forms.Forms.Init();
 
             CachedImageRenderer.Init(); //Added to enable FFImageLoading
@@ -33,6 +36,7 @@ namespace PagerBuddy.iOS
             var ignore = typeof(SvgCachedImage); //Added to enable SVG FFImageLoading
 
             Firebase.Core.App.Configure();
+            Messaging.SharedInstance.Delegate = new MessagingDelegate();
 
             //https://developer.apple.com/documentation/uikit/app_and_environment/scenes/preparing_your_ui_to_run_in_the_background/using_background_tasks_to_update_your_app
             bool res = BGTaskScheduler.Shared.Register(ServerRequestScheduler.SERVER_REFRESH_TASK, null, new Action<BGTask>(async (BGTask task) => {
@@ -45,11 +49,10 @@ namespace PagerBuddy.iOS
 
             ApplyStyle();
 
-            LoadApplication(new App());
+            XFApp = new App(false, null);
+            LoadApplication(XFApp);
 
             UNUserNotificationCenter.Current.Delegate = new UserNotificationCenterDelegate();
-            Messaging.SharedInstance.Delegate = new MessagingDelegate();
-
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
 
             return base.FinishedLaunching(app, options);
@@ -65,8 +68,14 @@ namespace PagerBuddy.iOS
 
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken) {
-            Logger.Debug("Registered for remote notification. Device token: " + deviceToken);
-            //Do we need this? We should be receiving this in MessagingDelegate
+            Messaging.SharedInstance.ApnsToken = deviceToken;
+
+            if (!Xamarin.Forms.Forms.IsInitialized) //Not sure if this ever happens
+            {
+                Logger.Debug("Token update received in background. Initialising Platform.");
+                Xamarin.Forms.Forms.Init(); //We need to make sure Xamarin.Forms is initialised when notifications are received in killed state  
+            }
+            MessagingService.TokenRefresh(Messaging.SharedInstance.FcmToken);
         }
 
         public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error) {
@@ -79,17 +88,60 @@ namespace PagerBuddy.iOS
 
         // To receive notifications in background in any iOS version
         public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler) {
-            // If you are receiving a notification message while your app is in the background,
-            // this callback will not be fired 'till the user taps on the notification launching the application.
+            //This is called when opening a notification after received (after app is started)
 
-            // If you disable method swizzling, you'll need to call this method. 
-            // This lets FCM track message delivery and analytics, which is performed
-            // automatically with method swizzling enabled.
+            if (Xamarin.Forms.Forms.IsInitialized){
+                Logger.Debug("Received remote notification.");
+                Alert alert = extractAlertData(userInfo); //May be null
+                if (alert != null) {
+                    XFApp?.requestAlertPage(alert);
+                }
+                completionHandler(UIBackgroundFetchResult.NewData);
+            } else {
+                completionHandler(UIBackgroundFetchResult.NoData);
+            }
+        }
 
-            Logger.Info("Received remote notification.");
-            completionHandler(UIBackgroundFetchResult.NewData);
+        private Alert extractAlertData(NSDictionary data) {
+            if(data == null) {
+                return null;
+            }
 
-            //Do we need this? Should be handeled in UserNotificationCenterDelegate
+            bool res = data.TryGetValue(new NSString("zvei_description"), out NSObject descriptionR);
+            res &= data.TryGetValue(new NSString("zvei"), out NSObject zveiR);
+            res &= data.TryGetValue(new NSString("is_test_alert"), out NSObject testAlertR);
+            res &= data.TryGetValue(new NSString("is_manual_test_alert"), out NSObject manualAlertR);
+            res &= data.TryGetValue(new NSString("alert_timestamp"), out NSObject alertTimestampR);
+            res &= data.TryGetValue(new NSString("chat_id"), out NSObject chatIDR);
+
+            if (!res) {
+                Logger.Error("Error parsing remote notification data. Ignoring it.");
+                return null;
+            }
+
+            string alertTimestampS = alertTimestampR.ToString();
+            string testAlertS = testAlertR.ToString();
+            string chatIDS = chatIDR.ToString();
+            string manualAlertS = manualAlertR.ToString();
+
+            DateTime alertTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(long.Parse(alertTimestampS)).ToLocalTime();
+            AlertConfig config = getConfigFromChatID(long.Parse(chatIDS), bool.Parse(manualAlertS));
+
+            if (config != null) {
+                return new Alert(descriptionR.ToString(), alertTime, bool.Parse(testAlertS), config);
+            }
+            return null;
+        }
+
+        private AlertConfig getConfigFromChatID(long chatID, bool isManual) {
+            Collection<string> configList = DataService.getConfigList();
+            foreach (string configID in configList) {
+                AlertConfig config = DataService.getAlertConfig(configID, null);
+                if (config != null && (config.triggerGroup.serverID == chatID || isManual)) {
+                    return config;
+                }
+            }
+            return null;
         }
 
     }

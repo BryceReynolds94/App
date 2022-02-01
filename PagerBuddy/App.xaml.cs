@@ -29,6 +29,7 @@ namespace PagerBuddy
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private bool isAlert = false;
+        private MainPage mainPageMemo;
         public App(bool isAlert = false, Alert alert = null)
         {
             Logger.Debug("Starting App.");
@@ -43,15 +44,33 @@ namespace PagerBuddy
                 UpdaterService.checkUpdate(VersionTracking.PreviousBuild, VersionTracking.CurrentBuild);
             }
 
-            if (isAlert && alert != null) {
-                this.isAlert = true;
-                MainPage = new AlertPage(alert);
-                return;
-            }
+            MessagingCenter.Subscribe<AboutPage, Alert>(this, AboutPage.MESSAGING_KEYS.SHOW_ALERT_PAGE.ToString(), (sender, alert) => requestAlertPage(alert));
+            MessagingCenter.Subscribe<AlertPage>(this, AlertPage.MESSAGING_KEYS.REQUEST_START_PAGE.ToString(), (sender) => requestStartPage());
 
-            MessagingCenter.Subscribe<AboutPage,Alert>(this, AboutPage.MESSAGING_KEYS.SHOW_ALERT_PAGE.ToString(), (sender, alert) => MainPage = new AlertPage(alert));
-            MainPage = new MainPage();
-            
+            if (isAlert && alert != null) {
+                requestAlertPage(alert);
+            } else {
+                requestStartPage();
+            }
+        }
+
+        public void requestAlertPage(Alert alert) {
+            isAlert = true;
+
+            if(MainPage is MainPage) {
+                mainPageMemo = MainPage as MainPage;
+            }
+            MainPage = new AlertPage(alert);
+        }
+
+        public void requestStartPage() {
+            isAlert = false;
+
+            if (mainPageMemo != null) {
+                MainPage = mainPageMemo;
+            } else {
+                MainPage = new MainPage();
+            }
         }
 
         protected override async void OnStart(){

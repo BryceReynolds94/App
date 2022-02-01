@@ -47,8 +47,9 @@ namespace PagerBuddy.Services
             res &= bool.TryParse(manualTestR, out bool manualTest);
             res &= long.TryParse(chatIDR, out long chatID);
 
+            //TODO: RBF - We have a parse error on test alert. Test for debugging
             if (!res) {
-                Logger.Warn("Error parsing payload. Ignoring message.");
+                Logger.Warn("Error parsing payload. Ignoring message. Payload: " + string.Join(",", data));
                 return;
             }
 
