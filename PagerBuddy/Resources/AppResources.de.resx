@@ -318,4 +318,7 @@
   <data name="MenuPage_Set_SilentTest_Off" xml:space="preserve">
     <value>Probealarm laut</value>
   </data>
+  <data name="HomeStatusPage_Headline" xml:space="preserve">
+    <value>PagerBuddy-Gruppen</value>
+  </data>
 </root>

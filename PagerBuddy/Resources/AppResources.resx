@@ -439,4 +439,7 @@
   <data name="MenuPage_Set_SilentTest_Off" xml:space="preserve">
     <value>Loud test alerts</value>
   </data>
+  <data name="HomeStatusPage_Headline" xml:space="preserve">
+    <value>PagerBuddy alert groups</value>
+  </data>
 </root>

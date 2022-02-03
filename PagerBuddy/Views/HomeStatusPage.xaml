@@ -19,30 +19,33 @@
             <StackLayout>
                 <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding alertList}">
                     <CollectionView.Header>
-                        <StackLayout Orientation="Horizontal" Padding="0,5,0,0">
-                            <StackLayout.IsVisible>
-                                <OnPlatform x:TypeArguments="x:Boolean">
-                                    <On Platform="iOS" Value="False"/>
-                                    <On Platform="Android" Value="True"/>
-                                </OnPlatform>
-                            </StackLayout.IsVisible>
-                            <StackLayout.HeightRequest>
-                                <OnPlatform x:TypeArguments="x:Double">
-                                    <On Platform="iOS" Value="0"/>
-                                    <On Platform="Android" Value="50"/>
-                                </OnPlatform>
-                            </StackLayout.HeightRequest>
-                            <ImageButton Source="{Binding AllDeactivateIcon}" WidthRequest="50" Style="{StaticResource ImageButtonStyle}"
-                             CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding DeactivateAll}" />
-                            <ImageButton Source="{Binding AllSnoozeIcon}" WidthRequest="50" Style="{StaticResource ImageButtonStyle}"
-                             CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding SnoozeAll}"/>
-                            <ImageButton Source="{Binding AllTimeIcon}" WidthRequest="50" Style="{StaticResource ImageButtonStyle}"
-                             CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding TimeAll}"/>
+                        <StackLayout>
+                            <OnPlatform x:TypeArguments="View">
+                                <On Platform="Android">
+                                    <StackLayout Orientation="Horizontal" Padding="0,5,0,0" HeightRequest="50">
+                                        <ImageButton Source="{Binding AllDeactivateIcon}" WidthRequest="50" Style="{StaticResource ImageButtonStyle}"
+                                            CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding DeactivateAll}" />
+                                        <ImageButton Source="{Binding AllSnoozeIcon}" WidthRequest="50" Style="{StaticResource ImageButtonStyle}"
+                                            CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding SnoozeAll}"/>
+                                        <ImageButton Source="{Binding AllTimeIcon}" WidthRequest="50" Style="{StaticResource ImageButtonStyle}"
+                                            CornerRadius="25" HorizontalOptions="CenterAndExpand" Command="{Binding TimeAll}"/>
+                                    </StackLayout>
+                                </On>
+                                <On Platform="iOS">
+                                    <Label Text="{x:Static resources:AppResources.HomeStatusPage_Headline}" HeightRequest="55" Padding="20,0" VerticalTextAlignment="Center"/>
+                                </On>
+                            </OnPlatform>
                         </StackLayout>
                     </CollectionView.Header>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout Padding="10,10,10,0">
+                            <StackLayout>
+                                <StackLayout.Padding>
+                                    <OnPlatform x:TypeArguments="Thickness">
+                                        <On Platform="Android" Value="10,10,10,0"/>
+                                        <On Platform="iOS" Value="10,10,15,0"/>
+                                    </OnPlatform>
+                                </StackLayout.Padding>
                                 <Frame x:Name="Backdrop" Style="{StaticResource FrameStyleOff}"  CornerRadius="10" Padding="10" >
                                     <Frame.Triggers>
                                         <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference SwitchIsActive}, Path=IsToggled}" Value="True">

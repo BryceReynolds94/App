@@ -502,6 +502,15 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PagerBuddy alert groups.
+        /// </summary>
+        public static string HomeStatusPage_Headline {
+            get {
+                return ResourceManager.GetString("HomeStatusPage_Headline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string HomeStatusPage_Snooze_Cancel {
