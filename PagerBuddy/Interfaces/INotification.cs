@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace PagerBuddy.Interfaces
 {
     public interface INotifications {
-        void showAlertNotification(Alert alert);
+        void showAlertNotification(Alert alert, int percentVolume);
         void showToast(string message);
     }
     public interface IiOSNotifications : INotifications {

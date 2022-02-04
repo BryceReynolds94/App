@@ -60,7 +60,7 @@ namespace PagerBuddy.iOS {
 
         private void ApplyStyle() {
             UIColor accent = new UIColor(red: new nfloat(0.35), green: new nfloat(0.45), blue: new nfloat(0.79), alpha: new nfloat(1));
-            UIColor primary = new UIColor(red: new nfloat(0.11), green: new nfloat(0.29), blue: new nfloat(0.60), alpha: new nfloat(1));
+            //UIColor primary = new UIColor(red: new nfloat(0.11), green: new nfloat(0.29), blue: new nfloat(0.60), alpha: new nfloat(1));
 
             UISwitch.Appearance.OnTintColor = accent;
 
@@ -108,7 +108,7 @@ namespace PagerBuddy.iOS {
             }
 
             bool res = data.TryGetValue(new NSString("zvei_description"), out NSObject descriptionR);
-            res &= data.TryGetValue(new NSString("zvei"), out NSObject zveiR);
+            //res &= data.TryGetValue(new NSString("zvei"), out NSObject zveiR);
             res &= data.TryGetValue(new NSString("is_test_alert"), out NSObject testAlertR);
             res &= data.TryGetValue(new NSString("is_manual_test_alert"), out NSObject manualAlertR);
             res &= data.TryGetValue(new NSString("alert_timestamp"), out NSObject alertTimestampR);

@@ -32,6 +32,7 @@
     <None Remove="Resources\Images\icon_phone.svg" />
     <None Remove="Resources\Images\icon_settings.svg" />
     <None Remove="Resources\Images\icon_share.svg" />
+    <None Remove="Resources\Images\icon_volume_half.svg" />
     <None Remove="Resources\Images\icon_volume_off.svg" />
     <None Remove="Resources\Images\icon_volume_on.svg" />
     <None Remove="Resources\Images\user_default.svg" />
@@ -57,6 +58,7 @@
     <EmbeddedResource Include="Resources\Images\icon_phone.svg" />
     <EmbeddedResource Include="Resources\Images\icon_settings.svg" />
     <EmbeddedResource Include="Resources\Images\icon_share.svg" />
+    <EmbeddedResource Include="Resources\Images\icon_volume_half.svg" />
     <EmbeddedResource Include="Resources\Images\icon_volume_off.svg" />
     <EmbeddedResource Include="Resources\Images\icon_volume_on.svg" />
     <EmbeddedResource Include="Resources\Images\user_default.svg" />
@@ -65,6 +67,7 @@
     <PackageReference Include="libphonenumber-csharp" Version="8.12.38" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NLog" Version="4.7.13" />
+    <PackageReference Include="SkiaSharp" Version="2.80.3" />
     <PackageReference Include="Telega" Version="0.5.1" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />

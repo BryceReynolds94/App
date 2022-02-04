@@ -33,8 +33,8 @@ namespace PagerBuddy.Droid {
         public static readonly string STANDARD_CHANNEL_ID = "de.bartunik.pagerbuddy.standard";
 
         
-        public void showAlertNotification(Alert alert) {
-            prepareAlert();
+        public void showAlertNotification(Alert alert, int percentVolume) {
+            prepareAlert(percentVolume/100);
 
             Intent intent = new Intent(Application.Context, typeof(MainActivity))
                 .SetFlags(ActivityFlags.NewTask | ActivityFlags.MultipleTask | ActivityFlags.ExcludeFromRecents)
@@ -81,7 +81,7 @@ namespace PagerBuddy.Droid {
             manager.Cancel(notificationID);
         }
 
-        private void prepareAlert() {
+        private void prepareAlert(float volumeFactor) {
             //Disable DND if possible
             NotificationManager manager = NotificationManager.FromContext(Application.Context);
             if (manager.CurrentInterruptionFilter != InterruptionFilter.All && manager.IsNotificationPolicyAccessGranted) {
@@ -89,13 +89,20 @@ namespace PagerBuddy.Droid {
                 manager.SetInterruptionFilter(InterruptionFilter.All);
             }
 
-            //Set Max Volume if possible
+            //Set  Volume if possible
             AudioManager audioManager = AudioManager.FromContext(Application.Context);
             if (!audioManager.IsVolumeFixed) //do not bother with devices that do not have volume control
             {
                 try {
-                    audioManager.SetStreamVolume(Android.Media.Stream.Notification, audioManager.GetStreamMaxVolume(Android.Media.Stream.Notification), 0);
-                    audioManager.SetStreamVolume(Android.Media.Stream.Ring, audioManager.GetStreamMaxVolume(Android.Media.Stream.Ring), 0); //also have to set ringer high for Samsung devices
+                    int NminVol = audioManager.GetStreamMinVolume(Android.Media.Stream.Notification);
+                    int NmaxVol = audioManager.GetStreamMaxVolume(Android.Media.Stream.Notification);
+                    int NVolIndex = (int) Math.Round((NmaxVol - NminVol) * volumeFactor + NminVol);
+                    audioManager.SetStreamVolume(Android.Media.Stream.Notification, NVolIndex, 0);
+
+                    int RminVol = audioManager.GetStreamMinVolume(Android.Media.Stream.Ring);
+                    int RmaxVol = audioManager.GetStreamMaxVolume(Android.Media.Stream.Ring);
+                    int RVolIndex = (int) Math.Round((RmaxVol - RminVol) * volumeFactor + RminVol);
+                    audioManager.SetStreamVolume(Android.Media.Stream.Ring, RVolIndex, 0); //also have to set ringer high for Samsung devices
                 } catch (Exception e) {
                     Logger.Warn(e, "Could not set volume. Probably due to insufficient permissions");
                 }

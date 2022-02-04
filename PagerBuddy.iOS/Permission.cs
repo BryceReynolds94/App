@@ -17,13 +17,13 @@ namespace PagerBuddy.iOS
     class Permission : IiOSPermissions
     {
 
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public async Task checkAlertPermissions(Page currentView, bool forceReprompt = false)
         {
             if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_IOS_NOTIFICATION_PERMISSION, false) || forceReprompt)
             {
-                await requestNotificationPermission();
+                _ = requestNotificationPermission();
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_IOS_NOTIFICATION_PERMISSION, true);
             }
         }
@@ -43,7 +43,7 @@ namespace PagerBuddy.iOS
 
             UNUserNotificationCenter center = UNUserNotificationCenter.Current;
             UNAuthorizationOptions options = UNAuthorizationOptions.Sound | UNAuthorizationOptions.Alert | UNAuthorizationOptions.CriticalAlert;
-            Tuple<bool, NSError> tupleOut = await center.RequestAuthorizationAsync(options).ConfigureAwait(false);
+            Tuple<bool, NSError> tupleOut = await center.RequestAuthorizationAsync(options);
             if (tupleOut.Item2 != null)
             {
                 Logger.Error(tupleOut.Item2.DebugDescription, "Error while requesting notification authorisation.");

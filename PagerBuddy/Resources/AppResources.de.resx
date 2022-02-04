@@ -312,13 +312,28 @@
   <data name="MenuPager_TestNotification_Warning" xml:space="preserve">
     <value>Ok. Ich werden in 5 Sekunden einen Testalarm starten.</value>
   </data>
-  <data name="MenuPage_Set_SilentTest_On" xml:space="preserve">
+  <data name="MenuPage_Set_TestVol_Off" xml:space="preserve">
     <value>Probealarm stumm</value>
   </data>
-  <data name="MenuPage_Set_SilentTest_Off" xml:space="preserve">
+  <data name="MenuPage_Set_TestVol_Full" xml:space="preserve">
     <value>Probealarm laut</value>
   </data>
   <data name="HomeStatusPage_Headline" xml:space="preserve">
     <value>PagerBuddy-Gruppen</value>
+  </data>
+  <data name="MenuPage_Set_TestVol_Half" xml:space="preserve">
+    <value>Probealarm 50%</value>
+  </data>
+  <data name="AndroidPermission_HibernationExclude_Title" xml:space="preserve">
+    <value>App-Ruhezustand deaktivieren</value>
+  </data>
+  <data name="AndroidPermission_HibernationExclude_Message" xml:space="preserve">
+    <value>Selten geöffnete Apps können von Android deaktiviert werden. Deaktiviere den Ruhezustand für PagerBuddy in deinen Systemeinstellungen ("Berechtigungen löschen...") um sicherzustellen, dass du Benachrichtigungen empfängst.</value>
+  </data>
+  <data name="AndroidPermission_HibernationExclude_Confirm" xml:space="preserve">
+    <value>Bring mich dorthin</value>
+  </data>
+  <data name="AndroidPermission_HibernationExclude_Cancel" xml:space="preserve">
+    <value>Nein</value>
   </data>
 </root>

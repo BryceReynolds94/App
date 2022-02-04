@@ -17,7 +17,7 @@ namespace PagerBuddy.iOS {
 
             //Ensure APNS are shown even if in foreground
             //https://iosarchitect.com/show-push-notifications-when-app-running-in-foreground-ios-swift/
-            completionHandler(UNNotificationPresentationOptions.Banner);
+            completionHandler(UNNotificationPresentationOptions.Banner | UNNotificationPresentationOptions.Sound);
         }
 
     }

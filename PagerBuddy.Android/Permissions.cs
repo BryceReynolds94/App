@@ -43,10 +43,10 @@ namespace PagerBuddy.Droid {
 
         private async Task permissionHibernationExclusion(Page currentView) {
             //TODO: Later - Implement with Android 12
-            bool confirmed = await currentView.DisplayAlert("Exempt from Hibernation", //TODO: Later - Remove static string
-               "To ensure working need no hibernation",
-              AppResources.HomeStatusPage_DNDPermissionPrompt_Confirm,
-              AppResources.HomeStatusPage_DNDPermissionPrompt_Cancel);
+            bool confirmed = await currentView.DisplayAlert(AppResources.AndroidPermission_HibernationExclude_Title,
+               AppResources.AndroidPermission_HibernationExclude_Message,
+              AppResources.AndroidPermission_HibernationExclude_Confirm,
+              AppResources.AndroidPermission_HibernationExclude_Cancel);
 
             if (confirmed) {
                 //https://github.com/androidx/androidx/blob/androidx-main/core/core/src/main/java/androidx/core/content/IntentCompat.java
@@ -86,8 +86,8 @@ namespace PagerBuddy.Droid {
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
             }
             if(!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, false) || forceReprompt) {
-                //await permissionHibernationExclusion(currentView);
-                //DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, true);
+                await permissionHibernationExclusion(currentView);
+                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, true);
             }
         }
     }

@@ -23,13 +23,14 @@ namespace PagerBuddy.iOS {
             });
         }
 
-        public void showAlertNotification(Alert alert) {
+        public void showAlertNotification(Alert alert, int percentVolume) {
 
-            UNMutableNotificationContent content = new UNMutableNotificationContent();
-            content.Title = alert.title;
-            content.Body = alert.description;
-            content.InterruptionLevel = UNNotificationInterruptionLevel.Critical;
-            content.Sound = UNNotificationSound.GetCriticalSound("pagerbuddy_sound_long.wav");
+            UNMutableNotificationContent content = new UNMutableNotificationContent {
+                Title = alert.title,
+                Body = alert.description,
+                InterruptionLevel = UNNotificationInterruptionLevel.Critical,
+                Sound = UNNotificationSound.GetCriticalSound("pagerbuddy_sound_long.wav")
+            };
 
             UNNotificationTrigger trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(5, false);
 

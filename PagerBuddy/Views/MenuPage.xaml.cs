@@ -15,7 +15,7 @@ namespace PagerBuddy.Views {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MenuPage : ContentPage {
 
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         MainPage RootPage { get => Application.Current.MainPage as MainPage; }
 
         public enum MENU_PAGE { AboutPage, LogoutUser, NotificationSettings, Share, Login, Website, Close };
@@ -53,11 +53,11 @@ namespace PagerBuddy.Views {
                 if (Device.RuntimePlatform == Device.Android) {
                     Task.Delay(5000).ContinueWith((t) => {
                         Logger.Info("Sending notification test message now.");
-                        notifications.showAlertNotification(new Alert(AppResources.MenuPage_TestNotification_Message, DateTime.Now, false, config));
+                        notifications.showAlertNotification(new Alert(AppResources.MenuPage_TestNotification_Message, DateTime.Now, false, config), 100);
                     });
                 } else {
                     Logger.Info("Scheduling notification test message.");
-                    notifications.showAlertNotification(new Alert(AppResources.MenuPage_TestNotification_Message, DateTime.Now, false, config));
+                    notifications.showAlertNotification(new Alert(AppResources.MenuPage_TestNotification_Message, DateTime.Now, false, config), 100);
                 }
                 requestNavigation(this, MENU_PAGE.Close);
             } else {

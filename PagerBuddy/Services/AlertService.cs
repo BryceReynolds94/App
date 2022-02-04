@@ -84,12 +84,10 @@ namespace PagerBuddy.Services {
             if (Device.RuntimePlatform == Device.Android) {
                 Logger.Info("Alert was detected. Posting it to notifications.");
 
+                int volume = alert.isTestAlert ? DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_TEST_VOLUME, 50) : 100;
+
                 IAndroidNotifications notifications = DependencyService.Get<IAndroidNotifications>();
-                if (alert.isTestAlert && DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SILENT_TEST, true)) {
-                    notifications.showStandardNotification(alert.title, alert.description);
-                } else {
-                    notifications.showAlertNotification(alert);
-                }
+                notifications.showAlertNotification(alert, volume);
             }
         }
 

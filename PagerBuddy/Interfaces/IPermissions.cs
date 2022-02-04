@@ -15,7 +15,6 @@ namespace PagerBuddy.Interfaces
     }
 
     public interface IiOSPermissions : IPermissions {
-        Task<bool> requestNotificationPermission();
     }
 
     public interface IAndroidPermissions : IPermissions {

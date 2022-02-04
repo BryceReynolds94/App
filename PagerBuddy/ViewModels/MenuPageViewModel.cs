@@ -19,7 +19,7 @@ namespace PagerBuddy.ViewModels {
         public Command Website { get; set; }
 
         public Command AlertTest { get; set; }
-        public Command ToggleSilentTest { get; set; }
+        public Command ToggleTestVolume { get; set; }
 
         private string iconColor {
             get {
@@ -50,7 +50,7 @@ namespace PagerBuddy.ViewModels {
             Profile = new Command(() => RequestNavigation?.Invoke(this, MenuPage.MENU_PAGE.Login));
             Website = new Command(() => RequestNavigation?.Invoke(this, MenuPage.MENU_PAGE.Website));
             AlertTest = new Command(() => RequestTestAlert?.Invoke(this, null));
-            ToggleSilentTest = new Command(() => toggleSilentTest());
+            ToggleTestVolume = new Command(() => toggleTestVolume());
 
             MessagingCenter.Subscribe<CommunicationService>(this, CommunicationService.MESSAGING_KEYS.USER_DATA_CHANGED.ToString(), (_) => userDataChanged());
             MessagingCenter.Subscribe<MainPage>(this, MainPage.MESSAGING_KEYS.LOGOUT_USER.ToString(), (_) => userDataChanged());
@@ -90,18 +90,20 @@ namespace PagerBuddy.ViewModels {
             }
         }
 
-        private void toggleSilentTest() {
-            bool oldVal = DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SILENT_TEST, true);
-            DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SILENT_TEST, !oldVal);
+        public bool ToggleTestVolumeActive => Device.RuntimePlatform != Device.iOS;
 
-            OnPropertyChanged(nameof(SilentTestAlert));
-            OnPropertyChanged(nameof(SilentTestAlertPic));
+        private void toggleTestVolume() {
+            int newVal = (TestVolume + 50) % 150;
+
+            DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_TEST_VOLUME, newVal);
+
+            OnPropertyChanged(nameof(TestVolume));
+            OnPropertyChanged(nameof(TestVolumePic));
 
         }
 
-        public bool SilentTestAlert {
-            get => DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_SILENT_TEST, true);
-            set => DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SILENT_TEST, value);
+        public int TestVolume {
+            get => DataService.getConfigValue(DataService.DATA_KEYS.CONFIG_TEST_VOLUME, 50);
         }
 
         public ImageSource UserPic {
@@ -137,16 +139,23 @@ namespace PagerBuddy.ViewModels {
             }
         }
 
-        public ImageSource SilentTestAlertPic {
+        public ImageSource TestVolumePic {
             get {
 
                 SvgImageSource source;
-                if(SilentTestAlert) {
-                    source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_volume_off.svg");
-                } else {
+                if(TestVolume == 100) {
                     source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_volume_on.svg");
+                } else if(TestVolume == 50){
+                    source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_volume_half.svg");
+                } else {
+                    source = SvgImageSource.FromResource("PagerBuddy.Resources.Images.icon_volume_off.svg");
                 }
-                source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColor } };
+
+                if (!ToggleTestVolumeActive) {
+                    source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColorDisabled } };
+                } else {
+                    source.ReplaceStringMap = new Dictionary<string, string>() { { "black", iconColor } };
+                }
                 return source;
             }
         }

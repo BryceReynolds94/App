@@ -433,13 +433,28 @@
   <data name="MenuPager_TestNotification_Warning" xml:space="preserve">
     <value>Ok. I will start an alert test in 5 seconds.</value>
   </data>
-  <data name="MenuPage_Set_SilentTest_On" xml:space="preserve">
-    <value>Silent test alerts</value>
+  <data name="MenuPage_Set_TestVol_Off" xml:space="preserve">
+    <value>Test alerts silent</value>
   </data>
-  <data name="MenuPage_Set_SilentTest_Off" xml:space="preserve">
-    <value>Loud test alerts</value>
+  <data name="MenuPage_Set_TestVol_Full" xml:space="preserve">
+    <value>Test alerts loud</value>
   </data>
   <data name="HomeStatusPage_Headline" xml:space="preserve">
     <value>PagerBuddy alert groups</value>
+  </data>
+  <data name="MenuPage_Set_TestVol_Half" xml:space="preserve">
+    <value>Test alerts 50%</value>
+  </data>
+  <data name="AndroidPermission_HibernationExclude_Title" xml:space="preserve">
+    <value>Disable App Hibernation</value>
+  </data>
+  <data name="AndroidPermission_HibernationExclude_Message" xml:space="preserve">
+    <value>Apps that are not opened frequently may be deactivated by Android. To ensure PagerBuddy is not effected, you can disable hibernation for this app in your system settings under "Remove permissions...".</value>
+  </data>
+  <data name="AndroidPermission_HibernationExclude_Cancel" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="AndroidPermission_HibernationExclude_Confirm" xml:space="preserve">
+    <value>Take me there</value>
   </data>
 </root>

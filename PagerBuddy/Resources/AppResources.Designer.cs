@@ -394,6 +394,42 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string AndroidPermission_HibernationExclude_Cancel {
+            get {
+                return ResourceManager.GetString("AndroidPermission_HibernationExclude_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Take me there.
+        /// </summary>
+        public static string AndroidPermission_HibernationExclude_Confirm {
+            get {
+                return ResourceManager.GetString("AndroidPermission_HibernationExclude_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apps that are not opened frequently may be deactivated by Android. To ensure PagerBuddy is not effected, you can disable hibernation for this app in your system settings under &quot;Remove permissions...&quot;..
+        /// </summary>
+        public static string AndroidPermission_HibernationExclude_Message {
+            get {
+                return ResourceManager.GetString("AndroidPermission_HibernationExclude_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable App Hibernation.
+        /// </summary>
+        public static string AndroidPermission_HibernationExclude_Title {
+            get {
+                return ResourceManager.GetString("AndroidPermission_HibernationExclude_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pagerbuddy@bartunik.de.
         /// </summary>
         public static string App_DeveloperContact {
@@ -952,20 +988,29 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loud test alerts.
+        ///   Looks up a localized string similar to Test alerts loud.
         /// </summary>
-        public static string MenuPage_Set_SilentTest_Off {
+        public static string MenuPage_Set_TestVol_Full {
             get {
-                return ResourceManager.GetString("MenuPage_Set_SilentTest_Off", resourceCulture);
+                return ResourceManager.GetString("MenuPage_Set_TestVol_Full", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Silent test alerts.
+        ///   Looks up a localized string similar to Test alerts 50%.
         /// </summary>
-        public static string MenuPage_Set_SilentTest_On {
+        public static string MenuPage_Set_TestVol_Half {
             get {
-                return ResourceManager.GetString("MenuPage_Set_SilentTest_On", resourceCulture);
+                return ResourceManager.GetString("MenuPage_Set_TestVol_Half", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test alerts silent.
+        /// </summary>
+        public static string MenuPage_Set_TestVol_Off {
+            get {
+                return ResourceManager.GetString("MenuPage_Set_TestVol_Off", resourceCulture);
             }
         }
         
