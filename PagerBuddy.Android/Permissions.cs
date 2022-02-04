@@ -58,6 +58,7 @@ namespace PagerBuddy.Droid {
                 if(Build.VERSION.SdkInt > BuildVersionCodes.R){
                     intentString = Settings.ActionApplicationDetailsSettings;
                 } else{
+
                     intentString = Intent.ActionAutoRevokePermissions;
                 }
                 Intent intent = new Intent(intentString).SetData(Android.Net.Uri.FromParts("package", Application.Context.PackageName, null));
@@ -85,9 +86,12 @@ namespace PagerBuddy.Droid {
                 await permissionNotificationPolicyAccess(currentView);
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
             }
-            if(!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, false) || forceReprompt) {
-                await permissionHibernationExclusion(currentView);
-                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, true);
+            //TODO: Later - Implement for API <30 once AndroidX.Core v1.7.0 is available
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.R) {
+                if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, false) || forceReprompt) {
+                    await permissionHibernationExclusion(currentView);
+                    DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, true);
+                }
             }
         }
     }
