@@ -31,8 +31,6 @@ namespace PagerBuddy.Views {
             viewModel.requestRestartClient += restartClient;
             viewModel.requestShareLog += shareLog;
             viewModel.requestShowAlertPage += showAlertPage;
-
-            //TODO: Make test alert available to public
             viewModel.requestTestFCMMessage += testFCMMessage;
             viewModel.requestClearData += clearData;
             viewModel.requestCheckPermissions += checkPermissions;

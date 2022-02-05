@@ -42,7 +42,6 @@ namespace PagerBuddy.Droid {
         }
 
         private async Task permissionHibernationExclusion(Page currentView) {
-            //TODO: Later - Implement with Android 12
             bool confirmed = await currentView.DisplayAlert(AppResources.AndroidPermission_HibernationExclude_Title,
                AppResources.AndroidPermission_HibernationExclude_Message,
               AppResources.AndroidPermission_HibernationExclude_Confirm,
@@ -77,6 +76,7 @@ namespace PagerBuddy.Droid {
             UsageStatsManager usage = (UsageStatsManager) Application.Context.GetSystemService("usagestats");
             Logger.Debug("App currently in standby bucket: " + usage.AppStandbyBucket);
 
+            
             //TODO: Later - Add logging for hibernation exemption
         }
 

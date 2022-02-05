@@ -36,7 +36,7 @@ namespace PagerBuddy.Services
 
             bool res;
             res = data.TryGetValue("alert_timestamp", out string timestampR);
-            res &= data.TryGetValue("zvei", out string zvei);
+            //res &= data.TryGetValue("zvei", out string zvei);
             res &= data.TryGetValue("is_test_alert", out string testAlertR);
             res &= data.TryGetValue("zvei_description", out string description);
             res &= data.TryGetValue("chat_id", out string chatIDR);
@@ -47,7 +47,7 @@ namespace PagerBuddy.Services
             res &= bool.TryParse(manualTestR, out bool manualTest);
             res &= long.TryParse(chatIDR, out long chatID);
 
-            //TODO: RBF - We have a parse error on test alert. Test for debugging
+            //TODO: BUG - We have a parse error on test alert. Not reproducible!
             if (!res) {
                 Logger.Warn("Error parsing payload. Ignoring message. Payload: " + string.Join(",", data));
                 return;
