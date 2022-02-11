@@ -79,6 +79,25 @@ namespace PagerBuddy.Services {
             }
         }
 
+        public static void logAlert(Alert alert) {
+
+            Collection<string> configIDs = DataService.getConfigList();
+            if (configIDs.Count < 1) {
+                Logger.Debug("Configuration list is empty.");
+                return;
+            }
+
+            foreach (string id in configIDs) {
+                AlertConfig config = DataService.getAlertConfig(id, null);
+                if (config != null && config.triggerGroup.serverID == alert.chatID) {
+                    if (!alert.isTestAlert) {
+                        config.setLastTriggered(alert.timestamp);
+                    }
+                    return;
+                }
+            }
+        }
+
         private static void alertMessage(Alert alert) {
 
             if (Device.RuntimePlatform == Device.Android) {

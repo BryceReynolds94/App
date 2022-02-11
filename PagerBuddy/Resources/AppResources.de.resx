@@ -310,7 +310,7 @@
     <value>Testalarm</value>
   </data>
   <data name="MenuPager_TestNotification_Warning" xml:space="preserve">
-    <value>Ok. Ich werden in 5 Sekunden einen Testalarm starten.</value>
+    <value>Ok. Ich werde in 5 Sekunden einen Testalarm starten.</value>
   </data>
   <data name="MenuPage_Set_TestVol_Off" xml:space="preserve">
     <value>Probealarm stumm</value>

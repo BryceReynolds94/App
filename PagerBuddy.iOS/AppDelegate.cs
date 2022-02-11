@@ -94,6 +94,7 @@ namespace PagerBuddy.iOS {
                 Logger.Debug("Received remote notification.");
                 Alert alert = extractAlertData(userInfo); //May be null
                 if (alert != null) {
+                    AlertService.logAlert(alert);
                     XFApp?.requestAlertPage(alert);
                 }
                 completionHandler(UIBackgroundFetchResult.NewData);
