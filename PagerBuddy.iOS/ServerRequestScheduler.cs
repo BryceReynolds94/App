@@ -57,7 +57,7 @@ namespace PagerBuddy.iOS {
         }
 
         public void scheduleRequest(Collection<AlertConfig> request, string botServerUser) {
-            _ = scheduleRequest(request, botServerUser, 10);
+            _ = scheduleRequest(request, botServerUser, 5);
         }
 
         private async Task scheduleRequest(Collection<AlertConfig> request, string botServerUser, int delay) {
@@ -75,7 +75,7 @@ namespace PagerBuddy.iOS {
                     Logger.Info("Could not complete server request in alotted background time. Rescheduling.");
 
                     BGAppRefreshTaskRequest req = new BGAppRefreshTaskRequest(SERVER_REFRESH_TASK);
-                    req.EarliestBeginDate = NSDate.Now.AddSeconds(10); //Reset backoff when commiting task to background
+                    req.EarliestBeginDate = NSDate.Now.AddSeconds(5); //Reset backoff when commiting task to background
 
                     bool res = BGTaskScheduler.Shared.Submit(req, out NSError error);
                     if (!res) {

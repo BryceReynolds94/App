@@ -45,7 +45,11 @@ namespace PagerBuddy.Services
             res &= long.TryParse(timestampR, out long timestamp);
             res &= bool.TryParse(testAlertR, out bool testAlert);
             res &= bool.TryParse(manualTestR, out bool manualTest);
-            res &= long.TryParse(chatIDR, out long chatID);
+
+            if(!long.TryParse(chatIDR, out long chatID)) {
+                res &= double.TryParse(chatIDR, out double chatIDD);
+                chatID = (long)chatIDD;
+            }
 
             //TODO: BUG - We have a parse error on test alert. Not reproducible!
             if (!res) {

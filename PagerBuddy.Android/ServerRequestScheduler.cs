@@ -39,7 +39,7 @@ namespace PagerBuddy.Droid {
             ComponentName componentName = new ComponentName(Application.Context, Java.Lang.Class.FromType(typeof(ServerRequestService)));
             JobInfo.Builder builder = new JobInfo.Builder(SERVER_REQUEST_ID, componentName);
             builder.SetBackoffCriteria(1 * 60 * 1000, BackoffPolicy.Linear); //Initially set for 1min, use linear back off (capped at 5h by Android)
-            builder.SetMinimumLatency(10 * 1000); //Initially wait 10s to reduce flooding
+            builder.SetMinimumLatency(5 * 1000); //Initially wait 5s to reduce flooding
             builder.SetPersisted(true); //Do not loose service on reboot -- need RECEIVE_BOOT_COMPLETED permission
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.P) {
