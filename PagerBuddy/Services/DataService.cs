@@ -47,7 +47,7 @@ namespace PagerBuddy.Services {
             Preferences.Clear();
             setConfigValue(DATA_KEYS.DEVELOPER_MODE, developerMode);
             setConfigValue(DATA_KEYS.HAS_PROMPTED_WELCOME, hasPromptedWelcome);
-            setConfigValue(DATA_KEYS.BUILD_UPDATE_COMPLETE, VersionTracking.CurrentBuild);
+            setConfigValue(DATA_KEYS.BUILD_UPDATE_COMPLETE, int.Parse(VersionTracking.CurrentBuild));
         }
 
 
