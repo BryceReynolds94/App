@@ -73,8 +73,12 @@ namespace PagerBuddy.Droid {
             NotificationManager manager = NotificationManager.FromContext(Application.Context);
             Logger.Debug("Status of DND policy access: " + manager.IsNotificationPolicyAccessGranted);
 
-            UsageStatsManager usage = (UsageStatsManager) Application.Context.GetSystemService("usagestats");
-            Logger.Debug("App currently in standby bucket: " + usage.AppStandbyBucket);
+            try {
+                UsageStatsManager usage = (UsageStatsManager)Application.Context.GetSystemService("usagestats");
+                Logger.Debug("App currently in standby bucket: " + usage.AppStandbyBucket);
+            }catch(Exception e) {
+                Logger.Info(e, "Could not determine app standy bucket.");
+            }
 
             
             //TODO: Later - Add logging for hibernation exemption
