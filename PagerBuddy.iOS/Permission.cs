@@ -19,7 +19,9 @@ namespace PagerBuddy.iOS
 
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task checkAlertPermissions(Page currentView, bool forceReprompt = false)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_IOS_NOTIFICATION_PERMISSION, false) || forceReprompt)
             {
