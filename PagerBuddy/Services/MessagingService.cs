@@ -51,7 +51,6 @@ namespace PagerBuddy.Services
                 chatID = (long)chatIDD;
             }
 
-            //TODO: BUG - We have a parse error on test alert. Not reproducible!
             if (!res) {
                 Logger.Warn("Error parsing payload. Ignoring message. Payload: " + string.Join(",", data));
                 return;
