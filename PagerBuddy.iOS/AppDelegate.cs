@@ -125,11 +125,24 @@ namespace PagerBuddy.iOS {
             string chatIDS = chatIDR.ToString();
             string manualAlertS = manualAlertR.ToString();
 
-            DateTime alertTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(long.Parse(alertTimestampS)).ToLocalTime();
-            AlertConfig config = getConfigFromChatID(long.Parse(chatIDS), bool.Parse(manualAlertS));
+            if(!bool.TryParse(manualAlertS, out bool manualAlert)) {
+                Logger.Warn("Could not parse manual alert from data. Using default value. String value was: " + manualAlertS);
+                manualAlert = false;
+            }
+            if (!bool.TryParse(testAlertS, out bool testAlert)) {
+                Logger.Warn("Could not parse test alert from data. Using default value. String value was: " + testAlertS);
+                testAlert = false;
+            }
+            if (!long.TryParse(alertTimestampS, out long alertTimestamp) || !long.TryParse(chatIDS, out long chatID)) {
+                Logger.Error("Could not parse alert data. Ignoring message. Payload: " + data.ToString());
+                return null;
+            }
+
+            DateTime alertTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(alertTimestamp).ToLocalTime();
+            AlertConfig config = getConfigFromChatID(chatID, manualAlert);
 
             if (config != null) {
-                return new Alert(descriptionR.ToString(), alertTime, bool.Parse(testAlertS), config);
+                return new Alert(descriptionR.ToString(), alertTime, testAlert, config);
             }
             return null;
         }
