@@ -59,9 +59,7 @@ namespace PagerBuddy.Services {
                     if (isManualTest) {
                         Logger.Debug("Message is a manual test alert.");
                         alertMessage(new Alert(message, timestamp, isTestAlert, config));
-                        return;
-                    }
-                    if (config.isAlert(timestamp)) {
+                    }else if (config.isAlert(timestamp)) {
                         DateTime referenceTime = DateTime.Now.Subtract(new TimeSpan(0, 10, 0)); //grace period of 10min
                         if (timestamp < referenceTime) //timestamp is older than referenceTime
                         {
@@ -74,9 +72,10 @@ namespace PagerBuddy.Services {
                             alertMessage(new Alert(message, timestamp, isTestAlert, config));
                         }
                     }
-                    break;
+                    return;
                 }
             }
+            Logger.Info("No config found that matches the chatID: " + chatID);
         }
 
         public static void logAlert(Alert alert) {

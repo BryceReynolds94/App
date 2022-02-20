@@ -121,13 +121,31 @@ namespace PagerBuddy.Views {
                         Logger.Error("Retrieving known alert returned null. Will stop here.");
                         return;
                     }
-                    AlertService.checkMessage(AppResources.AboutPage_DeveloperMode_TestNotification_Message, config.triggerGroup.serverID, DateTime.Now, false, false);
+                    simulateFCMPayload(config);
+                    //AlertService.checkMessage(AppResources.AboutPage_DeveloperMode_TestNotification_Message, config.triggerGroup.serverID, DateTime.Now, false, false);
                 } else {
                     Logger.Warn("Could not send alert test message as no alerts are configured.");
                 }
             } else {
                 Logger.Warn("Test FCM is not supported on this device platform.");
             }
+        }
+
+        private void simulateFCMPayload(AlertConfig config) {
+            //This should only be called on Android and only for internal debugging
+
+            Dictionary<string, string> data = new Dictionary<string, string>();
+            data.Add("zvei", "99999");
+            data.Add("is_test_alert", "false");
+            data.Add("zvei_description", AppResources.AboutPage_DeveloperMode_TestNotification_Message);
+            data.Add("is_manual_test_alert", "false");
+            data.Add("chat_id", config.triggerGroup.serverID.ToString());
+            //data.Add("chat_id", "-1001375064719.0"); //B1 Group
+
+            TimeSpan alertTimestamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            data.Add("alert_timestamp", ((long)alertTimestamp.TotalMilliseconds).ToString());
+
+            MessagingService.FirebaseMessage(data);
         }
 
     }

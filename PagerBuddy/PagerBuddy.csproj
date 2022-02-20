@@ -5,8 +5,14 @@
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <Authors>Max Bartunik</Authors>
     <NeutralLanguage></NeutralLanguage>
+    <Configurations>Debug;Release;Debug Live</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Live|AnyCPU'">
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>DEBUG;TRACE</DefineConstants>

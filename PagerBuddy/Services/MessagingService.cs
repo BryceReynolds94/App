@@ -28,6 +28,8 @@ namespace PagerBuddy.Services
         //This is called when FCM Messages are received
         public static void FirebaseMessage(IDictionary<string,string> data)
         {
+            Logger.Debug("Received FCM with payload: " + string.Join(",", data));
+
             if (data.Count < 5) {
                 Logger.Warn("Received an FCM/APNS message with an invalid payload count. Ignoring message.");
                 _ = LegacyMessageReceived();
@@ -52,7 +54,7 @@ namespace PagerBuddy.Services
             }
 
             if (!res) {
-                Logger.Warn("Error parsing payload. Ignoring message. Payload: " + string.Join(",", data));
+                Logger.Warn("Error parsing payload. Ignoring message.");
                 return;
             }
 
