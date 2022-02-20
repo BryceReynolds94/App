@@ -15,7 +15,9 @@ namespace PagerBuddy.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlertPage : ContentPage
-    {     
+    {    
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly AlertPageViewModel viewModel; 
 
         private readonly long groupID;
@@ -35,7 +37,9 @@ namespace PagerBuddy.Views
             viewModel.RequestCancel += cancel;
             viewModel.RequestConfirm += confirm;
 
+
             startAnimation();
+            
 
             if(Device.RuntimePlatform == Device.Android) {
                 IAndroidNotifications notifications = DependencyService.Get<IAndroidNotifications>();

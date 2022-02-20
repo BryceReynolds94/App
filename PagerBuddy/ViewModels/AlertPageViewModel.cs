@@ -24,8 +24,8 @@ namespace PagerBuddy.ViewModels
 
             setAlertInfo(alertTitle, alertText);
 
-            Cancel = new Command(() => RequestCancel.Invoke(this, null));
-            Confirm = new Command(() => RequestConfirm.Invoke(this, null));
+            Cancel = new Command(() => RequestCancel?.Invoke(this, null));
+            Confirm = new Command(() => RequestConfirm?.Invoke(this, null));
         }
 
         public EventHandler RequestCancel;
