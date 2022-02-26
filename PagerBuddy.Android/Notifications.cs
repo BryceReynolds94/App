@@ -49,7 +49,7 @@ namespace PagerBuddy.Droid {
                 largePic = Android.Graphics.BitmapFactory.DecodeResource(Application.Context.Resources, Resource.Drawable.group_default);
             }
 
-            long timestamp = (long) alert.timestamp.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; //Android uses Unix time
+            long timestamp = (long) alert.timestamp.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; //Android uses Unix time
 
             Notification.Builder builder = new Notification.Builder(Application.Context, alert.configID)
                 .SetContentTitle(alert.title)
