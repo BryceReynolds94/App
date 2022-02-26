@@ -54,7 +54,9 @@ namespace PagerBuddy.Services {
 
             foreach (string id in configIDs) {
                 AlertConfig config = DataService.getAlertConfig(id, null);
-                if (config != null && (config.triggerGroup.serverID == chatID || isManualTest)) {
+                Logger.Debug("Retrieved config: " + config?.id + ", chat ID: " + config?.triggerGroup.serverID);
+
+                if (config != null && config.triggerGroup.serverID == chatID) {
                     Logger.Debug("New message for alert config " + config.readableFullName);
                     if (isManualTest) {
                         Logger.Debug("Message is a manual test alert.");

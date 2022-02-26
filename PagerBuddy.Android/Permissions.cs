@@ -87,14 +87,14 @@ namespace PagerBuddy.Droid {
         public async Task checkAlertPermissions(Page currentView, bool forceReprompt = false) {
 
             if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, false) || forceReprompt) {
-                await permissionNotificationPolicyAccess(currentView);
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
+                await permissionNotificationPolicyAccess(currentView);
             }
             //TODO: Later - Implement for API <30 once AndroidX.Core v1.7.0 is available
             if (Build.VERSION.SdkInt >= BuildVersionCodes.R) {
                 if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, false) || forceReprompt) {
-                    await permissionHibernationExclusion(currentView);
                     DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, true);
+                    await permissionHibernationExclusion(currentView);
                 }
             }
         }

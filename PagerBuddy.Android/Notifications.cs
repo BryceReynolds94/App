@@ -49,6 +49,8 @@ namespace PagerBuddy.Droid {
                 largePic = Android.Graphics.BitmapFactory.DecodeResource(Application.Context.Resources, Resource.Drawable.group_default);
             }
 
+            long timestamp = (long) alert.timestamp.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; //Android uses Unix time
+
             Notification.Builder builder = new Notification.Builder(Application.Context, alert.configID)
                 .SetContentTitle(alert.title)
                 .SetContentText(alert.description)
@@ -58,7 +60,7 @@ namespace PagerBuddy.Droid {
                 .SetCategory(Notification.CategoryCall) //category for message classification 
                 .SetAutoCancel(true) //cancel notification when tapped
                 .SetFullScreenIntent(fullScreenIntent, true)
-                .SetWhen(alert.timestamp.Ticks)
+                .SetWhen(timestamp) 
                 .SetShowWhen(true)
                 .SetStyle(new Notification.BigTextStyle().BigText(alert.description)); //extend message on tap
 

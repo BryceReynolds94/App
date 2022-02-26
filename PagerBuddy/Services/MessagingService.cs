@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -44,14 +45,15 @@ namespace PagerBuddy.Services
             res &= data.TryGetValue("chat_id", out string chatIDR);
             res &= data.TryGetValue("is_manual_test_alert", out string manualTestR);
 
+            //chat ID will be in server notation (optional "-", numeric digits, possible ".0" to ignore)
+            Regex rx = new Regex(@"(-?[0-9]+)");
+            Match match = rx.Match(chatIDR);
+            chatIDR = match.Success ? match.Groups[0].Value : "0";
+            res &= long.TryParse(chatIDR, out long chatID);
+
             res &= long.TryParse(timestampR, out long timestamp);
             res &= bool.TryParse(testAlertR, out bool testAlert);
             res &= bool.TryParse(manualTestR, out bool manualTest);
-
-            if(!long.TryParse(chatIDR, out long chatID)) {
-                res &= double.TryParse(chatIDR, out double chatIDD);
-                chatID = (long)chatIDD;
-            }
 
             if (!res) {
                 Logger.Warn("Error parsing payload. Ignoring message.");
