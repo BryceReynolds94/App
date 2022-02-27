@@ -49,7 +49,7 @@ namespace PagerBuddy.Views {
             viewModel.RequestLogin += login;
             viewModel.RequestTimeConfig += timeConfig;
 
-            MessagingCenter.Subscribe<AlertStatusViewModel>(this, AlertStatusViewModel.MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString(), (_) => sendServerUpdate(getAlertConfigs()));
+            MessagingCenter.Subscribe<AlertStatusViewModel>(this, AlertStatusViewModel.MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString(), (_) => sendServerUpdate(getAlertConfigs(), new Collection<string>()));
 
             if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, false)) {
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, true);
@@ -77,7 +77,7 @@ namespace PagerBuddy.Views {
             }
         }
 
-        private void sendServerUpdate(Collection<AlertConfig> configList) {
+        private void sendServerUpdate(Collection<AlertConfig> configList, Collection<string> clearedServers) {
 
             if (client.clientStatus != CommunicationService.STATUS.AUTHORISED && client.clientStatus > CommunicationService.STATUS.ONLINE || MOCK_MODE) {
                 //User is not logged in - do nothing.
@@ -88,7 +88,7 @@ namespace PagerBuddy.Views {
 
             IRequestScheduler scheduler = DependencyService.Get<IRequestScheduler>();
             scheduler.initialise(client);
-            scheduler.scheduleRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO Later: MULTI-Server
+            scheduler.scheduleRequest(configList, clearedServers);
         }
 
         private void updateClientStatus(object sender, CommunicationService.STATUS newStatus) {
@@ -132,7 +132,7 @@ namespace PagerBuddy.Views {
             DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, state);
         }
 
-        private async Task alertConfigsChanged(Collection<AlertConfig> configList) {
+        private async Task alertConfigsChanged(Collection<AlertConfig> configList, Collection<string> clearedServers) {
             if (Device.RuntimePlatform == Device.Android) {
                 IAndroidNotifications notifications = DependencyService.Get<IAndroidNotifications>();
                 notifications.UpdateNotificationChannels(configList);
@@ -140,7 +140,7 @@ namespace PagerBuddy.Views {
             MessagingCenter.Send(this, MESSAGING_KEYS.ALERT_CONFIGS_CHANGED.ToString());
 
             
-            sendServerUpdate(configList);
+            sendServerUpdate(configList, clearedServers);
 
             IPermissions permissions = DependencyService.Get<IPermissions>();
             await permissions.checkAlertPermissions(this);
@@ -175,21 +175,18 @@ namespace PagerBuddy.Views {
             return !simpleSame;
         }
 
-        private async void refreshAlertConfigs(object sender, EventArgs args) {
-
-            Collection<string> oldList = DataService.getConfigList();
-
+        private async Task<Collection<TelegramPeer>> getServerConfigs(string pagerbuddyserver) {
             Types.Messages.Chats rawChatList;
             if (MOCK_MODE) {
                 rawChatList = client.getMockChatList();
             } else {
-                rawChatList = await client.getChatList(CommunicationService.pagerbuddyServerList.First()); //TODO Later: MULTI-Server
+                rawChatList = await client.getChatList(pagerbuddyserver); 
             }
 
             IReadOnlyList<Types.Chat> chatList = new List<Types.Chat>();
             if (rawChatList == null) {
                 Logger.Warn("Retrieving chat list returned null.");
-                return;
+                return null;
             } else if (rawChatList.Default != null) {
                 Types.Messages.Chats.DefaultTag chatsTag = rawChatList.Default;
                 chatList = chatsTag.Chats;
@@ -199,11 +196,26 @@ namespace PagerBuddy.Views {
                 chatList = chatsTag.Chats;
             }
 
-            Collection<TelegramPeer> peerCollection = TelegramPeer.getPeerCollection(chatList);
-
+            Collection<TelegramPeer> peerCollection = TelegramPeer.getPeerCollection(chatList, pagerbuddyserver);
 
             if (chatList.Count < 1) {
                 Logger.Info("Chat list was empty.");
+            }
+
+            return peerCollection;
+        }
+
+        private async void refreshAlertConfigs(object sender, EventArgs args) {
+
+            Collection<string> oldList = DataService.getConfigList();
+
+            Collection<TelegramPeer> peerCollection = new Collection<TelegramPeer>();
+
+            foreach(string server in CommunicationService.pagerbuddyServerList) {
+                Collection<TelegramPeer> servCollection = await getServerConfigs(server);
+                if (servCollection != null) {
+                    peerCollection.Concat(servCollection);
+                }
             }
 
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
@@ -229,12 +241,17 @@ namespace PagerBuddy.Views {
 
             viewModel.fillAlertList(configList, false);
 
-            foreach(string alertID in deleteList){ //Make sure old groups are removed if not present anymore
+            Collection<string> clearedServers = new Collection<string>();
+            foreach (string alertID in deleteList){ //Make sure old groups are removed if not present anymore
+                AlertConfig config = DataService.getAlertConfig(alertID, null);
+                if (config != null) {
+                    clearedServers.Add(config.triggerGroup.pagerbuddyserver);
+                }
                 DataService.deleteAlertConfig(alertID);
             }
 
-            if (hasListChanged(oldList, configList)) { //If the alert list has changed, subscribe to PagerBuddy-Server with new list
-                await alertConfigsChanged(configList);
+            if (hasListChanged(oldList, configList)) { //If the alert list has changed, subscribe to PagerBuddy-Servers with new list
+                await alertConfigsChanged(configList, clearedServers);
             }
 
         }

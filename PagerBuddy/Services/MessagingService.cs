@@ -90,7 +90,7 @@ namespace PagerBuddy.Services
             if (instance != null) {
                 scheduler.initialise(instance.client);
             }
-            scheduler.scheduleRequest(configList, CommunicationService.pagerbuddyServerList.First()); //TODO Later: MULTI-Server
+            scheduler.scheduleRequest(configList, new Collection<string>());
         }
 
         //TODO: Later - Remove this once all legacy users migrated

@@ -56,8 +56,8 @@ namespace PagerBuddy.iOS {
             task.SetTaskCompleted(result);
         }
 
-        public void scheduleRequest(Collection<AlertConfig> request, string botServerUser) {
-            _ = scheduleRequest(request, botServerUser, 5);
+        public void scheduleRequest(Collection<AlertConfig> request, Collection<string> clearedServers) {
+            _ = scheduleRequest(request, CommunicationService.pagerbuddyServerList.First(), 5); //TODO Later: MULTI-Server
         }
 
         private async Task scheduleRequest(Collection<AlertConfig> request, string botServerUser, int delay) {

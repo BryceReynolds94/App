@@ -20,8 +20,6 @@ using System.Text;
 namespace PagerBuddy.Droid {
     class ServerRequestScheduler : IRequestScheduler {
         private readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-
-        private static readonly int SERVER_REQUEST_ID = 1;
         public enum JOB_PARAMETERS { REQUEST_STRING, PAGERBUDDY_SERVER_USER }
 
         private readonly JobScheduler jobScheduler = (JobScheduler)Application.Context.GetSystemService(Context.JobSchedulerService);
@@ -34,10 +32,26 @@ namespace PagerBuddy.Droid {
             this.client = client;
         }
 
-        public void scheduleRequest(Collection<AlertConfig> request, string botServerUser) {
-            Logger.Debug("Scheduling a server request.");
+        public void scheduleRequest(Collection<AlertConfig> request, Collection<string> clearedServers) {
+            Collection<string> servers = clearedServers;
+
+            foreach (AlertConfig config in request) {
+                if (!servers.Contains(config.triggerGroup.pagerbuddyserver)) {
+                    servers.Add(config.triggerGroup.pagerbuddyserver);
+                }
+            }
+
+            foreach (string server in servers) {
+                List<AlertConfig> reqPart = request.Where(config => config.triggerGroup.pagerbuddyserver.Equals(server)).ToList();
+                scheduleUniqueRequest(reqPart, server);
+            }
+        }
+
+        private void scheduleUniqueRequest(List<AlertConfig> request, string pagerbuddyserver) {
+            Logger.Debug("Scheduling a server request to " + pagerbuddyserver);
+
             ComponentName componentName = new ComponentName(Application.Context, Java.Lang.Class.FromType(typeof(ServerRequestService)));
-            JobInfo.Builder builder = new JobInfo.Builder(SERVER_REQUEST_ID, componentName);
+            JobInfo.Builder builder = new JobInfo.Builder(pagerbuddyserver.GetHashCode(), componentName);
             builder.SetBackoffCriteria(1 * 60 * 1000, BackoffPolicy.Linear); //Initially set for 1min, use linear back off (capped at 5h by Android)
             builder.SetMinimumLatency(5 * 1000); //Initially wait 5s to reduce flooding
             builder.SetPersisted(true); //Do not loose service on reboot -- need RECEIVE_BOOT_COMPLETED permission
@@ -51,7 +65,7 @@ namespace PagerBuddy.Droid {
 
             PersistableBundle jobParameters = new PersistableBundle();
             jobParameters.PutString(nameof(JOB_PARAMETERS.REQUEST_STRING), JsonConvert.SerializeObject(request));
-            jobParameters.PutString(nameof(JOB_PARAMETERS.PAGERBUDDY_SERVER_USER), botServerUser);
+            jobParameters.PutString(nameof(JOB_PARAMETERS.PAGERBUDDY_SERVER_USER), pagerbuddyserver);
 
             builder.SetExtras(jobParameters);
 
@@ -61,9 +75,9 @@ namespace PagerBuddy.Droid {
             }
         }
 
-        public void cancelRequest() {
+        public void cancelRequest(string pagerbuddyserver) {
             Logger.Debug("Cancelling server request if active.");
-            jobScheduler.Cancel(SERVER_REQUEST_ID);
+            jobScheduler.Cancel(pagerbuddyserver.GetHashCode());
         }
 
     }

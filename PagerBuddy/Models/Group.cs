@@ -14,6 +14,8 @@ namespace PagerBuddy.Models
         public long id;
         public long accessHash;
         public bool isMegaGroup;
+
+        public string pagerbuddyserver = "pagerbuddyserverbot"; //default to make legacy transition easier
         
         [JsonIgnore] //do not try to serialise Stream
         public MemoryStream image = null;
@@ -35,7 +37,7 @@ namespace PagerBuddy.Models
         }
 
         [JsonConstructor]
-        public Group(string name, long id, bool isMegaGroup, long accessHash, TelegramPeer.TYPE type, bool hasImage)
+        public Group(string name, long id, bool isMegaGroup, long accessHash, TelegramPeer.TYPE type, bool hasImage, string pagerbuddyserver = "pagerbuddyserverbot")
         {
             this.name = name;
             this.id = id;
@@ -43,14 +45,16 @@ namespace PagerBuddy.Models
             this.accessHash = accessHash;
             this.type = type;
             this.hasImage = hasImage;
+            this.pagerbuddyserver = pagerbuddyserver;
         }
 
-        public Group(string name, long id, bool isMegaGroup, TelegramPeer.TYPE type, long accessHash = 0) {
+        public Group(string name, long id, bool isMegaGroup, TelegramPeer.TYPE type, string pagerbuddyserver, long accessHash = 0) {
             this.name = name;
             this.id = id;
             this.isMegaGroup = isMegaGroup;
             this.accessHash = accessHash;
             this.type = type;
+            this.pagerbuddyserver=pagerbuddyserver;
         }
 
 

@@ -15,7 +15,7 @@ namespace PagerBuddy.Models {
 
         public Types.InputFileLocation photoLocation;
 
-        public TelegramPeer(TYPE type, long id, bool isMegaGroup, string name, Types.InputFileLocation photo, long accessHash = 0) : base(name, id, isMegaGroup, type, accessHash) {
+        public TelegramPeer(TYPE type, long id, bool isMegaGroup, string name, Types.InputFileLocation photo, string pagerbuddyserver, long accessHash = 0) : base(name, id, isMegaGroup, type, pagerbuddyserver, accessHash) {
             this.photoLocation = photo;
         }
 
@@ -29,14 +29,14 @@ namespace PagerBuddy.Models {
             }
         }
 
-        public static Collection<TelegramPeer> getPeerCollection(IReadOnlyList<Types.Chat> chatList) {
+        public static Collection<TelegramPeer> getPeerCollection(IReadOnlyList<Types.Chat> chatList, string pagerbuddyserver) {
             Collection<TelegramPeer> peerList = new Collection<TelegramPeer>();
 
             foreach(Types.Chat chat in chatList) {
                 if (chat.Channel != null) {
                     Types.Chat.ChannelTag c = chat.Channel;
                     Types.InputPeer peer = new Types.InputPeer.ChannelTag(c.Id, c.AccessHash.GetValueOrDefault());
-                    peerList.Add(new TelegramPeer(TYPE.CHANNEL, c.Id, c.Megagroup, c.Title, getPhotoLocation(peer, c.Photo), c.AccessHash.GetValueOrDefault()));
+                    peerList.Add(new TelegramPeer(TYPE.CHANNEL, c.Id, c.Megagroup, c.Title, getPhotoLocation(peer, c.Photo), pagerbuddyserver, c.AccessHash.GetValueOrDefault()));
 
                 }else if (chat.Default != null) { 
                     Types.Chat.DefaultTag c = chat.Default;
@@ -46,7 +46,7 @@ namespace PagerBuddy.Models {
                     }
 
                     Types.InputPeer peer = new Types.InputPeer.ChatTag(c.Id);
-                    peerList.Add(new TelegramPeer(TYPE.CHAT, c.Id, false, c.Title, getPhotoLocation(peer, c.Photo)));
+                    peerList.Add(new TelegramPeer(TYPE.CHAT, c.Id, false, c.Title, getPhotoLocation(peer, c.Photo), pagerbuddyserver));
                 } else {
                     Logger.Warn("Chat was of unexpected type " + chat.GetType().ToString() + " and was not added to the peer list.");
                     continue;
