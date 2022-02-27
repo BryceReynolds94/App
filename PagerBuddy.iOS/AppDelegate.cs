@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using BackgroundTasks;
 using FFImageLoading.Forms.Platform;
 using FFImageLoading.Svg.Forms;
@@ -136,6 +137,12 @@ namespace PagerBuddy.iOS {
                 Logger.Warn("Could not parse test alert from data. Using default value. String value was: " + testAlertS);
                 testAlert = false;
             }
+
+            //chat ID will be in server notation (optional "-", numeric digits, possible ".0" to ignore)
+            Regex rx = new Regex(@"(-?[0-9]+)");
+            Match match = rx.Match(chatIDS);
+            chatIDS = match.Success ? match.Groups[0].Value : "0";
+
             if (!long.TryParse(alertTimestampS, out long alertTimestamp) || !long.TryParse(chatIDS, out long chatID)) {
                 Logger.Error("Could not parse alert data. Ignoring message. Payload: " + data.ToString());
                 return null;
