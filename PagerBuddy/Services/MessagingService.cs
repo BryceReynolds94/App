@@ -33,7 +33,6 @@ namespace PagerBuddy.Services
 
             if (data.Count < 5) {
                 Logger.Warn("Received an FCM/APNS message with an invalid payload count. Ignoring message.");
-                _ = LegacyMessageReceived();
                 return;
             }
 
@@ -93,22 +92,5 @@ namespace PagerBuddy.Services
             scheduler.scheduleRequest(configList, new Collection<string>());
         }
 
-        //TODO: Later - Remove this once all legacy users migrated
-        public static async Task LegacyMessageReceived() {
-
-            string token = DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, "");
-            if(instance == null) {
-                CommunicationService client = new CommunicationService();
-                client.StatusChanged += async (object sender, CommunicationService.STATUS status) => {
-                    if(status == CommunicationService.STATUS.AUTHORISED) {
-                        await client.legacyUnregister(token);
-                    };
-                };
-                _ = client.connectClient(true);
-            } else {
-                await instance.client?.legacyUnregister(token);
-            }
-
-        }
     }
 }

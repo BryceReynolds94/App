@@ -36,8 +36,6 @@ namespace PagerBuddy.Droid {
             }
             if (p0.Data == null) {
                 Logger.Warn("Received an FCM message without a payload. Ignoring message.");
-                //This can be caused by legacy FCM messages
-                _ = MessagingService.LegacyMessageReceived();
                 return;
             }
 

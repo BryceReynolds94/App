@@ -191,29 +191,6 @@ namespace PagerBuddy.Services {
             await forceReloadConnection();
         }
 
-        public async Task legacyUnregister(string token) {
-            //TODO Later: Once all users are migrated this can be removed
-            if(Device.RuntimePlatform == Device.Android) {
-                Logger.Debug("Attempting to unregister user from legacy messaging.");
-                if (token.Length > 0) {
-                    Functions.Account.UnregisterDevice unregisterRequest = new Functions.Account.UnregisterDevice(
-                            tokenType: 2,
-                            token: token,
-                            new List<long>()
-                        );
-
-                    try {
-                        await client.Call(unregisterRequest); //https://core.telegram.org/method/account.unregisterDevice
-                    } catch (Exception e) {
-                        Logger.Error(e, "Exception while trying to unregister device.");
-                    }
-                }
-
-
-            }
-            
-        }
-
         public async Task<TStatus> loginWithPassword(string password) {
             if (clientStatus != STATUS.WAIT_PASSWORD) {
                 Logger.Warn("Attempted to perform 2FA without appropriate client status. Current status: " + clientStatus.ToString());
