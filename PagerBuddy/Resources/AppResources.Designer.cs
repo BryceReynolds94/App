@@ -151,6 +151,15 @@ namespace PagerBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Share System Log.
+        /// </summary>
+        public static string AboutPage_DeveloperMode_ShareSystemLogBtn {
+            get {
+                return ResourceManager.GetString("AboutPage_DeveloperMode_ShareSystemLogBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Alert Page.
         /// </summary>
         public static string AboutPage_DeveloperMode_ShowAlertPageBtn {

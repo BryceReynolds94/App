@@ -70,6 +70,7 @@
                         <Button Grid.Row="3" Grid.Column="0" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_ShowAlertPageBtn}" Command="{Binding ShowAlertPage}"/>
                         <Button Grid.Row="3" Grid.Column="1" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_TestFCMMessageBtn}" Command="{Binding TestFCMMessage}" IsEnabled="{Binding HasAndroidFeatures}"/>
                         <Button Grid.Row="4" Grid.Column="0" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_RestartClientBtn}" Command="{Binding RestartClient}"/>
+                        <Button Grid.Row="4" Grid.Column="1" Text="{x:Static resources:AppResources.AboutPage_DeveloperMode_ShareSystemLogBtn}" Command="{Binding ShareSystemLog}" IsEnabled="{Binding HasAndroidFeatures}"/>
 
                         <Button Grid.Row="5" Grid.ColumnSpan="2" Text="{Binding LogLevelText}" Command="{Binding ChangeLogLevel}" />
 

@@ -457,4 +457,7 @@
   <data name="AndroidPermission_HibernationExclude_Confirm" xml:space="preserve">
     <value>Take me there</value>
   </data>
+  <data name="AboutPage_DeveloperMode_ShareSystemLogBtn" xml:space="preserve">
+    <value>Share System Log</value>
+  </data>
 </root>

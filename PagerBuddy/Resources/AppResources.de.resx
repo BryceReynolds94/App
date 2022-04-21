@@ -336,4 +336,7 @@
   <data name="AndroidPermission_HibernationExclude_Cancel" xml:space="preserve">
     <value>Nein</value>
   </data>
+  <data name="AboutPage_DeveloperMode_ShareSystemLogBtn" xml:space="preserve">
+    <value>Systemlog teilen</value>
+  </data>
 </root>

@@ -209,12 +209,12 @@ namespace PagerBuddy.Views {
 
             Collection<string> oldList = DataService.getConfigList();
 
-            Collection<TelegramPeer> peerCollection = new Collection<TelegramPeer>();
+            IEnumerable<TelegramPeer> peerCollection = new Collection<TelegramPeer>();
 
             foreach(string server in CommunicationService.pagerbuddyServerList) {
                 Collection<TelegramPeer> servCollection = await getServerConfigs(server);
                 if (servCollection != null) {
-                    peerCollection.Concat(servCollection);
+                    peerCollection = peerCollection.Concat(servCollection);
                 }
             }
 

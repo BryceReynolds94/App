@@ -65,7 +65,7 @@ namespace PagerBuddy.Droid {
                 .SetStyle(new Notification.BigTextStyle().BigText(alert.description)); //extend message on tap
 
             if (new Navigation().isTelegramInstalled()) {
-                PendingIntent chatIntent = PendingIntent.GetActivity(Application.Context, 0, Navigation.getTelegramIntent(alert.chatID, alert.peerType), 0);
+                PendingIntent chatIntent = PendingIntent.GetActivity(Application.Context, 0, Navigation.getTelegramIntent(alert.chatID, alert.peerType), PendingIntentFlags.Immutable);
                 builder.SetContentIntent(chatIntent);
             } else {
                 builder.SetContentIntent(fullScreenIntent);
@@ -99,12 +99,21 @@ namespace PagerBuddy.Droid {
                     int NminVol = audioManager.GetStreamMinVolume(Android.Media.Stream.Notification);
                     int NmaxVol = audioManager.GetStreamMaxVolume(Android.Media.Stream.Notification);
                     int NVolIndex = (int) Math.Round((NmaxVol - NminVol) * volumeFactor + NminVol);
-                    audioManager.SetStreamVolume(Android.Media.Stream.Notification, NVolIndex, 0);
+                    if(NVolIndex > audioManager.GetStreamVolume(Android.Media.Stream.Notification)){
+                        Logger.Debug("Setting notification volume to " + NVolIndex + " (min: " + NminVol + ", max: " + NmaxVol + ", factor: " + volumeFactor + ")");
+                        audioManager.SetStreamVolume(Android.Media.Stream.Notification, NVolIndex, 0);
+
+                    }
+                    
 
                     int RminVol = audioManager.GetStreamMinVolume(Android.Media.Stream.Ring);
                     int RmaxVol = audioManager.GetStreamMaxVolume(Android.Media.Stream.Ring);
                     int RVolIndex = (int) Math.Round((RmaxVol - RminVol) * volumeFactor + RminVol);
-                    audioManager.SetStreamVolume(Android.Media.Stream.Ring, RVolIndex, 0); //also have to set ringer high for Samsung devices
+                    if(RVolIndex > audioManager.GetStreamVolume(Android.Media.Stream.Ring)) {
+                        Logger.Debug("Setting ringer volume to " + RVolIndex + " (min: " + RminVol + ", max: " + RmaxVol + ", factor: " + volumeFactor + ")");
+                        audioManager.SetStreamVolume(Android.Media.Stream.Ring, RVolIndex, 0); //also have to set ringer high for Samsung devices
+                    }
+                    
                 } catch (Exception e) {
                     Logger.Warn(e, "Could not set volume. Probably due to insufficient permissions");
                 }

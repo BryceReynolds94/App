@@ -18,6 +18,7 @@ namespace PagerBuddy.ViewModels {
         public Command DeveloperMode { get; set; }
         public Command HideDeveloperMode { get; set; }
         public Command ShareLog { get; set; }
+        public Command ShareSystemLog { get; set; }
         public Command ShowAlertPage { get; set; }
         public Command RestartClient { get; set; }
         public Command TestFCMMessage { get; set; }
@@ -58,7 +59,8 @@ namespace PagerBuddy.ViewModels {
 
             DeveloperMode = new Command(() => countDeveloperMode());
             HideDeveloperMode = new Command(() => stopDeveloperMode());
-            ShareLog = new Command(() => requestShareLog.Invoke(this, null));
+            ShareLog = new Command(() => requestShareLog?.Invoke(this, null));
+            ShareSystemLog = new Command(() => requestShareSystemLog?.Invoke(this, null));
             ShowAlertPage = new Command(() => requestShowAlertPage(this, null));
             RestartClient = new Command(() => requestRestartClient(this, null));
             TestFCMMessage = new Command(() => requestTestFCMMessage(this, null));
@@ -73,6 +75,7 @@ namespace PagerBuddy.ViewModels {
         }
 
         public EventHandler requestShareLog;
+        public EventHandler requestShareSystemLog;
         public EventHandler requestShowAlertPage;
         public EventHandler requestRestartClient;
         public EventHandler requestTestFCMMessage;

@@ -30,6 +30,7 @@ namespace PagerBuddy.Views {
             BindingContext = viewModel = new AboutPageViewModel();
             viewModel.requestRestartClient += restartClient;
             viewModel.requestShareLog += shareLog;
+            viewModel.requestShareSystemLog += shareSystemLog;
             viewModel.requestShowAlertPage += showAlertPage;
             viewModel.requestTestFCMMessage += testFCMMessage;
             viewModel.requestClearData += clearData;
@@ -39,7 +40,7 @@ namespace PagerBuddy.Views {
         public static string getLogFileLocation() {
             FileTarget target = NLog.LogManager.Configuration.FindTargetByName<FileTarget>("logfile");
             if (target == null) {
-                Logger.Error("Could not finde log target.");
+                Logger.Error("Could not find log target.");
                 return null;
             }
             string logFile = target.FileName.Render(new NLog.LogEventInfo { TimeStamp = DateTime.Now });
@@ -67,6 +68,26 @@ namespace PagerBuddy.Views {
             } else {
                 Logger.Warn("Could not share log file as no file was found.");
             }
+        }
+
+        private async void shareSystemLog(object sender, EventArgs args) {
+            if(Device.RuntimePlatform == Device.Android) {
+                Logger.Info("Sharing Logcat");
+
+                Interfaces.IAndroidSystemLogger systemLogger = DependencyService.Get<Interfaces.IAndroidSystemLogger>();
+
+                string logFile = systemLogger.getSystemLogFile();
+                if (logFile != null) {
+                    await Share.RequestAsync(new ShareFileRequest(new ShareFile(logFile)));
+                } else {
+                    Logger.Warn("Could not share logcat file as no file was found.");
+                }
+
+            } else {
+                Logger.Warn("System log sharing not implemented for this device platform.");
+            }
+           
+
         }
 
         private void clearData(object sender, EventArgs args) {

@@ -182,7 +182,8 @@ namespace PagerBuddy.Services {
             }
 
             try {
-                await client.Call(new Functions.Auth.LogOut()); //https://core.telegram.org/method/auth.logOut
+                Task request = client.Call(new Functions.Auth.LogOut()); //https://core.telegram.org/method/auth.logOut
+                Task.WaitAny(Task.Delay(2000), request); //Timeout after 2s if not completed
             } catch (Exception e) {
                 Logger.Error(e, "Exception while trying to logout user.");
             }
