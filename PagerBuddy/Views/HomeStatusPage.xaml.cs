@@ -31,6 +31,8 @@ namespace PagerBuddy.Views {
         private readonly CommunicationService client;
 
         private bool MOCK_MODE = false;
+        private bool is_refreshing = false;
+
 
         public enum MESSAGING_KEYS { ALERT_CONFIGS_CHANGED}
 
@@ -207,14 +209,23 @@ namespace PagerBuddy.Views {
 
         private async void refreshAlertConfigs(object sender, EventArgs args) {
 
+            //Multiple calls of refreshAlertConfigs seems to cause crash in first foreach loop
+            //Hotfix: block if currently refreshing
+
+            if (is_refreshing) {
+                return;
+            }
+            is_refreshing = true;
+
             Collection<string> oldList = DataService.getConfigList();
-
-            IEnumerable<TelegramPeer> peerCollection = new Collection<TelegramPeer>();
-
-            foreach(string server in CommunicationService.pagerbuddyServerList) {
+            Collection<TelegramPeer> peerCollection = new Collection<TelegramPeer>();
+            
+            foreach (string server in CommunicationService.pagerbuddyServerList) {
                 Collection<TelegramPeer> servCollection = await getServerConfigs(server);
                 if (servCollection != null) {
-                    peerCollection = peerCollection.Concat(servCollection);
+                    foreach (TelegramPeer peer in servCollection) {
+                        peerCollection.Add(peer);
+                    }
                 }
             }
 
@@ -253,6 +264,8 @@ namespace PagerBuddy.Views {
             if (hasListChanged(oldList, configList)) { //If the alert list has changed, subscribe to PagerBuddy-Servers with new list
                 await alertConfigsChanged(configList, clearedServers);
             }
+
+            is_refreshing = false;
 
         }
 
