@@ -69,6 +69,7 @@
     <CodesignProvision>
     </CodesignProvision>
     <BuildIpa>false</BuildIpa>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <AppExtensionDebugBundleId />
