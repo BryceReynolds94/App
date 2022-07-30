@@ -92,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NLog">
-      <Version>5.0.1</Version>
+      <Version>4.7.15</Version>
     </PackageReference>
     <PackageReference Include="SkiaSharp">
       <Version>2.88.0</Version>

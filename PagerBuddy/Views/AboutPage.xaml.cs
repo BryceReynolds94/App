@@ -38,7 +38,14 @@ namespace PagerBuddy.Views {
         }
 
         public static string getLogFileLocation() {
-            FileTarget target = NLog.LogManager.Configuration.FindTargetByName<FileTarget>("logfile");
+            FileTarget target;
+            try {
+                target = NLog.LogManager.Configuration.FindTargetByName<FileTarget>("logfile");
+            }catch(Exception error) {
+                Logger.Error(error, "Exception trying to get log location from NLog.");
+                return null;
+            }
+
             if (target == null) {
                 Logger.Error("Could not find log target.");
                 return null;
