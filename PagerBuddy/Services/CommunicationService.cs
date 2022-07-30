@@ -467,6 +467,13 @@ namespace PagerBuddy.Services {
                 IReadOnlyList<Types.User> outList = await client.Call(new Functions.Users.GetUsers(inArr)); //https://core.telegram.org/method/users.getUsers
                 outUser = outList.First();
             } catch (Exception e) {
+                TException exception = getTException(e.Message);
+                if(exception == TException.SESSION_REVOKED) {
+                    Logger.Warn("User session was revoked. Removing session file and forcing reload.");
+                    await forceReloadConnection();
+                    return null;
+                }
+
                 Logger.Error(e, "Exception while fetching user data.");
                 await checkConnectionOnError(e);
                 return null;

@@ -26,6 +26,7 @@ namespace PagerBuddy.Services
             YOU_BLOCKED_USER,
             MESSAGE_TOO_LONG,
             MESSAGE_EMPTY,
+            SESSION_REVOKED,
             UNKNOWN
         }
 
