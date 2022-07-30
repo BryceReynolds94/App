@@ -20,6 +20,7 @@ using Application = Android.App.Application;
 using PagerBuddy.Services;
 using Android.App.Usage;
 using AndroidX.Core.Content;
+using Google.Common.Util.Concurrent;
 
 [assembly: Xamarin.Forms.Dependency(typeof(PagerBuddy.Droid.Permissions))] //register for dependency service as platform-specific code
 namespace PagerBuddy.Droid {
@@ -42,6 +43,20 @@ namespace PagerBuddy.Droid {
         }
 
         private async Task permissionHibernationExclusion(Page currentView) {
+            //Check current app setting
+            IListenableFuture future = PackageManagerCompat.GetUnusedAppRestrictionsStatus(Application.Context);
+            object result = await Task.Run(() => future.Get()); //Make call async to avoid blocking
+
+            switch (result) {
+                case UnusedAppRestrictionsConstants.Error:
+                    Logger.Warn("Error tyring to retreive unused app restriction status. Attempting request anyway.");
+                    break;
+                case UnusedAppRestrictionsConstants.Disabled:
+                case UnusedAppRestrictionsConstants.FeatureNotAvailable:
+                    Logger.Info("Unused app restritcions already disabled or not available. Will not request again.");
+                    return;
+            }
+
             bool confirmed = await currentView.DisplayAlert(AppResources.AndroidPermission_HibernationExclude_Title,
                AppResources.AndroidPermission_HibernationExclude_Message,
               AppResources.AndroidPermission_HibernationExclude_Confirm,
@@ -49,18 +64,9 @@ namespace PagerBuddy.Droid {
 
             if (confirmed) {
                 //https://github.com/androidx/androidx/blob/androidx-main/core/core/src/main/java/androidx/core/content/IntentCompat.java
-
                 //https://developer.android.com/topic/performance/app-hibernation
-                //TODO: Later - Replace manual implementation with AndroidX
 
-                string intentString;
-                if(Build.VERSION.SdkInt > BuildVersionCodes.R){
-                    intentString = Settings.ActionApplicationDetailsSettings;
-                } else{
-
-                    intentString = Intent.ActionAutoRevokePermissions;
-                }
-                Intent intent = new Intent(intentString).SetData(Android.Net.Uri.FromParts("package", Application.Context.PackageName, null));
+                Intent intent = IntentCompat.CreateManageUnusedAppRestrictionsIntent(Application.Context, Application.Context.PackageName);
                 try {
                     Platform.CurrentActivity.StartActivityForResult(intent, 0);
                 } catch (Exception e) {
@@ -76,12 +82,13 @@ namespace PagerBuddy.Droid {
             try {
                 UsageStatsManager usage = (UsageStatsManager)Application.Context.GetSystemService("usagestats");
                 Logger.Debug("App currently in standby bucket: " + usage.AppStandbyBucket);
-            }catch(Exception e) {
+            } catch (Exception e) {
                 Logger.Info(e, "Could not determine app standy bucket.");
             }
 
-            
-            //TODO: Later - Add logging for hibernation exemption
+            IListenableFuture future = PackageManagerCompat.GetUnusedAppRestrictionsStatus(Application.Context);
+            object result = future.Get();
+            Logger.Debug("Status of unused app restrictions: " + result);
         }
 
         public async Task checkAlertPermissions(Page currentView, bool forceReprompt = false) {
@@ -90,12 +97,10 @@ namespace PagerBuddy.Droid {
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, true);
                 await permissionNotificationPolicyAccess(currentView);
             }
-            //TODO: Later - Implement for API <30 once AndroidX.Core v1.7.0 is available
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.R) {
-                if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, false) || forceReprompt) {
-                    DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, true);
-                    await permissionHibernationExclusion(currentView);
-                }
+
+            if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, false) || forceReprompt) {
+                DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_HIBERNATION_EXCLUSION, true);
+                await permissionHibernationExclusion(currentView);
             }
         }
     }

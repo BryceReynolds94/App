@@ -70,13 +70,13 @@
     <EmbeddedResource Include="Resources\Images\user_default.svg" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="libphonenumber-csharp" Version="8.12.45" />
+    <PackageReference Include="libphonenumber-csharp" Version="8.12.52" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NLog" Version="4.7.15" />
+    <PackageReference Include="NLog" Version="5.0.1" />
     <PackageReference Include="Telega" Version="0.5.1" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2401" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2515" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\AppResources.resx">
