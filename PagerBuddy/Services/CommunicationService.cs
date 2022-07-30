@@ -568,6 +568,7 @@ namespace PagerBuddy.Services {
 
             //From here on we assume sending the message to the server was successfull
             await deleteMessage(msgID);
+            
             return true;
         }
 
