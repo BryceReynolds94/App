@@ -66,11 +66,10 @@ namespace PagerBuddy.Services
         public static void TokenRefresh(string token) {
             if(DataService.getConfigValue(DataService.DATA_KEYS.FCM_TOKEN, "") == token) {
                 Logger.Debug("Token refresh received, but token has not changed.");
-                return;
-            }
-
-            Logger.Info("FCM/APNS token was updated, TOKEN: {0}", token);
-            DataService.setConfigValue(DataService.DATA_KEYS.FCM_TOKEN, token);
+            } else {
+                Logger.Info("FCM/APNS token was updated, TOKEN: {0}", token);
+                DataService.setConfigValue(DataService.DATA_KEYS.FCM_TOKEN, token);
+            }            
 
             Collection<string> configIDs = DataService.getConfigList();
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
