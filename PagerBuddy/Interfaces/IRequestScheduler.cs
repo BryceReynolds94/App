@@ -8,7 +8,7 @@ using System.Text;
 namespace PagerBuddy.Interfaces {
     public interface IRequestScheduler {
         void initialise(CommunicationService client);
-        void scheduleRequest(Collection<AlertConfig> request, Collection<string> clearedServers);
+        void scheduleRequest(Collection<AlertConfig> request);
 
     }
 }

@@ -30,7 +30,6 @@ namespace PagerBuddy.Models {
             id = Guid.NewGuid().ToString();
             this.triggerGroup = triggerGroup;
 
-
             isActive = true;
             lastTriggered = lockTime = DateTime.MinValue;
         }

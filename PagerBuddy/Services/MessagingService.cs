@@ -89,7 +89,7 @@ namespace PagerBuddy.Services
             if (instance != null) {
                 scheduler.initialise(instance.client);
             }
-            scheduler.scheduleRequest(configList, new Collection<string>());
+            scheduler.scheduleRequest(configList);
         }
 
     }

@@ -34,6 +34,8 @@ namespace PagerBuddy.iOS {
 
         public async Task backgroundRequest(BGTask task) {
 
+            
+
             CancellationTokenSource bgCancellationSource = new CancellationTokenSource();
 
             task.ExpirationHandler += () => {
@@ -50,17 +52,15 @@ namespace PagerBuddy.iOS {
                 }
             }
 
-            string botServer = CommunicationService.pagerbuddyServerList.First(); //TODO Later: MULTI-Server
-
-            bool result = await runServerRefresh(client, configList, botServer, bgCancellationSource.Token);
+            bool result = await runServerRefresh(client, configList, bgCancellationSource.Token);
             task.SetTaskCompleted(result);
         }
 
-        public void scheduleRequest(Collection<AlertConfig> request, Collection<string> clearedServers) {
-            _ = scheduleRequest(request, CommunicationService.pagerbuddyServerList.First(), 5); //TODO Later: MULTI-Server
+        public void scheduleRequest(Collection<AlertConfig> request) {
+            _ = scheduleRequest(request, 5);
         }
 
-        private async Task scheduleRequest(Collection<AlertConfig> request, string botServerUser, int delay) {
+        private async Task scheduleRequest(Collection<AlertConfig> request, int delay) {
 
             cancellationSource?.Cancel();
             cancellationSource?.Dispose();
@@ -95,11 +95,11 @@ namespace PagerBuddy.iOS {
                     return;
                 }
 
-                bool success = await runServerRefresh(client, request, botServerUser, cancellationSource.Token);
+                bool success = await runServerRefresh(client, request, cancellationSource.Token);
                 if (!success && !cancellationSource.IsCancellationRequested) {
                     int newDelay = delay + 60; //Linear back off, cap at 5h
                     newDelay = newDelay < 5 * 60 * 60 ? newDelay : 5 * 60 * 60;
-                    _ = scheduleRequest(request, botServerUser, newDelay);
+                    _ = scheduleRequest(request, newDelay);
                 }
 
                 cancellationSource.Cancel();
@@ -107,7 +107,7 @@ namespace PagerBuddy.iOS {
 
         }
 
-        private async Task<bool> runServerRefresh(CommunicationService client, Collection<AlertConfig> configList, string botServer, CancellationToken cancellationToken) {
+        private async Task<bool> runServerRefresh(CommunicationService client, Collection<AlertConfig> configList, CancellationToken cancellationToken) {
             if(client == null) {
                 client = new CommunicationService();
                 _ = client.connectClient(true);
@@ -115,7 +115,7 @@ namespace PagerBuddy.iOS {
 
             if (client.clientStatus < CommunicationService.STATUS.WAIT_PHONE && client.clientStatus != CommunicationService.STATUS.OFFLINE) {
 
-                Task<Task<bool>> handleTask = new Task<Task<bool>>(async () => await HandleStatus(client, configList, botServer));
+                Task<Task<bool>> handleTask = new Task<Task<bool>>(async () => await HandleStatus(client, configList));
                 CommunicationService.ClientStausEventHandler handler = (object sender, CommunicationService.STATUS status) => {
                     if (status < CommunicationService.STATUS.WAIT_PHONE && status != CommunicationService.STATUS.OFFLINE) {
                         return;
@@ -133,16 +133,16 @@ namespace PagerBuddy.iOS {
 
                 return await await Task.WhenAny(await handleTask, cancelTask);
             } else {
-                return await HandleStatus(client, configList, botServer);
+                return await HandleStatus(client, configList);
             }
         }
 
-        private async Task<bool> HandleStatus(CommunicationService client, Collection<AlertConfig> configList, string botServer) {
+        private async Task<bool> HandleStatus(CommunicationService client, Collection<AlertConfig> configList) {
 
             CommunicationService.STATUS status = client.clientStatus;
             if (status == CommunicationService.STATUS.AUTHORISED) {
                 Logger.Debug("User authorised. Sending request.");
-                bool success = await client.sendServerRequest(configList, botServer);
+                bool success = await client.sendServerRequests(configList);
                 return success;
             } else if (status > CommunicationService.STATUS.ONLINE) {
                 //Wait status achieved - user is not authorised - do not bother in the future

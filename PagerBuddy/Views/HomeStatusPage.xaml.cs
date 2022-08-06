@@ -51,7 +51,7 @@ namespace PagerBuddy.Views {
             viewModel.RequestLogin += login;
             viewModel.RequestTimeConfig += timeConfig;
 
-            MessagingCenter.Subscribe<AlertStatusViewModel>(this, AlertStatusViewModel.MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString(), (_) => sendServerUpdate(getAlertConfigs(), new Collection<string>()));
+            MessagingCenter.Subscribe<AlertStatusViewModel>(this, AlertStatusViewModel.MESSAGING_KEYS.ALERT_CONFIG_CHANGED.ToString(), (_) => sendServerUpdate(getAlertConfigs()));
 
             if (!DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, false)) {
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_WELCOME, true);
@@ -79,7 +79,7 @@ namespace PagerBuddy.Views {
             }
         }
 
-        private void sendServerUpdate(Collection<AlertConfig> configList, Collection<string> clearedServers) {
+        private void sendServerUpdate(Collection<AlertConfig> configList) {
 
             if (client.clientStatus != CommunicationService.STATUS.AUTHORISED && client.clientStatus > CommunicationService.STATUS.ONLINE || MOCK_MODE) {
                 //User is not logged in - do nothing.
@@ -90,7 +90,7 @@ namespace PagerBuddy.Views {
 
             IRequestScheduler scheduler = DependencyService.Get<IRequestScheduler>();
             scheduler.initialise(client);
-            scheduler.scheduleRequest(configList, clearedServers);
+            scheduler.scheduleRequest(configList);
         }
 
         private void updateClientStatus(object sender, CommunicationService.STATUS newStatus) {
@@ -134,7 +134,7 @@ namespace PagerBuddy.Views {
             DataService.setConfigValue(DataService.DATA_KEYS.CONFIG_SNOOZE_ALL, state);
         }
 
-        private async Task alertConfigsChanged(Collection<AlertConfig> configList, Collection<string> clearedServers) {
+        private async Task alertConfigsChanged(Collection<AlertConfig> configList) {
             if (Device.RuntimePlatform == Device.Android) {
                 IAndroidNotifications notifications = DependencyService.Get<IAndroidNotifications>();
                 notifications.UpdateNotificationChannels(configList);
@@ -142,7 +142,7 @@ namespace PagerBuddy.Views {
             MessagingCenter.Send(this, MESSAGING_KEYS.ALERT_CONFIGS_CHANGED.ToString());
 
             
-            sendServerUpdate(configList, clearedServers);
+            sendServerUpdate(configList);
 
             IPermissions permissions = DependencyService.Get<IPermissions>();
             await permissions.checkAlertPermissions(this);
@@ -252,17 +252,12 @@ namespace PagerBuddy.Views {
 
             viewModel.fillAlertList(configList, false);
 
-            Collection<string> clearedServers = new Collection<string>();
             foreach (string alertID in deleteList){ //Make sure old groups are removed if not present anymore
-                AlertConfig config = DataService.getAlertConfig(alertID, null);
-                if (config != null) {
-                    clearedServers.Add(config.triggerGroup.pagerbuddyserver);
-                }
                 DataService.deleteAlertConfig(alertID);
             }
 
             if (hasListChanged(oldList, configList)) { //If the alert list has changed, subscribe to PagerBuddy-Servers with new list
-                await alertConfigsChanged(configList, clearedServers);
+                await alertConfigsChanged(configList);
             }
 
             is_refreshing = false;

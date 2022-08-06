@@ -25,14 +25,11 @@ namespace PagerBuddy.Services {
         private TelegramClient client;
         private STATUS status;
 
-        private static readonly List<string> STATIC_PAGERBUDDY_SERVER_BOTS = new List<string> { "pagerbuddyserverbot" };
+        private static readonly List<string> STATIC_PAGERBUDDY_SERVER_BOTS = new List<string> { "pagerbuddyserverbot", "pagerbuddyservertestbot" };
 
         public static List<string> pagerbuddyServerList {
             get {
                 List<string> baseList = STATIC_PAGERBUDDY_SERVER_BOTS;
-#if DEBUG
-                baseList = new List<string> { "pagerbuddyservertestbot" }; //Ignore real bots when testing
-#endif
                 baseList.AddRange(DataService.customPagerBuddyServerBots);
                 return baseList;
             }
@@ -482,7 +479,17 @@ namespace PagerBuddy.Services {
             return outUser;
         }
 
-        public async Task<bool> sendServerRequest(Collection<AlertConfig> configList, string serverPeer, int attempt = 0) {
+        public async Task<bool> sendServerRequests(Collection<AlertConfig> configList) {
+            IEnumerable<IGrouping<string, AlertConfig>> groupedList = configList.GroupBy((config) => config.triggerGroup.pagerbuddyserver);
+
+            bool result = true;
+            foreach (IGrouping<string, AlertConfig> group in groupedList) {
+                result &= await sendServerRequest(new Collection<AlertConfig>(group.ToList()), group.Key);
+            }
+            return result;
+        }
+
+        private async Task<bool> sendServerRequest(Collection<AlertConfig> configList, string serverPeer, int attempt = 0) {
             if (clientStatus < STATUS.AUTHORISED && clientStatus != STATUS.LOGOUT) {
                 Logger.Warn("Attempted to send request to server without appropriate client status. Current status: " + clientStatus.ToString());
                 return false;
@@ -523,7 +530,7 @@ namespace PagerBuddy.Services {
             Logger.Debug("Server request JSON payload: " + jsonRequest);
 
             string stringRequest = ServerRequest.PREFIX + Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(jsonRequest));
-            Logger.Debug("Sending update to server: " + stringRequest);
+            Logger.Debug("Sending update to server " + serverPeer + ": " + stringRequest);
 
             int msgID = 0;
             try {

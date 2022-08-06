@@ -43,11 +43,10 @@ namespace PagerBuddy.Droid {
 
             string requestString = jobParams.Extras.GetString(nameof(ServerRequestScheduler.JOB_PARAMETERS.REQUEST_STRING));
             Collection<AlertConfig> request = JsonConvert.DeserializeObject<Collection<AlertConfig>>(requestString);
-            string serverUser = jobParams.Extras.GetString(nameof(ServerRequestScheduler.JOB_PARAMETERS.PAGERBUDDY_SERVER_USER));
 
             if (status == CommunicationService.STATUS.AUTHORISED) {
                 Logger.Debug("User authorised. Sending request.");
-                bool success = await client.sendServerRequest(request, serverUser);
+                bool success = await client.sendServerRequests(request);
 
                 JobFinished(jobParams, !success); //Do not reschedule on success
             } else if (status > CommunicationService.STATUS.ONLINE) {

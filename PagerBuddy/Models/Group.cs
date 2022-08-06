@@ -15,7 +15,7 @@ namespace PagerBuddy.Models
         public long accessHash;
         public bool isMegaGroup;
 
-        public string pagerbuddyserver = "pagerbuddyserverbot"; //default to make legacy transition easier
+        public string pagerbuddyserver;
         
         [JsonIgnore] //do not try to serialise Stream
         public MemoryStream image = null;
