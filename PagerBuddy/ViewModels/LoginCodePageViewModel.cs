@@ -37,7 +37,7 @@ namespace PagerBuddy.ViewModels
         private void commitCode() {
             string code = CodeText;
             
-            if(code.Length != 5 || !Regex.IsMatch(code, "[0-9]{5}")) {
+            if(code == null || code.Length != 5 || !Regex.IsMatch(code, "[0-9]{5}")) {
                 updateErrorState(TStatus.NO_CODE);
                 return;
             }
