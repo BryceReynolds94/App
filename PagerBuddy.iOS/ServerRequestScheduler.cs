@@ -57,7 +57,7 @@ namespace PagerBuddy.iOS {
         }
 
         public void scheduleRequest(Collection<AlertConfig> request) {
-            _ = scheduleRequest(request, 5);
+            _ = scheduleRequest(request, 2);
         }
 
         private async Task scheduleRequest(Collection<AlertConfig> request, int delay) {
