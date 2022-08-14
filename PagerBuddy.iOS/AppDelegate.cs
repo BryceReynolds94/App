@@ -28,9 +28,6 @@ namespace PagerBuddy.iOS {
 
         private PagerBuddy.App XFApp;
 
-        //TODO: BUG - App crashes when opened from alert notification if killed
-        //May be related to https://github.com/xamarin/Xamarin.Forms/issues/15104 and therefore fixed in Xamarin.Forms 5.0.0.8022
-
         public override bool FinishedLaunching(UIApplication app, NSDictionary options) {
             global::Xamarin.Forms.Forms.Init();
 

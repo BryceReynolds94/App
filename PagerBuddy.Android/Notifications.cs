@@ -32,9 +32,9 @@ namespace PagerBuddy.Droid {
         public static readonly string ALERT_CHANNEL_ID = "de.bartunik.pagerbuddy.alert";
         public static readonly string STANDARD_CHANNEL_ID = "de.bartunik.pagerbuddy.standard";
 
-        
+
         public void showAlertNotification(Alert alert, int percentVolume) {
-            prepareAlert(percentVolume/100);
+            prepareAlert(percentVolume / 100);
 
             Intent intent = new Intent(Application.Context, typeof(MainActivity))
                 .SetFlags(ActivityFlags.NewTask | ActivityFlags.MultipleTask | ActivityFlags.ExcludeFromRecents)
@@ -49,7 +49,7 @@ namespace PagerBuddy.Droid {
                 largePic = Android.Graphics.BitmapFactory.DecodeResource(Application.Context.Resources, Resource.Drawable.group_default);
             }
 
-            long timestamp = (long) alert.timestamp.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; //Android uses Unix time
+            long timestamp = (long)alert.timestamp.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; //Android uses Unix time
 
             Notification.Builder builder = new Notification.Builder(Application.Context, alert.configID)
                 .SetContentTitle(alert.title)
@@ -60,7 +60,7 @@ namespace PagerBuddy.Droid {
                 .SetCategory(Notification.CategoryCall) //category for message classification 
                 .SetAutoCancel(true) //cancel notification when tapped
                 .SetFullScreenIntent(fullScreenIntent, true)
-                .SetWhen(timestamp) 
+                .SetWhen(timestamp)
                 .SetShowWhen(true)
                 .SetStyle(new Notification.BigTextStyle().BigText(alert.description)); //extend message on tap
 
@@ -75,7 +75,7 @@ namespace PagerBuddy.Droid {
             notification.Flags |= NotificationFlags.Insistent; //repeat sound untill acknowledged
 
             NotificationManager manager = NotificationManager.FromContext(Application.Context);
-            manager.Notify((int) alert.chatID, notification);
+            manager.Notify((int)alert.chatID, notification);
         }
 
         public void closeNotification(int notificationID) {
@@ -98,22 +98,22 @@ namespace PagerBuddy.Droid {
                 try {
                     int NminVol = audioManager.GetStreamMinVolume(Android.Media.Stream.Notification);
                     int NmaxVol = audioManager.GetStreamMaxVolume(Android.Media.Stream.Notification);
-                    int NVolIndex = (int) Math.Round((NmaxVol - NminVol) * volumeFactor + NminVol);
-                    if(NVolIndex > audioManager.GetStreamVolume(Android.Media.Stream.Notification)){
+                    int NVolIndex = (int)Math.Round((NmaxVol - NminVol) * volumeFactor + NminVol);
+                    if (NVolIndex > audioManager.GetStreamVolume(Android.Media.Stream.Notification)) {
                         Logger.Debug("Setting notification volume to " + NVolIndex + " (min: " + NminVol + ", max: " + NmaxVol + ", factor: " + volumeFactor + ")");
                         audioManager.SetStreamVolume(Android.Media.Stream.Notification, NVolIndex, 0);
 
                     }
-                    
+
 
                     int RminVol = audioManager.GetStreamMinVolume(Android.Media.Stream.Ring);
                     int RmaxVol = audioManager.GetStreamMaxVolume(Android.Media.Stream.Ring);
-                    int RVolIndex = (int) Math.Round((RmaxVol - RminVol) * volumeFactor + RminVol);
-                    if(RVolIndex > audioManager.GetStreamVolume(Android.Media.Stream.Ring)) {
+                    int RVolIndex = (int)Math.Round((RmaxVol - RminVol) * volumeFactor + RminVol);
+                    if (RVolIndex > audioManager.GetStreamVolume(Android.Media.Stream.Ring)) {
                         Logger.Debug("Setting ringer volume to " + RVolIndex + " (min: " + RminVol + ", max: " + RmaxVol + ", factor: " + volumeFactor + ")");
                         audioManager.SetStreamVolume(Android.Media.Stream.Ring, RVolIndex, 0); //also have to set ringer high for Samsung devices
                     }
-                    
+
                 } catch (Exception e) {
                     Logger.Warn(e, "Could not set volume. Probably due to insufficient permissions");
                 }
@@ -142,7 +142,7 @@ namespace PagerBuddy.Droid {
             NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);
             NotificationChannel channel = notificationManager.GetNotificationChannel(alertConfigID);
 
-            if(channel == null) {
+            if (channel == null) {
                 Logger.Warn("Could not find notification channel for alert config.");
                 return null;
             }
@@ -200,7 +200,7 @@ namespace PagerBuddy.Droid {
 
         public void UpdateNotificationChannels(Collection<AlertConfig> configList) {
             Collection<string> idList = new Collection<string>();
-            foreach(AlertConfig config in configList) {
+            foreach (AlertConfig config in configList) {
                 addNotificationChannel(config);
                 idList.Add(config.id);
             }
@@ -235,7 +235,7 @@ namespace PagerBuddy.Droid {
 
             Collection<string> configIDList = DataService.getConfigList();
             Collection<AlertConfig> configList = new Collection<AlertConfig>();
-            foreach(string config in configIDList) {
+            foreach (string config in configIDList) {
                 AlertConfig alertConfig = DataService.getAlertConfig(config, null);
                 if (alertConfig != null) {
                     configList.Add(alertConfig);
@@ -243,6 +243,58 @@ namespace PagerBuddy.Droid {
             }
 
             UpdateNotificationChannels(configList);
+        }
+
+        public void rotateIDs() {
+            //If necessary, change alert ids
+
+            //This should fix a possible bug introduced to the alert sound resource location
+            //https://levelup.gitconnected.com/a-reason-why-custom-notification-sound-might-not-work-on-android-4aea06b8c7c4
+
+            Collection<string> changeList = needIDRotation();
+
+            if(changeList.Count > 0) {
+                Logger.Debug("Alert sound ID changed. Rotating alert IDs to ensure correct notification sound registration.");
+            }
+
+            foreach (string config in changeList) {
+                AlertConfig old_conf = DataService.getAlertConfig(config, null);
+                if (old_conf != null) {
+                    string id = Guid.NewGuid().ToString();
+                    AlertConfig new_conf = new AlertConfig(old_conf.isActive, id, old_conf.triggerGroup, old_conf.lastTriggered, DateTime.MinValue);
+                    new_conf.saveChanges();
+
+                    DataService.deleteAlertConfig(old_conf);
+                }
+            }
+        }
+
+        private Collection<string> needIDRotation() {
+            //When the resource ID built for the pagerbuddy sound is changed (by the build system) the notification sound will break
+            //This tries to find out if we have a critical change of the id
+            int old_id = DataService.getConfigValue(DataService.DATA_KEYS.SOUND_RESOURCE_ID, 0);
+            if(old_id == Resource.Raw.pagerbuddy_sound) {
+                //ID has not changed - all is fine
+                return new Collection<string>();
+            }
+
+            NotificationManager notificationManager = NotificationManager.FromContext(Application.Context);
+            //Check if used in channels
+            Collection<string> idList = DataService.getConfigList();
+            Collection<string> needsRotation = new Collection<string>();
+
+            foreach (NotificationChannel channel in notificationManager.NotificationChannels) {
+                if (channel.Group != null && channel.Group.Equals(ALERT_CHANNEL_ID) && idList.Contains(channel.Id)) {
+                    //We have a match
+                    if (channel.Sound.ToString().Contains(old_id.ToString())) {
+                        needsRotation.Add(channel.Id);
+                    }
+                }
+            }
+
+            DataService.setConfigValue(DataService.DATA_KEYS.SOUND_RESOURCE_ID, Resource.Raw.pagerbuddy_sound);
+
+            return needsRotation;
         }
 
         public void RefreshToken() {

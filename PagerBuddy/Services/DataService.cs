@@ -40,6 +40,7 @@ namespace PagerBuddy.Services {
             ACTIVE_TIME_INVERT, //If the set times are when alerts are inactive
             CUSTOM_PAGERBUDDY_SERVER_BOT_LIST, //List of user set peers that should be accepted as pagerbuddy servers
             MOCK_ACCOUNT, //If we are in mock mode, showing sample functionality
+            SOUND_RESOURCE_ID, //The built value for the sound resource in Android - this is needed to detect if we have a breaking (any) change
         };
 
         public static void clearData(bool developerMode = true, bool hasPromptedWelcome = true) //Caution! Use with care

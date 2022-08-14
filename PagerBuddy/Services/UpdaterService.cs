@@ -1,6 +1,9 @@
-﻿using PagerBuddy.Resources;
+﻿using PagerBuddy.Interfaces;
+using PagerBuddy.Models;
+using PagerBuddy.Resources;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using Xamarin.Forms;
 
@@ -28,6 +31,13 @@ namespace PagerBuddy.Services {
                 bool promptedDND = DataService.getConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, false);
                 DataService.clearData(false, promptedWelcome);
                 DataService.setConfigValue(DataService.DATA_KEYS.HAS_PROMPTED_DND_PERMISSION, promptedDND);
+            }
+
+            if(updateBuildStatus != currentVersion && currentVersion != previousVersion && Device.RuntimePlatform == Device.Android) {
+                //Check if we have to rotate alert sound id on every update!
+                Logger.Debug("New app version. Checking if rotation of alert IDs is necessary.");
+                IAndroidNotifications notifications = DependencyService.Get<IAndroidNotifications>();
+                notifications.rotateIDs();
             }
 
             DataService.setConfigValue(DataService.DATA_KEYS.BUILD_UPDATE_COMPLETE, currentVersion);

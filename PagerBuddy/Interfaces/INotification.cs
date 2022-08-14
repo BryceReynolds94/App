@@ -22,5 +22,7 @@ namespace PagerBuddy.Interfaces
         void UpdateNotificationChannels(Collection<AlertConfig> configList);
         Action playChannelRingtone(string alertConfigID);
         void RefreshToken();
+
+        void rotateIDs();
     }
 }
