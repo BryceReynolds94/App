@@ -286,7 +286,8 @@ namespace PagerBuddy.Droid {
             foreach (NotificationChannel channel in notificationManager.NotificationChannels) {
                 if (channel.Group != null && channel.Group.Equals(ALERT_CHANNEL_ID) && idList.Contains(channel.Id)) {
                     //We have a match
-                    if (channel.Sound.ToString().Contains(old_id.ToString())) {
+                    if (channel.Sound.ToString().Contains(AppInfo.PackageName)) {
+                        //User is using our sound
                         needsRotation.Add(channel.Id);
                     }
                 }
