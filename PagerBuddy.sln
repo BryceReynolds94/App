@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagerBuddy.iOS", "PagerBudd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagerBuddy", "PagerBuddy\PagerBuddy.csproj", "{55F79DE2-CE2B-4FA3-A432-9A1E44F3396B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagerBuddy.Tests", "Test\PagerBuddy.Tests.csproj", "{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,18 @@ Global
 		{55F79DE2-CE2B-4FA3-A432-9A1E44F3396B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{55F79DE2-CE2B-4FA3-A432-9A1E44F3396B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{55F79DE2-CE2B-4FA3-A432-9A1E44F3396B}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
+		{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}.Release|iPhone.Build.0 = Release|Any CPU
+		{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

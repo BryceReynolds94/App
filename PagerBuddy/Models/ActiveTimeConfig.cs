@@ -60,17 +60,10 @@ namespace PagerBuddy.Models
            bool result = false;
            if (checkDay(compareTime.DayOfWeek))
             {
-                bool beforeStopTime;
-                bool afterStartTime;
-                if (activeStartTime > activeStopTime) {
-                    beforeStopTime = compareTime.TimeOfDay < activeStartTime;
-                    afterStartTime = compareTime.TimeOfDay > activeStopTime;
-                } else {
-                    beforeStopTime = compareTime.TimeOfDay < activeStopTime;
-                    afterStartTime = compareTime.TimeOfDay > activeStartTime;
-                }
+                bool inTime = compareTime.TimeOfDay < activeStopTime && compareTime.TimeOfDay > activeStartTime;
+                bool flipAsOverDayBorder = activeStartTime > activeStopTime;
 
-                result = afterStartTime && beforeStopTime;
+                result = inTime ^ flipAsOverDayBorder;
             }
             return result ^ flipActiveTime;
         }
