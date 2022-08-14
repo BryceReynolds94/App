@@ -226,6 +226,10 @@ namespace PagerBuddy.Views {
                     foreach (TelegramPeer peer in servCollection) {
                         peerCollection.Add(peer);
                     }
+                    if (MOCK_MODE) {
+                        //Only add one list in mock mode
+                        break;
+                    }
                 }
             }
 
