@@ -16,6 +16,7 @@ using System.Security.Cryptography;
 using Newtonsoft.Json;
 using Xamarin.Essentials;
 using PagerBuddy.Interfaces;
+using PagerBuddy.Helpers;
 
 namespace PagerBuddy.Services {
 
@@ -88,7 +89,7 @@ namespace PagerBuddy.Services {
             }
 
             try {
-                client = await TelegramClient.Connect(KeyService.checkID(this), store: new MySessionStore());
+                client = await TelegramClient.Connect(Secrets.TELEGRAM_API_ID, store: new MySessionStore());
             } catch (Exception e) {
                 Logger.Error(e, "Initialisation of TelegramClient failed");
 
@@ -236,7 +237,7 @@ namespace PagerBuddy.Services {
 
             string hash;
             try {
-                hash = await client.Auth.SendCode(KeyService.checkHash(this), clientPhoneNumber);
+                hash = await client.Auth.SendCode(Secrets.TELEGRAM_API_HASH, clientPhoneNumber);
             } catch (System.InvalidOperationException e) {
                 Logger.Warn(e, "Exception trying to authenticate user. Presumably the client went offline.");
                 await checkConnectionOnError(e);

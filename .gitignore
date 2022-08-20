@@ -341,3 +341,7 @@ healthchecksdb
 
 #Xamarin generated resources
 Resource.designer.cs
+
+# Mobile.BuildTools
+appsettings.json
+appsettings.*.json

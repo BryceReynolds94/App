@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="libphonenumber-csharp" Version="8.12.52" />
+    <PackageReference Include="Mobile.BuildTools" Version="2.0.245" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NLog" Version="4.7.15" />
     <PackageReference Include="Telega" Version="0.5.1" />

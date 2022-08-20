@@ -9,7 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagerBuddy.iOS", "PagerBudd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagerBuddy", "PagerBuddy\PagerBuddy.csproj", "{55F79DE2-CE2B-4FA3-A432-9A1E44F3396B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagerBuddy.Tests", "Test\PagerBuddy.Tests.csproj", "{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagerBuddy.Tests", "Test\PagerBuddy.Tests.csproj", "{BC95AFD8-C29D-49B7-AA83-C6DA418AE30E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7F46A75A-7EEF-49D1-9772-15633CFBD76A}"
+	ProjectSection(SolutionItems) = preProject
+		appsettings.json = appsettings.json
+		buildtools.json = buildtools.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
