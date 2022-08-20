@@ -120,7 +120,6 @@
     <Compile Include="Permissions.cs" />
     <Compile Include="FCMMessagingService.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerRequestScheduler.cs" />
     <Compile Include="ServerRequestService.cs" />
@@ -131,8 +130,6 @@
   <ItemGroup>
     <GoogleServicesJson Include="google-services.json" />
     <AndroidAsset Include="Assets\NLog.config" />
-    <None Include="Resources\AboutResources.txt" />
-    <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
